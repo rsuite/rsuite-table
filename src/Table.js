@@ -31,6 +31,7 @@ const Table = React.createClass({
     getInitialState() {
         return {
             columnWidth: 0,
+            mouseAreaLeft: -1,
             dataKey: 0
         };
     },
@@ -59,19 +60,23 @@ const Table = React.createClass({
     _onColumnResizeEnd(columnWidth, cursorDelta, dataKey) {
         this.setState({
             isColumnResizing: false,
+            mouseAreaLeft:-1,
             [dataKey + 'Width']: columnWidth
         });
-        removeClass(findDOMNode(this.refs.table), 'column-resizing');
     },
     _onColumnResize(width, left, event) {
-
         this.setState({
             isColumnResizing: true
         });
-        console.log(width);
-
-        addClass(findDOMNode(this.refs.table), 'column-resizing');
-
+    },
+    _onColumnResizeMove(width, left) {
+        this.setState({
+            mouseAreaLeft: width + left
+        });
+        console.log(width, left);
+    },
+    cloneCell(Cell, props) {
+        return React.cloneElement(Cell, props, Cell.props.children);
     },
     getCells() {
 
@@ -80,10 +85,6 @@ const Table = React.createClass({
         let left = 0;              // 单元格的距左位置
         let isFixedColumn = false;    // 是否存在固定列
         let columns = this.props.children;
-
-        function cloneCell(cell, props) {
-            return React.cloneElement(cell, props, cell.props.children);
-        }
 
         var {dataKey, columnWidth } = this.state;
 
@@ -104,22 +105,25 @@ const Table = React.createClass({
 
             let cellProps = {
                 width, fixed, left, align, resizable,
-                width: width,
                 firstColumn: (index === 0),
                 lastColumn: (index === columns.length - 1),
                 key: index
             };
 
+            let headerCellsProps = {
+                dataKey: columnChildren[1].props.dataKey
+            };
+
             if (resizable) {
-                cellProps.onColumnResizeEnd = this._onColumnResizeEnd;
-                cellProps.onColumnResize = this._onColumnResize;
+                headerCellsProps.onColumnResizeEnd = this._onColumnResizeEnd;
+                headerCellsProps.onColumnResize = this._onColumnResize;
+                headerCellsProps.onColumnResizeMove = this._onColumnResizeMove;
             }
 
-            headerCells.push(cloneCell(columnChildren[0], Object.assign(cellProps, { dataKey: columnChildren[1].props.dataKey })));
-            bodyCells.push(cloneCell(columnChildren[1], cellProps));
+            headerCells.push(this.cloneCell(columnChildren[0], Object.assign(cellProps, headerCellsProps)));
+            bodyCells.push(this.cloneCell(columnChildren[1], cellProps));
 
             left += width;
-
         });
 
         return {
@@ -186,7 +190,16 @@ const Table = React.createClass({
         let rowWidth = allColumnsWidth > width ? allColumnsWidth : width;
 
         this.isFixedColumn = isFixedColumn;
+
         let rows = data.map((rowData, index) => {
+
+            let cells = bodyCells.map((cell, key) => {
+                return React.cloneElement(cell, {
+                    key: key,
+                    rowData: rowData,
+                    rowIndex: index,
+                }, cell.props.children);
+            });
 
             let row = this.renderRow({
                 key: index,
@@ -195,47 +208,73 @@ const Table = React.createClass({
                 height: rowHeight,
                 rowData,
                 top
-            }, bodyCells.map((cell, key) => {
-                return React.cloneElement(cell, {
-                    key: key,
-                    rowData: rowData,
-                    rowIndex: index,
-                }, cell.props.children);
-            }));
+            }, cells);
 
             top += rowHeight;
+
             return row;
         });
 
-        let clesses = classNames(
+        const clesses = classNames(
             classPrefix,
-            className
+            className, {
+                'column-resizing': this.state.isColumnResizing
+            }
         );
 
-        let styles = Object.assign({ width, height }, style);
-        let bodyStyles = {
+        const styles = Object.assign({ width, height }, style);
+
+
+        return (
+            <div className={clesses} style={styles} ref='table'>
+                {this.renderTableHeader(headerCells, rowWidth) }
+                {this.renderTableBody(rows) }
+                {this.renderMouseArea() }
+            </div>
+        );
+    },
+    renderTableHeader(headerCells, rowWidth) {
+
+        const {rowHeight} = this.props;
+        const row = this.renderRow({
+            ref: 'tableHeader',
+            width: rowWidth,
+            height: rowHeight,
+            isHeaderRow: true,
+            top: 0
+        }, headerCells);
+
+        return (
+            <div
+                className={this.prefix('header-row-wrapper') }>
+                {row}
+            </div>
+        );
+    },
+    renderTableBody(rows) {
+
+        const {rowHeight, height } = this.props;
+        const bodyStyles = {
             top: rowHeight,
             height: height - rowHeight
         };
 
         return (
-            <div className={clesses} style={styles} ref='table'>
-                <div
-                    className={this.prefix('header-row-wrapper') }>
-                    {this.renderRow({
-                        ref: 'tableHeader',
-                        width: rowWidth,
-                        height: rowHeight,
-                        isHeaderRow: true,
-                        top: 0
-                    }, headerCells) }
-                </div>
-                <div ref="tableBody"
-                    className={this.prefix('body-row-wrapper') }
-                    style={bodyStyles}>
-                    {rows}
-                </div>
+            <div ref="tableBody"
+                className={this.prefix('body-row-wrapper') }
+                style={bodyStyles}>
+                {rows}
             </div>
+        );
+    },
+    renderMouseArea() {
+        const { height } = this.props;
+        const styles = {
+            height,
+            left: this.state.mouseAreaLeft
+        };
+        return (
+            <div ref="mouseArea" className={this.prefix('mouse-area') } style={styles}></div>
         );
     },
     componentDidMount() {

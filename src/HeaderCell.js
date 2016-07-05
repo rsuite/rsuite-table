@@ -10,24 +10,21 @@ const HeaderCell = React.createClass({
     propTypes: {
         sort: PropTypes.bool,
         resizable: PropTypes.bool,
-        onColumnResizeEnd: PropTypes.func
+        onColumnResizeEnd: PropTypes.func,
+        onColumnResize: PropTypes.func,
+        onColumnResizeMove: PropTypes.func,
     },
     _onColumnResize(width, left, event) {
-
         this.setState({
             columnWidth: width,
             initialEvent: event
         });
-
         this.props.onColumnResize(width, left, event);
     },
     _onColumnResizeEnd(columnWidth, cursorDelta) {
-
         this.setState({
             columnWidth: columnWidth
         });
-
-
         this.props.onColumnResizeEnd(columnWidth, cursorDelta, this.props.dataKey);
     },
     getInitialState() {
@@ -37,7 +34,7 @@ const HeaderCell = React.createClass({
     },
     renderResizeSpanner() {
 
-        let {resizable, left} = this.props;
+        let {resizable, left, onColumnResizeMove} = this.props;
         let {columnWidth, initialEvent} = this.state;
 
         if (!resizable) {
@@ -49,6 +46,7 @@ const HeaderCell = React.createClass({
                 columnWidth={columnWidth}
                 columnLeft={left}
                 initialEvent={initialEvent}
+                onColumnResizeMove={onColumnResizeMove}
                 onColumnResize={this._onColumnResize }
                 onColumnResizeEnd={this._onColumnResizeEnd }
                 />

@@ -28,8 +28,8 @@ ReactDom.render(
         </Column>
 
         <Column  width = {100} sort resizable>
-            <HeaderCell>Icon</HeaderCell>
-            <Cell dataKey="name"></Cell>
+            <HeaderCell>Email</HeaderCell>
+            <Cell dataKey="email"></Cell>
         </Column>
 
     </Table>

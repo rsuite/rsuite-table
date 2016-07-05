@@ -24,7 +24,7 @@ const ColumnResizeHandle = React.createClass({
         columnLeft: PropTypes.number,
         onColumnResize: PropTypes.func,
         onColumnResizeEnd: PropTypes.func,
-
+        onColumnResizeMove: PropTypes.func,
     },
     getInitialState() {
         return {
@@ -33,7 +33,7 @@ const ColumnResizeHandle = React.createClass({
             visible: false
         };
     },
-    _onMove(deltaX) {
+    _onMove(deltaX, deltaY) {
 
         if (!this.isKeyDown) {
             return;
@@ -47,6 +47,7 @@ const ColumnResizeHandle = React.createClass({
             cursorDelta: newWidth
         });
 
+        this.props.onColumnResizeMove(newColumnWidth, this.props.columnLeft);
     },
 
     _onColumnResizeEnd() {

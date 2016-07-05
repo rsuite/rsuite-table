@@ -58,7 +58,6 @@ class DOMMouseMoveTracker {
     releaseMouseMoves() {
 
 
-        console.log('--------3-------');
         if (this._eventMoveToken && this._eventUpToken) {
 
             this._eventMoveToken.off();
@@ -115,12 +114,10 @@ class DOMMouseMoveTracker {
         this._deltaX = 0;
         this._deltaY = 0;
     }
-
     /**
      * Calls onMoveEnd passed into constructor and updates internal state.
      */
     _onMouseUp() {
-        console.log('----4-----');
 
         if (this._animationFrameID) {
             this._didMouseMove();
