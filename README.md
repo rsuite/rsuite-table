@@ -1,4 +1,4 @@
-#react-fixed-table
+#rsuite-table
 
 ## Basic Example
 ```js
@@ -7,7 +7,7 @@ import ReactDom from 'react-dom';
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 
 
-const rows = [
+const dataList = [
     {id:1, name:'a', email:'a@email.com',iconURL:'...'},
     {id:1, name:'b', email:'b@email.com',iconURL:'...'},
     {id:1, name:'c', email:'c@email.com',iconURL:'...'}
@@ -15,23 +15,21 @@ const rows = [
 
 
 ReactDom.render(
-    <Table data = {rows}  fixedHeader = {true} >
+    <Table data = {dataList}  >
 
-        <Column  width = {100} sort = {true} fixed={true}>
+        <Column  width = {100} sort fixed resizable>
             <HeaderCell>ID</HeaderCell>
-            <Cell col="id"></Cell>
+            <Cell dataKey="id"></Cell>
         </Column>
 
-        <Column  width = {100} sort = {true}>
+        <Column  width = {100} sort resizable>
             <HeaderCell>Name</HeaderCell>
-            <Cell col="name"></Cell>
+            <Cell dataKey="name"></Cell>
         </Column>
 
-        <Column  width = {100} sort = {true} >
+        <Column  width = {100} sort resizable>
             <HeaderCell>Icon</HeaderCell>
-            <Cell>
-                <img src="iconURL"  />
-            </Cell>
+            <Cell dataKey="name"></Cell>
         </Column>
 
     </Table>
