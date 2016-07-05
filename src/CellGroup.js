@@ -1,25 +1,19 @@
 import React, {PropTypes} from 'react';
 import classNames from 'classnames';
-import { addPrefix } from './utils/classNameUtils';
-
+import ClassNameMixin from './mixins/ClassNameMixin';
 
 const HeaderCell = React.createClass({
+    mixins:[ClassNameMixin],
     propTypes: {
-        classPrefix: PropTypes.string,
         fixed: PropTypes.bool,
         width: PropTypes.number,
         height: PropTypes.number,
         left: PropTypes.number,
         style: PropTypes.string
     },
-    getDefaultProps() {
-        return {
-            classPrefix: 'table'
-        };
-    },
     render() {
+
         let {
-            classPrefix,
             children,
             fixed,
             width,
@@ -27,8 +21,9 @@ const HeaderCell = React.createClass({
             height,
             style
         } = this.props;
+
         let classes = classNames(
-            addPrefix('cell-group', classPrefix),
+            this.prefix('cell-group'),
             fixed ? 'fixed' : ''
         );
         let styles = Object.assign({ width, left, height }, style);

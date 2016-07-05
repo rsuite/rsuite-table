@@ -1,9 +1,12 @@
 import React, {PropTypes} from 'react';
 import classNames from 'classnames';
-import { addPrefix } from './utils/classNameUtils';
+import ClassNameMixin from './mixins/ClassNameMixin';
 
 const Cell = React.createClass({
+    mixins:[ClassNameMixin],
     propTypes: {
+        dataKey: PropTypes.string,
+
         align: PropTypes.oneOf(['left', 'center', 'right']),
         className: PropTypes.string,
         isHeaderCell: PropTypes.bool,
@@ -14,42 +17,60 @@ const Cell = React.createClass({
         rowData: PropTypes.object,
         rowIndex: PropTypes.number,
 
-        dataKey: PropTypes.string,
+
         cellData: PropTypes.any,
         cellRenderer: PropTypes.func,
-        classPrefix: PropTypes.string,
 
         fixed: PropTypes.bool,
 
-        style: PropTypes.object
+        style: PropTypes.object,
+        firstColumn: PropTypes.bool,
+        lastColumn: PropTypes.bool
     },
     getDefaultProps() {
         return {
-            classPrefix: 'table',
+            align: 'left',
             height: 36,
         };
     },
     renderCell(content) {
 
-        let {width, left, height, classPrefix, style, className} = this.props;
+        let {
+            width,
+            left,
+            height,
+            style,
+            className,
+            firstColumn,
+            lastColumn,
+            align
+        } = this.props;
+
+
         let classes = classNames(
-            addPrefix('cell', classPrefix),
-            className
-        );
+            this.prefix('cell'),
+            className, {
+                'first': firstColumn,
+                'last': lastColumn
+            });
+
+        let styles = Object.assign({ width, left, height }, style);
+        let contentStyles = {
+            width: width - 16,
+            textAlign: align
+        };
 
         content = (
-            <div className={addPrefix('cell-content', classPrefix) }>
+            <div className={this.prefix('cell-content') } style={ contentStyles }>
                 {content}
             </div>
         );
 
-        let styles = Object.assign({ width, left, height }, style);
-
         return (
             <div className={classes} style={styles}>
-                <div className={addPrefix('cell-wrap1', classPrefix) }>
-                    <div className={addPrefix('cell-wrap2', classPrefix) }>
-                        <div className={addPrefix('cell-wrap3', classPrefix) }>
+                <div className={this.prefix('cell-wrap1') }>
+                    <div className={this.prefix('cell-wrap2') }>
+                        <div className={this.prefix('cell-wrap3') }>
                             {content}
                         </div>
                     </div>
@@ -70,7 +91,7 @@ const Cell = React.createClass({
             return this.renderCell(children);
         }
 
-        return this.renderCell(rowData[dataKey]);
+        return this.renderCell(children || rowData[dataKey]);
     }
 
 });

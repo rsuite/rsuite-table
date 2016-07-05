@@ -6,7 +6,8 @@ const Column = React.createClass({
         align: PropTypes.oneOf(['left', 'center', 'right']),
         sort: PropTypes.func,
         width: PropTypes.number.isRequired,
-        fixed: PropTypes.bool
+        fixed: PropTypes.bool,
+        resizable: PropTypes.bool
     },
 
     render() {

@@ -1,21 +1,18 @@
 import React, {PropTypes} from 'react';
 import classNames from 'classnames';
-import { addPrefix } from './utils/classNameUtils';
-
+import ClassNameMixin from './mixins/ClassNameMixin';
 
 const Row = React.createClass({
-    displayName: 'TableRow',
+    mixins:[ClassNameMixin],
     PropTypes: {
         width: PropTypes.number,
         height: PropTypes.number,
         top: PropTypes.number,
         style: PropTypes.object,
-        classPrefix: PropTypes.string,
         isHeaderRow: PropTypes.bool
     },
     getDefaultProps() {
         return {
-            classPrefix: 'table',
             height: 36,
             isHeaderRow: false
         };
@@ -24,7 +21,6 @@ const Row = React.createClass({
         const {
             children,
             className,
-            classPrefix,
             width,
             height,
             top,
@@ -34,8 +30,8 @@ const Row = React.createClass({
         } = this.props;
 
         let classes = classNames(
-            addPrefix('row', classPrefix),
-            isHeaderRow ? addPrefix('row-header', classPrefix) : '',
+            this.prefix('row'),
+            isHeaderRow ? this.prefix('row-header') : '',
             className);
 
         let styles = Object.assign({ width, top, height }, style);
