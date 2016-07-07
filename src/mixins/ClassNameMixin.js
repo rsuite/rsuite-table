@@ -6,7 +6,7 @@ const ClassNameMixin = {
 
     getDefaultProps() {
         return {
-            classPrefix: 'table'
+            classPrefix: 'rsuite-table'
         };
     },
     prefix(className) {

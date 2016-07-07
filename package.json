@@ -6,10 +6,11 @@
   "scripts": {
     "build": "rm -rf lib && babel src --out-dir lib",
     "dev": "webpack --progress -colors --watch",
-    "docs": "webpack --progress -colors --watch --config webpack.docs.config.js",
-    "docs-publish": "NODE_ENV=publish webpack --progress -colors --config webpack.docs.config.js"
+    "docs": "webpack --progress -colors --watch --config webpack.config.js",
+    "docs-publish": "NODE_ENV=publish webpack --progress -colors --config webpack.config.js"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "echarts": "^3.1.10",
     "element-resize-event": "^2.0.5",
     "react": "^0.14.2"

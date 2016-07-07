@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
 
 const HeaderCell = React.createClass({
-    mixins:[ClassNameMixin],
+    mixins: [ClassNameMixin],
     propTypes: {
         fixed: PropTypes.bool,
         width: PropTypes.number,
@@ -19,10 +19,12 @@ const HeaderCell = React.createClass({
             width,
             left,
             height,
-            style
+            style,
+            className
         } = this.props;
 
         let classes = classNames(
+            className,
             this.prefix('cell-group'),
             fixed ? 'fixed' : ''
         );

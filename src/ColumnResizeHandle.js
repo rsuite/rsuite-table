@@ -22,6 +22,7 @@ const ColumnResizeHandle = React.createClass({
     propTypes: {
         columnWidth: PropTypes.number,
         columnLeft: PropTypes.number,
+        columnFixed: PropTypes.bool,
         onColumnResize: PropTypes.func,
         onColumnResizeEnd: PropTypes.func,
         onColumnResizeMove: PropTypes.func,
@@ -47,7 +48,7 @@ const ColumnResizeHandle = React.createClass({
             cursorDelta: newWidth
         });
 
-        this.props.onColumnResizeMove(newColumnWidth, this.props.columnLeft);
+        this.props.onColumnResizeMove(newColumnWidth, this.props.columnLeft, this.props.columnFixed);
     },
 
     _onColumnResizeEnd() {

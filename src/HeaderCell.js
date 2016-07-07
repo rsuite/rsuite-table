@@ -34,17 +34,19 @@ const HeaderCell = React.createClass({
     },
     renderResizeSpanner() {
 
-        let {resizable, left, onColumnResizeMove} = this.props;
+        let {resizable, left, onColumnResizeMove,fixed} = this.props;
         let {columnWidth, initialEvent} = this.state;
 
         if (!resizable) {
             return null;
         }
 
+
         return (
             <ColumnResizeHandle
                 columnWidth={columnWidth}
                 columnLeft={left}
+                columnFixed={fixed}
                 initialEvent={initialEvent}
                 onColumnResizeMove={onColumnResizeMove}
                 onColumnResize={this._onColumnResize }

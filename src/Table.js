@@ -6,7 +6,6 @@ import { on, scrollLeft, scrollTop, addStyle, addClass, removeClass } from 'dom-
 import Row from './Row';
 import CellGroup from './CellGroup';
 
-import { addPrefix } from './utils/classNameUtils';
 import ClassNameMixin from './mixins/ClassNameMixin';
 
 const ReactChildren = React.Children;
@@ -32,20 +31,28 @@ const Table = React.createClass({
         return {
             columnWidth: 0,
             mouseAreaLeft: -1,
-            dataKey: 0
+            dataKey: 0,
+            scrollLeft: 0,
+            scrollTop: 0,
+            resizeColumnFixed: false
         };
     },
     getFixedCellGroups() {
         return document.querySelectorAll(`.${this.props.classPrefix}-cell-group.fixed`);
     },
     handleBodyScroll() {
-        let {tableBody, tableHeader} = this.refs;
-        let left = scrollLeft(tableBody);
-        let top = scrollTop(tableBody);
 
+        let {tableBody, tableHeader} = this.refs;
         let tableHeaderDom = findDOMNode(tableHeader);
         let groups = this.getFixedCellGroups();
         let handelClass = { addClass, removeClass };
+
+        let left = scrollLeft(tableBody);
+        let top = scrollTop(tableBody);
+
+        this.scrollLeft = left;
+
+
 
         Array.from(groups).map((group) => {
             addStyle(group, { left: left + 'px' });
@@ -54,13 +61,14 @@ const Table = React.createClass({
         });
 
         addStyle(tableHeaderDom, { left: (-left) + 'px' });
+
         let toggle = top > 1 ? 'addClass' : 'removeClass';
         handelClass[toggle](tableHeaderDom, 'shadow');
     },
     _onColumnResizeEnd(columnWidth, cursorDelta, dataKey) {
         this.setState({
             isColumnResizing: false,
-            mouseAreaLeft:-1,
+            mouseAreaLeft: -1,
             [dataKey + 'Width']: columnWidth
         });
     },
@@ -69,11 +77,12 @@ const Table = React.createClass({
             isColumnResizing: true
         });
     },
-    _onColumnResizeMove(width, left) {
+    _onColumnResizeMove(width, left, fixed) {
+
         this.setState({
+            resizeColumnFixed: fixed,
             mouseAreaLeft: width + left
         });
-        console.log(width, left);
     },
     cloneCell(Cell, props) {
         return React.cloneElement(Cell, props, Cell.props.children);
@@ -150,10 +159,24 @@ const Table = React.createClass({
             fixedCells.map((item) => {
                 fixedCellGroupWidth += item.props.width;
             });
+            /*
+
+            let {scrollLeft} = this.state;
+
+            let styles = {
+                left: scrollLeft
+            };
+            let classes = classNames({
+                shadow: (scrollLeft > 1)
+            });
+            */
+
 
             return (
                 <Row {...props}>
                     <CellGroup
+                        //style = {styles}
+                        //className={classes}
                         fixed
                         height={this.props.rowHeight}
                         width={fixedCellGroupWidth}>
@@ -234,9 +257,24 @@ const Table = React.createClass({
         );
     },
     renderTableHeader(headerCells, rowWidth) {
-
         const {rowHeight} = this.props;
+        /*
+        let {scrollLeft, scrollTop} = this.state;
+
+
+        let styles = {
+            left: - scrollLeft
+        };
+        let classes = classNames({
+            shadow: (scrollTop > 1)
+        });
+        */
+
+
+
         const row = this.renderRow({
+            //style: styles,
+            //className: classes,
             ref: 'tableHeader',
             width: rowWidth,
             height: rowHeight,
@@ -269,10 +307,14 @@ const Table = React.createClass({
     },
     renderMouseArea() {
         const { height } = this.props;
+        const scrollLeft = this.scrollLeft || 0;
+        const {mouseAreaLeft, resizeColumnFixed} = this.state;
+
         const styles = {
             height,
-            left: this.state.mouseAreaLeft
+            left: (resizeColumnFixed ? mouseAreaLeft : mouseAreaLeft - scrollLeft)
         };
+
         return (
             <div ref="mouseArea" className={this.prefix('mouse-area') } style={styles}></div>
         );
