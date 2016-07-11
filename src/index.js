@@ -1,4 +1,13 @@
-export Table from './Table';
-export Column from './Column';
-export Cell from './Cell';
-export HeaderCell from './HeaderCell';
+import Table from './Table';
+import Column from './Column';
+import Cell from './Cell';
+import HeaderCell from './HeaderCell';
+import TablePagination from './TablePagination';
+
+export {
+    Table,
+    Column,
+    Cell,
+    HeaderCell,
+    TablePagination
+};

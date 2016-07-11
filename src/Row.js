@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
+import { assign } from 'lodash';
 
 const Row = React.createClass({
     mixins:[ClassNameMixin],
@@ -34,7 +35,7 @@ const Row = React.createClass({
             isHeaderRow ? this.prefix('row-header') : '',
             className);
 
-        let styles = Object.assign({ width, top, height }, style);
+        let styles = assign({ minWidth: width, top, height }, style);
 
         return (
             <div

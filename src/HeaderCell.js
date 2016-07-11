@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react';
 import Cell from './Cell';
 import ClassNameMixin from './mixins/ClassNameMixin';
-
 import ColumnResizeHandle from './ColumnResizeHandle';
+import isIE8 from './utils/isIE8';
 
 
 const HeaderCell = React.createClass({
@@ -62,7 +62,7 @@ const HeaderCell = React.createClass({
         return (
             <div className={ classes }>
                 <Cell isHeaderCell={true} {...this.props}></Cell>
-                {this.renderResizeSpanner() }
+                { !isIE8 && this.renderResizeSpanner() }
             </div>
         );
     }

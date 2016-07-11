@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
+import { assign } from 'lodash';
 
 const Cell = React.createClass({
     mixins:[ClassNameMixin],
@@ -54,7 +55,7 @@ const Cell = React.createClass({
                 'last': lastColumn
             });
 
-        let styles = Object.assign({ width, left, height }, style);
+        let styles = assign({ width, left, height }, style);
         let contentStyles = {
             width: width - 16,
             textAlign: align

@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
+import { assign } from 'lodash';
 
 const HeaderCell = React.createClass({
     mixins: [ClassNameMixin],
@@ -28,7 +29,7 @@ const HeaderCell = React.createClass({
             this.prefix('cell-group'),
             fixed ? 'fixed' : ''
         );
-        let styles = Object.assign({ width, left, height }, style);
+        let styles = assign({ width, left, height }, style);
         return (
             <div className={classes} style={styles}>
                 {children}

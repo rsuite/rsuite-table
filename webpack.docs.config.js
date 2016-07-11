@@ -15,10 +15,10 @@ if (isPublish) {
 
 module.exports = {
     entry: {
-        index: path.join(__dirname, 'test')
+        index: path.join(__dirname, 'docs')
     },
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, 'docs/assets'),
         filename: '[name].js',
     },
     plugins: plugins,
@@ -36,6 +36,11 @@ module.exports = {
                 'css?minimize',
                 'less'
             ]
+        }],
+        postLoaders: [{
+            test: /\.js$/,
+            loaders: ['es3ify-loader'],
         }]
+
     }
 };
