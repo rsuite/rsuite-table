@@ -45654,6 +45654,7 @@
 	                    _CellGroup2["default"],
 	                    {
 	                        fixed: true,
+	                        height: props.isHeaderRow ? props.headerHeight : props.height,
 	                        width: fixedCellGroupWidth },
 	                    fixedCells
 	                ),

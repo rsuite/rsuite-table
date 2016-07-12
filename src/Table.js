@@ -166,6 +166,7 @@ const Table = React.createClass({
                 <Row {...props}>
                     <CellGroup
                         fixed
+                        height={props.isHeaderRow ? props.headerHeight : props.height}
                         width={fixedCellGroupWidth}>
                         {fixedCells}
                     </CellGroup>
