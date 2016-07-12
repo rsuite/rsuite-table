@@ -1,5 +1,7 @@
 #rsuite-table
 
+[Documents](http://rsuite.github.io/rsuite-table)
+
 ## Basic Example
 ```js
 import react from 'react';
@@ -12,7 +14,6 @@ const dataList = [
     {id:1, name:'b', email:'b@email.com',iconURL:'...'},
     {id:1, name:'c', email:'c@email.com',iconURL:'...'}
 ];
-
 
 ReactDom.render(
     <Table data = {dataList}  >
