@@ -4,10 +4,11 @@ import ClassNameMixin from './mixins/ClassNameMixin';
 import { assign } from 'lodash';
 
 const Row = React.createClass({
-    mixins:[ClassNameMixin],
+    mixins: [ClassNameMixin],
     PropTypes: {
         width: PropTypes.number,
         height: PropTypes.number,
+        headerHeight: PropTypes.number,
         top: PropTypes.number,
         style: PropTypes.object,
         isHeaderRow: PropTypes.bool
@@ -15,6 +16,7 @@ const Row = React.createClass({
     getDefaultProps() {
         return {
             height: 36,
+            headerHeight: 36,
             isHeaderRow: false
         };
     },
@@ -27,6 +29,7 @@ const Row = React.createClass({
             top,
             style,
             isHeaderRow,
+            headerHeight,
             ...props
         } = this.props;
 
@@ -35,7 +38,11 @@ const Row = React.createClass({
             isHeaderRow ? this.prefix('row-header') : '',
             className);
 
-        let styles = assign({ minWidth: width, top, height }, style);
+        let styles = assign({
+            minWidth: width,
+            height: isHeaderRow ? headerHeight : height,
+            top
+        }, style);
 
         return (
             <div

@@ -19,6 +19,7 @@ const Table = React.createClass({
         data: PropTypes.array.isRequired,
         height: PropTypes.number,
         rowHeight: PropTypes.number,
+        headerHeight: PropTypes.number,
         scrollLeft: PropTypes.number,
         scrollTop: PropTypes.number,
         onRowClick: PropTypes.func
@@ -40,7 +41,7 @@ const Table = React.createClass({
         };
     },
     getFixedCellGroups() {
-        return document.querySelectorAll(`.${this.props.classPrefix}-cell-group.fixed`);
+        return findDOMNode(this.refs.table).querySelectorAll(`.${this.props.classPrefix}-cell-group.fixed`);
     },
     handleBodyScroll() {
 
@@ -113,6 +114,7 @@ const Table = React.createClass({
 
             let cellProps = {
                 width, fixed, left, align, resizable,
+                height: this.props.rowHeight,
                 firstColumn: (index === 0),
                 lastColumn: (index === columns.length - 1),
                 key: index
@@ -164,7 +166,6 @@ const Table = React.createClass({
                 <Row {...props}>
                     <CellGroup
                         fixed
-                        height={this.props.rowHeight}
                         width={fixedCellGroupWidth}>
                         {fixedCells}
                     </CellGroup>
@@ -189,7 +190,8 @@ const Table = React.createClass({
             height,
             style,
             rowHeight,
-            classPrefix
+            classPrefix,
+            id
         } = this.props;
 
         let {headerCells, bodyCells, allColumnsWidth, isFixedColumn} = this.getCells();
@@ -208,7 +210,7 @@ const Table = React.createClass({
         const styles = assign({ width: width || 'auto', height }, style);
 
         return (
-            <div className={clesses} style={styles} ref='table'>
+            <div className={clesses} style={styles} ref='table' id={id}>
                 {this.renderTableHeader(headerCells, rowWidth) }
                 {this.renderTableBody(bodyCells, rowWidth, allColumnsWidth) }
                 {!isIE8 && this.renderMouseArea() }
@@ -216,11 +218,12 @@ const Table = React.createClass({
         );
     },
     renderTableHeader(headerCells, rowWidth) {
-        const {rowHeight} = this.props;
+        const {rowHeight, headerHeight} = this.props;
         const row = this.renderRow({
             ref: 'tableHeader',
             width: rowWidth,
             height: rowHeight,
+            headerHeight: headerHeight,
             isHeaderRow: true,
             top: 0
         }, headerCells);
@@ -234,10 +237,11 @@ const Table = React.createClass({
     },
     renderTableBody(bodyCells, rowWidth, allColumnsWidth) {
 
-        const {rowHeight, height, data} = this.props;
+        const {headerHeight, rowHeight, height, data} = this.props;
+
         const bodyStyles = {
-            top: rowHeight,
-            height: height - rowHeight
+            top: headerHeight || rowHeight,
+            height: height - (headerHeight || rowHeight)
         };
 
         let top = 0;    //Row position

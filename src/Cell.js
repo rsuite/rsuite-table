@@ -4,20 +4,21 @@ import ClassNameMixin from './mixins/ClassNameMixin';
 import { assign } from 'lodash';
 
 const Cell = React.createClass({
-    mixins:[ClassNameMixin],
+    mixins: [ClassNameMixin],
     propTypes: {
         dataKey: PropTypes.string,
 
         align: PropTypes.oneOf(['left', 'center', 'right']),
         className: PropTypes.string,
         isHeaderCell: PropTypes.bool,
+
         width: PropTypes.number,
         height: PropTypes.number,
         left: PropTypes.number,
+        headerHeight: PropTypes.number,
 
         rowData: PropTypes.object,
         rowIndex: PropTypes.number,
-
 
         cellData: PropTypes.any,
         cellRenderer: PropTypes.func,
@@ -31,6 +32,7 @@ const Cell = React.createClass({
     getDefaultProps() {
         return {
             align: 'left',
+            headerHeight: 36,
             height: 36,
         };
     },
@@ -44,6 +46,8 @@ const Cell = React.createClass({
             className,
             firstColumn,
             lastColumn,
+            isHeaderCell,
+            headerHeight,
             align
         } = this.props;
 
@@ -54,8 +58,10 @@ const Cell = React.createClass({
                 'first': firstColumn,
                 'last': lastColumn
             });
-
-        let styles = assign({ width, left, height }, style);
+        let styles = assign({
+            width, left,
+            height: isHeaderCell ? headerHeight : height
+        }, style);
         let contentStyles = {
             width: width - 16,
             textAlign: align
