@@ -40,7 +40,7 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
 const CustomColumnTable = React.createClass({
     getInitialState() {
         return {
-            data: fakeObjectDataListStore(100)
+            data: fakeObjectDataListStore(30)
         };
     },
     render() {

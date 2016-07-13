@@ -12,11 +12,12 @@ import ResizableColumnTable from './examples/ResizableColumnTable';
 import CustomColumnTable from './examples/CustomColumnTable';
 
 
-
 const App = React.createClass({
+
     render() {
         return (
             <div className="doc-page">
+
                 <Header  inverse>
                     <div className="container">
                         <Navbar.Header>
@@ -32,6 +33,7 @@ const App = React.createClass({
                         </Navbar.Collapse>
                     </div>
                 </Header>
+
                 <div className="container">
 
                     <h2>Fixed columns</h2>

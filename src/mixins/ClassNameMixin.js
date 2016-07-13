@@ -1,6 +1,5 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-import { hasClass, addClass, removeClass } from 'dom-lib';
 
 const ClassNameMixin = {
 
