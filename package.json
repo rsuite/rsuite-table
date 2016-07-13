@@ -11,10 +11,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "console-polyfill": "^0.2.2",
     "dom-lib": "^0.0.7",
     "element-resize-event": "^2.0.5",
-    "es5-shim": "^4.5.9",
     "lodash": "^4.13.1",
     "react": "^0.14.2",
     "react-dom": "^0.14.8"
@@ -35,7 +33,6 @@
     "babel-standalone": "^6.7.7",
     "css-loader": "^0.23.1",
     "es3ify-loader": "^0.2.0",
-    "es5-shim": "^4.1.14",
     "eslint": "^2.8.0",
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-react": "^5.0.1",
