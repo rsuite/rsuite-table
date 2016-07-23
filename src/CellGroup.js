@@ -30,6 +30,7 @@ const HeaderCell = React.createClass({
             fixed ? 'fixed' : ''
         );
         let styles = assign({ width, left, height }, style);
+
         return (
             <div className={classes} style={styles}>
                 {children}

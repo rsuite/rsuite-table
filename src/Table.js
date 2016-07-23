@@ -115,6 +115,7 @@ const Table = React.createClass({
             let cellProps = {
                 width, fixed, left, align, resizable,
                 height: this.props.rowHeight,
+                headerHeight: this.props.headerHeight,
                 firstColumn: (index === 0),
                 lastColumn: (index === columns.length - 1),
                 key: index

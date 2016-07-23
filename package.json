@@ -1,6 +1,6 @@
 {
-  "name": "rsuite-echarts",
-  "version": "0.0.2",
+  "name": "rsuite-table",
+  "version": "0.0.4",
   "description": "RSuite Table",
   "main": "lib/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:rsuite/rsuite-echarts.git"
+    "url": "git@github.com:rsuite/rsuite-table.git"
   },
   "devDependencies": {
     "babel-core": "^6.7.6",

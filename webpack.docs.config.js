@@ -16,7 +16,6 @@ if (isPublish) {
     }));
 
     plugins.push(new webpack.BannerPlugin(`Last update: ${new Date().toString()}`));
-    //plugins.push(new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'));
     plugins.push(new webpack.optimize.CommonsChunkPlugin({
         names: ['data','vendor']
     }));
@@ -46,7 +45,7 @@ module.exports = {
             {
                 test:/\.less$/,
                 loader:  ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
-            },
+            }
 
         ]
     }

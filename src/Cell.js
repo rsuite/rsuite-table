@@ -58,10 +58,12 @@ const Cell = React.createClass({
                 'first': firstColumn,
                 'last': lastColumn
             });
+
         let styles = assign({
             width, left,
             height: isHeaderCell ? headerHeight : height
         }, style);
+
         let contentStyles = {
             width: width - 16,
             textAlign: align
