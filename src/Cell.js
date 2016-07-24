@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
 import { assign } from 'lodash';
 
+const LAYER_WIDTH = 30;
 const Cell = React.createClass({
     mixins: [ClassNameMixin],
     propTypes: {
@@ -27,7 +28,10 @@ const Cell = React.createClass({
 
         style: PropTypes.object,
         firstColumn: PropTypes.bool,
-        lastColumn: PropTypes.bool
+        lastColumn: PropTypes.bool,
+        hasChildren: PropTypes.bool,
+
+        onTreeToggle: PropTypes.func,
     },
     getDefaultProps() {
         return {
@@ -48,6 +52,11 @@ const Cell = React.createClass({
             lastColumn,
             isHeaderCell,
             headerHeight,
+            layer,
+            onTreeToggle,
+            hasChildren,
+            rowIndex,
+            rowKey,
             align
         } = this.props;
 
@@ -58,19 +67,33 @@ const Cell = React.createClass({
                 'first': firstColumn,
                 'last': lastColumn
             });
+        let layerWidth = layer * LAYER_WIDTH;
+
+        width = !isHeaderCell && firstColumn ? width - layerWidth : width;
 
         let styles = assign({
-            width, left,
-            height: isHeaderCell ? headerHeight : height
+            height: isHeaderCell ? headerHeight : height,
+            zIndex: layer,
+            width: width,
+            left: !isHeaderCell && firstColumn ? left + layerWidth : left,
         }, style);
 
+
         let contentStyles = {
-            width: width - 16,
+            width: width,
             textAlign: align
         };
 
+        const expandIcon = hasChildren && firstColumn ? (
+            <i className="expand-icon fa"
+                onClick={ event => onTreeToggle(rowKey, rowIndex, event) }>
+            </i>
+        ) : null;
+
         content = (
-            <div className={this.prefix('cell-content') } style={ contentStyles }>
+            <div className={this.prefix('cell-content') } style={ contentStyles }
+                >
+                {expandIcon}
                 {content}
             </div>
         );

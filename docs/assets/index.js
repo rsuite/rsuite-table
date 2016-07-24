@@ -64,23 +64,28 @@
 
 	var _FixedColumnTable2 = _interopRequireDefault(_FixedColumnTable);
 
-	var _PaginationTable = __webpack_require__(1256);
+	var _PaginationTable = __webpack_require__(1257);
 
 	var _PaginationTable2 = _interopRequireDefault(_PaginationTable);
 
-	var _ResizableColumnTable = __webpack_require__(1257);
+	var _ResizableColumnTable = __webpack_require__(1258);
 
 	var _ResizableColumnTable2 = _interopRequireDefault(_ResizableColumnTable);
 
-	var _CustomColumnTable = __webpack_require__(1258);
+	var _CustomColumnTable = __webpack_require__(1259);
 
 	var _CustomColumnTable2 = _interopRequireDefault(_CustomColumnTable);
+
+	var _TreeTable = __webpack_require__(1260);
+
+	var _TreeTable2 = _interopRequireDefault(_TreeTable);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var App = _react2.default.createClass({
 	    displayName: 'App',
 	    render: function render() {
+
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'doc-page' },
@@ -190,7 +195,22 @@
 	                        'Example code'
 	                    )
 	                ),
-	                _react2.default.createElement('hr', null)
+	                _react2.default.createElement('hr', null),
+	                _react2.default.createElement(
+	                    'h2',
+	                    null,
+	                    'Tree Table'
+	                ),
+	                _react2.default.createElement(_TreeTable2.default, null),
+	                _react2.default.createElement(
+	                    'h4',
+	                    null,
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: 'https://github.com/rsuite/rsuite-table/tree/master/docs/examples/TreeTable.js', target: '_blank' },
+	                        'Example code'
+	                    )
+	                )
 	            )
 	        );
 	    }
@@ -114852,7 +114872,7 @@
 
 	var _src = __webpack_require__(1218);
 
-	var _fakeObjectDataListStore = __webpack_require__(1255);
+	var _fakeObjectDataListStore = __webpack_require__(1256);
 
 	var _fakeObjectDataListStore2 = _interopRequireDefault(_fakeObjectDataListStore);
 
@@ -114996,19 +115016,19 @@
 
 	var _Table2 = _interopRequireDefault(_Table);
 
-	var _Column = __webpack_require__(1244);
+	var _Column = __webpack_require__(1245);
 
 	var _Column2 = _interopRequireDefault(_Column);
 
-	var _Cell = __webpack_require__(1245);
+	var _Cell = __webpack_require__(1246);
 
 	var _Cell2 = _interopRequireDefault(_Cell);
 
-	var _HeaderCell = __webpack_require__(1246);
+	var _HeaderCell = __webpack_require__(1247);
 
 	var _HeaderCell2 = _interopRequireDefault(_HeaderCell);
 
-	var _TablePagination = __webpack_require__(1254);
+	var _TablePagination = __webpack_require__(1255);
 
 	var _TablePagination2 = _interopRequireDefault(_TablePagination);
 
@@ -115044,19 +115064,19 @@
 
 	var _lodash = __webpack_require__(1167);
 
-	var _Row = __webpack_require__(1240);
+	var _Row = __webpack_require__(1241);
 
 	var _Row2 = _interopRequireDefault(_Row);
 
-	var _CellGroup = __webpack_require__(1242);
+	var _CellGroup = __webpack_require__(1243);
 
 	var _CellGroup2 = _interopRequireDefault(_CellGroup);
 
-	var _ClassNameMixin = __webpack_require__(1241);
+	var _ClassNameMixin = __webpack_require__(1242);
 
 	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
 
-	var _isIE = __webpack_require__(1243);
+	var _isIE = __webpack_require__(1244);
 
 	var _isIE2 = _interopRequireDefault(_isIE);
 
@@ -115065,7 +115085,7 @@
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	var ReactChildren = _react2.default.Children;
-
+	var LAYER_WIDTH = 30;
 	var Table = _react2.default.createClass({
 	    displayName: 'Table',
 
@@ -115078,7 +115098,9 @@
 	        headerHeight: _react.PropTypes.number,
 	        scrollLeft: _react.PropTypes.number,
 	        scrollTop: _react.PropTypes.number,
-	        onRowClick: _react.PropTypes.func
+	        onRowClick: _react.PropTypes.func,
+	        isTree: _react.PropTypes.bool,
+	        expand: _react.PropTypes.bool
 	    },
 	    getDefaultProps: function getDefaultProps() {
 	        return {
@@ -115141,6 +115163,9 @@
 	            resizeColumnFixed: fixed,
 	            mouseAreaLeft: width + left
 	        });
+	    },
+	    _onTreeToggle: function _onTreeToggle(rowKey, index) {
+	        (0, _domLib.toggleClass)((0, _reactDom.findDOMNode)(this.refs['children_' + rowKey + '_' + index]), 'open');
 	    },
 	    cloneCell: function cloneCell(Cell, props) {
 	        return _react2.default.cloneElement(Cell, props, Cell.props.children);
@@ -115265,6 +115290,7 @@
 	        var style = _props.style;
 	        var rowHeight = _props.rowHeight;
 	        var classPrefix = _props.classPrefix;
+	        var isTree = _props.isTree;
 	        var id = _props.id;
 
 	        var _getCells = this.getCells();
@@ -115279,7 +115305,7 @@
 	        //Check there are fixed columns
 	        this.isFixedColumn = isFixedColumn;
 
-	        var clesses = (0, _classnames2.default)(classPrefix, className, {
+	        var clesses = (0, _classnames2.default)(classPrefix, isTree ? this.prefix('treetable') : '', className, {
 	            'column-resizing': this.state.isColumnResizing
 	        });
 
@@ -115314,42 +115340,83 @@
 	            row
 	        );
 	    },
-	    renderTableBody: function renderTableBody(bodyCells, rowWidth, allColumnsWidth) {
+	    randerRowData: function randerRowData(bodyCells, rowData, props) {
 	        var _this2 = this;
+
+	        var hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children) && rowData.children.length > 0;
+	        var rowKey = '_' + (Math.random() * 1E18).toString(36).slice(0, 5).toUpperCase();
+	        var row = this.renderRow({
+	            key: props.index,
+	            rowIndex: props.index,
+	            width: props.rowWidth,
+	            height: props.rowHeight,
+	            top: props.top,
+	            rowData: rowData
+	        }, bodyCells.map(function (cell, key) {
+	            return _react2.default.cloneElement(cell, {
+	                key: key,
+	                layer: props.layer,
+	                rowData: rowData,
+	                hasChildren: hasChildren,
+	                rowIndex: props.index,
+	                rowKey: rowKey,
+	                onTreeToggle: _this2._onTreeToggle
+	            }, cell.props.children);
+	        }));
+
+	        //insert children
+	        if (hasChildren) {
+	            props.layer++;
+
+	            var childrenClasses = (0, _classnames2.default)(this.prefix('row-children'), {
+	                open: this.props.expand
+	            });
+
+	            var childrenStyles = {
+	                marginLeft: LAYER_WIDTH
+	            };
+	            return _react2.default.createElement(
+	                'div',
+	                { className: childrenClasses,
+	                    'data-layer': props.layer,
+	                    ref: 'children_' + rowKey + '_' + props.index,
+	                    key: props.index },
+	                row,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'children' },
+	                    rowData.children.map(function (child, index) {
+	                        return _this2.randerRowData(bodyCells, child, Object.assign({}, props, { index: index }));
+	                    })
+	                )
+	            );
+	        }
+
+	        return row;
+	    },
+	    renderTableBody: function renderTableBody(bodyCells, rowWidth, allColumnsWidth) {
+	        var _this3 = this;
 
 	        var _props3 = this.props;
 	        var headerHeight = _props3.headerHeight;
 	        var rowHeight = _props3.rowHeight;
 	        var height = _props3.height;
 	        var data = _props3.data;
-
+	        var isTree = _props3.isTree;
 
 	        var bodyStyles = {
-	            top: headerHeight || rowHeight,
+	            top: isTree ? 0 : headerHeight || rowHeight,
 	            height: height - (headerHeight || rowHeight)
 	        };
 
 	        var top = 0; //Row position
+	        var layer = 0; //Tree layer
 	        var rows = data.map(function (rowData, index) {
-
-	            var cells = bodyCells.map(function (cell, key) {
-	                return _react2.default.cloneElement(cell, {
-	                    key: key,
-	                    rowData: rowData,
-	                    rowIndex: index
-	                }, cell.props.children);
+	            var row = _this3.randerRowData(bodyCells, rowData, {
+	                index: index, top: top, rowWidth: rowWidth, rowHeight: rowHeight, layer: layer
 	            });
 
-	            var row = _this2.renderRow({
-	                key: index,
-	                rowIndex: index,
-	                width: rowWidth,
-	                height: rowHeight,
-	                rowData: rowData,
-	                top: top
-	            }, cells);
-
-	            top += rowHeight;
+	            !isTree && (top += rowHeight);
 	            return row;
 	        });
 
@@ -115398,12 +115465,12 @@
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var className = __webpack_require__(1221);
-	var style = __webpack_require__(1225);
-	var query = __webpack_require__(1233);
-	var events = __webpack_require__(1234);
-	var transition = __webpack_require__(1237);
-	var BrowserSupportCore = __webpack_require__(1238);
-	var getVendorPrefixedName = __webpack_require__(1239);
+	var style = __webpack_require__(1226);
+	var query = __webpack_require__(1234);
+	var events = __webpack_require__(1235);
+	var transition = __webpack_require__(1238);
+	var BrowserSupportCore = __webpack_require__(1239);
+	var getVendorPrefixedName = __webpack_require__(1240);
 
 	module.exports = _extends({}, className, style, query, events, {
 	    transition: transition,
@@ -115419,42 +115486,50 @@
 
 	module.exports = {
 	    addClass: __webpack_require__(1222),
-	    //hasClass: require('./hasClass'),
-	    removeClass: __webpack_require__(1223)
+	    hasClass: __webpack_require__(1223),
+	    removeClass: __webpack_require__(1224),
+	    toggleClass: __webpack_require__(1225)
 	};
-
 
 /***/ },
 /* 1222 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	//var hasClass = require('./hasClass');
-
-
+	var hasClass = __webpack_require__(1223);
 
 	module.exports = function addClass(target, className) {
-
-
 	    if (className) {
 	        if (target.classList) {
 	            target.classList.add(className);
-	        } else if (true) {
+	        } else if (!hasClass(className, target)) {
 	            target.className = target.className + ' ' + className;
 	        }
 	    }
 	    return target;
 	};
 
-
 /***/ },
 /* 1223 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function hasClass(target, className) {
+	    if (target.classList) {
+	        return !!className && target.classList.contains(className);
+	    }
+	    return (' ' + target.className + ' ').indexOf(' ' + className + ' ') > -1;
+	};
+
+/***/ },
+/* 1224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var hasClass = __webpack_require__(1224);
+	var hasClass = __webpack_require__(1223);
 
 	module.exports = function removeClass(target, className) {
 	    if (className) {
@@ -115468,32 +115543,22 @@
 	    return target;
 	};
 
-
-/***/ },
-/* 1224 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function hasClass(target, className) {
-	    if (target.classList) {
-	        return !!className && target.classList.contains(className);
-	    }
-	    return (' ' + target.className + ' ').indexOf(' ' + className + ' ') > -1;
-	};
-
 /***/ },
 /* 1225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = {
+	var hasClass = __webpack_require__(1223);
+	var addClass = __webpack_require__(1222);
+	var removeClass = __webpack_require__(1224);
 
-	    getStyle: __webpack_require__(1226),
-	    removeStyle: __webpack_require__(1231),
-	    addStyle: __webpack_require__(1232),
-	    getComputedStyle: __webpack_require__(1229)
+	module.exports = function toggleClass(target, className) {
+	    if (hasClass(target, className)) {
+	        removeClass(target, className);
+	        return;
+	    }
+	    addClass(target, className);
 	};
 
 /***/ },
@@ -115502,12 +115567,12 @@
 
 	'use strict';
 
-	var camelizeStyleName = __webpack_require__(1227);
-	var getComputedStyle = __webpack_require__(1229);
-	var hyphenateStyleName = __webpack_require__(1230);
+	module.exports = {
 
-	module.exports = function getStyle(node, property) {
-	    return node.style[camelizeStyleName(property)] || getComputedStyle(node).getPropertyValue(hyphenateStyleName(property));
+	    getStyle: __webpack_require__(1227),
+	    removeStyle: __webpack_require__(1232),
+	    addStyle: __webpack_require__(1233),
+	    getComputedStyle: __webpack_require__(1230)
 	};
 
 /***/ },
@@ -115516,7 +115581,21 @@
 
 	'use strict';
 
-	var _require = __webpack_require__(1228);
+	var camelizeStyleName = __webpack_require__(1228);
+	var getComputedStyle = __webpack_require__(1230);
+	var hyphenateStyleName = __webpack_require__(1231);
+
+	module.exports = function getStyle(node, property) {
+	    return node.style[camelizeStyleName(property)] || getComputedStyle(node).getPropertyValue(hyphenateStyleName(property));
+	};
+
+/***/ },
+/* 1228 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _require = __webpack_require__(1229);
 
 	var camelize = _require.camelize;
 
@@ -115527,7 +115606,7 @@
 	};
 
 /***/ },
-/* 1228 */
+/* 1229 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -115584,7 +115663,7 @@
 	};
 
 /***/ },
-/* 1229 */
+/* 1230 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -115646,12 +115725,12 @@
 	};
 
 /***/ },
-/* 1230 */
+/* 1231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _require = __webpack_require__(1228);
+	var _require = __webpack_require__(1229);
 
 	var hyphenate = _require.hyphenate;
 
@@ -115662,7 +115741,7 @@
 	};
 
 /***/ },
-/* 1231 */
+/* 1232 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -115672,13 +115751,13 @@
 	};
 
 /***/ },
-/* 1232 */
+/* 1233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var hyphenateStyleName = __webpack_require__(1230);
-	var removeStyle = __webpack_require__(1231);
+	var hyphenateStyleName = __webpack_require__(1231);
+	var removeStyle = __webpack_require__(1232);
 
 	module.exports = function addStyle(node, property, value) {
 	    var css = '';
@@ -115701,7 +115780,7 @@
 	};
 
 /***/ },
-/* 1233 */
+/* 1234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -115710,7 +115789,7 @@
 
 	var ReactDOM = __webpack_require__(1120);
 
-	var _require = __webpack_require__(1225);
+	var _require = __webpack_require__(1226);
 
 	var getStyle = _require.getStyle;
 
@@ -115941,19 +116020,19 @@
 	};
 
 /***/ },
-/* 1234 */
+/* 1235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = {
-	    on: __webpack_require__(1235),
-	    off: __webpack_require__(1236),
-	    onFocus: __webpack_require__(1236)
+	    on: __webpack_require__(1236),
+	    off: __webpack_require__(1237),
+	    onFocus: __webpack_require__(1237)
 	};
 
 /***/ },
-/* 1235 */
+/* 1236 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -115982,7 +116061,7 @@
 	};
 
 /***/ },
-/* 1236 */
+/* 1237 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -116007,12 +116086,12 @@
 	};
 
 /***/ },
-/* 1237 */
+/* 1238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _query = __webpack_require__(1233);
+	var _query = __webpack_require__(1234);
 
 	var has = Object.prototype.hasOwnProperty,
 	    transform = 'transform',
@@ -116075,12 +116154,12 @@
 	};
 
 /***/ },
-/* 1238 */
+/* 1239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _getVendorPrefixedName = __webpack_require__(1239);
+	var _getVendorPrefixedName = __webpack_require__(1240);
 
 	var _getVendorPrefixedName2 = _interopRequireDefault(_getVendorPrefixedName);
 
@@ -116119,14 +116198,14 @@
 	module.exports = BrowserSupportCore;
 
 /***/ },
-/* 1239 */
+/* 1240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _query = __webpack_require__(1233);
+	var _query = __webpack_require__(1234);
 
-	var _stringFormatter = __webpack_require__(1228);
+	var _stringFormatter = __webpack_require__(1229);
 
 	var memoized = {};
 	var prefixes = ['Webkit', 'ms', 'Moz', 'O'];
@@ -116163,7 +116242,7 @@
 	module.exports = getVendorPrefixedName;
 
 /***/ },
-/* 1240 */
+/* 1241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116182,7 +116261,7 @@
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _ClassNameMixin = __webpack_require__(1241);
+	var _ClassNameMixin = __webpack_require__(1242);
 
 	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
 
@@ -116246,7 +116325,7 @@
 	exports.default = Row;
 
 /***/ },
-/* 1241 */
+/* 1242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116280,7 +116359,7 @@
 	exports.default = ClassNameMixin;
 
 /***/ },
-/* 1242 */
+/* 1243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116297,7 +116376,7 @@
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _ClassNameMixin = __webpack_require__(1241);
+	var _ClassNameMixin = __webpack_require__(1242);
 
 	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
 
@@ -116341,7 +116420,7 @@
 	exports.default = HeaderCell;
 
 /***/ },
-/* 1243 */
+/* 1244 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -116349,7 +116428,7 @@
 	module.exports = !!navigator.userAgent.match(/MSIE 8.0/);
 
 /***/ },
-/* 1244 */
+/* 1245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116384,7 +116463,7 @@
 	exports.default = Column;
 
 /***/ },
-/* 1245 */
+/* 1246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116401,7 +116480,7 @@
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _ClassNameMixin = __webpack_require__(1241);
+	var _ClassNameMixin = __webpack_require__(1242);
 
 	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
 
@@ -116409,6 +116488,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var LAYER_WIDTH = 30;
 	var Cell = _react2.default.createClass({
 	    displayName: 'Cell',
 
@@ -116435,7 +116515,10 @@
 
 	        style: _react.PropTypes.object,
 	        firstColumn: _react.PropTypes.bool,
-	        lastColumn: _react.PropTypes.bool
+	        lastColumn: _react.PropTypes.bool,
+	        hasChildren: _react.PropTypes.bool,
+
+	        onTreeToggle: _react.PropTypes.func
 	    },
 	    getDefaultProps: function getDefaultProps() {
 	        return {
@@ -116455,6 +116538,11 @@
 	        var lastColumn = _props.lastColumn;
 	        var isHeaderCell = _props.isHeaderCell;
 	        var headerHeight = _props.headerHeight;
+	        var layer = _props.layer;
+	        var onTreeToggle = _props.onTreeToggle;
+	        var hasChildren = _props.hasChildren;
+	        var rowIndex = _props.rowIndex;
+	        var rowKey = _props.rowKey;
 	        var align = _props.align;
 
 
@@ -116462,20 +116550,32 @@
 	            'first': firstColumn,
 	            'last': lastColumn
 	        });
+	        var layerWidth = layer * LAYER_WIDTH;
+
+	        width = !isHeaderCell && firstColumn ? width - layerWidth : width;
 
 	        var styles = (0, _lodash.assign)({
-	            width: width, left: left,
-	            height: isHeaderCell ? headerHeight : height
+	            height: isHeaderCell ? headerHeight : height,
+	            zIndex: layer,
+	            width: width,
+	            left: !isHeaderCell && firstColumn ? left + layerWidth : left
 	        }, style);
 
 	        var contentStyles = {
-	            width: width - 16,
+	            width: width,
 	            textAlign: align
 	        };
 
+	        var expandIcon = hasChildren && firstColumn ? _react2.default.createElement('i', { className: 'expand-icon fa',
+	            onClick: function onClick(event) {
+	                return onTreeToggle(rowKey, rowIndex, event);
+	            } }) : null;
+
 	        content = _react2.default.createElement(
 	            'div',
-	            { className: this.prefix('cell-content'), style: contentStyles },
+	            { className: this.prefix('cell-content'), style: contentStyles
+	            },
+	            expandIcon,
 	            content
 	        );
 
@@ -116517,7 +116617,7 @@
 	exports.default = Cell;
 
 /***/ },
-/* 1246 */
+/* 1247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116532,19 +116632,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Cell = __webpack_require__(1245);
+	var _Cell = __webpack_require__(1246);
 
 	var _Cell2 = _interopRequireDefault(_Cell);
 
-	var _ClassNameMixin = __webpack_require__(1241);
+	var _ClassNameMixin = __webpack_require__(1242);
 
 	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
 
-	var _ColumnResizeHandle = __webpack_require__(1247);
+	var _ColumnResizeHandle = __webpack_require__(1248);
 
 	var _ColumnResizeHandle2 = _interopRequireDefault(_ColumnResizeHandle);
 
-	var _isIE = __webpack_require__(1243);
+	var _isIE = __webpack_require__(1244);
 
 	var _isIE2 = _interopRequireDefault(_isIE);
 
@@ -116620,7 +116720,7 @@
 	exports.default = HeaderCell;
 
 /***/ },
-/* 1247 */
+/* 1248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116637,15 +116737,15 @@
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _ClassNameMixin = __webpack_require__(1241);
+	var _ClassNameMixin = __webpack_require__(1242);
 
 	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
 
-	var _ReactComponentWithPureRenderMixin = __webpack_require__(1248);
+	var _ReactComponentWithPureRenderMixin = __webpack_require__(1249);
 
 	var _ReactComponentWithPureRenderMixin2 = _interopRequireDefault(_ReactComponentWithPureRenderMixin);
 
-	var _DOMMouseMoveTracker = __webpack_require__(1250);
+	var _DOMMouseMoveTracker = __webpack_require__(1251);
 
 	var _DOMMouseMoveTracker2 = _interopRequireDefault(_DOMMouseMoveTracker);
 
@@ -116765,7 +116865,7 @@
 	exports.default = ColumnResizeHandle;
 
 /***/ },
-/* 1248 */
+/* 1249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116774,7 +116874,7 @@
 	    value: true
 	});
 
-	var _shallowEqual = __webpack_require__(1249);
+	var _shallowEqual = __webpack_require__(1250);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
@@ -116789,7 +116889,7 @@
 	exports.default = ReactComponentWithPureRenderMixin;
 
 /***/ },
-/* 1249 */
+/* 1250 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -116819,7 +116919,7 @@
 	};
 
 /***/ },
-/* 1250 */
+/* 1251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116834,8 +116934,8 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var cancelAnimationFramePolyfill = __webpack_require__(1251);
-	var requestAnimationFramePolyfill = __webpack_require__(1252);
+	var cancelAnimationFramePolyfill = __webpack_require__(1252);
+	var requestAnimationFramePolyfill = __webpack_require__(1253);
 
 	var DOMMouseMoveTracker = function () {
 	    /**
@@ -116975,7 +117075,7 @@
 	exports.default = DOMMouseMoveTracker;
 
 /***/ },
-/* 1251 */
+/* 1252 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
@@ -116986,12 +117086,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 1252 */
+/* 1253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 
-	var nativeRequestAnimationFrame = __webpack_require__(1253);
+	var nativeRequestAnimationFrame = __webpack_require__(1254);
 	var emptyFunction = function emptyFunction() {};
 	var lastTime = 0;
 
@@ -117015,7 +117115,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 1253 */
+/* 1254 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
@@ -117026,7 +117126,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 1254 */
+/* 1255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117045,7 +117145,7 @@
 
 	var _rsuite = __webpack_require__(1121);
 
-	var _ClassNameMixin = __webpack_require__(1241);
+	var _ClassNameMixin = __webpack_require__(1242);
 
 	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
 
@@ -117210,7 +117310,7 @@
 	exports.default = TablePagination;
 
 /***/ },
-/* 1255 */
+/* 1256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117245,7 +117345,7 @@
 	};
 
 /***/ },
-/* 1256 */
+/* 1257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117260,7 +117360,7 @@
 
 	var _src = __webpack_require__(1218);
 
-	var _fakeObjectDataListStore = __webpack_require__(1255);
+	var _fakeObjectDataListStore = __webpack_require__(1256);
 
 	var _fakeObjectDataListStore2 = _interopRequireDefault(_fakeObjectDataListStore);
 
@@ -117439,7 +117539,7 @@
 	exports.default = PaginationTable;
 
 /***/ },
-/* 1257 */
+/* 1258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117454,7 +117554,7 @@
 
 	var _src = __webpack_require__(1218);
 
-	var _fakeObjectDataListStore = __webpack_require__(1255);
+	var _fakeObjectDataListStore = __webpack_require__(1256);
 
 	var _fakeObjectDataListStore2 = _interopRequireDefault(_fakeObjectDataListStore);
 
@@ -117554,7 +117654,7 @@
 	exports.default = ResizableColumnTable;
 
 /***/ },
-/* 1258 */
+/* 1259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117569,7 +117669,7 @@
 
 	var _src = __webpack_require__(1218);
 
-	var _fakeObjectDataListStore = __webpack_require__(1255);
+	var _fakeObjectDataListStore = __webpack_require__(1256);
 
 	var _fakeObjectDataListStore2 = _interopRequireDefault(_fakeObjectDataListStore);
 
@@ -117729,6 +117829,169 @@
 	});
 
 	exports.default = CustomColumnTable;
+
+/***/ },
+/* 1260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.StatesCell = undefined;
+
+	var _react = __webpack_require__(963);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _src = __webpack_require__(1218);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function fakeObjectDataListStore() {
+	    return [{
+	        labelName: '汽车',
+	        status: 'ENABLED',
+	        children: [{
+	            labelName: '梅赛德斯-奔驰',
+	            status: 'ENABLED',
+	            count: 460
+	        }, {
+	            labelName: 'BMW',
+	            status: 'ENABLED',
+	            children: [{
+	                labelName: '2系',
+	                status: 'ENABLED',
+	                count: 103,
+	                children: [{
+	                    labelName: '运动型两厢轿车',
+	                    status: 'DISABLED',
+	                    count: 502
+	                }, {
+	                    labelName: '双门轿跑车',
+	                    status: 'ENABLED',
+	                    count: 502
+	                }, {
+	                    labelName: '敞篷跑车',
+	                    status: 'DISABLED'
+	                }, {
+	                    labelName: '多功能旅行车',
+	                    status: 'DISABLED'
+	                }, {
+	                    labelName: '旅行车',
+	                    status: 'DISABLED',
+	                    count: 34
+	                }]
+	            }, {
+	                labelName: '意向客户',
+	                status: 'ENABLED',
+	                count: 364,
+	                children: [{
+	                    labelName: '金融方案',
+	                    status: 'DISABLED'
+	                }, {
+	                    labelName: '预约试驾',
+	                    status: 'ENABLED'
+	                }]
+	            }]
+	        }]
+	    }, {
+	        labelName: '游戏',
+	        status: 'ENABLED',
+	        count: 834,
+	        children: [{
+	            labelName: '网络游戏',
+	            status: 'DISABLED'
+	        }, {
+	            labelName: '手机游戏',
+	            status: 'ENABLED'
+	        }]
+	    }, {
+	        labelName: '数码',
+	        status: 'ENABLED',
+	        count: 534,
+	        children: [{
+	            labelName: '手机',
+	            status: 'ENABLED'
+	        }, {
+	            labelName: '电脑',
+	            status: 'DISABLED'
+	        }, {
+	            labelName: '手表',
+	            status: 'ENABLED'
+	        }]
+	    }];
+	}
+
+	var StatesCell = exports.StatesCell = function StatesCell(_ref) {
+	    var rowData = _ref.rowData;
+	    var dataKey = _ref.dataKey;
+
+	    var props = _objectWithoutProperties(_ref, ['rowData', 'dataKey']);
+
+	    var clesses = 'icon icon-big ' + (rowData[dataKey] === 'ENABLED' ? 'icon-ok-circle green' : 'icon-info gray');
+	    return _react2.default.createElement(
+	        _src.Cell,
+	        props,
+	        _react2.default.createElement('i', { className: clesses })
+	    );
+	};
+
+	var TreeTable = _react2.default.createClass({
+	    displayName: 'TreeTable',
+	    getInitialState: function getInitialState() {
+	        return {
+	            data: fakeObjectDataListStore(100)
+	        };
+	    },
+	    render: function render() {
+	        var data = this.state.data;
+
+	        return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	                _src.Table,
+	                { height: 400, data: data, isTree: true, expand: true },
+	                _react2.default.createElement(
+	                    _src.Column,
+	                    { width: 300 },
+	                    _react2.default.createElement(
+	                        _src.HeaderCell,
+	                        null,
+	                        'Label'
+	                    ),
+	                    _react2.default.createElement(_src.Cell, { dataKey: 'labelName' })
+	                ),
+	                _react2.default.createElement(
+	                    _src.Column,
+	                    { width: 100 },
+	                    _react2.default.createElement(
+	                        _src.HeaderCell,
+	                        null,
+	                        'States'
+	                    ),
+	                    _react2.default.createElement(StatesCell, { dataKey: 'status' })
+	                ),
+	                _react2.default.createElement(
+	                    _src.Column,
+	                    { width: 100 },
+	                    _react2.default.createElement(
+	                        _src.HeaderCell,
+	                        null,
+	                        'Count'
+	                    ),
+	                    _react2.default.createElement(_src.Cell, { dataKey: 'count' })
+	                )
+	            )
+	        );
+	    }
+	});
+
+	exports.default = TreeTable;
 
 /***/ }
 /******/ ]);

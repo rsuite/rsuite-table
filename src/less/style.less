@@ -89,7 +89,7 @@
             vertical-align: middle;
         }
         .@{prefix}table-cell-content{
-            padding: 10px;
+            padding: 8px;
             .ellipsis();
         }
     }
@@ -144,6 +144,31 @@
             background: @pagination-background;
             border-color:@pagination-background;
             color:#999;
+        }
+    }
+}
+
+//treeTable
+.@{prefix}table-treetable{
+    .@{prefix}table-row{
+        position: relative;
+        .expand-icon{
+            width: 10px;
+            cursor: pointer;
+            &:before {
+                content: "\f0da";
+            }
+        }
+    }
+    .children{
+        display: none;
+    }
+    .open{
+        > .children{
+            display: block;
+        }
+        > .@{prefix}table-row .expand-icon:before {
+            content: "\f0d7";
         }
     }
 }

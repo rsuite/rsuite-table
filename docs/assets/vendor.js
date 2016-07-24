@@ -36337,12 +36337,12 @@
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var className = __webpack_require__(1221);
-	var style = __webpack_require__(1225);
-	var query = __webpack_require__(1233);
-	var events = __webpack_require__(1234);
-	var transition = __webpack_require__(1237);
-	var BrowserSupportCore = __webpack_require__(1238);
-	var getVendorPrefixedName = __webpack_require__(1239);
+	var style = __webpack_require__(1226);
+	var query = __webpack_require__(1234);
+	var events = __webpack_require__(1235);
+	var transition = __webpack_require__(1238);
+	var BrowserSupportCore = __webpack_require__(1239);
+	var getVendorPrefixedName = __webpack_require__(1240);
 
 	module.exports = _extends({}, className, style, query, events, {
 	    transition: transition,
@@ -36359,61 +36359,34 @@
 
 	module.exports = {
 	    addClass: __webpack_require__(1222),
-	    //hasClass: require('./hasClass'),
-	    removeClass: __webpack_require__(1223)
+	    hasClass: __webpack_require__(1223),
+	    removeClass: __webpack_require__(1224),
+	    toggleClass: __webpack_require__(1225)
 	};
-
 
 /***/ },
 
 /***/ 1222:
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	//var hasClass = require('./hasClass');
-
-
+	var hasClass = __webpack_require__(1223);
 
 	module.exports = function addClass(target, className) {
-
-
 	    if (className) {
 	        if (target.classList) {
 	            target.classList.add(className);
-	        } else if (true) {
+	        } else if (!hasClass(className, target)) {
 	            target.className = target.className + ' ' + className;
 	        }
 	    }
 	    return target;
 	};
 
-
 /***/ },
 
 /***/ 1223:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var hasClass = __webpack_require__(1224);
-
-	module.exports = function removeClass(target, className) {
-	    if (className) {
-	        if (target.classList) {
-	            target.classList.remove(className);
-	        } else if (hasClass(className, target)) {
-	            target.className = target.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)', 'g'), '$1').replace(/\s+/g, ' ') // multiple spaces to one
-	            .replace(/^\s*|\s*$/g, ''); // trim the ends
-	        }
-	    }
-	    return target;
-	};
-
-
-/***/ },
-
-/***/ 1224:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36427,17 +36400,42 @@
 
 /***/ },
 
+/***/ 1224:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var hasClass = __webpack_require__(1223);
+
+	module.exports = function removeClass(target, className) {
+	    if (className) {
+	        if (target.classList) {
+	            target.classList.remove(className);
+	        } else if (hasClass(className, target)) {
+	            target.className = target.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)', 'g'), '$1').replace(/\s+/g, ' ') // multiple spaces to one
+	            .replace(/^\s*|\s*$/g, ''); // trim the ends
+	        }
+	    }
+	    return target;
+	};
+
+/***/ },
+
 /***/ 1225:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = {
+	var hasClass = __webpack_require__(1223);
+	var addClass = __webpack_require__(1222);
+	var removeClass = __webpack_require__(1224);
 
-	    getStyle: __webpack_require__(1226),
-	    removeStyle: __webpack_require__(1231),
-	    addStyle: __webpack_require__(1232),
-	    getComputedStyle: __webpack_require__(1229)
+	module.exports = function toggleClass(target, className) {
+	    if (hasClass(target, className)) {
+	        removeClass(target, className);
+	        return;
+	    }
+	    addClass(target, className);
 	};
 
 /***/ },
@@ -36447,12 +36445,12 @@
 
 	'use strict';
 
-	var camelizeStyleName = __webpack_require__(1227);
-	var getComputedStyle = __webpack_require__(1229);
-	var hyphenateStyleName = __webpack_require__(1230);
+	module.exports = {
 
-	module.exports = function getStyle(node, property) {
-	    return node.style[camelizeStyleName(property)] || getComputedStyle(node).getPropertyValue(hyphenateStyleName(property));
+	    getStyle: __webpack_require__(1227),
+	    removeStyle: __webpack_require__(1232),
+	    addStyle: __webpack_require__(1233),
+	    getComputedStyle: __webpack_require__(1230)
 	};
 
 /***/ },
@@ -36462,7 +36460,22 @@
 
 	'use strict';
 
-	var _require = __webpack_require__(1228);
+	var camelizeStyleName = __webpack_require__(1228);
+	var getComputedStyle = __webpack_require__(1230);
+	var hyphenateStyleName = __webpack_require__(1231);
+
+	module.exports = function getStyle(node, property) {
+	    return node.style[camelizeStyleName(property)] || getComputedStyle(node).getPropertyValue(hyphenateStyleName(property));
+	};
+
+/***/ },
+
+/***/ 1228:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _require = __webpack_require__(1229);
 
 	var camelize = _require.camelize;
 
@@ -36474,7 +36487,7 @@
 
 /***/ },
 
-/***/ 1228:
+/***/ 1229:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36532,7 +36545,7 @@
 
 /***/ },
 
-/***/ 1229:
+/***/ 1230:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36595,12 +36608,12 @@
 
 /***/ },
 
-/***/ 1230:
+/***/ 1231:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _require = __webpack_require__(1228);
+	var _require = __webpack_require__(1229);
 
 	var hyphenate = _require.hyphenate;
 
@@ -36612,7 +36625,7 @@
 
 /***/ },
 
-/***/ 1231:
+/***/ 1232:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36623,13 +36636,13 @@
 
 /***/ },
 
-/***/ 1232:
+/***/ 1233:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var hyphenateStyleName = __webpack_require__(1230);
-	var removeStyle = __webpack_require__(1231);
+	var hyphenateStyleName = __webpack_require__(1231);
+	var removeStyle = __webpack_require__(1232);
 
 	module.exports = function addStyle(node, property, value) {
 	    var css = '';
@@ -36653,7 +36666,7 @@
 
 /***/ },
 
-/***/ 1233:
+/***/ 1234:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36662,7 +36675,7 @@
 
 	var ReactDOM = __webpack_require__(1120);
 
-	var _require = __webpack_require__(1225);
+	var _require = __webpack_require__(1226);
 
 	var getStyle = _require.getStyle;
 
@@ -36894,20 +36907,20 @@
 
 /***/ },
 
-/***/ 1234:
+/***/ 1235:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = {
-	    on: __webpack_require__(1235),
-	    off: __webpack_require__(1236),
-	    onFocus: __webpack_require__(1236)
+	    on: __webpack_require__(1236),
+	    off: __webpack_require__(1237),
+	    onFocus: __webpack_require__(1237)
 	};
 
 /***/ },
 
-/***/ 1235:
+/***/ 1236:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36937,7 +36950,7 @@
 
 /***/ },
 
-/***/ 1236:
+/***/ 1237:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36963,12 +36976,12 @@
 
 /***/ },
 
-/***/ 1237:
+/***/ 1238:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _query = __webpack_require__(1233);
+	var _query = __webpack_require__(1234);
 
 	var has = Object.prototype.hasOwnProperty,
 	    transform = 'transform',
@@ -37032,12 +37045,12 @@
 
 /***/ },
 
-/***/ 1238:
+/***/ 1239:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _getVendorPrefixedName = __webpack_require__(1239);
+	var _getVendorPrefixedName = __webpack_require__(1240);
 
 	var _getVendorPrefixedName2 = _interopRequireDefault(_getVendorPrefixedName);
 
@@ -37077,14 +37090,14 @@
 
 /***/ },
 
-/***/ 1239:
+/***/ 1240:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _query = __webpack_require__(1233);
+	var _query = __webpack_require__(1234);
 
-	var _stringFormatter = __webpack_require__(1228);
+	var _stringFormatter = __webpack_require__(1229);
 
 	var memoized = {};
 	var prefixes = ['Webkit', 'ms', 'Moz', 'O'];

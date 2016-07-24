@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
 import classNames from 'classnames';
-import { on, scrollLeft, scrollTop, addStyle, addClass, removeClass } from 'dom-lib';
+import { on, scrollLeft, scrollTop, addStyle, addClass, removeClass, toggleClass } from 'dom-lib';
 import { assign } from 'lodash';
 
 import Row from './Row';
@@ -11,7 +11,7 @@ import ClassNameMixin from './mixins/ClassNameMixin';
 import isIE8 from './utils/isIE8';
 
 const ReactChildren = React.Children;
-
+const LAYER_WIDTH = 30;
 const Table = React.createClass({
     mixins: [ClassNameMixin],
     propTypes: {
@@ -22,7 +22,9 @@ const Table = React.createClass({
         headerHeight: PropTypes.number,
         scrollLeft: PropTypes.number,
         scrollTop: PropTypes.number,
-        onRowClick: PropTypes.func
+        onRowClick: PropTypes.func,
+        isTree: PropTypes.bool,
+        expand: PropTypes.bool,
     },
     getDefaultProps() {
         return {
@@ -84,6 +86,9 @@ const Table = React.createClass({
             resizeColumnFixed: fixed,
             mouseAreaLeft: width + left
         });
+    },
+    _onTreeToggle(rowKey, index) {
+        toggleClass(findDOMNode(this.refs[`children_${rowKey}_${index}`]), 'open');
     },
     cloneCell(Cell, props) {
         return React.cloneElement(Cell, props, Cell.props.children);
@@ -193,6 +198,7 @@ const Table = React.createClass({
             style,
             rowHeight,
             classPrefix,
+            isTree,
             id
         } = this.props;
 
@@ -204,6 +210,7 @@ const Table = React.createClass({
 
         const clesses = classNames(
             classPrefix,
+            isTree ? this.prefix('treetable') : '',
             className, {
                 'column-resizing': this.state.isColumnResizing
             }
@@ -237,36 +244,71 @@ const Table = React.createClass({
             </div>
         );
     },
+    randerRowData(bodyCells, rowData, props) {
+
+        let hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children) && rowData.children.length > 0;
+        let rowKey = '_' + (Math.random() * 1E18).toString(36).slice(0, 5).toUpperCase();
+        let row = this.renderRow({
+            key: props.index,
+            rowIndex: props.index,
+            width: props.rowWidth,
+            height: props.rowHeight,
+            top: props.top,
+            rowData
+        }, bodyCells.map((cell, key) => React.cloneElement(cell, {
+            key: key,
+            layer: props.layer,
+            rowData: rowData,
+            hasChildren: hasChildren,
+            rowIndex: props.index,
+            rowKey: rowKey,
+            onTreeToggle: this._onTreeToggle
+        }, cell.props.children)));
+
+
+        //insert children
+        if (hasChildren) {
+            props.layer++;
+
+            let childrenClasses = classNames(this.prefix('row-children'), {
+                open: this.props.expand
+            });
+
+            let childrenStyles = {
+                marginLeft: LAYER_WIDTH
+            };
+            return (
+                <div className={childrenClasses}
+                    data-layer={props.layer}
+                    ref={`children_${rowKey}_${props.index}`}
+                    key={props.index} >
+                    {row}
+                    <div className="children" >
+                        {rowData.children.map((child, index) => this.randerRowData(bodyCells, child, Object.assign({}, props, { index }))) }
+                    </div>
+                </div>
+            );
+
+        }
+
+        return row;
+    },
     renderTableBody(bodyCells, rowWidth, allColumnsWidth) {
 
-        const {headerHeight, rowHeight, height, data} = this.props;
-
+        const {headerHeight, rowHeight, height, data, isTree} = this.props;
         const bodyStyles = {
-            top: headerHeight || rowHeight,
+            top: isTree ? 0 : headerHeight || rowHeight,
             height: height - (headerHeight || rowHeight)
         };
 
         let top = 0;    //Row position
+        let layer = 0;  //Tree layer
         let rows = data.map((rowData, index) => {
-
-            let cells = bodyCells.map((cell, key) => {
-                return React.cloneElement(cell, {
-                    key: key,
-                    rowData: rowData,
-                    rowIndex: index,
-                }, cell.props.children);
+            let row = this.randerRowData(bodyCells, rowData, {
+                index, top, rowWidth, rowHeight, layer
             });
 
-            let row = this.renderRow({
-                key: index,
-                rowIndex: index,
-                width: rowWidth,
-                height: rowHeight,
-                rowData,
-                top
-            }, cells);
-
-            top += rowHeight;
+            !isTree && (top += rowHeight);
             return row;
         });
 
