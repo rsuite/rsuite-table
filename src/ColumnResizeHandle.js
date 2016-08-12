@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react';
 import classNames from 'classnames';
+import { DOMMouseMoveTracker } from 'dom-lib';
 import ClassNameMixin from './mixins/ClassNameMixin';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
-import DOMMouseMoveTracker from './utils/DOMMouseMoveTracker';
+
 
 function clamp(value, min, max) {
     if (value < min) {
@@ -123,7 +124,6 @@ const ColumnResizeHandle = React.createClass({
                 className={classes}
                 style={styles}
                 onMouseDown={this._onColumnResizeMouseDown}
-                onMouseUp={this._onColumnResizeMouseUp}
                 ref="spanner"
                 >
             </div>

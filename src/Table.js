@@ -25,11 +25,16 @@ const Table = React.createClass({
         onRowClick: PropTypes.func,
         isTree: PropTypes.bool,
         expand: PropTypes.bool,
+        locale: PropTypes.object
+
     },
     getDefaultProps() {
         return {
             height: 200,
-            rowHeight: 36
+            rowHeight: 36,
+            locale: {
+                emptyMessage: 'No data found'
+            }
         };
     },
     getInitialState() {
@@ -303,14 +308,21 @@ const Table = React.createClass({
 
         let top = 0;    //Row position
         let layer = 0;  //Tree layer
-        let rows = data.map((rowData, index) => {
+        let rows = (data.length > 0) ? data.map((rowData, index) => {
             let row = this.randerRowData(bodyCells, rowData, {
                 index, top, rowWidth, rowHeight, layer
             });
 
             !isTree && (top += rowHeight);
             return row;
-        });
+        }) : (
+                <div className={this.prefix('body-info') }>
+                    <i className="icon icon-info icon-big"></i>
+                    {this.props.locale.emptyMessage}
+                </div>
+            );
+
+
 
         return (
             <div ref="tableBody"

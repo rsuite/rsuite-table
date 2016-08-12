@@ -100,6 +100,7 @@ const TablePagination = React.createClass({
                             shape='default'
                             activeKey={displayLength}
                             onSelect={this.handleChangeLength}
+                            dropup
                             select>
                             {items}
                         </Dropdown>
