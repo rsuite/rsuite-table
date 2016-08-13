@@ -25,13 +25,21 @@ const Table = React.createClass({
         onRowClick: PropTypes.func,
         isTree: PropTypes.bool,
         expand: PropTypes.bool,
-        locale: PropTypes.object
-
+        locale: PropTypes.object,
+        sortColumn: PropTypes.string,
+        sortType: PropTypes.oneOf(['desc', 'asc']),
+        /**
+         * @callback
+         * @params: sortColumn dataKey
+         * @params: sortType
+         */
+        onSortColumn: PropTypes.func
     },
     getDefaultProps() {
         return {
             height: 200,
             rowHeight: 36,
+            sortType: 'asc',
             locale: {
                 emptyMessage: 'No data found'
             }
@@ -100,17 +108,20 @@ const Table = React.createClass({
     },
     getCells() {
 
-        let headerCells = [];          // Table header cell
-        let bodyCells = [];            // Table body cell
         let left = 0;                  // Cell left margin
         let isFixedColumn = false;     // IF there are fixed columns
-        let columns = this.props.children;
-        let { dataKey, columnWidth } = this.state;
+        const headerCells = [];          // Table header cell
+        const bodyCells = [];            // Table body cell
+        const columns = this.props.children;
+        const { dataKey, columnWidth } = this.state;
+
+        const { sortColumn, sortType, onSortColumn} = this.props;
+
 
         ReactChildren.map(columns, (column, index) => {
 
             let columnChildren = column.props.children;
-            let { width, fixed, align, sort, resizable} = column.props;
+            let { width, fixed, align, sortable, resizable} = column.props;
 
             if (columnChildren.length !== 2) {
                 throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
@@ -123,7 +134,7 @@ const Table = React.createClass({
             width = this.state[columnChildren[1].props.dataKey + 'Width'] || width;
 
             let cellProps = {
-                width, fixed, left, align, resizable,
+                width, fixed, left, align, resizable, sortable,
                 height: this.props.rowHeight,
                 headerHeight: this.props.headerHeight,
                 firstColumn: (index === 0),
@@ -132,7 +143,9 @@ const Table = React.createClass({
             };
 
             let headerCellsProps = {
-                dataKey: columnChildren[1].props.dataKey
+                headerHeight:this.props.headerHeight || this.props.rowHeight,
+                dataKey: columnChildren[1].props.dataKey,
+                sortColumn, sortType, onSortColumn
             };
 
             if (resizable) {

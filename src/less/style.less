@@ -40,6 +40,17 @@
         .user-select();
      }
 
+
+    .@{prefix}table-sortable{
+        position: absolute;
+        .fa-sort{
+            color: #aaa;
+        }
+        .fa-sort-asc,.fa-sort-desc{
+            color: #0ae;
+        }
+    }
+
     .@{prefix}table-row{
         overflow: hidden;
         position: absolute;
@@ -85,7 +96,9 @@
         position: absolute;
         white-space: normal;
         background: @body-background;
-
+        &.sortable{
+            cursor: pointer;
+        }
         &.first{
             border-left-width: 0;
         }

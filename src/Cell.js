@@ -57,21 +57,24 @@ const Cell = React.createClass({
             hasChildren,
             rowIndex,
             rowKey,
-            align
+            align,
+            sortable,
+            ...props
         } = this.props;
 
 
-        let classes = classNames(
+        const classes = classNames(
             this.prefix('cell'),
             className, {
+                'sortable':sortable && isHeaderCell,
                 'first': firstColumn,
                 'last': lastColumn
             });
-        let layerWidth = layer * LAYER_WIDTH;
+        const layerWidth = layer * LAYER_WIDTH;
 
         width = !isHeaderCell && firstColumn ? width - layerWidth : width;
 
-        let styles = assign({
+        const styles = assign({
             height: isHeaderCell ? headerHeight : height,
             zIndex: layer,
             width: width,
@@ -83,6 +86,10 @@ const Cell = React.createClass({
             width: width,
             textAlign: align
         };
+
+        if (sortable) {
+            contentStyles.paddingRight = 28;
+        }
 
         const expandIcon = hasChildren && firstColumn ? (
             <i className="expand-icon fa"
@@ -99,7 +106,7 @@ const Cell = React.createClass({
         );
 
         return (
-            <div className={classes} style={styles}>
+            <div className={classes} style={styles} {...props}>
                 <div className={this.prefix('cell-wrap1') }>
                     <div className={this.prefix('cell-wrap2') }>
                         <div className={this.prefix('cell-wrap3') }>

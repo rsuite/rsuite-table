@@ -8,11 +8,13 @@ import isIE8 from './utils/isIE8';
 const HeaderCell = React.createClass({
     mixins: [ClassNameMixin],
     propTypes: {
-        sort: PropTypes.bool,
+        sortable: PropTypes.bool,
         resizable: PropTypes.bool,
         onColumnResizeEnd: PropTypes.func,
         onColumnResize: PropTypes.func,
         onColumnResizeMove: PropTypes.func,
+        onSortColumn:PropTypes.func,
+        headerHeight: PropTypes.number
     },
     _onColumnResize(width, left, event) {
         this.setState({
@@ -34,8 +36,8 @@ const HeaderCell = React.createClass({
     },
     renderResizeSpanner() {
 
-        let {resizable, left, onColumnResizeMove,fixed} = this.props;
-        let {columnWidth, initialEvent} = this.state;
+        const {resizable, left, onColumnResizeMove, fixed} = this.props;
+        const {columnWidth, initialEvent} = this.state;
 
         if (!resizable) {
             return null;
@@ -55,13 +57,40 @@ const HeaderCell = React.createClass({
         );
 
     },
+    renderSortColumn(){
+        const { left, headerHeight, sortable, sortColumn, sortType,dataKey } = this.props;
+        const { columnWidth } = this.state;
+
+        const styles = {
+            left: columnWidth + left - 16,
+            top: headerHeight / 2 - 8
+        };
+
+        if(sortable ){
+
+            const icon = (<i className={sortColumn === dataKey ? `fa fa-sort-${sortType}` : 'fa fa-sort'}></i>);
+            return (
+                <div style={styles} className={this.prefix('sortable')}>
+                    {icon}
+                </div>
+            );
+        }
+
+        return null;
+    },
+    handleClick(){
+        const { dataKey, sortType, onSortColumn } = this.props;
+        onSortColumn && onSortColumn(dataKey,sortType === 'asc' ? 'desc' : 'asc');
+    },
     render() {
 
-        let classes = this.prefix('cell-header');
+        const classes = this.prefix('cell-header');
+        const {sortable} = this.props;
 
         return (
-            <div className={ classes }>
-                <Cell isHeaderCell={true} {...this.props}></Cell>
+            <div className={ classes } >
+                <Cell isHeaderCell={true} {...this.props} onClick={this.handleClick}></Cell>
+                { this.renderSortColumn() }
                 { !isIE8 && this.renderResizeSpanner() }
             </div>
         );
