@@ -103,8 +103,10 @@ const ColumnResizeHandle = React.createClass({
         }
     },
     componentWillUnmount() {
-        this._mouseMoveTracker.releaseMouseMoves();
-        this._mouseMoveTracker = null;
+        if (this._mouseMoveTracker) {
+            this._mouseMoveTracker.releaseMouseMoves();
+            this._mouseMoveTracker = null;
+        }
     },
     render() {
 
