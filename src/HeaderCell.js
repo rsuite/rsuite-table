@@ -79,8 +79,8 @@ const HeaderCell = React.createClass({
         return null;
     },
     handleClick(){
-        const { dataKey, sortType, onSortColumn } = this.props;
-        onSortColumn && onSortColumn(dataKey,sortType === 'asc' ? 'desc' : 'asc');
+        const { sortable, dataKey, sortType, onSortColumn } = this.props;
+        sortable && onSortColumn && onSortColumn(dataKey,sortType === 'asc' ? 'desc' : 'asc');
     },
     render() {
 
