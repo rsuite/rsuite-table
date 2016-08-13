@@ -36340,14 +36340,17 @@
 	var style = __webpack_require__(1226);
 	var query = __webpack_require__(1234);
 	var events = __webpack_require__(1235);
-	var transition = __webpack_require__(1238);
-	var BrowserSupportCore = __webpack_require__(1239);
-	var getVendorPrefixedName = __webpack_require__(1240);
+	var transition = __webpack_require__(1239);
+	var animation = __webpack_require__(1240);
+	var getVendorPrefixedName = __webpack_require__(1244);
+	var BrowserSupportCore = __webpack_require__(1245);
+	var DOMMouseMoveTracker = __webpack_require__(1246);
 
-	module.exports = _extends({}, className, style, query, events, {
+	module.exports = _extends({}, className, style, query, events, animation, {
 	    transition: transition,
 	    getVendorPrefixedName: getVendorPrefixedName,
-	    BrowserSupportCore: BrowserSupportCore
+	    BrowserSupportCore: BrowserSupportCore,
+	    DOMMouseMoveTracker: DOMMouseMoveTracker
 	});
 
 /***/ },
@@ -36915,7 +36918,7 @@
 	module.exports = {
 	    on: __webpack_require__(1236),
 	    off: __webpack_require__(1237),
-	    onFocus: __webpack_require__(1237)
+	    onFocus: __webpack_require__(1238)
 	};
 
 /***/ },
@@ -36977,6 +36980,34 @@
 /***/ },
 
 /***/ 1238:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function onFocus(listener) {
+	    var useFocusin = !document.addEventListener;
+	    var off = void 0;
+
+	    if (useFocusin) {
+	        document.attachEvent('onfocusin', listener);
+	        off = function off() {
+	            return document.detachEvent('onfocusin', listener);
+	        };
+	    } else {
+	        document.addEventListener('focus', listener, true);
+	        off = function off() {
+	            return document.removeEventListener('focus', listener, true);
+	        };
+	    }
+
+	    return {
+	        off: off
+	    };
+	};
+
+/***/ },
+
+/***/ 1239:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37045,52 +37076,74 @@
 
 /***/ },
 
-/***/ 1239:
+/***/ 1240:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _getVendorPrefixedName = __webpack_require__(1240);
-
-	var _getVendorPrefixedName2 = _interopRequireDefault(_getVendorPrefixedName);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var BrowserSupportCore = {
-	    /**
-	     * @return {bool} True if browser supports css animations.
-	     */
-	    hasCSSAnimations: function hasCSSAnimations() {
-	        return !!(0, _getVendorPrefixedName2.default)('animationName');
-	    },
-
-	    /**
-	     * @return {bool} True if browser supports css transforms.
-	     */
-	    hasCSSTransforms: function hasCSSTransforms() {
-	        return !!(0, _getVendorPrefixedName2.default)('transform');
-	    },
-
-	    /**
-	     * @return {bool} True if browser supports css 3d transforms.
-	     */
-	    hasCSS3DTransforms: function hasCSS3DTransforms() {
-	        return !!(0, _getVendorPrefixedName2.default)('perspective');
-	    },
-
-	    /**
-	     * @return {bool} True if browser supports css transitions.
-	     */
-	    hasCSSTransitions: function hasCSSTransitions() {
-	        return !!(0, _getVendorPrefixedName2.default)('transition');
-	    }
+	module.exports = {
+	    cancelAnimationFramePolyfill: __webpack_require__(1241),
+	    nativeRequestAnimationFrame: __webpack_require__(1242),
+	    requestAnimationFramePolyfill: __webpack_require__(1243)
 	};
-
-	module.exports = BrowserSupportCore;
 
 /***/ },
 
-/***/ 1240:
+/***/ 1241:
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
+
+	var cancelAnimationFrame = global.cancelAnimationFrame || global.webkitCancelAnimationFrame || global.mozCancelAnimationFrame || global.oCancelAnimationFrame || global.msCancelAnimationFrame || global.clearTimeout;
+
+	module.exports = cancelAnimationFrame;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+
+/***/ 1242:
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
+
+	var nativeRequestAnimationFrame = global.requestAnimationFrame || global.webkitRequestAnimationFrame || global.mozRequestAnimationFrame || global.oRequestAnimationFrame || global.msRequestAnimationFrame;
+
+	module.exports = nativeRequestAnimationFrame;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+
+/***/ 1243:
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+
+	var nativeRequestAnimationFrame = __webpack_require__(1242);
+	var emptyFunction = function emptyFunction() {};
+	var lastTime = 0;
+
+	/**
+	 * Here is the native and polyfill version of requestAnimationFrame.
+	 * Please don't use it directly and use requestAnimationFrame module instead.
+	 */
+	var requestAnimationFrame = nativeRequestAnimationFrame || function (callback) {
+	    var currTime = Date.now();
+	    var timeDelay = Math.max(0, 16 - (currTime - lastTime));
+	    lastTime = currTime + timeDelay;
+	    return global.setTimeout(function () {
+	        callback(Date.now());
+	    }, timeDelay);
+	};
+
+	// Works around a rare bug in Safari 6 where the first request is never invoked.
+	requestAnimationFrame(emptyFunction);
+
+	module.exports = requestAnimationFrame;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+
+/***/ 1244:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37132,6 +37185,203 @@
 	}
 
 	module.exports = getVendorPrefixedName;
+
+/***/ },
+
+/***/ 1245:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _getVendorPrefixedName = __webpack_require__(1244);
+
+	var _getVendorPrefixedName2 = _interopRequireDefault(_getVendorPrefixedName);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var BrowserSupportCore = {
+	    /**
+	     * @return {bool} True if browser supports css animations.
+	     */
+	    hasCSSAnimations: function hasCSSAnimations() {
+	        return !!(0, _getVendorPrefixedName2.default)('animationName');
+	    },
+
+	    /**
+	     * @return {bool} True if browser supports css transforms.
+	     */
+	    hasCSSTransforms: function hasCSSTransforms() {
+	        return !!(0, _getVendorPrefixedName2.default)('transform');
+	    },
+
+	    /**
+	     * @return {bool} True if browser supports css 3d transforms.
+	     */
+	    hasCSS3DTransforms: function hasCSS3DTransforms() {
+	        return !!(0, _getVendorPrefixedName2.default)('perspective');
+	    },
+
+	    /**
+	     * @return {bool} True if browser supports css transitions.
+	     */
+	    hasCSSTransitions: function hasCSSTransitions() {
+	        return !!(0, _getVendorPrefixedName2.default)('transition');
+	    }
+	};
+
+	module.exports = BrowserSupportCore;
+
+/***/ },
+
+/***/ 1246:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var on = __webpack_require__(1236);
+	var cancelAnimationFramePolyfill = __webpack_require__(1241);
+	var requestAnimationFramePolyfill = __webpack_require__(1243);
+
+	var DOMMouseMoveTracker = function () {
+	    /**
+	     * onMove is the callback that will be called on every mouse move.
+	     * onMoveEnd is called on mouse up when movement has ended.
+	     */
+
+	    function DOMMouseMoveTracker(onMove, onMoveEnd, domNode) {
+	        _classCallCheck(this, DOMMouseMoveTracker);
+
+	        this._isDragging = false;
+	        this._animationFrameID = null;
+	        this._domNode = domNode;
+	        this._onMove = onMove;
+	        this._onMoveEnd = onMoveEnd;
+	        this._onMouseMove = this._onMouseMove.bind(this);
+	        this._onMouseUp = this._onMouseUp.bind(this);
+	        this._didMouseMove = this._didMouseMove.bind(this);
+	    }
+
+	    /**
+	     * This is to set up the listeners for listening to mouse move
+	     * and mouse up signaling the movement has ended. Please note that these
+	     * listeners are added at the document.body level. It takes in an event
+	     * in order to grab inital state.
+	     */
+
+
+	    _createClass(DOMMouseMoveTracker, [{
+	        key: 'captureMouseMoves',
+	        value: function captureMouseMoves(event) {
+
+	            if (!this._eventMoveToken && !this._eventUpToken) {
+	                this._eventMoveToken = on(this._domNode, 'mousemove', this._onMouseMove);
+	                this._eventUpToken = on(this._domNode, 'mouseup', this._onMouseUp);
+	            }
+
+	            if (!this._isDragging) {
+	                this._deltaX = 0;
+	                this._deltaY = 0;
+	                this._isDragging = true;
+	                this._x = event.clientX;
+	                this._y = event.clientY;
+	            }
+
+	            event.preventDefault();
+	        }
+
+	        /**
+	         * These releases all of the listeners on document.body.
+	         */
+
+	    }, {
+	        key: 'releaseMouseMoves',
+	        value: function releaseMouseMoves() {
+
+	            if (this._eventMoveToken && this._eventUpToken) {
+
+	                this._eventMoveToken.off();
+	                this._eventMoveToken = null;
+	                this._eventUpToken.off();
+	                this._eventUpToken = null;
+	            }
+
+	            if (this._animationFrameID !== null) {
+	                cancelAnimationFramePolyfill(this._animationFrameID);
+	                this._animationFrameID = null;
+	            }
+
+	            if (this._isDragging) {
+	                this._isDragging = false;
+	                this._x = null;
+	                this._y = null;
+	            }
+	        }
+
+	        /**
+	         * Returns whether or not if the mouse movement is being tracked.
+	         */
+
+	    }, {
+	        key: 'isDragging',
+	        value: function isDragging() /*boolean*/{
+	            return this._isDragging;
+	        }
+
+	        /**
+	         * Calls onMove passed into constructor and updates internal state.
+	         */
+
+	    }, {
+	        key: '_onMouseMove',
+	        value: function _onMouseMove( /*object*/event) {
+
+	            var x = event.clientX;
+	            var y = event.clientY;
+
+	            this._deltaX += x - this._x;
+	            this._deltaY += y - this._y;
+
+	            if (this._animationFrameID === null) {
+	                // The mouse may move faster then the animation frame does.
+	                // Use `requestAnimationFramePolyfill` to avoid over-updating.
+	                this._animationFrameID = requestAnimationFramePolyfill(this._didMouseMove);
+	            }
+
+	            this._x = x;
+	            this._y = y;
+	            event.preventDefault();
+	        }
+	    }, {
+	        key: '_didMouseMove',
+	        value: function _didMouseMove() {
+	            this._animationFrameID = null;
+	            this._onMove(this._deltaX, this._deltaY);
+	            this._deltaX = 0;
+	            this._deltaY = 0;
+	        }
+	        /**
+	         * Calls onMoveEnd passed into constructor and updates internal state.
+	         */
+
+	    }, {
+	        key: '_onMouseUp',
+	        value: function _onMouseUp() {
+
+	            if (this._animationFrameID) {
+	                this._didMouseMove();
+	            }
+	            this._onMoveEnd();
+	        }
+	    }]);
+
+	    return DOMMouseMoveTracker;
+	}();
+
+	module.exports = DOMMouseMoveTracker;
 
 /***/ }
 

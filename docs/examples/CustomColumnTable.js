@@ -52,7 +52,7 @@ const CustomColumnTable = React.createClass({
                         <HeaderCell>Icon</HeaderCell>
                         <ImageCell dataKey="avartar" />
                     </Column>
-                     <Column width={160}   >
+                     <Column width={160} >
                         <HeaderCell>First Name</HeaderCell>
                         <Cell dataKey="firstName" />
                     </Column>

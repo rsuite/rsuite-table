@@ -10,6 +10,16 @@
   -ms-user-select: none;
   user-select: none;
 }
+.rsuite-table .rsuite-table-sortable {
+  position: absolute;
+}
+.rsuite-table .rsuite-table-sortable .fa-sort {
+  color: #aaa;
+}
+.rsuite-table .rsuite-table-sortable .fa-sort-asc,
+.rsuite-table .rsuite-table-sortable .fa-sort-desc {
+  color: #0ae;
+}
 .rsuite-table .rsuite-table-row {
   overflow: hidden;
   position: absolute;
@@ -34,6 +44,17 @@
   position: relative;
   overflow: auto;
 }
+.rsuite-table .rsuite-table-body-row-wrapper .rsuite-table-body-info {
+  width: 100%;
+  text-align: center;
+  top: 50%;
+  position: absolute;
+  margin-top: -20px;
+  line-height: 40px;
+}
+.rsuite-table .rsuite-table-body-row-wrapper .rsuite-table-body-info .icon {
+  margin: 0 10px;
+}
 .rsuite-table .rsuite-table-cell {
   height: 36px;
   border-style: solid;
@@ -44,6 +65,9 @@
   position: absolute;
   white-space: normal;
   background: #fff;
+}
+.rsuite-table .rsuite-table-cell.sortable {
+  cursor: pointer;
 }
 .rsuite-table .rsuite-table-cell.first {
   border-left-width: 0;

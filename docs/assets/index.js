@@ -64,19 +64,19 @@
 
 	var _FixedColumnTable2 = _interopRequireDefault(_FixedColumnTable);
 
-	var _PaginationTable = __webpack_require__(1257);
+	var _PaginationTable = __webpack_require__(1259);
 
 	var _PaginationTable2 = _interopRequireDefault(_PaginationTable);
 
-	var _ResizableColumnTable = __webpack_require__(1258);
+	var _ResizableColumnTable = __webpack_require__(1260);
 
 	var _ResizableColumnTable2 = _interopRequireDefault(_ResizableColumnTable);
 
-	var _CustomColumnTable = __webpack_require__(1259);
+	var _CustomColumnTable = __webpack_require__(1261);
 
 	var _CustomColumnTable2 = _interopRequireDefault(_CustomColumnTable);
 
-	var _TreeTable = __webpack_require__(1260);
+	var _TreeTable = __webpack_require__(1262);
 
 	var _TreeTable2 = _interopRequireDefault(_TreeTable);
 
@@ -147,70 +147,7 @@
 	                        'Example code'
 	                    )
 	                ),
-	                _react2.default.createElement('hr', null),
-	                _react2.default.createElement(
-	                    'h2',
-	                    null,
-	                    'Resizable columns'
-	                ),
-	                _react2.default.createElement(_ResizableColumnTable2.default, null),
-	                _react2.default.createElement(
-	                    'h4',
-	                    null,
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: 'https://github.com/rsuite/rsuite-table/tree/master/docs/examples/ResizableColumnTable.js', target: '_blank' },
-	                        'Example code'
-	                    )
-	                ),
-	                _react2.default.createElement('hr', null),
-	                _react2.default.createElement(
-	                    'h2',
-	                    null,
-	                    'Custom cells'
-	                ),
-	                _react2.default.createElement(_CustomColumnTable2.default, null),
-	                _react2.default.createElement(
-	                    'h4',
-	                    null,
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: 'https://github.com/rsuite/rsuite-table/tree/master/docs/examples/CustomColumnTable.js', target: '_blank' },
-	                        'Example code'
-	                    )
-	                ),
-	                _react2.default.createElement('hr', null),
-	                _react2.default.createElement(
-	                    'h2',
-	                    null,
-	                    'Pagination'
-	                ),
-	                _react2.default.createElement(_PaginationTable2.default, null),
-	                _react2.default.createElement(
-	                    'h4',
-	                    null,
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: 'https://github.com/rsuite/rsuite-table/tree/master/docs/examples/PaginationTable.js', target: '_blank' },
-	                        'Example code'
-	                    )
-	                ),
-	                _react2.default.createElement('hr', null),
-	                _react2.default.createElement(
-	                    'h2',
-	                    null,
-	                    'Tree Table'
-	                ),
-	                _react2.default.createElement(_TreeTable2.default, null),
-	                _react2.default.createElement(
-	                    'h4',
-	                    null,
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: 'https://github.com/rsuite/rsuite-table/tree/master/docs/examples/TreeTable.js', target: '_blank' },
-	                        'Example code'
-	                    )
-	                )
+	                _react2.default.createElement('hr', null)
 	            )
 	        );
 	    }
@@ -114872,7 +114809,7 @@
 
 	var _src = __webpack_require__(1218);
 
-	var _fakeObjectDataListStore = __webpack_require__(1256);
+	var _fakeObjectDataListStore = __webpack_require__(1258);
 
 	var _fakeObjectDataListStore2 = _interopRequireDefault(_fakeObjectDataListStore);
 
@@ -114885,6 +114822,11 @@
 	            data: (0, _fakeObjectDataListStore2.default)(100)
 	        };
 	    },
+	    handleSortColumn: function handleSortColumn(sortColumn, sortType) {
+	        this.setState({
+	            sortColumn: sortColumn, sortType: sortType
+	        });
+	    },
 	    render: function render() {
 	        var data = this.state.data;
 
@@ -114893,7 +114835,13 @@
 	            null,
 	            _react2.default.createElement(
 	                _src.Table,
-	                { height: 400, data: data },
+	                {
+	                    height: 400,
+	                    data: data,
+	                    sortColumn: this.state.sortColumn,
+	                    sortType: this.state.sortType,
+	                    onSortColumn: this.handleSortColumn
+	                },
 	                _react2.default.createElement(
 	                    _src.Column,
 	                    { width: 50, align: 'center', fixed: true },
@@ -114906,7 +114854,7 @@
 	                ),
 	                _react2.default.createElement(
 	                    _src.Column,
-	                    { width: 100, fixed: true },
+	                    { width: 130, fixed: true, sortable: true },
 	                    _react2.default.createElement(
 	                        _src.HeaderCell,
 	                        null,
@@ -114916,7 +114864,7 @@
 	                ),
 	                _react2.default.createElement(
 	                    _src.Column,
-	                    { width: 100 },
+	                    { width: 130, sortable: true },
 	                    _react2.default.createElement(
 	                        _src.HeaderCell,
 	                        null,
@@ -114926,7 +114874,7 @@
 	                ),
 	                _react2.default.createElement(
 	                    _src.Column,
-	                    { width: 200 },
+	                    { width: 200, sortable: true },
 	                    _react2.default.createElement(
 	                        _src.HeaderCell,
 	                        null,
@@ -115016,19 +114964,19 @@
 
 	var _Table2 = _interopRequireDefault(_Table);
 
-	var _Column = __webpack_require__(1245);
+	var _Column = __webpack_require__(1251);
 
 	var _Column2 = _interopRequireDefault(_Column);
 
-	var _Cell = __webpack_require__(1246);
+	var _Cell = __webpack_require__(1252);
 
 	var _Cell2 = _interopRequireDefault(_Cell);
 
-	var _HeaderCell = __webpack_require__(1247);
+	var _HeaderCell = __webpack_require__(1253);
 
 	var _HeaderCell2 = _interopRequireDefault(_HeaderCell);
 
-	var _TablePagination = __webpack_require__(1255);
+	var _TablePagination = __webpack_require__(1257);
 
 	var _TablePagination2 = _interopRequireDefault(_TablePagination);
 
@@ -115064,19 +115012,19 @@
 
 	var _lodash = __webpack_require__(1167);
 
-	var _Row = __webpack_require__(1241);
+	var _Row = __webpack_require__(1247);
 
 	var _Row2 = _interopRequireDefault(_Row);
 
-	var _CellGroup = __webpack_require__(1243);
+	var _CellGroup = __webpack_require__(1249);
 
 	var _CellGroup2 = _interopRequireDefault(_CellGroup);
 
-	var _ClassNameMixin = __webpack_require__(1242);
+	var _ClassNameMixin = __webpack_require__(1248);
 
 	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
 
-	var _isIE = __webpack_require__(1244);
+	var _isIE = __webpack_require__(1250);
 
 	var _isIE2 = _interopRequireDefault(_isIE);
 
@@ -115100,12 +115048,25 @@
 	        scrollTop: _react.PropTypes.number,
 	        onRowClick: _react.PropTypes.func,
 	        isTree: _react.PropTypes.bool,
-	        expand: _react.PropTypes.bool
+	        expand: _react.PropTypes.bool,
+	        locale: _react.PropTypes.object,
+	        sortColumn: _react.PropTypes.string,
+	        sortType: _react.PropTypes.oneOf(['desc', 'asc']),
+	        /**
+	         * @callback
+	         * @params: sortColumn dataKey
+	         * @params: sortType
+	         */
+	        onSortColumn: _react.PropTypes.func
 	    },
 	    getDefaultProps: function getDefaultProps() {
 	        return {
 	            height: 200,
-	            rowHeight: 36
+	            rowHeight: 36,
+	            sortType: 'asc',
+	            locale: {
+	                emptyMessage: 'No data found'
+	            }
 	        };
 	    },
 	    getInitialState: function getInitialState() {
@@ -115173,14 +115134,18 @@
 	    getCells: function getCells() {
 	        var _this = this;
 
-	        var headerCells = []; // Table header cell
-	        var bodyCells = []; // Table body cell
 	        var left = 0; // Cell left margin
 	        var isFixedColumn = false; // IF there are fixed columns
+	        var headerCells = []; // Table header cell
+	        var bodyCells = []; // Table body cell
 	        var columns = this.props.children;
 	        var _state = this.state;
 	        var dataKey = _state.dataKey;
 	        var columnWidth = _state.columnWidth;
+	        var _props = this.props;
+	        var sortColumn = _props.sortColumn;
+	        var sortType = _props.sortType;
+	        var onSortColumn = _props.onSortColumn;
 
 
 	        ReactChildren.map(columns, function (column, index) {
@@ -115190,7 +115155,7 @@
 	            var width = _column$props.width;
 	            var fixed = _column$props.fixed;
 	            var align = _column$props.align;
-	            var sort = _column$props.sort;
+	            var sortable = _column$props.sortable;
 	            var resizable = _column$props.resizable;
 
 
@@ -115205,7 +115170,7 @@
 	            width = _this.state[columnChildren[1].props.dataKey + 'Width'] || width;
 
 	            var cellProps = {
-	                width: width, fixed: fixed, left: left, align: align, resizable: resizable,
+	                width: width, fixed: fixed, left: left, align: align, resizable: resizable, sortable: sortable,
 	                height: _this.props.rowHeight,
 	                headerHeight: _this.props.headerHeight,
 	                firstColumn: index === 0,
@@ -115214,7 +115179,9 @@
 	            };
 
 	            var headerCellsProps = {
-	                dataKey: columnChildren[1].props.dataKey
+	                headerHeight: _this.props.headerHeight || _this.props.rowHeight,
+	                dataKey: columnChildren[1].props.dataKey,
+	                sortColumn: sortColumn, sortType: sortType, onSortColumn: onSortColumn
 	            };
 
 	            if (resizable) {
@@ -115281,17 +115248,17 @@
 	        );
 	    },
 	    render: function render() {
-	        var _props = this.props;
-	        var children = _props.children;
-	        var className = _props.className;
-	        var _props$width = _props.width;
-	        var width = _props$width === undefined ? 0 : _props$width;
-	        var height = _props.height;
-	        var style = _props.style;
-	        var rowHeight = _props.rowHeight;
-	        var classPrefix = _props.classPrefix;
-	        var isTree = _props.isTree;
-	        var id = _props.id;
+	        var _props2 = this.props;
+	        var children = _props2.children;
+	        var className = _props2.className;
+	        var _props2$width = _props2.width;
+	        var width = _props2$width === undefined ? 0 : _props2$width;
+	        var height = _props2.height;
+	        var style = _props2.style;
+	        var rowHeight = _props2.rowHeight;
+	        var classPrefix = _props2.classPrefix;
+	        var isTree = _props2.isTree;
+	        var id = _props2.id;
 
 	        var _getCells = this.getCells();
 
@@ -115320,9 +115287,9 @@
 	        );
 	    },
 	    renderTableHeader: function renderTableHeader(headerCells, rowWidth) {
-	        var _props2 = this.props;
-	        var rowHeight = _props2.rowHeight;
-	        var headerHeight = _props2.headerHeight;
+	        var _props3 = this.props;
+	        var rowHeight = _props3.rowHeight;
+	        var headerHeight = _props3.headerHeight;
 
 	        var row = this.renderRow({
 	            ref: 'tableHeader',
@@ -115397,12 +115364,12 @@
 	    renderTableBody: function renderTableBody(bodyCells, rowWidth, allColumnsWidth) {
 	        var _this3 = this;
 
-	        var _props3 = this.props;
-	        var headerHeight = _props3.headerHeight;
-	        var rowHeight = _props3.rowHeight;
-	        var height = _props3.height;
-	        var data = _props3.data;
-	        var isTree = _props3.isTree;
+	        var _props4 = this.props;
+	        var headerHeight = _props4.headerHeight;
+	        var rowHeight = _props4.rowHeight;
+	        var height = _props4.height;
+	        var data = _props4.data;
+	        var isTree = _props4.isTree;
 
 	        var bodyStyles = {
 	            top: isTree ? 0 : headerHeight || rowHeight,
@@ -115411,14 +115378,19 @@
 
 	        var top = 0; //Row position
 	        var layer = 0; //Tree layer
-	        var rows = data.map(function (rowData, index) {
+	        var rows = data.length > 0 ? data.map(function (rowData, index) {
 	            var row = _this3.randerRowData(bodyCells, rowData, {
 	                index: index, top: top, rowWidth: rowWidth, rowHeight: rowHeight, layer: layer
 	            });
 
 	            !isTree && (top += rowHeight);
 	            return row;
-	        });
+	        }) : _react2.default.createElement(
+	            'div',
+	            { className: this.prefix('body-info') },
+	            _react2.default.createElement('i', { className: 'icon icon-info icon-big' }),
+	            this.props.locale.emptyMessage
+	        );
 
 	        return _react2.default.createElement(
 	            'div',
@@ -115468,14 +115440,17 @@
 	var style = __webpack_require__(1226);
 	var query = __webpack_require__(1234);
 	var events = __webpack_require__(1235);
-	var transition = __webpack_require__(1238);
-	var BrowserSupportCore = __webpack_require__(1239);
-	var getVendorPrefixedName = __webpack_require__(1240);
+	var transition = __webpack_require__(1239);
+	var animation = __webpack_require__(1240);
+	var getVendorPrefixedName = __webpack_require__(1244);
+	var BrowserSupportCore = __webpack_require__(1245);
+	var DOMMouseMoveTracker = __webpack_require__(1246);
 
-	module.exports = _extends({}, className, style, query, events, {
+	module.exports = _extends({}, className, style, query, events, animation, {
 	    transition: transition,
 	    getVendorPrefixedName: getVendorPrefixedName,
-	    BrowserSupportCore: BrowserSupportCore
+	    BrowserSupportCore: BrowserSupportCore,
+	    DOMMouseMoveTracker: DOMMouseMoveTracker
 	});
 
 /***/ },
@@ -116028,7 +116003,7 @@
 	module.exports = {
 	    on: __webpack_require__(1236),
 	    off: __webpack_require__(1237),
-	    onFocus: __webpack_require__(1237)
+	    onFocus: __webpack_require__(1238)
 	};
 
 /***/ },
@@ -116087,6 +116062,33 @@
 
 /***/ },
 /* 1238 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function onFocus(listener) {
+	    var useFocusin = !document.addEventListener;
+	    var off = void 0;
+
+	    if (useFocusin) {
+	        document.attachEvent('onfocusin', listener);
+	        off = function off() {
+	            return document.detachEvent('onfocusin', listener);
+	        };
+	    } else {
+	        document.addEventListener('focus', listener, true);
+	        off = function off() {
+	            return document.removeEventListener('focus', listener, true);
+	        };
+	    }
+
+	    return {
+	        off: off
+	    };
+	};
+
+/***/ },
+/* 1239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116154,51 +116156,70 @@
 	};
 
 /***/ },
-/* 1239 */
+/* 1240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _getVendorPrefixedName = __webpack_require__(1240);
-
-	var _getVendorPrefixedName2 = _interopRequireDefault(_getVendorPrefixedName);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var BrowserSupportCore = {
-	    /**
-	     * @return {bool} True if browser supports css animations.
-	     */
-	    hasCSSAnimations: function hasCSSAnimations() {
-	        return !!(0, _getVendorPrefixedName2.default)('animationName');
-	    },
-
-	    /**
-	     * @return {bool} True if browser supports css transforms.
-	     */
-	    hasCSSTransforms: function hasCSSTransforms() {
-	        return !!(0, _getVendorPrefixedName2.default)('transform');
-	    },
-
-	    /**
-	     * @return {bool} True if browser supports css 3d transforms.
-	     */
-	    hasCSS3DTransforms: function hasCSS3DTransforms() {
-	        return !!(0, _getVendorPrefixedName2.default)('perspective');
-	    },
-
-	    /**
-	     * @return {bool} True if browser supports css transitions.
-	     */
-	    hasCSSTransitions: function hasCSSTransitions() {
-	        return !!(0, _getVendorPrefixedName2.default)('transition');
-	    }
+	module.exports = {
+	    cancelAnimationFramePolyfill: __webpack_require__(1241),
+	    nativeRequestAnimationFrame: __webpack_require__(1242),
+	    requestAnimationFramePolyfill: __webpack_require__(1243)
 	};
 
-	module.exports = BrowserSupportCore;
+/***/ },
+/* 1241 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
+
+	var cancelAnimationFrame = global.cancelAnimationFrame || global.webkitCancelAnimationFrame || global.mozCancelAnimationFrame || global.oCancelAnimationFrame || global.msCancelAnimationFrame || global.clearTimeout;
+
+	module.exports = cancelAnimationFrame;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 1240 */
+/* 1242 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
+
+	var nativeRequestAnimationFrame = global.requestAnimationFrame || global.webkitRequestAnimationFrame || global.mozRequestAnimationFrame || global.oRequestAnimationFrame || global.msRequestAnimationFrame;
+
+	module.exports = nativeRequestAnimationFrame;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 1243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+
+	var nativeRequestAnimationFrame = __webpack_require__(1242);
+	var emptyFunction = function emptyFunction() {};
+	var lastTime = 0;
+
+	/**
+	 * Here is the native and polyfill version of requestAnimationFrame.
+	 * Please don't use it directly and use requestAnimationFrame module instead.
+	 */
+	var requestAnimationFrame = nativeRequestAnimationFrame || function (callback) {
+	    var currTime = Date.now();
+	    var timeDelay = Math.max(0, 16 - (currTime - lastTime));
+	    lastTime = currTime + timeDelay;
+	    return global.setTimeout(function () {
+	        callback(Date.now());
+	    }, timeDelay);
+	};
+
+	// Works around a rare bug in Safari 6 where the first request is never invoked.
+	requestAnimationFrame(emptyFunction);
+
+	module.exports = requestAnimationFrame;
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 1244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -116242,225 +116263,48 @@
 	module.exports = getVendorPrefixedName;
 
 /***/ },
-/* 1241 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _react = __webpack_require__(963);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(1123);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _ClassNameMixin = __webpack_require__(1242);
-
-	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
-
-	var _lodash = __webpack_require__(1167);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	var Row = _react2.default.createClass({
-	    displayName: 'Row',
-
-	    mixins: [_ClassNameMixin2.default],
-	    PropTypes: {
-	        width: _react.PropTypes.number,
-	        height: _react.PropTypes.number,
-	        headerHeight: _react.PropTypes.number,
-	        top: _react.PropTypes.number,
-	        style: _react.PropTypes.object,
-	        isHeaderRow: _react.PropTypes.bool
-	    },
-	    getDefaultProps: function getDefaultProps() {
-	        return {
-	            height: 36,
-	            headerHeight: 36,
-	            isHeaderRow: false
-	        };
-	    },
-	    render: function render() {
-	        var _props = this.props;
-	        var children = _props.children;
-	        var className = _props.className;
-	        var width = _props.width;
-	        var height = _props.height;
-	        var top = _props.top;
-	        var style = _props.style;
-	        var isHeaderRow = _props.isHeaderRow;
-	        var headerHeight = _props.headerHeight;
-
-	        var props = _objectWithoutProperties(_props, ['children', 'className', 'width', 'height', 'top', 'style', 'isHeaderRow', 'headerHeight']);
-
-	        var classes = (0, _classnames2.default)(this.prefix('row'), isHeaderRow ? this.prefix('row-header') : '', className);
-
-	        var styles = (0, _lodash.assign)({
-	            minWidth: width,
-	            height: isHeaderRow ? headerHeight : height,
-	            top: top
-	        }, style);
-
-	        return _react2.default.createElement(
-	            'div',
-	            _extends({
-	                className: classes,
-	                style: styles
-	            }, props),
-	            children
-	        );
-	    }
-	});
-
-	exports.default = Row;
-
-/***/ },
-/* 1242 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _react = __webpack_require__(963);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(1120);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var ClassNameMixin = {
-	    getDefaultProps: function getDefaultProps() {
-	        return {
-	            classPrefix: 'rsuite-table'
-	        };
-	    },
-	    prefix: function prefix(className) {
-	        var classPrefix = this.props.classPrefix;
-
-	        var prefix = classPrefix ? classPrefix + '-' : '';
-	        return prefix + className;
-	    }
-	};
-
-	exports.default = ClassNameMixin;
-
-/***/ },
-/* 1243 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _react = __webpack_require__(963);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(1123);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _ClassNameMixin = __webpack_require__(1242);
-
-	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
-
-	var _lodash = __webpack_require__(1167);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var HeaderCell = _react2.default.createClass({
-	    displayName: 'HeaderCell',
-
-	    mixins: [_ClassNameMixin2.default],
-	    propTypes: {
-	        fixed: _react.PropTypes.bool,
-	        width: _react.PropTypes.number,
-	        height: _react.PropTypes.number,
-	        left: _react.PropTypes.number,
-	        style: _react.PropTypes.string
-	    },
-	    render: function render() {
-	        var _props = this.props;
-	        var children = _props.children;
-	        var fixed = _props.fixed;
-	        var width = _props.width;
-	        var left = _props.left;
-	        var height = _props.height;
-	        var style = _props.style;
-	        var className = _props.className;
-
-
-	        var classes = (0, _classnames2.default)(className, this.prefix('cell-group'), fixed ? 'fixed' : '');
-	        var styles = (0, _lodash.assign)({ width: width, left: left, height: height }, style);
-
-	        return _react2.default.createElement(
-	            'div',
-	            { className: classes, style: styles },
-	            children
-	        );
-	    }
-	});
-
-	exports.default = HeaderCell;
-
-/***/ },
-/* 1244 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = !!navigator.userAgent.match(/MSIE 8.0/);
-
-/***/ },
 /* 1245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
+	var _getVendorPrefixedName = __webpack_require__(1244);
 
-	var _react = __webpack_require__(963);
-
-	var _react2 = _interopRequireDefault(_react);
+	var _getVendorPrefixedName2 = _interopRequireDefault(_getVendorPrefixedName);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Column = _react2.default.createClass({
-	    displayName: 'Column',
-
-	    propTypes: {
-	        align: _react.PropTypes.oneOf(['left', 'center', 'right']),
-	        sort: _react.PropTypes.func,
-	        width: _react.PropTypes.number.isRequired,
-	        fixed: _react.PropTypes.bool,
-	        resizable: _react.PropTypes.bool
+	var BrowserSupportCore = {
+	    /**
+	     * @return {bool} True if browser supports css animations.
+	     */
+	    hasCSSAnimations: function hasCSSAnimations() {
+	        return !!(0, _getVendorPrefixedName2.default)('animationName');
 	    },
 
-	    render: function render() {
-	        //组件 <Column> 不需要渲染
-	        return null;
-	    }
-	});
+	    /**
+	     * @return {bool} True if browser supports css transforms.
+	     */
+	    hasCSSTransforms: function hasCSSTransforms() {
+	        return !!(0, _getVendorPrefixedName2.default)('transform');
+	    },
 
-	exports.default = Column;
+	    /**
+	     * @return {bool} True if browser supports css 3d transforms.
+	     */
+	    hasCSS3DTransforms: function hasCSS3DTransforms() {
+	        return !!(0, _getVendorPrefixedName2.default)('perspective');
+	    },
+
+	    /**
+	     * @return {bool} True if browser supports css transitions.
+	     */
+	    hasCSSTransitions: function hasCSSTransitions() {
+	        return !!(0, _getVendorPrefixedName2.default)('transition');
+	    }
+	};
+
+	module.exports = BrowserSupportCore;
 
 /***/ },
 /* 1246 */
@@ -116468,474 +116312,13 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _react = __webpack_require__(963);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(1123);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _ClassNameMixin = __webpack_require__(1242);
-
-	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
-
-	var _lodash = __webpack_require__(1167);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var LAYER_WIDTH = 30;
-	var Cell = _react2.default.createClass({
-	    displayName: 'Cell',
-
-	    mixins: [_ClassNameMixin2.default],
-	    propTypes: {
-	        dataKey: _react.PropTypes.string,
-
-	        align: _react.PropTypes.oneOf(['left', 'center', 'right']),
-	        className: _react.PropTypes.string,
-	        isHeaderCell: _react.PropTypes.bool,
-
-	        width: _react.PropTypes.number,
-	        height: _react.PropTypes.number,
-	        left: _react.PropTypes.number,
-	        headerHeight: _react.PropTypes.number,
-
-	        rowData: _react.PropTypes.object,
-	        rowIndex: _react.PropTypes.number,
-
-	        cellData: _react.PropTypes.any,
-	        cellRenderer: _react.PropTypes.func,
-
-	        fixed: _react.PropTypes.bool,
-
-	        style: _react.PropTypes.object,
-	        firstColumn: _react.PropTypes.bool,
-	        lastColumn: _react.PropTypes.bool,
-	        hasChildren: _react.PropTypes.bool,
-
-	        onTreeToggle: _react.PropTypes.func
-	    },
-	    getDefaultProps: function getDefaultProps() {
-	        return {
-	            align: 'left',
-	            headerHeight: 36,
-	            height: 36
-	        };
-	    },
-	    renderCell: function renderCell(content) {
-	        var _props = this.props;
-	        var width = _props.width;
-	        var left = _props.left;
-	        var height = _props.height;
-	        var style = _props.style;
-	        var className = _props.className;
-	        var firstColumn = _props.firstColumn;
-	        var lastColumn = _props.lastColumn;
-	        var isHeaderCell = _props.isHeaderCell;
-	        var headerHeight = _props.headerHeight;
-	        var layer = _props.layer;
-	        var onTreeToggle = _props.onTreeToggle;
-	        var hasChildren = _props.hasChildren;
-	        var rowIndex = _props.rowIndex;
-	        var rowKey = _props.rowKey;
-	        var align = _props.align;
-
-
-	        var classes = (0, _classnames2.default)(this.prefix('cell'), className, {
-	            'first': firstColumn,
-	            'last': lastColumn
-	        });
-	        var layerWidth = layer * LAYER_WIDTH;
-
-	        width = !isHeaderCell && firstColumn ? width - layerWidth : width;
-
-	        var styles = (0, _lodash.assign)({
-	            height: isHeaderCell ? headerHeight : height,
-	            zIndex: layer,
-	            width: width,
-	            left: !isHeaderCell && firstColumn ? left + layerWidth : left
-	        }, style);
-
-	        var contentStyles = {
-	            width: width,
-	            textAlign: align
-	        };
-
-	        var expandIcon = hasChildren && firstColumn ? _react2.default.createElement('i', { className: 'expand-icon fa',
-	            onClick: function onClick(event) {
-	                return onTreeToggle(rowKey, rowIndex, event);
-	            } }) : null;
-
-	        content = _react2.default.createElement(
-	            'div',
-	            { className: this.prefix('cell-content'), style: contentStyles
-	            },
-	            expandIcon,
-	            content
-	        );
-
-	        return _react2.default.createElement(
-	            'div',
-	            { className: classes, style: styles },
-	            _react2.default.createElement(
-	                'div',
-	                { className: this.prefix('cell-wrap1') },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: this.prefix('cell-wrap2') },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: this.prefix('cell-wrap3') },
-	                        content
-	                    )
-	                )
-	            )
-	        );
-	    },
-	    render: function render() {
-	        var _props2 = this.props;
-	        var children = _props2.children;
-	        var rowData = _props2.rowData;
-	        var isHeaderCell = _props2.isHeaderCell;
-	        var dataKey = _props2.dataKey;
-	        var fixed = _props2.fixed;
-
-
-	        if (isHeaderCell) {
-	            return this.renderCell(children);
-	        }
-
-	        return this.renderCell(children || rowData[dataKey]);
-	    }
-	});
-
-	exports.default = Cell;
-
-/***/ },
-/* 1247 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _react = __webpack_require__(963);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Cell = __webpack_require__(1246);
-
-	var _Cell2 = _interopRequireDefault(_Cell);
-
-	var _ClassNameMixin = __webpack_require__(1242);
-
-	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
-
-	var _ColumnResizeHandle = __webpack_require__(1248);
-
-	var _ColumnResizeHandle2 = _interopRequireDefault(_ColumnResizeHandle);
-
-	var _isIE = __webpack_require__(1244);
-
-	var _isIE2 = _interopRequireDefault(_isIE);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var HeaderCell = _react2.default.createClass({
-	    displayName: 'HeaderCell',
-
-	    mixins: [_ClassNameMixin2.default],
-	    propTypes: {
-	        sort: _react.PropTypes.bool,
-	        resizable: _react.PropTypes.bool,
-	        onColumnResizeEnd: _react.PropTypes.func,
-	        onColumnResize: _react.PropTypes.func,
-	        onColumnResizeMove: _react.PropTypes.func
-	    },
-	    _onColumnResize: function _onColumnResize(width, left, event) {
-	        this.setState({
-	            columnWidth: width,
-	            initialEvent: event
-	        });
-	        this.props.onColumnResize(width, left, event);
-	    },
-	    _onColumnResizeEnd: function _onColumnResizeEnd(columnWidth, cursorDelta) {
-	        this.setState({
-	            columnWidth: columnWidth
-	        });
-	        this.props.onColumnResizeEnd(columnWidth, cursorDelta, this.props.dataKey);
-	    },
-	    getInitialState: function getInitialState() {
-	        return {
-	            columnWidth: this.props.width
-	        };
-	    },
-	    renderResizeSpanner: function renderResizeSpanner() {
-	        var _props = this.props;
-	        var resizable = _props.resizable;
-	        var left = _props.left;
-	        var onColumnResizeMove = _props.onColumnResizeMove;
-	        var fixed = _props.fixed;
-	        var _state = this.state;
-	        var columnWidth = _state.columnWidth;
-	        var initialEvent = _state.initialEvent;
-
-
-	        if (!resizable) {
-	            return null;
-	        }
-
-	        return _react2.default.createElement(_ColumnResizeHandle2.default, {
-	            columnWidth: columnWidth,
-	            columnLeft: left,
-	            columnFixed: fixed,
-	            initialEvent: initialEvent,
-	            onColumnResizeMove: onColumnResizeMove,
-	            onColumnResize: this._onColumnResize,
-	            onColumnResizeEnd: this._onColumnResizeEnd
-	        });
-	    },
-	    render: function render() {
-
-	        var classes = this.prefix('cell-header');
-
-	        return _react2.default.createElement(
-	            'div',
-	            { className: classes },
-	            _react2.default.createElement(_Cell2.default, _extends({ isHeaderCell: true }, this.props)),
-	            !_isIE2.default && this.renderResizeSpanner()
-	        );
-	    }
-	});
-
-	exports.default = HeaderCell;
-
-/***/ },
-/* 1248 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _react = __webpack_require__(963);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(1123);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _ClassNameMixin = __webpack_require__(1242);
-
-	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
-
-	var _ReactComponentWithPureRenderMixin = __webpack_require__(1249);
-
-	var _ReactComponentWithPureRenderMixin2 = _interopRequireDefault(_ReactComponentWithPureRenderMixin);
-
-	var _DOMMouseMoveTracker = __webpack_require__(1251);
-
-	var _DOMMouseMoveTracker2 = _interopRequireDefault(_DOMMouseMoveTracker);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function clamp(value, min, max) {
-	    if (value < min) {
-	        return min;
-	    }
-	    if (value > max) {
-	        return max;
-	    }
-	    return value;
-	}
-
-	var ColumnResizeHandle = _react2.default.createClass({
-	    displayName: 'ColumnResizeHandle',
-
-	    mixins: [_ClassNameMixin2.default, _ReactComponentWithPureRenderMixin2.default],
-	    propTypes: {
-	        columnWidth: _react.PropTypes.number,
-	        columnLeft: _react.PropTypes.number,
-	        columnFixed: _react.PropTypes.bool,
-	        onColumnResize: _react.PropTypes.func,
-	        onColumnResizeEnd: _react.PropTypes.func,
-	        onColumnResizeMove: _react.PropTypes.func
-	    },
-	    getInitialState: function getInitialState() {
-	        return {
-	            columnWidth: this.props.columnWidth,
-	            cursorDelta: 0,
-	            visible: false
-	        };
-	    },
-	    _onMove: function _onMove(deltaX, deltaY) {
-
-	        if (!this.isKeyDown) {
-	            return;
-	        }
-
-	        var newWidth = this.state.cursorDelta + deltaX;
-	        var newColumnWidth = clamp(this.props.columnWidth + newWidth, 20);
-
-	        this.setState({
-	            columnWidth: newColumnWidth,
-	            cursorDelta: newWidth
-	        });
-
-	        this.props.onColumnResizeMove(newColumnWidth, this.props.columnLeft, this.props.columnFixed);
-	    },
-	    _onColumnResizeEnd: function _onColumnResizeEnd() {
-
-	        this.isKeyDown = false;
-
-	        this.props.onColumnResizeEnd(this.state.columnWidth, this.state.cursorDelta);
-
-	        if (this._mouseMoveTracker) {
-	            this._mouseMoveTracker.releaseMouseMoves();
-	            this._mouseMoveTracker = null;
-	        }
-
-	        this.setState({
-	            visible: false
-	        });
-	    },
-	    _getMouseMoveTracker: function _getMouseMoveTracker() {
-	        return this._mouseMoveTracker || new _DOMMouseMoveTracker2.default(this._onMove, this._onColumnResizeEnd, document.body);
-	    },
-	    _onColumnResizeMouseDown: function _onColumnResizeMouseDown(event) {
-
-	        this._mouseMoveTracker = this._getMouseMoveTracker();
-	        this.isKeyDown = true;
-	        this.setState({
-	            visible: true,
-	            cursorDelta: 0
-	        });
-
-	        this.props.onColumnResize(this.props.columnWidth, this.props.columnLeft, {
-	            clientX: event.clientX,
-	            clientY: event.clientY,
-	            preventDefault: function preventDefault() {}
-	        });
-	    },
-	    componentWillReceiveProps: function componentWillReceiveProps(newProps) {
-	        if (this.isKeyDown && newProps.initialEvent && !this._mouseMoveTracker.isDragging()) {
-	            this._mouseMoveTracker.captureMouseMoves(newProps.initialEvent);
-	        }
-	    },
-	    componentWillUnmount: function componentWillUnmount() {
-	        this._mouseMoveTracker.releaseMouseMoves();
-	        this._mouseMoveTracker = null;
-	    },
-	    render: function render() {
-	        var columnLeft = this.props.columnLeft;
-	        var _state = this.state;
-	        var columnWidth = _state.columnWidth;
-	        var visible = _state.visible;
-
-
-	        var styles = {
-	            width: 6,
-	            left: columnWidth + columnLeft - 2
-	        };
-
-	        var classes = (0, _classnames2.default)({ visible: visible }, this.prefix('column-resize-spanner'));
-
-	        return _react2.default.createElement('div', {
-	            className: classes,
-	            style: styles,
-	            onMouseDown: this._onColumnResizeMouseDown,
-	            onMouseUp: this._onColumnResizeMouseUp,
-	            ref: 'spanner'
-	        });
-	    }
-	});
-
-	exports.default = ColumnResizeHandle;
-
-/***/ },
-/* 1249 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _shallowEqual = __webpack_require__(1250);
-
-	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var ReactComponentWithPureRenderMixin = {
-	    shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
-	        return !(0, _shallowEqual2.default)(this.props, nextProps) || !(0, _shallowEqual2.default)(this.state, nextState);
-	    }
-	};
-
-	exports.default = ReactComponentWithPureRenderMixin;
-
-/***/ },
-/* 1250 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = shallowEqual;
-	function shallowEqual(objA, objB) {
-	    if (objA === objB) {
-	        return true;
-	    }
-	    var key;
-	    // Test for A's keys different from B.
-	    for (key in objA) {
-	        if (objA.hasOwnProperty(key) && (!objB.hasOwnProperty(key) || objA[key] !== objB[key])) {
-	            return false;
-	        }
-	    }
-	    // Test for B's keys missing from A.
-	    for (key in objB) {
-	        if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key)) {
-	            return false;
-	        }
-	    }
-	    return true;
-	};
-
-/***/ },
-/* 1251 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _domLib = __webpack_require__(1220);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var cancelAnimationFramePolyfill = __webpack_require__(1252);
-	var requestAnimationFramePolyfill = __webpack_require__(1253);
+	var on = __webpack_require__(1236);
+	var cancelAnimationFramePolyfill = __webpack_require__(1241);
+	var requestAnimationFramePolyfill = __webpack_require__(1243);
 
 	var DOMMouseMoveTracker = function () {
 	    /**
@@ -116969,8 +116352,8 @@
 	        value: function captureMouseMoves(event) {
 
 	            if (!this._eventMoveToken && !this._eventUpToken) {
-	                this._eventMoveToken = (0, _domLib.on)(this._domNode, 'mousemove', this._onMouseMove);
-	                this._eventUpToken = (0, _domLib.on)(this._domNode, 'mouseup', this._onMouseUp);
+	                this._eventMoveToken = on(this._domNode, 'mousemove', this._onMouseMove);
+	                this._eventUpToken = on(this._domNode, 'mouseup', this._onMouseUp);
 	            }
 
 	            if (!this._isDragging) {
@@ -117072,61 +116455,736 @@
 	    return DOMMouseMoveTracker;
 	}();
 
-	exports.default = DOMMouseMoveTracker;
+	module.exports = DOMMouseMoveTracker;
+
+/***/ },
+/* 1247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _react = __webpack_require__(963);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _classnames = __webpack_require__(1123);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _ClassNameMixin = __webpack_require__(1248);
+
+	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
+
+	var _lodash = __webpack_require__(1167);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	var Row = _react2.default.createClass({
+	    displayName: 'Row',
+
+	    mixins: [_ClassNameMixin2.default],
+	    PropTypes: {
+	        width: _react.PropTypes.number,
+	        height: _react.PropTypes.number,
+	        headerHeight: _react.PropTypes.number,
+	        top: _react.PropTypes.number,
+	        style: _react.PropTypes.object,
+	        isHeaderRow: _react.PropTypes.bool
+	    },
+	    getDefaultProps: function getDefaultProps() {
+	        return {
+	            height: 36,
+	            headerHeight: 36,
+	            isHeaderRow: false
+	        };
+	    },
+	    render: function render() {
+	        var _props = this.props;
+	        var children = _props.children;
+	        var className = _props.className;
+	        var width = _props.width;
+	        var height = _props.height;
+	        var top = _props.top;
+	        var style = _props.style;
+	        var isHeaderRow = _props.isHeaderRow;
+	        var headerHeight = _props.headerHeight;
+
+	        var props = _objectWithoutProperties(_props, ['children', 'className', 'width', 'height', 'top', 'style', 'isHeaderRow', 'headerHeight']);
+
+	        var classes = (0, _classnames2.default)(this.prefix('row'), isHeaderRow ? this.prefix('row-header') : '', className);
+
+	        var styles = (0, _lodash.assign)({
+	            minWidth: width,
+	            height: isHeaderRow ? headerHeight : height,
+	            top: top
+	        }, style);
+
+	        return _react2.default.createElement(
+	            'div',
+	            _extends({
+	                className: classes,
+	                style: styles
+	            }, props),
+	            children
+	        );
+	    }
+	});
+
+	exports.default = Row;
+
+/***/ },
+/* 1248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(963);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(1120);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ClassNameMixin = {
+	    getDefaultProps: function getDefaultProps() {
+	        return {
+	            classPrefix: 'rsuite-table'
+	        };
+	    },
+	    prefix: function prefix(className) {
+	        var classPrefix = this.props.classPrefix;
+
+	        var prefix = classPrefix ? classPrefix + '-' : '';
+	        return prefix + className;
+	    }
+	};
+
+	exports.default = ClassNameMixin;
+
+/***/ },
+/* 1249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(963);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _classnames = __webpack_require__(1123);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _ClassNameMixin = __webpack_require__(1248);
+
+	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
+
+	var _lodash = __webpack_require__(1167);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var HeaderCell = _react2.default.createClass({
+	    displayName: 'HeaderCell',
+
+	    mixins: [_ClassNameMixin2.default],
+	    propTypes: {
+	        fixed: _react.PropTypes.bool,
+	        width: _react.PropTypes.number,
+	        height: _react.PropTypes.number,
+	        left: _react.PropTypes.number,
+	        style: _react.PropTypes.string
+	    },
+	    render: function render() {
+	        var _props = this.props;
+	        var children = _props.children;
+	        var fixed = _props.fixed;
+	        var width = _props.width;
+	        var left = _props.left;
+	        var height = _props.height;
+	        var style = _props.style;
+	        var className = _props.className;
+
+
+	        var classes = (0, _classnames2.default)(className, this.prefix('cell-group'), fixed ? 'fixed' : '');
+	        var styles = (0, _lodash.assign)({ width: width, left: left, height: height }, style);
+
+	        return _react2.default.createElement(
+	            'div',
+	            { className: classes, style: styles },
+	            children
+	        );
+	    }
+	});
+
+	exports.default = HeaderCell;
+
+/***/ },
+/* 1250 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = !!navigator.userAgent.match(/MSIE 8.0/);
+
+/***/ },
+/* 1251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(963);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Column = _react2.default.createClass({
+	    displayName: 'Column',
+
+	    propTypes: {
+	        align: _react.PropTypes.oneOf(['left', 'center', 'right']),
+	        width: _react.PropTypes.number.isRequired,
+	        fixed: _react.PropTypes.bool,
+	        resizable: _react.PropTypes.bool,
+	        sortable: _react.PropTypes.bool
+	    },
+
+	    render: function render() {
+	        //组件 <Column> 不需要渲染
+	        return null;
+	    }
+	});
+
+	exports.default = Column;
 
 /***/ },
 /* 1252 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
+	'use strict';
 
-	var cancelAnimationFrame = global.cancelAnimationFrame || global.webkitCancelAnimationFrame || global.mozCancelAnimationFrame || global.oCancelAnimationFrame || global.msCancelAnimationFrame || global.clearTimeout;
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
-	module.exports = cancelAnimationFrame;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _react = __webpack_require__(963);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _classnames = __webpack_require__(1123);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _ClassNameMixin = __webpack_require__(1248);
+
+	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
+
+	var _lodash = __webpack_require__(1167);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	var LAYER_WIDTH = 30;
+	var Cell = _react2.default.createClass({
+	    displayName: 'Cell',
+
+	    mixins: [_ClassNameMixin2.default],
+	    propTypes: {
+	        dataKey: _react.PropTypes.string,
+
+	        align: _react.PropTypes.oneOf(['left', 'center', 'right']),
+	        className: _react.PropTypes.string,
+	        isHeaderCell: _react.PropTypes.bool,
+
+	        width: _react.PropTypes.number,
+	        height: _react.PropTypes.number,
+	        left: _react.PropTypes.number,
+	        headerHeight: _react.PropTypes.number,
+
+	        rowData: _react.PropTypes.object,
+	        rowIndex: _react.PropTypes.number,
+
+	        cellData: _react.PropTypes.any,
+	        cellRenderer: _react.PropTypes.func,
+
+	        fixed: _react.PropTypes.bool,
+
+	        style: _react.PropTypes.object,
+	        firstColumn: _react.PropTypes.bool,
+	        lastColumn: _react.PropTypes.bool,
+	        hasChildren: _react.PropTypes.bool,
+
+	        onTreeToggle: _react.PropTypes.func
+	    },
+	    getDefaultProps: function getDefaultProps() {
+	        return {
+	            align: 'left',
+	            headerHeight: 36,
+	            height: 36
+	        };
+	    },
+	    renderCell: function renderCell(content) {
+	        var _props = this.props;
+	        var width = _props.width;
+	        var left = _props.left;
+	        var height = _props.height;
+	        var style = _props.style;
+	        var className = _props.className;
+	        var firstColumn = _props.firstColumn;
+	        var lastColumn = _props.lastColumn;
+	        var isHeaderCell = _props.isHeaderCell;
+	        var headerHeight = _props.headerHeight;
+	        var layer = _props.layer;
+	        var onTreeToggle = _props.onTreeToggle;
+	        var hasChildren = _props.hasChildren;
+	        var rowIndex = _props.rowIndex;
+	        var rowKey = _props.rowKey;
+	        var align = _props.align;
+	        var sortable = _props.sortable;
+
+	        var props = _objectWithoutProperties(_props, ['width', 'left', 'height', 'style', 'className', 'firstColumn', 'lastColumn', 'isHeaderCell', 'headerHeight', 'layer', 'onTreeToggle', 'hasChildren', 'rowIndex', 'rowKey', 'align', 'sortable']);
+
+	        var classes = (0, _classnames2.default)(this.prefix('cell'), className, {
+	            'sortable': sortable && isHeaderCell,
+	            'first': firstColumn,
+	            'last': lastColumn
+	        });
+	        var layerWidth = layer * LAYER_WIDTH;
+
+	        width = !isHeaderCell && firstColumn ? width - layerWidth : width;
+
+	        var styles = (0, _lodash.assign)({
+	            height: isHeaderCell ? headerHeight : height,
+	            zIndex: layer,
+	            width: width,
+	            left: !isHeaderCell && firstColumn ? left + layerWidth : left
+	        }, style);
+
+	        var contentStyles = {
+	            width: width,
+	            textAlign: align
+	        };
+
+	        if (sortable) {
+	            contentStyles.paddingRight = 28;
+	        }
+
+	        var expandIcon = hasChildren && firstColumn ? _react2.default.createElement('i', { className: 'expand-icon fa',
+	            onClick: function onClick(event) {
+	                return onTreeToggle(rowKey, rowIndex, event);
+	            } }) : null;
+
+	        content = _react2.default.createElement(
+	            'div',
+	            { className: this.prefix('cell-content'), style: contentStyles
+	            },
+	            expandIcon,
+	            content
+	        );
+
+	        return _react2.default.createElement(
+	            'div',
+	            _extends({ className: classes, style: styles }, props),
+	            _react2.default.createElement(
+	                'div',
+	                { className: this.prefix('cell-wrap1') },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: this.prefix('cell-wrap2') },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: this.prefix('cell-wrap3') },
+	                        content
+	                    )
+	                )
+	            )
+	        );
+	    },
+	    render: function render() {
+	        var _props2 = this.props;
+	        var children = _props2.children;
+	        var rowData = _props2.rowData;
+	        var isHeaderCell = _props2.isHeaderCell;
+	        var dataKey = _props2.dataKey;
+	        var fixed = _props2.fixed;
+
+
+	        if (isHeaderCell) {
+	            return this.renderCell(children);
+	        }
+
+	        return this.renderCell(children || rowData[dataKey]);
+	    }
+	});
+
+	exports.default = Cell;
 
 /***/ },
 /* 1253 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	'use strict';
 
-	var nativeRequestAnimationFrame = __webpack_require__(1254);
-	var emptyFunction = function emptyFunction() {};
-	var lastTime = 0;
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
-	/**
-	 * Here is the native and polyfill version of requestAnimationFrame.
-	 * Please don't use it directly and use requestAnimationFrame module instead.
-	 */
-	var requestAnimationFrame = nativeRequestAnimationFrame || function (callback) {
-	    var currTime = Date.now();
-	    var timeDelay = Math.max(0, 16 - (currTime - lastTime));
-	    lastTime = currTime + timeDelay;
-	    return global.setTimeout(function () {
-	        callback(Date.now());
-	    }, timeDelay);
-	};
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	// Works around a rare bug in Safari 6 where the first request is never invoked.
-	requestAnimationFrame(emptyFunction);
+	var _react = __webpack_require__(963);
 
-	module.exports = requestAnimationFrame;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Cell = __webpack_require__(1252);
+
+	var _Cell2 = _interopRequireDefault(_Cell);
+
+	var _ClassNameMixin = __webpack_require__(1248);
+
+	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
+
+	var _ColumnResizeHandle = __webpack_require__(1254);
+
+	var _ColumnResizeHandle2 = _interopRequireDefault(_ColumnResizeHandle);
+
+	var _isIE = __webpack_require__(1250);
+
+	var _isIE2 = _interopRequireDefault(_isIE);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var HeaderCell = _react2.default.createClass({
+	    displayName: 'HeaderCell',
+
+	    mixins: [_ClassNameMixin2.default],
+	    propTypes: {
+	        sortable: _react.PropTypes.bool,
+	        resizable: _react.PropTypes.bool,
+	        onColumnResizeEnd: _react.PropTypes.func,
+	        onColumnResize: _react.PropTypes.func,
+	        onColumnResizeMove: _react.PropTypes.func,
+	        onSortColumn: _react.PropTypes.func,
+	        headerHeight: _react.PropTypes.number
+	    },
+	    _onColumnResize: function _onColumnResize(width, left, event) {
+	        this.setState({
+	            columnWidth: width,
+	            initialEvent: event
+	        });
+	        this.props.onColumnResize(width, left, event);
+	    },
+	    _onColumnResizeEnd: function _onColumnResizeEnd(columnWidth, cursorDelta) {
+	        this.setState({
+	            columnWidth: columnWidth
+	        });
+	        this.props.onColumnResizeEnd(columnWidth, cursorDelta, this.props.dataKey);
+	    },
+	    getInitialState: function getInitialState() {
+	        return {
+	            columnWidth: this.props.width
+	        };
+	    },
+	    renderResizeSpanner: function renderResizeSpanner() {
+	        var _props = this.props;
+	        var resizable = _props.resizable;
+	        var left = _props.left;
+	        var onColumnResizeMove = _props.onColumnResizeMove;
+	        var fixed = _props.fixed;
+	        var _state = this.state;
+	        var columnWidth = _state.columnWidth;
+	        var initialEvent = _state.initialEvent;
+
+
+	        if (!resizable) {
+	            return null;
+	        }
+
+	        return _react2.default.createElement(_ColumnResizeHandle2.default, {
+	            columnWidth: columnWidth,
+	            columnLeft: left,
+	            columnFixed: fixed,
+	            initialEvent: initialEvent,
+	            onColumnResizeMove: onColumnResizeMove,
+	            onColumnResize: this._onColumnResize,
+	            onColumnResizeEnd: this._onColumnResizeEnd
+	        });
+	    },
+	    renderSortColumn: function renderSortColumn() {
+	        var _props2 = this.props;
+	        var left = _props2.left;
+	        var headerHeight = _props2.headerHeight;
+	        var sortable = _props2.sortable;
+	        var sortColumn = _props2.sortColumn;
+	        var sortType = _props2.sortType;
+	        var dataKey = _props2.dataKey;
+	        var columnWidth = this.state.columnWidth;
+
+
+	        var styles = {
+	            left: columnWidth + left - 16,
+	            top: headerHeight / 2 - 8
+	        };
+
+	        if (sortable) {
+
+	            var icon = _react2.default.createElement('i', { className: sortColumn === dataKey ? 'fa fa-sort-' + sortType : 'fa fa-sort' });
+	            return _react2.default.createElement(
+	                'div',
+	                { style: styles, className: this.prefix('sortable') },
+	                icon
+	            );
+	        }
+
+	        return null;
+	    },
+	    handleClick: function handleClick() {
+	        var _props3 = this.props;
+	        var dataKey = _props3.dataKey;
+	        var sortType = _props3.sortType;
+	        var onSortColumn = _props3.onSortColumn;
+
+	        onSortColumn && onSortColumn(dataKey, sortType === 'asc' ? 'desc' : 'asc');
+	    },
+	    render: function render() {
+
+	        var classes = this.prefix('cell-header');
+	        var sortable = this.props.sortable;
+
+
+	        return _react2.default.createElement(
+	            'div',
+	            { className: classes },
+	            _react2.default.createElement(_Cell2.default, _extends({ isHeaderCell: true }, this.props, { onClick: this.handleClick })),
+	            this.renderSortColumn(),
+	            !_isIE2.default && this.renderResizeSpanner()
+	        );
+	    }
+	});
+
+	exports.default = HeaderCell;
 
 /***/ },
 /* 1254 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
+	'use strict';
 
-	var nativeRequestAnimationFrame = global.requestAnimationFrame || global.webkitRequestAnimationFrame || global.mozRequestAnimationFrame || global.oRequestAnimationFrame || global.msRequestAnimationFrame;
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
-	module.exports = nativeRequestAnimationFrame;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+	var _react = __webpack_require__(963);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _classnames = __webpack_require__(1123);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _domLib = __webpack_require__(1220);
+
+	var _ClassNameMixin = __webpack_require__(1248);
+
+	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
+
+	var _ReactComponentWithPureRenderMixin = __webpack_require__(1255);
+
+	var _ReactComponentWithPureRenderMixin2 = _interopRequireDefault(_ReactComponentWithPureRenderMixin);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function clamp(value, min, max) {
+	    if (value < min) {
+	        return min;
+	    }
+	    if (value > max) {
+	        return max;
+	    }
+	    return value;
+	}
+
+	var ColumnResizeHandle = _react2.default.createClass({
+	    displayName: 'ColumnResizeHandle',
+
+	    mixins: [_ClassNameMixin2.default, _ReactComponentWithPureRenderMixin2.default],
+	    propTypes: {
+	        columnWidth: _react.PropTypes.number,
+	        columnLeft: _react.PropTypes.number,
+	        columnFixed: _react.PropTypes.bool,
+	        onColumnResize: _react.PropTypes.func,
+	        onColumnResizeEnd: _react.PropTypes.func,
+	        onColumnResizeMove: _react.PropTypes.func
+	    },
+	    getInitialState: function getInitialState() {
+	        return {
+	            columnWidth: this.props.columnWidth,
+	            cursorDelta: 0,
+	            visible: false
+	        };
+	    },
+	    _onMove: function _onMove(deltaX, deltaY) {
+
+	        if (!this.isKeyDown) {
+	            return;
+	        }
+
+	        var newWidth = this.state.cursorDelta + deltaX;
+	        var newColumnWidth = clamp(this.props.columnWidth + newWidth, 20);
+
+	        this.setState({
+	            columnWidth: newColumnWidth,
+	            cursorDelta: newWidth
+	        });
+
+	        this.props.onColumnResizeMove(newColumnWidth, this.props.columnLeft, this.props.columnFixed);
+	    },
+	    _onColumnResizeEnd: function _onColumnResizeEnd() {
+
+	        this.isKeyDown = false;
+
+	        this.props.onColumnResizeEnd(this.state.columnWidth, this.state.cursorDelta);
+
+	        if (this._mouseMoveTracker) {
+	            this._mouseMoveTracker.releaseMouseMoves();
+	            this._mouseMoveTracker = null;
+	        }
+
+	        this.setState({
+	            visible: false
+	        });
+	    },
+	    _getMouseMoveTracker: function _getMouseMoveTracker() {
+	        return this._mouseMoveTracker || new _domLib.DOMMouseMoveTracker(this._onMove, this._onColumnResizeEnd, document.body);
+	    },
+	    _onColumnResizeMouseDown: function _onColumnResizeMouseDown(event) {
+
+	        this._mouseMoveTracker = this._getMouseMoveTracker();
+	        this.isKeyDown = true;
+	        this.setState({
+	            visible: true,
+	            cursorDelta: 0
+	        });
+
+	        this.props.onColumnResize(this.props.columnWidth, this.props.columnLeft, {
+	            clientX: event.clientX,
+	            clientY: event.clientY,
+	            preventDefault: function preventDefault() {}
+	        });
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+	        if (this.isKeyDown && newProps.initialEvent && !this._mouseMoveTracker.isDragging()) {
+	            this._mouseMoveTracker.captureMouseMoves(newProps.initialEvent);
+	        }
+	    },
+	    componentWillUnmount: function componentWillUnmount() {
+	        this._mouseMoveTracker.releaseMouseMoves();
+	        this._mouseMoveTracker = null;
+	    },
+	    render: function render() {
+	        var columnLeft = this.props.columnLeft;
+	        var _state = this.state;
+	        var columnWidth = _state.columnWidth;
+	        var visible = _state.visible;
+
+
+	        var styles = {
+	            width: 6,
+	            left: columnWidth + columnLeft - 2
+	        };
+
+	        var classes = (0, _classnames2.default)({ visible: visible }, this.prefix('column-resize-spanner'));
+
+	        return _react2.default.createElement('div', {
+	            className: classes,
+	            style: styles,
+	            onMouseDown: this._onColumnResizeMouseDown,
+	            ref: 'spanner'
+	        });
+	    }
+	});
+
+	exports.default = ColumnResizeHandle;
 
 /***/ },
 /* 1255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _shallowEqual = __webpack_require__(1256);
+
+	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ReactComponentWithPureRenderMixin = {
+	    shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
+	        return !(0, _shallowEqual2.default)(this.props, nextProps) || !(0, _shallowEqual2.default)(this.state, nextState);
+	    }
+	};
+
+	exports.default = ReactComponentWithPureRenderMixin;
+
+/***/ },
+/* 1256 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = shallowEqual;
+	function shallowEqual(objA, objB) {
+	    if (objA === objB) {
+	        return true;
+	    }
+	    var key;
+	    // Test for A's keys different from B.
+	    for (key in objA) {
+	        if (objA.hasOwnProperty(key) && (!objB.hasOwnProperty(key) || objA[key] !== objB[key])) {
+	            return false;
+	        }
+	    }
+	    // Test for B's keys missing from A.
+	    for (key in objB) {
+	        if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key)) {
+	            return false;
+	        }
+	    }
+	    return true;
+	};
+
+/***/ },
+/* 1257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117145,7 +117203,7 @@
 
 	var _rsuite = __webpack_require__(1121);
 
-	var _ClassNameMixin = __webpack_require__(1242);
+	var _ClassNameMixin = __webpack_require__(1248);
 
 	var _ClassNameMixin2 = _interopRequireDefault(_ClassNameMixin);
 
@@ -117247,6 +117305,7 @@
 	                    shape: 'default',
 	                    activeKey: displayLength,
 	                    onSelect: this.handleChangeLength,
+	                    dropup: true,
 	                    select: true },
 	                items
 	            ))
@@ -117310,7 +117369,7 @@
 	exports.default = TablePagination;
 
 /***/ },
-/* 1256 */
+/* 1258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117345,7 +117404,7 @@
 	};
 
 /***/ },
-/* 1257 */
+/* 1259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117360,7 +117419,7 @@
 
 	var _src = __webpack_require__(1218);
 
-	var _fakeObjectDataListStore = __webpack_require__(1256);
+	var _fakeObjectDataListStore = __webpack_require__(1258);
 
 	var _fakeObjectDataListStore2 = _interopRequireDefault(_fakeObjectDataListStore);
 
@@ -117539,7 +117598,7 @@
 	exports.default = PaginationTable;
 
 /***/ },
-/* 1258 */
+/* 1260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117554,7 +117613,7 @@
 
 	var _src = __webpack_require__(1218);
 
-	var _fakeObjectDataListStore = __webpack_require__(1256);
+	var _fakeObjectDataListStore = __webpack_require__(1258);
 
 	var _fakeObjectDataListStore2 = _interopRequireDefault(_fakeObjectDataListStore);
 
@@ -117654,7 +117713,7 @@
 	exports.default = ResizableColumnTable;
 
 /***/ },
-/* 1259 */
+/* 1261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -117669,7 +117728,7 @@
 
 	var _src = __webpack_require__(1218);
 
-	var _fakeObjectDataListStore = __webpack_require__(1256);
+	var _fakeObjectDataListStore = __webpack_require__(1258);
 
 	var _fakeObjectDataListStore2 = _interopRequireDefault(_fakeObjectDataListStore);
 
@@ -117831,7 +117890,7 @@
 	exports.default = CustomColumnTable;
 
 /***/ },
-/* 1260 */
+/* 1262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
