@@ -13,7 +13,7 @@ const HeaderCell = React.createClass({
         onColumnResizeEnd: PropTypes.func,
         onColumnResize: PropTypes.func,
         onColumnResizeMove: PropTypes.func,
-        onSortColumn:PropTypes.func,
+        onSortColumn: PropTypes.func,
         headerHeight: PropTypes.number
     },
     _onColumnResize(width, left, event) {
@@ -27,7 +27,8 @@ const HeaderCell = React.createClass({
         this.setState({
             columnWidth: columnWidth
         });
-        this.props.onColumnResizeEnd(columnWidth, cursorDelta, this.props.dataKey);
+
+        this.props.onColumnResizeEnd(columnWidth, cursorDelta, this.props.dataKey, this.props.index);
     },
     getInitialState() {
         return {
@@ -57,8 +58,8 @@ const HeaderCell = React.createClass({
         );
 
     },
-    renderSortColumn(){
-        const { left, headerHeight, sortable, sortColumn, sortType,dataKey } = this.props;
+    renderSortColumn() {
+        const { left, headerHeight, sortable, sortColumn, sortType, dataKey } = this.props;
         const { columnWidth } = this.state;
 
         const styles = {
@@ -66,11 +67,11 @@ const HeaderCell = React.createClass({
             top: headerHeight / 2 - 8
         };
 
-        if(sortable ){
+        if (sortable) {
 
             const icon = (<i className={sortColumn === dataKey ? `fa fa-sort-${sortType}` : 'fa fa-sort'}></i>);
             return (
-                <div style={styles} className={this.prefix('sortable')}>
+                <div style={styles} className={this.prefix('sortable') }>
                     {icon}
                 </div>
             );
@@ -78,9 +79,9 @@ const HeaderCell = React.createClass({
 
         return null;
     },
-    handleClick(){
+    handleClick() {
         const { sortable, dataKey, sortType, onSortColumn } = this.props;
-        sortable && onSortColumn && onSortColumn(dataKey,sortType === 'asc' ? 'desc' : 'asc');
+        sortable && onSortColumn && onSortColumn(dataKey, sortType === 'asc' ? 'desc' : 'asc');
     },
     render() {
 

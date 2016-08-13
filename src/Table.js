@@ -81,11 +81,11 @@ const Table = React.createClass({
         let toggle = top > 1 ? 'addClass' : 'removeClass';
         !isIE8 && handelClass[toggle](tableHeaderDom, 'shadow');
     },
-    _onColumnResizeEnd(columnWidth, cursorDelta, dataKey) {
+    _onColumnResizeEnd(columnWidth, cursorDelta, dataKey, index) {
         this.setState({
             isColumnResizing: false,
             mouseAreaLeft: -1,
-            [dataKey + 'Width']: columnWidth
+            [`${dataKey}_${index}_width`]: columnWidth
         });
     },
     _onColumnResize(width, left, event) {
@@ -131,10 +131,10 @@ const Table = React.createClass({
                 isFixedColumn = true;
             }
 
-            width = this.state[columnChildren[1].props.dataKey + 'Width'] || width;
+            width = this.state[`${columnChildren[1].props.dataKey}_${index}_width`] || width;
 
             let cellProps = {
-                width, fixed, left, align, resizable, sortable,
+                width, fixed, left, align, resizable, sortable, index,
                 height: this.props.rowHeight,
                 headerHeight: this.props.headerHeight,
                 firstColumn: (index === 0),
@@ -143,7 +143,7 @@ const Table = React.createClass({
             };
 
             let headerCellsProps = {
-                headerHeight:this.props.headerHeight || this.props.rowHeight,
+                headerHeight: this.props.headerHeight || this.props.rowHeight,
                 dataKey: columnChildren[1].props.dataKey,
                 sortColumn, sortType, onSortColumn
             };
