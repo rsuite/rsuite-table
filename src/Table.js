@@ -362,6 +362,9 @@ const Table = React.createClass({
     componentDidMount() {
         this._onBodyScrollListener = on(this.refs.tableBody, 'scroll', this.handleBodyScroll);
     },
+    componentDidUpdate: function (nextProps) {
+        this.handleBodyScroll();
+    },
     componentWillUnmount() {
         if (this._onBodyScrollListener) {
             this._onBodyScrollListener.off();
