@@ -1,5 +1,5 @@
-import React, {PropTypes} from 'react';
-import {findDOMNode} from 'react-dom';
+import React, { PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
 import { on, scrollLeft, scrollTop, addStyle, addClass, removeClass, toggleClass } from 'dom-lib';
 import { assign } from 'lodash';
@@ -238,9 +238,9 @@ const Table = React.createClass({
 
         return (
             <div className={clesses} style={styles} ref='table' id={id}>
-                {this.renderTableHeader(headerCells, rowWidth) }
-                {this.renderTableBody(bodyCells, rowWidth, allColumnsWidth) }
-                {!isIE8 && this.renderMouseArea() }
+                {this.renderTableHeader(headerCells, rowWidth)}
+                {this.renderTableBody(bodyCells, rowWidth, allColumnsWidth)}
+                {!isIE8 && this.renderMouseArea()}
             </div>
         );
     },
@@ -253,34 +253,39 @@ const Table = React.createClass({
             headerHeight: headerHeight,
             isHeaderRow: true,
             top: 0
+
         }, headerCells);
 
         return (
             <div
-                className={this.prefix('header-row-wrapper') }>
+                className={this.prefix('header-row-wrapper')}>
                 {row}
             </div>
         );
     },
     randerRowData(bodyCells, rowData, props) {
 
-        let hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children) && rowData.children.length > 0;
-        let rowKey = '_' + (Math.random() * 1E18).toString(36).slice(0, 5).toUpperCase();
-        let row = this.renderRow({
+        const { onRowClick } = this.props;
+        const hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children) && rowData.children.length > 0;
+        const rowKey = '_' + (Math.random() * 1E18).toString(36).slice(0, 5).toUpperCase();
+        const row = this.renderRow({
             key: props.index,
             rowIndex: props.index,
             width: props.rowWidth,
             height: props.rowHeight,
             top: props.top,
+            onClick: () => {
+                onRowClick && onRowClick(rowData);
+            },
             rowData
         }, bodyCells.map((cell, key) => React.cloneElement(cell, {
             key: key,
             layer: props.layer,
-            rowData: rowData,
             hasChildren: hasChildren,
             rowIndex: props.index,
-            rowKey: rowKey,
-            onTreeToggle: this._onTreeToggle
+            onTreeToggle: this._onTreeToggle,
+            rowKey,
+            rowData
         }, cell.props.children)));
 
 
@@ -302,7 +307,7 @@ const Table = React.createClass({
                     key={props.index} >
                     {row}
                     <div className="children" >
-                        {rowData.children.map((child, index) => this.randerRowData(bodyCells, child, Object.assign({}, props, { index }))) }
+                        {rowData.children.map((child, index) => this.randerRowData(bodyCells, child, Object.assign({}, props, { index })))}
                     </div>
                 </div>
             );
@@ -329,8 +334,7 @@ const Table = React.createClass({
             !isTree && (top += rowHeight);
             return row;
         }) : (
-                <div className={this.prefix('body-info') }>
-                    <i className="icon icon-info icon-big"></i>
+                <div className={this.prefix('body-info')}>
                     {this.props.locale.emptyMessage}
                 </div>
             );
@@ -339,7 +343,7 @@ const Table = React.createClass({
 
         return (
             <div ref="tableBody"
-                className={this.prefix('body-row-wrapper') }
+                className={this.prefix('body-row-wrapper')}
                 style={bodyStyles}>
                 {rows}
             </div>
@@ -356,7 +360,7 @@ const Table = React.createClass({
         };
 
         return (
-            <div ref="mouseArea" className={this.prefix('mouse-area') } style={styles}></div>
+            <div ref="mouseArea" className={this.prefix('mouse-area')} style={styles}></div>
         );
     },
     componentDidMount() {
