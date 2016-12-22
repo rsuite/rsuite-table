@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import { Pagination, Dropdown } from 'rsuite';
 import ClassNameMixin from './mixins/ClassNameMixin';
@@ -25,7 +25,8 @@ const TablePagination = React.createClass({
         next: PropTypes.bool,
         first: PropTypes.bool,
         last: PropTypes.bool,
-        maxButtons: PropTypes.number
+        maxButtons: PropTypes.number,
+        activePage: PropTypes.number
     },
     getDefaultProps() {
         return {
@@ -52,10 +53,20 @@ const TablePagination = React.createClass({
         };
     },
     getInitialState() {
+        const { displayLength, activePage  } = this.props;
         return {
-            displayLength: this.props.displayLength,
-            activePage: 1
+            displayLength,
+            activePage: activePage || 1
         };
+    },
+    componentWillReceiveProps(nextProps) {
+        const { displayLength, activePage  } = this.props;
+        if (displayLength !== nextProps.displayLength || activePage !== nextProps.activePage) {
+            this.setState({
+                displayLength: nextProps.displayLength,
+                activePage: nextProps.activePage
+            });
+        }
     },
     handleChangeLength(eventKey) {
 
@@ -93,7 +104,7 @@ const TablePagination = React.createClass({
         });
 
         return (
-            <div className={this.prefix('length-menu') }>
+            <div className={this.prefix('length-menu')}>
                 {
                     formatLengthMenu(
                         <Dropdown
@@ -118,26 +129,26 @@ const TablePagination = React.createClass({
             return null;
         }
 
-        const {activePage} = this.state;
+        const { activePage } = this.state;
         return (
-            <div className={this.prefix('page-info') }>
-                {formatInfo(total, activePage) }
+            <div className={this.prefix('page-info')}>
+                {formatInfo(total, activePage)}
             </div>
         );
     },
     render() {
         const { total, prev, next, first, last, maxButtons, className} = this.props;
-        const { displayLength } = this.state;
+        const { displayLength, activePage } = this.state;
         const pages = parseInt(total / displayLength) + (total % displayLength ? 1 : 0);
         const classes = classNames(this.prefix('pagination-wrapper'), className);
 
         return (
 
             <div className={classes}>
-                {this.renderLengthMenu() }
-                {this.renderInfo() }
+                {this.renderLengthMenu()}
+                {this.renderInfo()}
 
-                <div className={ classNames(this.prefix('pagination')) } >
+                <div className={classNames(this.prefix('pagination'))} >
                     <Pagination
                         prev={prev}
                         next={next}
@@ -146,7 +157,7 @@ const TablePagination = React.createClass({
                         maxButtons={maxButtons}
                         pages={pages}
                         onSelect={this.handleChangePage}
-                        activePage={this.state.activePage} />
+                        activePage={ activePage } />
                 </div>
 
             </div>
