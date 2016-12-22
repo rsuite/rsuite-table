@@ -23,6 +23,9 @@ const FixedColumnTable = React.createClass({
                     sortColumn={this.state.sortColumn}
                     sortType={this.state.sortType}
                     onSortColumn={this.handleSortColumn}
+                    onRowClick={(data)=>{
+                        console.log(data);
+                    }}
                     >
 
                     <Column width={50}  align="center"  fixed>
