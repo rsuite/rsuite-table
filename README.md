@@ -5,9 +5,9 @@
 ## Basic Example
 ```js
 import react from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-
+import 'rsuite-table/lib/less/style.less';
 
 const dataList = [
     {id:1, name:'a', email:'a@email.com',iconURL:'...'},
@@ -15,9 +15,9 @@ const dataList = [
     {id:1, name:'c', email:'c@email.com',iconURL:'...'}
 ];
 
-ReactDom.render(
-    <Table data = {dataList}  >
+ReactDOM.render(
 
+    <Table data = {dataList}  >
         <Column  width = {100} sort fixed resizable>
             <HeaderCell>ID</HeaderCell>
             <Cell dataKey="id"></Cell>
@@ -32,7 +32,8 @@ ReactDom.render(
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email"></Cell>
         </Column>
+    </Table> ,
 
-    </Table>
+    document.getElementById('mount')
 );
 ```

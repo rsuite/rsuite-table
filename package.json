@@ -1,10 +1,10 @@
 {
   "name": "rsuite-table",
-  "version": "0.0.14",
+  "version": "1.0.0",
   "description": "RSuite Table",
   "main": "lib/index.js",
   "scripts": {
-    "build": "rm -rf lib && babel src --out-dir lib",
+    "build": "rm -rf lib && babel src --out-dir lib && cp -R src/less lib",
     "dev": "webpack --progress -colors --watch",
     "docs": "webpack --progress -colors --watch --config webpack.docs.config.js",
     "docs-publish": "NODE_ENV=publish webpack --progress -colors --config webpack.docs.config.js"
