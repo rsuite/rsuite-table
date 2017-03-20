@@ -69,7 +69,7 @@ const HeaderCell = React.createClass({
 
         if (sortable) {
 
-            const icon = (<i className={sortColumn === dataKey ? `fa fa-sort-${sortType}` : 'fa fa-sort'}></i>);
+            const icon = (<i className={sortColumn === dataKey ? `icon icon-sort-${sortType}` : 'icon icon-sort'}></i>);
             return (
                 <div style={styles} className={this.prefix('sortable') }>
                     {icon}
