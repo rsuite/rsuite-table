@@ -56,27 +56,31 @@ const Table = React.createClass({
         };
     },
     getFixedCellGroups() {
-        return findDOMNode(this.refs.table).querySelectorAll(`.${this.props.classPrefix}-cell-group.fixed`);
+        return findDOMNode(this.table).querySelectorAll(`.${this.props.classPrefix}-cell-group.fixed`);
     },
-    handleBodyScroll() {
+    handleBodyScroll(event) {
 
-        let {tableBody, tableHeader} = this.refs;
-        let tableHeaderDom = findDOMNode(tableHeader);
+        let tableHeaderDom = findDOMNode(this.tableHeader);
         let groups = this.getFixedCellGroups();
         let handelClass = { addClass, removeClass };
 
-        let left = scrollLeft(tableBody);
-        let top = scrollTop(tableBody);
+        let left = scrollLeft(this.tableBody);
+        let top = scrollTop(this.tableBody);
+
 
         this.scrollLeft = left;
 
         Array.from(groups).map((group) => {
-            addStyle(group, { left: left + 'px' });
+            addStyle(group, {
+                transform: `translate3d(${left || 0}px, 0px, 0px)`
+            });
             let toggle = left > 1 ? 'addClass' : 'removeClass';
             !isIE8 && handelClass[toggle](group, 'shadow');
         });
 
-        addStyle(tableHeaderDom, { left: (-left) + 'px' });
+        addStyle(tableHeaderDom, {
+            transform: `translate3d(${-left || 0}px, 0px, 0px)`
+        });
 
         let toggle = top > 1 ? 'addClass' : 'removeClass';
         !isIE8 && handelClass[toggle](tableHeaderDom, 'shadow');
@@ -115,13 +119,13 @@ const Table = React.createClass({
         const columns = this.props.children;
         const { dataKey, columnWidth } = this.state;
 
-        const { sortColumn, sortType, onSortColumn} = this.props;
+        const { sortColumn, sortType, onSortColumn } = this.props;
 
 
         ReactChildren.map(columns, (column, index) => {
 
             let columnChildren = column.props.children;
-            let { width, fixed, align, sortable, resizable} = column.props;
+            let { width, fixed, align, sortable, resizable } = column.props;
 
             if (columnChildren.length !== 2) {
                 throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
@@ -220,7 +224,7 @@ const Table = React.createClass({
             id
         } = this.props;
 
-        let {headerCells, bodyCells, allColumnsWidth, isFixedColumn} = this.getCells();
+        let { headerCells, bodyCells, allColumnsWidth, isFixedColumn } = this.getCells();
         let rowWidth = allColumnsWidth > width ? allColumnsWidth : width;
 
         //Check there are fixed columns
@@ -237,7 +241,7 @@ const Table = React.createClass({
         const styles = assign({ width: width || 'auto', height }, style);
 
         return (
-            <div className={clesses} style={styles} ref='table' id={id}>
+            <div className={clesses} style={styles} ref={ref => this.table = ref} id={id}>
                 {this.renderTableHeader(headerCells, rowWidth)}
                 {this.renderTableBody(bodyCells, rowWidth, allColumnsWidth)}
                 {!isIE8 && this.renderMouseArea()}
@@ -245,9 +249,9 @@ const Table = React.createClass({
         );
     },
     renderTableHeader(headerCells, rowWidth) {
-        const {rowHeight, headerHeight} = this.props;
+        const { rowHeight, headerHeight } = this.props;
         const row = this.renderRow({
-            ref: 'tableHeader',
+            ref: ref => this.tableHeader = ref,
             width: rowWidth,
             height: rowHeight,
             headerHeight: headerHeight,
@@ -274,6 +278,7 @@ const Table = React.createClass({
             width: props.rowWidth,
             height: props.rowHeight,
             top: props.top,
+            //transform:`translate3d(0px, ${props.top}px, 0px)`,
             onClick: () => {
                 onRowClick && onRowClick(rowData);
             },
@@ -318,7 +323,7 @@ const Table = React.createClass({
     },
     renderTableBody(bodyCells, rowWidth, allColumnsWidth) {
 
-        const {headerHeight, rowHeight, height, data, isTree} = this.props;
+        const { headerHeight, rowHeight, height, data, isTree } = this.props;
         const bodyStyles = {
             top: isTree ? 0 : headerHeight || rowHeight,
             height: height - (headerHeight || rowHeight)
@@ -342,7 +347,7 @@ const Table = React.createClass({
 
 
         return (
-            <div ref="tableBody"
+            <div ref={ref => this.tableBody = ref}
                 className={this.prefix('body-row-wrapper')}
                 style={bodyStyles}>
                 {rows}
@@ -352,7 +357,7 @@ const Table = React.createClass({
     renderMouseArea() {
         const { height } = this.props;
         const scrollLeft = this.scrollLeft || 0;
-        const {mouseAreaLeft, resizeColumnFixed} = this.state;
+        const { mouseAreaLeft, resizeColumnFixed } = this.state;
 
         const styles = {
             height,
@@ -364,7 +369,7 @@ const Table = React.createClass({
         );
     },
     componentDidMount() {
-        this._onBodyScrollListener = on(this.refs.tableBody, 'scroll', this.handleBodyScroll);
+        this._onBodyScrollListener = on(this.tableBody, 'scroll', this.handleBodyScroll);
     },
     componentDidUpdate: function (nextProps) {
         this.handleBodyScroll();

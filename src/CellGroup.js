@@ -1,9 +1,9 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
 import { assign } from 'lodash';
 
-const HeaderCell = React.createClass({
+const CellGroup = React.createClass({
     mixins: [ClassNameMixin],
     propTypes: {
         fixed: PropTypes.bool,
@@ -29,7 +29,12 @@ const HeaderCell = React.createClass({
             this.prefix('cell-group'),
             fixed ? 'fixed' : ''
         );
-        let styles = assign({ width, left, height }, style);
+
+        let styles = assign({
+            width,
+            transform: `translate3d(${left || 0}px, 0px, 0px)`,
+            height
+        }, style);
 
         return (
             <div className={classes} style={styles}>
@@ -40,4 +45,4 @@ const HeaderCell = React.createClass({
 
 });
 
-export default HeaderCell;
+export default CellGroup;

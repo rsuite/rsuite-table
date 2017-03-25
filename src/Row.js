@@ -41,7 +41,8 @@ const Row = React.createClass({
         let styles = assign({
             minWidth: width,
             height: isHeaderRow ? headerHeight : height,
-            top
+            transform:`translate3d(0px, ${top}px, 0px)`
+            //top
         }, style);
 
         return (
