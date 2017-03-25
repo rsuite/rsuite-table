@@ -13,6 +13,27 @@ const extractLess = new ExtractTextPlugin({
 
 
 const docsPath = NODE_ENV === 'development' ? './assets' : './';
+const plugins = [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.DefinePlugin({
+        'NODE_ENV': JSON.stringify(NODE_ENV)
+    }),
+    extractLess,
+    new HtmlwebpackPlugin({
+        title: 'RSUITE Table',
+        filename: 'index.html',
+        template: 'docs/index.html',
+        inject: true,
+        hash: true,
+        path: docsPath
+    })
+]
+
+if (process.env.NODE_ENV === 'production') {
+    plugins.push(new webpack.optimize.UglifyJsPlugin());
+    plugins.push(new webpack.BannerPlugin({ banner: `Last update: ${new Date().toString()}` }));
+}
 const common = {
     entry: path.resolve(__dirname, 'src/'),
     devServer: {
@@ -25,22 +46,7 @@ const common = {
         filename: 'bundle.js',
         publicPath: './'
     },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NamedModulesPlugin(),
-        new webpack.DefinePlugin({
-            'NODE_ENV': JSON.stringify(NODE_ENV)
-        }),
-        extractLess,
-        new HtmlwebpackPlugin({
-            title: 'RSUITE Table',
-            filename: 'index.html',
-            template: 'docs/index.html',
-            inject: true,
-            hash: true,
-            path: docsPath
-        })
-    ],
+    plugins,
     module: {
         rules: [{
             test: /\.jsx?$/,
