@@ -1,11 +1,11 @@
 import React from 'react';
-import {Table, Column, Cell, HeaderCell } from '../../src';
-import fakeObjectDataListStore from '../fakeObjectDataListStore';
+import { Table, Column, Cell, HeaderCell } from '../../src';
+import fakeData from '../data/users';
 
 
 const DateCell = ({ rowData, dataKey, ...props }) => (
     <Cell {...props}>
-        {rowData[dataKey].toLocaleString() }
+        {rowData[dataKey].toLocaleString()}
     </Cell>
 );
 
@@ -40,19 +40,16 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
 const CustomColumnTable = React.createClass({
     getInitialState() {
         return {
-            data: fakeObjectDataListStore(30)
+            data: fakeData
         };
     },
     render() {
-        const {data} = this.state;
+        const { data } = this.state;
         return (
             <div>
-                <Table  height={400} data={data} rowHeight={64} headerHeight={36}>
-                    <Column width={64}  align="center" >
-                        <HeaderCell>Icon</HeaderCell>
-                        <ImageCell dataKey="avartar" />
-                    </Column>
-                     <Column width={160} >
+                <Table height={400} data={data} rowHeight={64} headerHeight={36}>
+                    
+                    <Column width={160} >
                         <HeaderCell>First Name</HeaderCell>
                         <Cell dataKey="firstName" />
                     </Column>
@@ -76,8 +73,6 @@ const CustomColumnTable = React.createClass({
                         <HeaderCell>Action</HeaderCell>
                         <ActionCell dataKey="id" />
                     </Column>
-
-
 
                 </Table>
             </div>

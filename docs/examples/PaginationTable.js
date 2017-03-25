@@ -1,7 +1,6 @@
 import React from 'react';
 import {Table, Column, Cell, HeaderCell, TablePagination } from '../../src';
-import fakeObjectDataListStore from '../fakeObjectDataListStore';
-
+import fakeData from '../data/users';
 
 const DateCell = ({ rowData, dataKey, ...props }) => (
     <Cell {...props}>
@@ -29,19 +28,19 @@ const PaginationTable = React.createClass({
     getInitialState() {
         return {
             displayLength: 100,
-            data: fakeObjectDataListStore(100)
+            data: fakeData
         };
     },
     handleChangePage(dataKey) {
         const {displayLength} = this.state;
         this.setState({
-            data: fakeObjectDataListStore(displayLength)
+            data: fakeData
         });
     },
     handleChangeLength(dataKey) {
         this.setState({
             displayLength: dataKey,
-            data: fakeObjectDataListStore(dataKey)
+            data: fakeData
         });
     },
     render() {

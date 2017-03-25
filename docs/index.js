@@ -2,9 +2,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Header, Navbar, Nav } from 'rsuite';
+import { Markdown } from 'markdownloader';
 
-import '../src/less/style.less';
-import './style.less';
+import '../src/less/index.less';
+import './less/index.less';
 
 import FixedColumnTable from './examples/FixedColumnTable';
 import PaginationTable from './examples/PaginationTable';
@@ -37,30 +38,37 @@ const App = React.createClass({
 
                 <div className="container">
 
-                    <h2>Fixed columns</h2>
+                    <h2>锁定表头 </h2>
                     <FixedColumnTable />
-                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/FixedColumnTable.js" target="_blank" >Example code</a></h4>
+                   
+                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/FixedColumnTable.js" target="_blank" >示例代码</a></h4>
                     <hr/>
 
-                    <h2>Resizable columns</h2>
+                    <h2>自定义调整列宽 </h2>
                     <ResizableColumnTable />
-                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/ResizableColumnTable.js" target="_blank" >Example code</a></h4>
+                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/ResizableColumnTable.js" target="_blank" >示例代码</a></h4>
                     <hr/>
 
-                    <h2>Custom cells</h2>
+                    <h2>自定义单元格 </h2>
                     <CustomColumnTable />
-                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/CustomColumnTable.js" target="_blank" >Example code</a></h4>
+                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/CustomColumnTable.js" target="_blank" >示例代码</a></h4>
                     <hr/>
 
-                    <h2>Pagination</h2>
+                    <h2>分页 </h2>
                     <PaginationTable />
-                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/PaginationTable.js" target="_blank" >Example code</a></h4>
+                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/PaginationTable.js" target="_blank" >示例代码</a></h4>
                     <hr/>
 
-                    <h2>Tree Table</h2>
+                    <h2>树形表格</h2>
                     <TreeTable/>
-                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/TreeTable.js" target="_blank" >Example code</a></h4>
+                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/TreeTable.js" target="_blank" >示例代码</a></h4>
 
+                    <h2>API </h2>
+                    <Markdown>
+                        {
+                            require('./md/props.md')
+                        }
+                    </Markdown>
                 </div>
 
             </div>

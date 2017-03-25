@@ -1,11 +1,11 @@
 import React from 'react';
 import {Table, Column, Cell, HeaderCell } from '../../src';
-import fakeObjectDataListStore from '../fakeObjectDataListStore';
+import fakeData from '../data/users';
 
 const FixedColumnTable = React.createClass({
     getInitialState() {
         return {
-            data: fakeObjectDataListStore(100)
+            data: fakeData
         };
     },
     handleSortColumn(sortColumn, sortType) {
