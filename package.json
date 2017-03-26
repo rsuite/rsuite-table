@@ -7,7 +7,8 @@
     "build": "rm -rf lib && babel src --out-dir lib && cp -R src/less lib",
     "dev": "NODE_ENV=development webpack-dev-server  --inline --progress --colors --port 3100 --host 0.0.0.0 ",
     "docs": "rm -rf assets &&  NODE_ENV=production webpack && cp  -rf ./resources  ./assets ",
-    "cp:docs": "cp -rf ./assets/* ../rsuite.github.io/rsuite-table/"
+    "cp:docs": "cp -rf ./assets/* ../rsuite.github.io/rsuite-table/",
+    "publish-docs": "node docs/gh-pages.js"
   },
   "dependencies": {
     "classnames": "^2.2.5",
@@ -50,6 +51,7 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.3.0"
+    "webpack-dev-server": "^2.3.0",
+    "gh-pages": "^0.12.0"
   }
 }
