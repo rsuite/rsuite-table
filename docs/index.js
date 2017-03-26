@@ -29,6 +29,10 @@ const App = React.createClass({
                             <Navbar.Toggle />
                         </Navbar.Header>
                         <Navbar.Collapse>
+                            <Nav>
+                                <Nav.Item href="#examples">示例</Nav.Item>
+                                <Nav.Item href="#api">API</Nav.Item>
+                            </Nav>
                             <Nav pullRight>
                                 <Nav.Item  href="https://github.com/rsuite/rsuite-table">GitHub</Nav.Item>
                             </Nav>
@@ -38,32 +42,40 @@ const App = React.createClass({
 
                 <div className="container">
 
-                    <h2>锁定表头 </h2>
+                    <Markdown>{require('../README.md')}</Markdown>
+
+
+                    <h2 id="examples"># 示例</h2>
+                    <h3>固定表头,固定前两列 </h3>
                     <FixedColumnTable />
-                   
-                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/FixedColumnTable.js" target="_blank" >示例代码</a></h4>
+                    <Markdown>{require('./md/FixedColumnTable.md')}</Markdown>
+                    <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/FixedColumnTable.js" target="_blank" >示例代码</a></p>
                     <hr/>
 
-                    <h2>自定义调整列宽 </h2>
+                    <h3>自定义调整列宽 </h3>
                     <ResizableColumnTable />
-                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/ResizableColumnTable.js" target="_blank" >示例代码</a></h4>
+                    <Markdown>{require('./md/ResizableColumnTable.md')}</Markdown>
+                    <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/ResizableColumnTable.js" target="_blank" >示例代码</a></p>
                     <hr/>
 
-                    <h2>自定义单元格 </h2>
+                    <h3>自定义单元格 </h3>
                     <CustomColumnTable />
-                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/CustomColumnTable.js" target="_blank" >示例代码</a></h4>
+                    <Markdown>{require('./md/CustomColumnTable.md')}</Markdown>
+                    <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/CustomColumnTable.js" target="_blank" >示例代码</a></p>
                     <hr/>
 
-                    <h2>分页 </h2>
+                    <h3>分页 </h3>
                     <PaginationTable />
-                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/PaginationTable.js" target="_blank" >示例代码</a></h4>
+                    <Markdown>{require('./md/PaginationTable.md')}</Markdown>
+                    <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/PaginationTable.js" target="_blank" >示例代码</a></p>
                     <hr/>
 
-                    <h2>树形表格</h2>
+                    <h3>树形表格</h3>
                     <TreeTable/>
-                    <h4><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/TreeTable.js" target="_blank" >示例代码</a></h4>
+                    <Markdown>{require('./md/TreeTable.md')}</Markdown>
+                    <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/TreeTable.js" target="_blank" >示例代码</a></p>
 
-                    <h2>API </h2>
+                    <h3 id="api"># API </h3>
                     <Markdown>
                         {
                             require('./md/props.md')

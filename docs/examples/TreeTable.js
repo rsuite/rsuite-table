@@ -22,7 +22,7 @@ const TreeTable = React.createClass({
         const {data} = this.state;
         return (
             <div>
-                <Table  height={400} data={data} isTree expand>
+                <Table height={400} data={data} isTree expand>
 
                     <Column width={300} >
                         <HeaderCell>Label</HeaderCell>
