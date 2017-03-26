@@ -34,6 +34,7 @@ const App = React.createClass({
                                 <Nav.Item href="#api">API</Nav.Item>
                             </Nav>
                             <Nav pullRight>
+                                <Nav.Item  href="https://rsuite.github.io">RSuite</Nav.Item>
                                 <Nav.Item  href="https://github.com/rsuite/rsuite-table">GitHub</Nav.Item>
                             </Nav>
                         </Navbar.Collapse>

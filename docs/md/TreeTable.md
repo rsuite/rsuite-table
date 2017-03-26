@@ -1,5 +1,5 @@
 <br>
-> 树型表格，主要为了展示数据的的结构关系，需要在 `Table` 组件上设置一个 `isTree` 属性，同时 `data` 中的数据需要通过 `children` 来定义关系结构
+> 树型表格，主要为了展示有结构关系的数据，需要在 `Table` 组件上设置一个 `isTree` 属性，同时 `data` 中的数据需要通过 `children` 来定义关系结构。
 
 ```html
  <Table  height={400} data={data} isTree expand>
