@@ -1,6 +1,6 @@
 {
   "name": "rsuite-table",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "RSuite Table",
   "main": "lib/index.js",
   "scripts": {
