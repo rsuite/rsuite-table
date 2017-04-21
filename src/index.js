@@ -5,9 +5,9 @@ import HeaderCell from './HeaderCell';
 import TablePagination from './TablePagination';
 
 export {
-    Table,
-    Column,
-    Cell,
-    HeaderCell,
-    TablePagination
+  Table,
+  Column,
+  Cell,
+  HeaderCell,
+  TablePagination
 };
