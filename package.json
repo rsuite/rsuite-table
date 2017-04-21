@@ -14,15 +14,21 @@
     "classnames": "^2.2.5",
     "dom-lib": "^0.0.11",
     "element-resize-event": "^2.0.5",
-    "lodash": "^4.13.1",
-    "react": "^0.14.2",
-    "react-dom": "^0.14.8"
+    "lodash": "^4.13.1"
   },
   "author": "simonguo.2009@gmail.com",
   "license": "MIT",
+  "files": [
+    "CHANGELOG.md",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:rsuite/rsuite-table.git"
+  },
+  "peerDependencies": {
+    "react": ">=0.14.0",
+    "react-dom": ">=0.14.0"
   },
   "devDependencies": {
     "babel-core": "^6.7.6",
