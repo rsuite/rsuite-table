@@ -22,8 +22,6 @@ const App = React.createClass({
     return (
       <div className="doc-page">
 
-
-
         <Header inverse>
           <div className="container">
             <Navbar.Header>
@@ -49,7 +47,7 @@ const App = React.createClass({
               <Affix offsetTop={70}>
                 <Nav pills stacked className="sidebar">
                   <Nav.Item href="#README">概述</Nav.Item>
-                  <Nav.Item href="#FixedColumnTable">固定表头</Nav.Item>
+                  <Nav.Item href="#FixedColumnTable">锁定列</Nav.Item>
                   <Nav.Item href="#ResizableColumnTable">自定义调整列宽</Nav.Item>
                   <Nav.Item href="#FluidColumnTable">自动列宽</Nav.Item>
                   <Nav.Item href="#CustomColumnTable">自定义单元格</Nav.Item>
