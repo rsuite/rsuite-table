@@ -41,3 +41,25 @@ dataKey | string |  |  数据绑定的 `key` ，同时也是排序的 `key`
 align | string |  |  对齐方式 ['left', 'center', 'right']
 rowData | object |  | 行数据
 rowIndex | number |  | 行号
+
+#### `<TablePagination>`
+
+表格分页工具栏
+
+Name | Type | Default | Description |
+---- | ---- | ------- | ----------- |
+lengthMenu | array | `[{value: 30,text: 30,}, {value: 50,text: 50,}, {value: 100,text: 100,}]` |  分页显示行数配置，默认为 30, 50, 100
+showLengthMenu  | bool | true  |  显示多少行的菜单，默认显示
+showInfo   | bool | true | 显示分页信息
+total | number |  | 总数据条目数
+displayLength | number |  30 | 配置每页显示多少行条目数，对应 `lengthMenu`
+formatLengthMenu| function | | 格式化 `lengthMenu`
+formatInfo | function | | 格式化 `info`
+onChangePage| function | | page 改变时候触发的回调函数
+onChangeLength| function | | `lengthMenu` 值发生改变的时候触发的回调函数
+prev | bool | true | 显示上一页按钮
+next | bool | true | 显示下一页按钮
+first | bool | true  | 显示第一页按钮
+last | bool |  true | 显示最后一页按钮
+maxButtons | number |  5 | 配置最多显示按钮数量
+activePage | number |  1 | 配置当前页号
