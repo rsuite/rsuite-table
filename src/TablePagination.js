@@ -86,10 +86,10 @@ const TablePagination = React.createClass({
   renderLengthMenu() {
 
     const {
-            lengthMenu,
+      lengthMenu,
       formatLengthMenu,
       showLengthMenu,
-        } = this.props;
+    } = this.props;
 
     const { displayLength } = this.state;
 
@@ -103,19 +103,21 @@ const TablePagination = React.createClass({
       );
     });
 
+    const dropdown = (
+      <Dropdown
+        shape='default'
+        activeKey={displayLength}
+        onSelect={this.handleChangeLength}
+        dropup
+        select>
+        {items}
+      </Dropdown>
+    );
+
     return (
       <div className={this.prefix('length-menu')}>
         {
-          formatLengthMenu(
-            <Dropdown
-              shape='default'
-              activeKey={displayLength}
-              onSelect={this.handleChangeLength}
-              dropup
-              select>
-              {items}
-            </Dropdown>
-          )
+          formatLengthMenu ? formatLengthMenu(dropdown) : dropdown
         }
       </div>
     );
@@ -132,7 +134,7 @@ const TablePagination = React.createClass({
     const { activePage } = this.state;
     return (
       <div className={this.prefix('page-info')}>
-        {formatInfo(total, activePage)}
+        {formatInfo ? formatInfo(total, activePage) : <span>Total: {total}</span>}
       </div>
     );
   },
