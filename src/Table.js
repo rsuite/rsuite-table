@@ -154,10 +154,8 @@ const Table = React.createClass({
       width = this.state[`${columnChildren[1].props.dataKey}_${index}_width`] || width || 0;
 
       if (tableWidth && flexGrow) {
-        width = (tableWidth - totalWidth) / totalFlexGrow * flexGrow || 0;
+        width = (tableWidth - totalWidth - 10) / totalFlexGrow * flexGrow || 0;
       }
-
-
 
       let cellProps = {
         width,
