@@ -70,12 +70,15 @@ const App = React.createClass({
               <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/FixedColumnTable.js" target="_blank" >示例代码</a></p>
               <hr />
 
+
               <a id="ResizableColumnTable" className="target-fix" ></a>
               <h3 >自定义调整列宽 </h3>
               <ResizableColumnTable />
               <Markdown>{require('./md/ResizableColumnTable.md')}</Markdown>
               <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/ResizableColumnTable.js" target="_blank" >示例代码</a></p>
               <hr />
+
+
 
               <a id="FluidColumnTable" className="target-fix" ></a>
               <h3 >自动列宽 </h3>
@@ -113,6 +116,7 @@ const App = React.createClass({
                   require('./md/props.md')
                 }
               </Markdown>
+
             </Col>
 
           </Row>

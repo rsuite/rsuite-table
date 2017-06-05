@@ -12,9 +12,15 @@ const ResizableColumnTable = React.createClass({
     const { data } = this.state;
     return (
       <div>
-        <Table height={400} data={data} >
+        <Table
+          height={400}
+          data={data}
+          onSortColumn={(sortColumn, sortType) => {
+            console.log(sortColumn, sortType);
+          }}
+        >
 
-          <Column width={50} align="center" fixed>
+          <Column width={50} align="center" fixed >
             <HeaderCell>Id</HeaderCell>
             <Cell dataKey="id" />
           </Column>
@@ -24,17 +30,17 @@ const ResizableColumnTable = React.createClass({
             <Cell dataKey="firstName" />
           </Column>
 
-          <Column width={100} resizable>
+          <Column width={100} resizable sortable>
             <HeaderCell>Last Name</HeaderCell>
             <Cell dataKey="lastName" />
           </Column>
 
-          <Column flexGrow={1}>
+          <Column flexGrow={1} sortable>
             <HeaderCell>City <code>flexGrow={1}</code></HeaderCell>
             <Cell dataKey="city" />
           </Column>
 
-          <Column flexGrow={2}>
+          <Column flexGrow={2} sortable>
             <HeaderCell>Company Name <code>flexGrow={2}</code></HeaderCell>
             <Cell dataKey="companyName" />
           </Column>
