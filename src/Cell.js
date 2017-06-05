@@ -20,6 +20,7 @@ const Cell = React.createClass({
 
     rowData: PropTypes.object,
     rowIndex: PropTypes.number,
+    layer: PropTypes.number,  // for tree table
 
     cellData: PropTypes.any,
     cellRenderer: PropTypes.func,
@@ -43,7 +44,7 @@ const Cell = React.createClass({
   renderCell(content) {
 
     let {
-            width,
+      width,
       left,
       height,
       style,
@@ -60,7 +61,7 @@ const Cell = React.createClass({
       align,
       sortable,
       ...props
-        } = this.props;
+    } = this.props;
 
 
     const classes = classNames(
@@ -119,17 +120,16 @@ const Cell = React.createClass({
   },
   render() {
     const {
-            children,
+      children,
       rowData,
       isHeaderCell,
       dataKey,
       fixed
-        } = this.props;
+    } = this.props;
 
     if (isHeaderCell) {
       return this.renderCell(children);
     }
-
     return this.renderCell(children || rowData[dataKey]);
   }
 

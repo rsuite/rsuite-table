@@ -24,13 +24,12 @@ const HeaderCell = React.createClass({
     this.props.onColumnResize(width, left, event);
   },
   _onColumnResizeEnd(columnWidth, cursorDelta) {
-    this.setState({
-      columnWidth: columnWidth
-    });
 
+    this.setState({ columnWidth });
     this.props.onColumnResizeEnd(columnWidth, cursorDelta, this.props.dataKey, this.props.index);
   },
   getInitialState() {
+    console.log(this.props.width);
     return {
       columnWidth: this.props.width
     };
@@ -43,8 +42,6 @@ const HeaderCell = React.createClass({
     if (!resizable) {
       return null;
     }
-
-
     return (
       <ColumnResizeHandle
         columnWidth={columnWidth}
@@ -56,23 +53,22 @@ const HeaderCell = React.createClass({
         onColumnResizeEnd={this._onColumnResizeEnd}
       />
     );
-
   },
   renderSortColumn() {
-    const { left, headerHeight, sortable, sortColumn, sortType, dataKey } = this.props;
+    const { left, headerHeight, sortable, sortColumn, sortType, dataKey, width } = this.props;
     const { columnWidth } = this.state;
-
     const styles = {
-      left: columnWidth + left - 16,
+      left: (columnWidth || width) + left - 16,
       top: headerHeight / 2 - 8
     };
 
     if (sortable) {
-
-      const icon = (<i className={sortColumn === dataKey ? `icon icon-sort-${sortType}` : 'icon icon-sort'}></i>);
       return (
-        <div style={styles} className={this.prefix('sortable')}>
-          {icon}
+        <div
+          style={styles}
+          className={this.prefix('sortable')}
+        >
+          <i className={sortColumn === dataKey ? `icon icon-sort-${sortType}` : 'icon icon-sort'}></i>
         </div>
       );
     }
@@ -90,7 +86,12 @@ const HeaderCell = React.createClass({
 
     return (
       <div className={classes} >
-        <Cell isHeaderCell={true} {...this.props} onClick={this.handleClick}></Cell>
+        <Cell
+          {...this.props}
+          isHeaderCell={true}
+          onClick={this.handleClick}
+        >
+        </Cell>
         {this.renderSortColumn()}
         {!isIE8 && this.renderResizeSpanner()}
       </div>

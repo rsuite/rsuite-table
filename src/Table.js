@@ -134,7 +134,7 @@ const Table = React.createClass({
     const columns = this.props.children;
     const { dataKey, columnWidth, width: tableWidth } = this.state;
 
-    const { sortColumn, sortType, onSortColumn } = this.props;
+    const { sortColumn, sortType, onSortColumn, rowHeight, headerHeight } = this.props;
     const { totalFlexGrow, totalWidth } = getTotalByColumns(columns);
 
 
@@ -151,31 +151,33 @@ const Table = React.createClass({
         isFixedColumn = true;
       }
 
-      width = this.state[`${columnChildren[1].props.dataKey}_${index}_width`] || width || 0;
+      let nextWidth = this.state[`${columnChildren[1].props.dataKey}_${index}_width`] || width || 0;
 
       if (tableWidth && flexGrow) {
-        width = (tableWidth - totalWidth - 10) / totalFlexGrow * flexGrow || 0;
+        nextWidth = (tableWidth - totalWidth - 10) / totalFlexGrow * flexGrow || 0;
       }
 
       let cellProps = {
-        width,
         fixed,
         left,
         align,
         resizable,
         sortable,
         index,
-        height: this.props.rowHeight,
-        headerHeight: this.props.headerHeight,
+        width: nextWidth,
+        height: rowHeight,
+        headerHeight: headerHeight,
         firstColumn: (index === 0),
         lastColumn: (index === columns.length - 1),
         key: index
       };
 
       let headerCellsProps = {
-        headerHeight: this.props.headerHeight || this.props.rowHeight,
+        headerHeight: headerHeight || rowHeight,
         dataKey: columnChildren[1].props.dataKey,
-        sortColumn, sortType, onSortColumn
+        sortColumn,
+        sortType,
+        onSortColumn
       };
 
       if (resizable) {
@@ -187,7 +189,7 @@ const Table = React.createClass({
       headerCells.push(this.cloneCell(columnChildren[0], assign(cellProps, headerCellsProps)));
       bodyCells.push(this.cloneCell(columnChildren[1], cellProps));
 
-      left += width;
+      left += nextWidth;
     });
 
     return {
