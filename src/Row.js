@@ -22,7 +22,7 @@ const Row = React.createClass({
   },
   render() {
     const {
-            children,
+      children,
       className,
       width,
       height,
@@ -31,7 +31,7 @@ const Row = React.createClass({
       isHeaderRow,
       headerHeight,
       ...props
-        } = this.props;
+    } = this.props;
 
     let classes = classNames(
       this.prefix('row'),

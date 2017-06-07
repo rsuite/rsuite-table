@@ -47,7 +47,8 @@ const Table = React.createClass({
      * @params: sortColumn dataKey
      * @params: sortType
      */
-    onSortColumn: PropTypes.func
+    onSortColumn: PropTypes.func,
+    onRerenderRowHeight: PropTypes.func,
   },
   getDefaultProps() {
     return {
@@ -300,6 +301,7 @@ const Table = React.createClass({
     const { onRowClick } = this.props;
     const hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children) && rowData.children.length > 0;
     const rowKey = '_' + (Math.random() * 1E18).toString(36).slice(0, 5).toUpperCase();
+
     const row = this.renderRow({
       key: props.index,
       rowIndex: props.index,
@@ -315,6 +317,7 @@ const Table = React.createClass({
       key: key,
       layer: props.layer,
       hasChildren: hasChildren,
+      height: props.rowHeight,
       rowIndex: props.index,
       onTreeToggle: this._onTreeToggle,
       rowKey,
@@ -351,7 +354,15 @@ const Table = React.createClass({
   },
   renderTableBody(bodyCells, rowWidth, allColumnsWidth) {
 
-    const { headerHeight, rowHeight, height, data, isTree } = this.props;
+    const {
+      headerHeight,
+      rowHeight,
+      height,
+      data,
+      isTree,
+      onRerenderRowHeight,
+    } = this.props;
+
     const bodyStyles = {
       top: isTree ? 0 : headerHeight || rowHeight,
       height: height - (headerHeight || rowHeight)
@@ -360,13 +371,30 @@ const Table = React.createClass({
     let top = 0;    //Row position
     let layer = 0;  //Tree layer
     let rows = (data.length > 0) ? data.map((rowData, index) => {
+
+      let nextRowHeight = rowHeight;
+
+      /**
+       * 自定义行高
+       */
+      if (onRerenderRowHeight) {
+        nextRowHeight = onRerenderRowHeight(rowData) || rowHeight;
+      }
+
       let row = this.randerRowData(bodyCells, rowData, {
-        index, top, rowWidth, rowHeight, layer
+        index,
+        top,
+        rowWidth,
+        layer,
+        rowHeight: nextRowHeight
       });
 
-      !isTree && (top += rowHeight);
+      !isTree && (top += nextRowHeight);
+
       return row;
+
     }) : (
+
         <div className={this.prefix('body-info')}>
           {this.props.locale.emptyMessage}
         </div>
@@ -381,6 +409,7 @@ const Table = React.createClass({
     );
   },
   renderMouseArea() {
+
     const { height } = this.props;
     const scrollLeft = this.scrollLeft || 0;
     const { mouseAreaLeft, resizeColumnFixed } = this.state;

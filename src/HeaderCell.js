@@ -29,7 +29,6 @@ const HeaderCell = React.createClass({
     this.props.onColumnResizeEnd(columnWidth, cursorDelta, this.props.dataKey, this.props.index);
   },
   getInitialState() {
-    console.log(this.props.width);
     return {
       columnWidth: this.props.width
     };

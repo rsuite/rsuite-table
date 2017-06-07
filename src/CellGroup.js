@@ -15,14 +15,14 @@ const CellGroup = React.createClass({
   render() {
 
     let {
-            children,
+      children,
       fixed,
       width,
       left,
       height,
       style,
       className
-        } = this.props;
+    } = this.props;
 
     let classes = classNames(
       className,
