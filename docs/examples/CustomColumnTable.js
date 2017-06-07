@@ -47,7 +47,17 @@ const CustomColumnTable = React.createClass({
     const { data } = this.state;
     return (
       <div>
-        <Table height={400} data={data} rowHeight={64} headerHeight={36}>
+        <Table
+          height={400}
+          data={data}
+          rowHeight={64}
+          headerHeight={36}
+          onRerenderRowHeight={(rowData) => {
+            if (rowData.firstName === 'Janis') {
+              return 30;
+            }
+          }}
+        >
 
           <Column width={160} >
             <HeaderCell>First Name</HeaderCell>

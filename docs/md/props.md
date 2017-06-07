@@ -16,6 +16,7 @@ sortColumn | string |  | 排序列名称
 sortType | string |  | 排序类型  ['desc', 'asc']
 onRowClick | func  |  | 行点击后的回调函数， 返回 `rowDate`
 onSortColumn | func  |  | 点击排序列的回调函数，返回 `sortColumn`, `sortType` 这两个值
+onRerenderRowHeight| func  |  | 重新渲染行高
 
 <br>
 ####  `<Column>`

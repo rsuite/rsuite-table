@@ -33,3 +33,19 @@ const DateCell = ({ rowData, dataKey, ...props }) => (
     <DateCell dataKey="date" />
 </Column>
 ```
+--------
+**自定义行高**
+
+如果在实际应用中需要根据数据内容来定义行高，可以使用以下方式
+
+```html
+<Table
+    onRerenderRowHeight={(rowData) => {
+      if (rowData.firstName === 'Janis') {
+        return 30;
+      }
+    }}
+  >
+...
+</Table>
+```
