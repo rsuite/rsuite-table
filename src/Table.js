@@ -30,7 +30,7 @@ const Table = React.createClass({
   mixins: [ClassNameMixin],
   propTypes: {
     width: PropTypes.number,
-    data: PropTypes.array.isRequired,
+    data: PropTypes.array,
     height: PropTypes.number,
     rowHeight: PropTypes.number,
     headerHeight: PropTypes.number,
@@ -370,7 +370,7 @@ const Table = React.createClass({
 
     let top = 0;    //Row position
     let layer = 0;  //Tree layer
-    let rows = (data.length > 0) ? data.map((rowData, index) => {
+    let rows = (data && data.length > 0) ? data.map((rowData, index) => {
 
       let nextRowHeight = rowHeight;
 
