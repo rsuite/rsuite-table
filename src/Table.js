@@ -8,6 +8,7 @@ import Row from './Row';
 import CellGroup from './CellGroup';
 
 import ClassNameMixin from './mixins/ClassNameMixin';
+import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
 import isIE8 from './utils/isIE8';
 import debounce from './utils/debounce';
 
@@ -27,7 +28,10 @@ function getTotalByColumns(columns) {
 const ReactChildren = React.Children;
 const LAYER_WIDTH = 30;
 const Table = React.createClass({
-  mixins: [ClassNameMixin],
+  mixins: [
+    ClassNameMixin,
+    ReactComponentWithPureRenderMixin
+  ],
   propTypes: {
     width: PropTypes.number,
     data: PropTypes.array,

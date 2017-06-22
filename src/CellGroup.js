@@ -1,10 +1,14 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
+import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
 import { assign } from 'lodash';
 
 const CellGroup = React.createClass({
-  mixins: [ClassNameMixin],
+  mixins: [
+    ClassNameMixin,
+    ReactComponentWithPureRenderMixin
+  ],
   propTypes: {
     fixed: PropTypes.bool,
     width: PropTypes.number,

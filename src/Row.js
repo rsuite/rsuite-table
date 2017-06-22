@@ -1,10 +1,14 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
-import { assign } from 'lodash';
+import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
 
+import { assign } from 'lodash';
 const Row = React.createClass({
-  mixins: [ClassNameMixin],
+  mixins: [
+    ClassNameMixin,
+    ReactComponentWithPureRenderMixin
+  ],
   PropTypes: {
     width: PropTypes.number,
     height: PropTypes.number,

@@ -2,11 +2,15 @@ import React, { PropTypes } from 'react';
 import Cell from './Cell';
 import ClassNameMixin from './mixins/ClassNameMixin';
 import ColumnResizeHandle from './ColumnResizeHandle';
+import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
 import isIE8 from './utils/isIE8';
 
 
 const HeaderCell = React.createClass({
-  mixins: [ClassNameMixin],
+  mixins: [
+    ClassNameMixin,
+    ReactComponentWithPureRenderMixin
+  ],
   propTypes: {
     sortable: PropTypes.bool,
     resizable: PropTypes.bool,

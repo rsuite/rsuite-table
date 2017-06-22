@@ -2,9 +2,14 @@ import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import { Pagination, Dropdown } from 'rsuite';
 import ClassNameMixin from './mixins/ClassNameMixin';
+import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
+
 
 const TablePagination = React.createClass({
-  mixins: [ClassNameMixin],
+  mixins: [
+    ClassNameMixin,
+    ReactComponentWithPureRenderMixin
+  ],
   propTypes: {
     lengthMenu: PropTypes.arrayOf(React.PropTypes.shape({
       value: PropTypes.number,

@@ -1,11 +1,16 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
+import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
+
 import { assign } from 'lodash';
 
 const LAYER_WIDTH = 30;
 const Cell = React.createClass({
-  mixins: [ClassNameMixin],
+  mixins: [
+    ClassNameMixin,
+    ReactComponentWithPureRenderMixin
+  ],
   propTypes: {
     dataKey: PropTypes.string,
 
