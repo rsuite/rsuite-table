@@ -21,6 +21,7 @@ const ColumnResizeHandle = React.createClass({
     ReactComponentWithPureRenderMixin
   ],
   propTypes: {
+    height: PropTypes.number,
     columnWidth: PropTypes.number,
     columnLeft: PropTypes.number,
     columnFixed: PropTypes.bool,
@@ -111,12 +112,13 @@ const ColumnResizeHandle = React.createClass({
   render() {
 
 
-    let { columnLeft } = this.props;
+    let { columnLeft, height } = this.props;
     let { columnWidth, visible } = this.state;
 
     let styles = {
       width: 6,
-      left: columnWidth + columnLeft - 2
+      left: columnWidth + columnLeft - 2,
+      height
     };
 
     let classes = classNames({ visible }, this.prefix('column-resize-spanner'));
