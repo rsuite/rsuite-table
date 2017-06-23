@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
-import { on, scrollLeft, scrollTop, addStyle, addClass, removeClass, toggleClass, getWidth } from 'dom-lib';
+import { on, scrollLeft, scrollTop, addStyle, addClass, removeClass, toggleClass, getWidth, getHeight } from 'dom-lib';
 import { assign } from 'lodash';
 
 import Row from './Row';
@@ -11,6 +11,10 @@ import ClassNameMixin from './mixins/ClassNameMixin';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
 import isIE8 from './utils/isIE8';
 import debounce from './utils/debounce';
+import ReactWheelHandler from './dom/ReactWheelHandler';
+import translateDOMPositionXY from './utils/translateDOMPositionXY';
+
+const handelClass = { add: addClass, remove: removeClass };
 
 function getTotalByColumns(columns) {
   let totalFlexGrow = 0;
@@ -72,59 +76,42 @@ const Table = React.createClass({
       dataKey: 0,
       scrollLeft: 0,
       scrollTop: 0,
-      resizeColumnFixed: false
+      resizeColumnFixed: false,
+      shouldFixedColumn: false,
+      contentHeight: 0,
+      contentWidth: 0,
+      scrollX: 0,
+      scrollY: 0,
+      maxScrollX: 0,
+      maxScrollY: 0
     };
   },
   getFixedCellGroups() {
     return findDOMNode(this.table).querySelectorAll(`.${this.props.classPrefix}-cell-group.fixed`);
   },
-  handleBodyScroll(event) {
-
-    let tableHeaderDom = findDOMNode(this.tableHeader);
-    let groups = this.getFixedCellGroups();
-    let handelClass = { addClass, removeClass };
-
-    let left = scrollLeft(this.tableBody);
-    let top = scrollTop(this.tableBody);
-
-
-    this.scrollLeft = left;
-
-    Array.from(groups).map((group) => {
-      addStyle(group, {
-        transform: `translate3d(${left || 0}px, 0px, 0px)`
-      });
-      let toggle = left > 1 ? 'addClass' : 'removeClass';
-      !isIE8 && handelClass[toggle](group, 'shadow');
-    });
-
-    addStyle(tableHeaderDom, {
-      transform: `translate3d(${-left || 0}px, 0px, 0px)`
-    });
-
-    let toggle = top > 1 ? 'addClass' : 'removeClass';
-    !isIE8 && handelClass[toggle](tableHeaderDom, 'shadow');
+  getScrollCellGroups() {
+    return findDOMNode(this.table).querySelectorAll(`.${this.props.classPrefix}-cell-group.scroll`);
   },
-  _onColumnResizeEnd(columnWidth, cursorDelta, dataKey, index) {
+  onColumnResizeEnd(columnWidth, cursorDelta, dataKey, index) {
     this.setState({
       isColumnResizing: false,
       mouseAreaLeft: -1,
       [`${dataKey}_${index}_width`]: columnWidth
     });
   },
-  _onColumnResize(width, left, event) {
+  onColumnResize(width, left, event) {
     this.setState({
       isColumnResizing: true
     });
   },
-  _onColumnResizeMove(width, left, fixed) {
+  onColumnResizeMove(width, left, fixed) {
 
     this.setState({
       resizeColumnFixed: fixed,
       mouseAreaLeft: width + left
     });
   },
-  _onTreeToggle(rowKey, index) {
+  onTreeToggle(rowKey, index) {
     toggleClass(findDOMNode(this.refs[`children_${rowKey}_${index}`]), 'open');
   },
   cloneCell(Cell, props) {
@@ -133,7 +120,6 @@ const Table = React.createClass({
   getCells() {
 
     let left = 0;                  // Cell left margin
-    let isFixedColumn = false;     // IF there are fixed columns
     const headerCells = [];          // Table header cell
     const bodyCells = [];            // Table body cell
     const columns = this.props.children;
@@ -152,9 +138,7 @@ const Table = React.createClass({
         throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
       }
 
-      if (fixed) {
-        isFixedColumn = true;
-      }
+
 
       let nextWidth = this.state[`${columnChildren[1].props.dataKey}_${index}_width`] || width || 0;
 
@@ -186,28 +170,29 @@ const Table = React.createClass({
       };
 
       if (resizable) {
-        headerCellsProps.onColumnResizeEnd = this._onColumnResizeEnd;
-        headerCellsProps.onColumnResize = this._onColumnResize;
-        headerCellsProps.onColumnResizeMove = this._onColumnResizeMove;
+        headerCellsProps.onColumnResizeEnd = this.onColumnResizeEnd;
+        headerCellsProps.onColumnResize = this.onColumnResize;
+        headerCellsProps.onColumnResizeMove = this.onColumnResizeMove;
       }
 
       headerCells.push(this.cloneCell(columnChildren[0], assign(cellProps, headerCellsProps)));
       bodyCells.push(this.cloneCell(columnChildren[1], cellProps));
 
       left += nextWidth;
+
     });
+
 
     return {
       headerCells,
       bodyCells,
-      isFixedColumn,
       allColumnsWidth: left
     };
   },
   renderRow(props, cells) {
 
     //IF there are fixed columns, add a fixed group
-    if (this.isFixedColumn) {
+    if (this.state.shouldFixedColumn) {
 
       let fixedCells = cells.filter(function (cell) {
         return cell.props.fixed;
@@ -239,7 +224,7 @@ const Table = React.createClass({
 
     return (
       <Row {...props}>
-        {cells}
+        <CellGroup>{cells}</CellGroup>
       </Row>
     );
 
@@ -257,11 +242,9 @@ const Table = React.createClass({
       id
     } = this.props;
 
-    let { headerCells, bodyCells, allColumnsWidth, isFixedColumn } = this.getCells();
+    let { headerCells, bodyCells, allColumnsWidth } = this.getCells();
     let rowWidth = allColumnsWidth > width ? allColumnsWidth : width;
 
-    //Check there are fixed columns
-    this.isFixedColumn = isFixedColumn;
 
     const clesses = classNames(
       classPrefix,
@@ -290,11 +273,11 @@ const Table = React.createClass({
       headerHeight: headerHeight,
       isHeaderRow: true,
       top: 0
-
     }, headerCells);
 
     return (
       <div
+        ref={ref => this.headerWrapper = ref}
         className={this.prefix('header-row-wrapper')}>
         {row}
       </div>
@@ -323,7 +306,7 @@ const Table = React.createClass({
       hasChildren: hasChildren,
       height: props.rowHeight,
       rowIndex: props.index,
-      onTreeToggle: this._onTreeToggle,
+      onTreeToggle: this.onTreeToggle,
       rowKey,
       rowData
     }, cell.props.children)));
@@ -351,7 +334,6 @@ const Table = React.createClass({
           </div>
         </div>
       );
-
     }
 
     return row;
@@ -404,11 +386,20 @@ const Table = React.createClass({
         </div>
       );
 
+    const wheelStyles = {
+      position: 'absolute'
+    };
+
+
     return (
       <div ref={ref => this.tableBody = ref}
         className={this.prefix('body-row-wrapper')}
-        style={bodyStyles}>
-        {rows}
+        style={bodyStyles}
+        onWheel={this.wheelHandler.onWheel}
+      >
+        <div style={wheelStyles} ref={ref => this.wheelWrapper = ref}>
+          {rows}
+        </div>
       </div>
     );
   },
@@ -427,28 +418,130 @@ const Table = React.createClass({
       <div ref="mouseArea" className={this.prefix('mouse-area')} style={styles}></div>
     );
   },
-  getTableWidth() {
+
+  scrollY: 0,
+  scrollX: 0,
+  onWheel(deltaX, deltaY) {
+
+    if (!this.isMounted()) {
+      return;
+    }
+
+    const { height } = this.props;
+    const { width, contentWidth, contentHeight } = this.state;
+
+    const nextScrollX = this.scrollX - deltaX;
+    const nextScrollY = this.scrollY - deltaY;
+    const maxScrollX = -(contentWidth - width);
+    const maxScrollY = -(contentHeight - height);
+
+
+    this.scrollY = Math.min(0, nextScrollY < maxScrollY ? maxScrollY : nextScrollY);
+    this.scrollX = Math.min(0, nextScrollX < maxScrollX ? maxScrollX : nextScrollX);
+
+    /**
+     * 当存在锁定列情况处理
+     */
+    if (this.state.shouldFixedColumn) {
+      this.handleWheelByFixedCell();
+    } else {
+      const wheelStyle = {};
+      const headerStyle = {};
+      translateDOMPositionXY(wheelStyle, this.scrollX, this.scrollY);
+      translateDOMPositionXY(headerStyle, this.scrollX, 0);
+      addStyle(this.wheelWrapper, wheelStyle);
+      addStyle(this.headerWrapper, headerStyle);
+    }
+    handelClass[this.scrollY < 0 ? 'add' : 'remove'](findDOMNode(this.tableHeader), 'shadow');
+  },
+
+  handleWheelByFixedCell() {
+    const wheelGroupStyle = { };
+    const wheelStyle = { };
+    const scrollGroups = this.getScrollCellGroups();
+    const fixedGroups = this.getFixedCellGroups();
+
+    translateDOMPositionXY(wheelGroupStyle, this.scrollX, 0);
+    translateDOMPositionXY(wheelStyle, 0, this.scrollY);
+
+    Array.from(scrollGroups).map((group) => {
+      addStyle(group, wheelGroupStyle);
+    });
+
+    addStyle(this.wheelWrapper, wheelStyle);
+
+    Array.from(fixedGroups).map((group) => {
+      handelClass[this.scrollX < 0 ? 'add' : 'remove'](group, 'shadow');
+    });
+  },
+
+  shouldHandleWheelX(delta) {
+    if (delta === 0) {
+      return false;
+    }
+    const { width, contentWidth } = this.state;
+    return this.scrollX <= 0;
+  },
+  shouldHandleWheelY(delta) {
+    if (delta === 0) {
+      return false;
+    }
+    return this.scrollY <= 0;
+  },
+  componentWillMount() {
+    const { children } = this.props;
+
+    const shouldFixedColumn = children.some((child) => {
+      return child.props.fixed;
+    });
+    this.wheelHandler = new ReactWheelHandler(
+      this.onWheel,
+      this.shouldHandleWheelX,
+      this.shouldHandleWheelY
+    );
+
+    this.setState({
+      shouldFixedColumn
+    });
+  },
+  reportTableWidth() {
     this.setState({
       width: getWidth(findDOMNode(this.table))
     });
   },
-  componentDidMount() {
-    this._onBodyScrollListener = on(this.tableBody, 'scroll', this.handleBodyScroll);
-    this._onWindowResizeListener = on(window, 'resize', debounce(this.getTableWidth));
-    this.getTableWidth();
+  reportTableContentWidth() {
+    const row = findDOMNode(this.table).querySelectorAll(`.${this.props.classPrefix}-row-header`)[0];
+    this.setState({
+      contentWidth: getWidth(row)
+    });
   },
-  componentDidUpdate: function (nextProps) {
-    this.handleBodyScroll();
+  reportTableContextHeight() {
+    const rows = findDOMNode(this.table).querySelectorAll(`.${this.props.classPrefix}-row`);
+    let contentHeight = 0;
+    Array.from(rows).forEach(row => {
+      contentHeight += getHeight(row);
+    });
+    this.setState({
+      contentHeight
+    });
+  },
+  componentDidMount() {
+    this._onWindowResizeListener = on(window, 'resize', debounce(this.reportTableWidth, 400));
+    this.reportTableWidth();
+    this.reportTableContentWidth();
+    this.reportTableContextHeight();
+  },
+  componentDidUpdate() {
+    this.reportTableContextHeight();
   },
   componentWillUnmount() {
-    if (this._onBodyScrollListener) {
-      this._onBodyScrollListener.off();
+    if (this._onWheelListener) {
+      this._onWheelListener.off();
     }
     if (this._onWindowResizeListener) {
       this._onWindowResizeListener.off();
     }
   }
-
 });
 
 export default Table;

@@ -72,10 +72,15 @@
         }
     }
 
+    .@{prefix}table-header-row-wrapper{
+      z-index: 2;
+      position: relative;
+    }
+
     .@{prefix}table-body-row-wrapper{
         position: relative;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow: hidden;
+        z-index: 0;
         .thin-scroll();
         .@{prefix}table-body-info{
             .icon{

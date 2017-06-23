@@ -1,7 +1,9 @@
 import { transition, BrowserSupportCore } from 'dom-lib';
+import camelize from './camelize';
 
-const TRANSFORM = transition.transform;
-const BACKFACE_VISIBILITY = transition.backfaceVisibility;
+const TRANSFORM = camelize(transition.transform);
+const BACKFACE_VISIBILITY = camelize(transition.backfaceVisibility);
+
 
 const translateDOMPositionXY = (function () {
   if (BrowserSupportCore.hasCSSTransforms()) {

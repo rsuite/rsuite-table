@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Cell from './Cell';
 import ClassNameMixin from './mixins/ClassNameMixin';
-import ColumnResizeHandle from './ColumnResizeHandle';
+import ColumnResizeHandler from './ColumnResizeHandler';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
 import isIE8 from './utils/isIE8';
 
@@ -45,8 +45,9 @@ const HeaderCell = React.createClass({
     if (!resizable) {
       return null;
     }
+
     return (
-      <ColumnResizeHandle
+      <ColumnResizeHandler
         columnWidth={columnWidth}
         columnLeft={left}
         columnFixed={fixed}

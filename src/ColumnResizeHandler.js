@@ -15,7 +15,7 @@ function clamp(value, min, max) {
   return value;
 }
 
-const ColumnResizeHandle = React.createClass({
+const ColumnResizeHandler = React.createClass({
   mixins: [
     ClassNameMixin,
     ReactComponentWithPureRenderMixin
@@ -135,4 +135,4 @@ const ColumnResizeHandle = React.createClass({
   }
 });
 
-export default ColumnResizeHandle;
+export default ColumnResizeHandler;

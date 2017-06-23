@@ -31,7 +31,7 @@ const CellGroup = React.createClass({
     let classes = classNames(
       className,
       this.prefix('cell-group'),
-      fixed ? 'fixed' : ''
+      fixed ? 'fixed' : 'scroll'
     );
 
     let styles = assign({
