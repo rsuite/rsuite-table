@@ -9,7 +9,6 @@ import CellGroup from './CellGroup';
 
 import ClassNameMixin from './mixins/ClassNameMixin';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
-import isIE8 from './utils/isIE8';
 import debounce from './utils/debounce';
 import ReactWheelHandler from './dom/ReactWheelHandler';
 import translateDOMPositionXY from './utils/translateDOMPositionXY';
@@ -141,12 +140,10 @@ const Table = React.createClass({
         throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
       }
 
-
-
       let nextWidth = this.state[`${columnChildren[1].props.dataKey}_${index}_width`] || width || 0;
 
       if (tableWidth && flexGrow) {
-        nextWidth = (tableWidth - totalWidth - 10) / totalFlexGrow * flexGrow || 0;
+        nextWidth = (tableWidth - totalWidth) / totalFlexGrow * flexGrow || 0;
       }
 
       let cellProps = {
@@ -263,7 +260,7 @@ const Table = React.createClass({
       <div className={clesses} style={styles} ref={ref => this.table = ref} id={id}>
         {this.renderTableHeader(headerCells, rowWidth)}
         {this.renderTableBody(bodyCells, rowWidth, allColumnsWidth)}
-        {!isIE8 && this.renderMouseArea()}
+        {this.renderMouseArea()}
       </div>
     );
   },
@@ -421,9 +418,6 @@ const Table = React.createClass({
       />
     );
   },
-
-  scrollY: 0,
-  scrollX: 0,
   onWheel(deltaX, deltaY) {
 
     if (!this.isMounted()) {
@@ -435,12 +429,10 @@ const Table = React.createClass({
 
     const nextScrollX = this.scrollX - deltaX;
     const nextScrollY = this.scrollY - deltaY;
-    const maxScrollX = -(contentWidth - width);
-    const maxScrollY = -(contentHeight - height);
 
 
-    this.scrollY = Math.min(0, nextScrollY < maxScrollY ? maxScrollY : nextScrollY);
-    this.scrollX = Math.min(0, nextScrollX < maxScrollX ? maxScrollX : nextScrollX);
+    this.scrollY = Math.min(0, nextScrollY < this.minScrollY ? this.minScrollY : nextScrollY);
+    this.scrollX = Math.min(0, nextScrollX < this.minScrollX ? this.minScrollX : nextScrollX);
 
     /**
      * 当存在锁定列情况处理
@@ -483,20 +475,25 @@ const Table = React.createClass({
       return false;
     }
     const { width, contentWidth } = this.state;
-    return this.scrollX <= 0;
+
+    return (delta >= 0 && this.scrollX > this.minScrollX) ||
+      (delta < 0 && this.scrollX < 0);
   },
   shouldHandleWheelY(delta) {
     if (delta === 0) {
       return false;
     }
-    return this.scrollY <= 0;
+    return (delta >= 0 && this.scrollY > this.minScrollY) ||
+      (delta < 0 && this.scrollY < 0);
   },
   componentWillMount() {
     const { children } = this.props;
-
     const shouldFixedColumn = children.some((child) => {
       return child.props.fixed;
     });
+
+    this.scrollY = 0;
+    this.scrollX = 0;
     this.wheelHandler = new ReactWheelHandler(
       this.onWheel,
       this.shouldHandleWheelX,
@@ -514,9 +511,10 @@ const Table = React.createClass({
   },
   reportTableContentWidth() {
     const row = findDOMNode(this.table).querySelectorAll(`.${this.props.classPrefix}-row-header`)[0];
-    this.setState({
-      contentWidth: getWidth(row)
-    });
+    const contentWidth = getWidth(row);
+
+    this.setState({ contentWidth });
+    this.minScrollX = -(contentWidth - this.state.width);
   },
   reportTableContextHeight() {
     const rows = findDOMNode(this.table).querySelectorAll(`.${this.props.classPrefix}-row`);
@@ -527,11 +525,13 @@ const Table = React.createClass({
     this.setState({
       contentHeight
     });
+    this.minScrollY = -(contentHeight - this.props.height);
   },
   componentDidMount() {
     this._onWindowResizeListener = on(window, 'resize', debounce(this.reportTableWidth, 400));
     this.reportTableWidth();
     this.reportTableContextHeight();
+
   },
   componentDidUpdate() {
     this.reportTableContextHeight();

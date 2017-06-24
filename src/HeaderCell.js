@@ -3,7 +3,6 @@ import Cell from './Cell';
 import ClassNameMixin from './mixins/ClassNameMixin';
 import ColumnResizeHandler from './ColumnResizeHandler';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
-import isIE8 from './utils/isIE8';
 
 
 const HeaderCell = React.createClass({
@@ -95,7 +94,7 @@ const HeaderCell = React.createClass({
         >
         </Cell>
         {this.renderSortColumn()}
-        {!isIE8 && this.renderResizeSpanner()}
+        {this.renderResizeSpanner()}
       </div>
     );
   }

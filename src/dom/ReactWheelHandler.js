@@ -34,7 +34,7 @@ class ReactWheelHandler {
     this.onWheel = this.onWheel.bind(this);
   }
 
-  onWheel(/*object*/ event) {
+  onWheel(event) {
     var normalizedEvent = normalizeWheel(event);
     var deltaX = this._deltaX + normalizedEvent.pixelX;
     var deltaY = this._deltaY + normalizedEvent.pixelY;
