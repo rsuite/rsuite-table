@@ -15,20 +15,17 @@ const HeaderCell = React.createClass({
     sortable: PropTypes.bool,
     resizable: PropTypes.bool,
     onColumnResizeEnd: PropTypes.func,
-    onColumnResize: PropTypes.func,
+    onColumnResizeStart: PropTypes.func,
     onColumnResizeMove: PropTypes.func,
     onSortColumn: PropTypes.func,
     headerHeight: PropTypes.number
   },
-  _onColumnResize(width, left, event) {
-    this.setState({
-      columnWidth: width,
-      initialEvent: event
-    });
-    this.props.onColumnResize(width, left, event);
+  _onColumnResizeStart(event) {
+    const { left, fixed } = this.props;
+    this.setState({ initialEvent: event });
+    this.props.onColumnResizeStart(this.state.columnWidth, left, fixed);
   },
   _onColumnResizeEnd(columnWidth, cursorDelta) {
-
     this.setState({ columnWidth });
     this.props.onColumnResizeEnd(columnWidth, cursorDelta, this.props.dataKey, this.props.index);
   },
@@ -54,7 +51,7 @@ const HeaderCell = React.createClass({
         height={headerHeight}
         initialEvent={initialEvent}
         onColumnResizeMove={onColumnResizeMove}
-        onColumnResize={this._onColumnResize}
+        onColumnResizeStart={this._onColumnResizeStart}
         onColumnResizeEnd={this._onColumnResizeEnd}
       />
     );

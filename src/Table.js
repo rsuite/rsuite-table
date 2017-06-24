@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
-import { on, scrollLeft, scrollTop, addStyle, addClass, removeClass, toggleClass, getWidth, getHeight } from 'dom-lib';
+import { on, addStyle, addClass, removeClass, toggleClass, getWidth, getHeight } from 'dom-lib';
 import { assign } from 'lodash';
 
 import Row from './Row';
@@ -72,18 +72,12 @@ const Table = React.createClass({
     return {
       width: this.props.width,
       columnWidth: 0,
-      mouseAreaLeft: -1,
       dataKey: 0,
       scrollLeft: 0,
       scrollTop: 0,
-      resizeColumnFixed: false,
       shouldFixedColumn: false,
       contentHeight: 0,
-      contentWidth: 0,
-      scrollX: 0,
-      scrollY: 0,
-      maxScrollX: 0,
-      maxScrollY: 0
+      contentWidth: 0
     };
   },
   getFixedCellGroups() {
@@ -95,24 +89,33 @@ const Table = React.createClass({
   onColumnResizeEnd(columnWidth, cursorDelta, dataKey, index) {
     this.setState({
       isColumnResizing: false,
-      mouseAreaLeft: -1,
       [`${dataKey}_${index}_width`]: columnWidth
     });
+    addStyle(this.mouseArea, {
+      display: 'none'
+    });
   },
-  onColumnResize(width, left, event) {
+  onColumnResizeStart(width, left, fixed) {
     this.setState({
       isColumnResizing: true
     });
+    const mouseAreaLeft = width + left;
+    const x = fixed ? mouseAreaLeft : mouseAreaLeft + (this.scrollX || 0);
+    addStyle(this.mouseArea, {
+      display: 'block',
+      transform: `translate3d(${x}px, 0px, 0px)`
+    });
   },
   onColumnResizeMove(width, left, fixed) {
-
-    this.setState({
-      resizeColumnFixed: fixed,
-      mouseAreaLeft: width + left
+    const mouseAreaLeft = width + left;
+    const x = fixed ? mouseAreaLeft : mouseAreaLeft + (this.scrollX || 0);
+    addStyle(this.mouseArea, {
+      transform: `translate3d(${x}px, 0px, 0px)`
     });
   },
   onTreeToggle(rowKey, index) {
     toggleClass(findDOMNode(this.refs[`children_${rowKey}_${index}`]), 'open');
+    this.reportTableContextHeight();
   },
   cloneCell(Cell, props) {
     return React.cloneElement(Cell, props, Cell.props.children);
@@ -171,7 +174,7 @@ const Table = React.createClass({
 
       if (resizable) {
         headerCellsProps.onColumnResizeEnd = this.onColumnResizeEnd;
-        headerCellsProps.onColumnResize = this.onColumnResize;
+        headerCellsProps.onColumnResizeStart = this.onColumnResizeStart;
         headerCellsProps.onColumnResizeMove = this.onColumnResizeMove;
       }
 
@@ -407,15 +410,15 @@ const Table = React.createClass({
 
     const { height } = this.props;
     const scrollLeft = this.scrollLeft || 0;
-    const { mouseAreaLeft, resizeColumnFixed } = this.state;
 
-    const styles = {
-      height,
-      left: (resizeColumnFixed ? mouseAreaLeft : mouseAreaLeft - scrollLeft)
-    };
+    const styles = { height };
 
     return (
-      <div ref="mouseArea" className={this.prefix('mouse-area')} style={styles}></div>
+      <div
+        ref={ref => this.mouseArea = ref}
+        className={this.prefix('mouse-area')}
+        style={styles}
+      />
     );
   },
 
@@ -456,8 +459,8 @@ const Table = React.createClass({
   },
 
   handleWheelByFixedCell() {
-    const wheelGroupStyle = { };
-    const wheelStyle = { };
+    const wheelGroupStyle = {};
+    const wheelStyle = {};
     const scrollGroups = this.getScrollCellGroups();
     const fixedGroups = this.getFixedCellGroups();
 
@@ -528,11 +531,11 @@ const Table = React.createClass({
   componentDidMount() {
     this._onWindowResizeListener = on(window, 'resize', debounce(this.reportTableWidth, 400));
     this.reportTableWidth();
-    this.reportTableContentWidth();
     this.reportTableContextHeight();
   },
   componentDidUpdate() {
     this.reportTableContextHeight();
+    this.reportTableContentWidth();
   },
   componentWillUnmount() {
     if (this._onWheelListener) {

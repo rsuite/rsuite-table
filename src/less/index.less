@@ -38,7 +38,7 @@
      overflow: hidden;
 
      &.column-resizing{
-         pointer-events: none;
+         cursor: ew-resize;
         .user-select();
      }
 
@@ -148,10 +148,11 @@
     }
 
     .@{prefix}table-mouse-area {
+        display: none;
         background:@resize-mouse-color;
-        left: 10px;
-        position: absolute;
+        left: -1px;
         top: 0;
+        position: absolute;
         width: 1px;
         z-index: 6;
     }
