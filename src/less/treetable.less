@@ -1,0 +1,24 @@
+//treeTable
+.@{prefix}table-treetable{
+    .@{prefix}table-row{
+        position: relative;
+        .expand-icon{
+            width: 10px;
+            cursor: pointer;
+            &:before {
+                content: "\f0da";
+            }
+        }
+    }
+    .children{
+        display: none;
+    }
+    .open{
+        > .children{
+            display: block;
+        }
+        > .@{prefix}table-row .expand-icon:before {
+            content: "\f0d7";
+        }
+    }
+}

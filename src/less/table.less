@@ -1,0 +1,125 @@
+.@{prefix}table{
+
+     border: 1px solid @border-color;
+     position: relative;
+     overflow: hidden;
+
+     &.column-resizing{
+         cursor: ew-resize;
+        .user-select();
+     }
+
+
+    .@{prefix}table-sortable{
+        position: absolute;
+        .icon-sort{
+            color: #aaa;
+        }
+        .icon-sort-asc,.icon-sort-desc{
+            color: #0ae;
+        }
+    }
+
+    .@{prefix}table-row{
+        overflow: hidden;
+        position: absolute;
+        height: 36px;
+        width: 100%;
+        top: 0;
+        border-bottom: 1px solid @border-color;
+    }
+    .@{prefix}table-row-header{
+        background:@head-background;
+        .@{prefix}table-cell{
+           background:@head-background;
+        }
+        &.shadow{
+            .box-shadow(0, 2px, 3px, rgba(0, 0, 0, 0.28));
+            z-index: 5;
+        }
+    }
+
+    .@{prefix}table-header-row-wrapper{
+      z-index: 2;
+      position: relative;
+    }
+
+    .@{prefix}table-body-row-wrapper{
+        position: relative;
+        overflow: hidden;
+        z-index: 0;
+        .@{prefix}table-body-info{
+            .icon{
+                margin: 0 10px;
+            }
+            width: 100%;
+            text-align: center;
+            top: 50%;
+            position: absolute;
+            margin-top: -20px;
+            line-height: 40px;
+        }
+    }
+
+    .@{prefix}table-cell{
+        height: 36px;
+        border-style: solid;
+        border-width: 0 1px 0 0;
+        border-color: @border-color;
+        display: block;
+        overflow: hidden;
+        position: absolute;
+        white-space: normal;
+        background: @body-background;
+        &.sortable{
+            cursor: pointer;
+        }
+        &.first{
+            border-left-width: 0;
+        }
+        .@{prefix}table-cell-wrap1{
+            display: table;
+        }
+        .@{prefix}table-cell-wrap2{
+            display: table-row;
+        }
+        .@{prefix}table-cell-wrap3{
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .@{prefix}table-cell-content{
+            padding: 8px;
+            .ellipsis();
+        }
+    }
+    .@{prefix}table-column-resize-spanner{
+        height: 36px;
+        width: 6px;
+        z-index: 3;
+        position: absolute;
+        cursor: ew-resize;
+        &:hover{
+            background: @resize-mouse-color;
+        }
+    }
+    .@{prefix}table-cell-group{
+        &.fixed{
+            position: absolute;
+            z-index: 4;
+            background:@body-background;
+        }
+        &.shadow{
+            .box-shadow(3px, 0px, 5px,rgba(9, 9, 9, 0.08));
+        }
+    }
+
+    .@{prefix}table-mouse-area {
+        display: none;
+        background:@resize-mouse-color;
+        left: -1px;
+        top: 0;
+        position: absolute;
+        width: 1px;
+        z-index: 6;
+    }
+}

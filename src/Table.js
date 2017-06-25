@@ -12,6 +12,7 @@ import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRe
 import debounce from './utils/debounce';
 import ReactWheelHandler from './dom/ReactWheelHandler';
 import translateDOMPositionXY from './utils/translateDOMPositionXY';
+import Scrollbar from './Scrollbar';
 
 const handelClass = { add: addClass, remove: removeClass };
 
@@ -400,6 +401,19 @@ const Table = React.createClass({
         <div style={wheelStyles} ref={ref => this.wheelWrapper = ref}>
           {rows}
         </div>
+        <Scrollbar
+          length={this.state.width}
+          onScroll={this.handelScrollX}
+          scrollLength={this.state.contentWidth}
+          ref={ref => this.scrollbarX = ref}
+        />
+        <Scrollbar
+          vertical
+          length={height - (headerHeight || rowHeight)}
+          onScroll={this.handelScrollY}
+          scrollLength={this.state.contentHeight}
+          ref={ref => this.scrollbarY = ref}
+        />
       </div>
     );
   },
@@ -417,6 +431,13 @@ const Table = React.createClass({
         style={styles}
       />
     );
+  },
+
+  handelScrollX(delta, event) {
+    this.onWheel(delta, 0);
+  },
+  handelScrollY(delta, event) {
+    this.onWheel(0, delta);
   },
   onWheel(deltaX, deltaY) {
 
@@ -448,6 +469,8 @@ const Table = React.createClass({
       addStyle(this.headerWrapper, headerStyle);
     }
     handelClass[this.scrollY < 0 ? 'add' : 'remove'](findDOMNode(this.tableHeader), 'shadow');
+    this.scrollbarX.onWheelScroll(deltaX);
+    this.scrollbarY.onWheelScroll(deltaY);
   },
 
   handleWheelByFixedCell() {
