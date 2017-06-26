@@ -1,6 +1,31 @@
 import React from 'react';
 import { Table, Column, Cell, HeaderCell } from '../../src';
 import fakeData from '../data/users';
+import _ from 'lodash';
+
+
+export function getLocale(loading) {
+
+  let emptyMessage;
+  let iconClassName;
+
+  if (loading) {
+    emptyMessage = '加载中...';
+    iconClassName = 'icon icon-cog icon-lg icon-spin ';
+  } else {
+    emptyMessage = '数据为空';
+    iconClassName = 'icon icon-info2 icon-lg info';
+  }
+
+  return {
+    emptyMessage: (
+      <div>
+        {iconClassName ? <i className={iconClassName}></i> : null}
+        {emptyMessage ? emptyMessage : null}
+      </div>
+    )
+  };
+}
 
 const FixedColumnTable = React.createClass({
   getInitialState() {
@@ -10,25 +35,58 @@ const FixedColumnTable = React.createClass({
   },
   handleSortColumn(sortColumn, sortType) {
     this.setState({
-      sortColumn, sortType
+      data: [],
+      loading: true,
+      sortColumn,
+      sortType
     });
+
+    setTimeout(() => {
+      this.setState({
+        data: fakeData,
+        loading: false
+      });
+    }, 1000);
+  },
+  getData() {
+    const { data, sortColumn, sortType } = this.state;
+
+    if (sortColumn && sortType) {
+      return data.sort((a, b) => {
+        let x = a[sortColumn];
+        let y = b[sortColumn];
+        if (typeof x === 'string') {
+          x = x.charCodeAt();
+        }
+        if (typeof y === 'string') {
+          y = y.charCodeAt();
+        }
+        if (sortType === 'asc') {
+          return x - y;
+        } else {
+          return y - x;
+        }
+      });
+    }
+    return data;
   },
   render() {
-    const { data } = this.state;
+
     return (
       <div>
         <Table
           height={400}
-          data={data}
+          data={this.getData()}
           sortColumn={this.state.sortColumn}
           sortType={this.state.sortType}
           onSortColumn={this.handleSortColumn}
           onRowClick={(data) => {
             console.log(data);
           }}
+          locale={getLocale(this.state.loading)}
         >
 
-          <Column width={50} align="center" fixed>
+          <Column width={70} align="center" fixed sortable>
             <HeaderCell>Id</HeaderCell>
             <Cell dataKey="id" />
           </Column>
