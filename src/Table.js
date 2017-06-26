@@ -1,20 +1,30 @@
 import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
-import { on, addStyle, addClass, removeClass, toggleClass, getWidth, getHeight } from 'dom-lib';
-import { assign } from 'lodash';
+import {
+  on,
+  addStyle,
+  addClass,
+  removeClass,
+  toggleClass,
+  getWidth,
+  getHeight,
+  translateDOMPositionXY,
+  WheelHandler
+} from 'dom-lib';
 
+import { assign } from 'lodash';
 import Row from './Row';
 import CellGroup from './CellGroup';
 
 import ClassNameMixin from './mixins/ClassNameMixin';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
 import debounce from './utils/debounce';
-import ReactWheelHandler from './dom/ReactWheelHandler';
-import translateDOMPositionXY from './utils/translateDOMPositionXY';
 import Scrollbar from './Scrollbar';
 
 const handelClass = { add: addClass, remove: removeClass };
+const ReactChildren = React.Children;
+const LAYER_WIDTH = 30;
 
 function getTotalByColumns(columns) {
   let totalFlexGrow = 0;
@@ -29,8 +39,6 @@ function getTotalByColumns(columns) {
   };
 }
 
-const ReactChildren = React.Children;
-const LAYER_WIDTH = 30;
 const Table = React.createClass({
   mixins: [
     ClassNameMixin,
@@ -410,8 +418,8 @@ const Table = React.createClass({
         <Scrollbar
           vertical
           length={height - (headerHeight || rowHeight)}
-          onScroll={this.handelScrollY}
           scrollLength={this.state.contentHeight}
+          onScroll={this.handelScrollY}
           ref={ref => this.scrollbarY = ref}
         />
       </div>
@@ -469,8 +477,7 @@ const Table = React.createClass({
       addStyle(this.headerWrapper, headerStyle);
     }
     handelClass[this.scrollY < 0 ? 'add' : 'remove'](findDOMNode(this.tableHeader), 'shadow');
-    this.scrollbarX.onWheelScroll(deltaX);
-    this.scrollbarY.onWheelScroll(deltaY);
+
   },
 
   handleWheelByFixedCell() {
@@ -497,8 +504,7 @@ const Table = React.createClass({
     if (delta === 0) {
       return false;
     }
-    const { width, contentWidth } = this.state;
-
+    this.scrollbarX.onWheelScroll(delta);
     return (delta >= 0 && this.scrollX > this.minScrollX) ||
       (delta < 0 && this.scrollX < 0);
   },
@@ -506,6 +512,7 @@ const Table = React.createClass({
     if (delta === 0) {
       return false;
     }
+    this.scrollbarY.onWheelScroll(delta);
     return (delta >= 0 && this.scrollY > this.minScrollY) ||
       (delta < 0 && this.scrollY < 0);
   },
@@ -517,15 +524,13 @@ const Table = React.createClass({
 
     this.scrollY = 0;
     this.scrollX = 0;
-    this.wheelHandler = new ReactWheelHandler(
+    this.wheelHandler = new WheelHandler(
       this.onWheel,
       this.shouldHandleWheelX,
       this.shouldHandleWheelY
     );
 
-    this.setState({
-      shouldFixedColumn
-    });
+    this.setState({ shouldFixedColumn });
   },
   reportTableWidth() {
     this.setState({
@@ -545,9 +550,7 @@ const Table = React.createClass({
     Array.from(rows).forEach(row => {
       contentHeight += getHeight(row);
     });
-    this.setState({
-      contentHeight
-    });
+    this.setState({ contentHeight });
     this.minScrollY = -(contentHeight - this.props.height);
   },
   componentDidMount() {

@@ -2,8 +2,10 @@ import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
-import { DOMMouseMoveTracker, addStyle } from 'dom-lib';
-import translateDOMPositionXY from './utils/translateDOMPositionXY';
+import { DOMMouseMoveTracker, addStyle, translateDOMPositionXY } from 'dom-lib';
+
+
+const BAR_MIN_WIDTH = 20;
 
 const Scrollbar = React.createClass({
   mixins: [
@@ -52,22 +54,17 @@ const Scrollbar = React.createClass({
     const { length, scrollLength, vertical, onScroll } = this.props;
     const style = {};
     const scrollDelta = delta * (scrollLength / length);
-    onScroll(scrollDelta, event);
+    this.updateScrollBarPosition(delta);
+    onScroll && onScroll(scrollDelta, event);
   },
-  onWheelScroll(delta) {
+  updateScrollBarPosition(delta) {
     const { vertical, length, scrollLength } = this.props;
-    const styles = {};
-    const scrollDelta = delta / (scrollLength / length);
     const max = length - (length / scrollLength * length);
+    const styles = {};
 
-    this.scrollOffset += scrollDelta;
-
-    if (this.scrollOffset <= 0) {
-      this.scrollOffset = 0;
-    }
-    if (this.scrollOffset >= max) {
-      this.scrollOffset = max;
-    }
+    this.scrollOffset += delta;
+    this.scrollOffset = Math.max(this.scrollOffset, 0);
+    this.scrollOffset = Math.min(this.scrollOffset, max);
 
     if (vertical) {
       translateDOMPositionXY(styles, 0, this.scrollOffset);
@@ -75,6 +72,11 @@ const Scrollbar = React.createClass({
       translateDOMPositionXY(styles, this.scrollOffset, 0);
     }
     addStyle(this.handle, styles);
+  },
+  onWheelScroll(delta) {
+    const { length, scrollLength } = this.props;
+    const nextDelta = delta / (scrollLength / length);
+    this.updateScrollBarPosition(nextDelta);
   },
   hanldeDragMove(deltaX, deltaY, event) {
     const { vertical } = this.props;
@@ -102,7 +104,8 @@ const Scrollbar = React.createClass({
 
 
     let styles = {
-      [vertical ? 'height' : 'width']: `${length / scrollLength * 100}%`
+      [vertical ? 'height' : 'width']: `${length / scrollLength * 100}%`,
+      [vertical ? 'minHeight' : 'minWidth']: BAR_MIN_WIDTH
     };
 
     return (

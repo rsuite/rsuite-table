@@ -40,7 +40,8 @@ const Row = React.createClass({
     let classes = classNames(
       this.prefix('row'),
       isHeaderRow ? this.prefix('row-header') : '',
-      className);
+      className
+    );
 
     let styles = assign({
       minWidth: width,
