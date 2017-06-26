@@ -57,6 +57,10 @@ const Scrollbar = React.createClass({
     this.updateScrollBarPosition(delta);
     onScroll && onScroll(scrollDelta, event);
   },
+  resetScrollBarPosition() {
+    this.scrollOffset = 0;
+    this.updateScrollBarPosition(0);
+  },
   updateScrollBarPosition(delta) {
     const { vertical, length, scrollLength } = this.props;
     const max = length - (length / scrollLength * length);
@@ -74,6 +78,7 @@ const Scrollbar = React.createClass({
     addStyle(this.handle, styles);
   },
   onWheelScroll(delta) {
+
     const { length, scrollLength } = this.props;
     const nextDelta = delta / (scrollLength / length);
     this.updateScrollBarPosition(nextDelta);
@@ -95,13 +100,13 @@ const Scrollbar = React.createClass({
   render() {
     const { vertical, length, scrollLength } = this.props;
     const { handleDown } = this.state;
+
     const classes = classNames(this.prefix('scrollbar-wrapper'), {
       vertical,
       horizontal: !vertical,
       hide: scrollLength <= length,
       active: handleDown
     });
-
 
     let styles = {
       [vertical ? 'height' : 'width']: `${length / scrollLength * 100}%`,

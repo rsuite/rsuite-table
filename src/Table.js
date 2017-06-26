@@ -22,7 +22,7 @@ import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRe
 import debounce from './utils/debounce';
 import Scrollbar from './Scrollbar';
 
-const handelClass = { add: addClass, remove: removeClass };
+const handleClass = { add: addClass, remove: removeClass };
 const ReactChildren = React.Children;
 const LAYER_WIDTH = 30;
 
@@ -414,7 +414,7 @@ const Table = React.createClass({
 
         <Scrollbar
           length={this.state.width}
-          onScroll={this.handelScrollX}
+          onScroll={this.handleScrollX}
           scrollLength={this.state.contentWidth}
           ref={ref => this.scrollbarX = ref}
         />
@@ -422,10 +422,10 @@ const Table = React.createClass({
           vertical
           length={height - (headerHeight || rowHeight)}
           scrollLength={this.state.contentHeight}
-          onScroll={this.handelScrollY}
+          onScroll={this.handleScrollY}
           ref={ref => this.scrollbarY = ref}
         />
-      </div >
+      </div>
     );
   },
   renderMouseArea() {
@@ -443,34 +443,30 @@ const Table = React.createClass({
       />
     );
   },
-
-  handelScrollX(delta, event) {
-    this.onWheel(delta, 0);
+  handleScrollX(delta, event) {
+    this.handleWheel(delta, 0);
   },
-  handelScrollY(delta, event) {
-    this.onWheel(0, delta);
+  handleScrollY(delta, event) {
+    this.handleWheel(0, delta);
   },
-  onWheel(deltaX, deltaY) {
+  handleWheel(deltaX, deltaY) {
 
     if (!this.isMounted()) {
       return;
     }
-
-    const { height } = this.props;
-    const { width, contentWidth, contentHeight } = this.state;
-
     const nextScrollX = this.scrollX - deltaX;
     const nextScrollY = this.scrollY - deltaY;
 
-
     this.scrollY = Math.min(0, nextScrollY < this.minScrollY ? this.minScrollY : nextScrollY);
     this.scrollX = Math.min(0, nextScrollX < this.minScrollX ? this.minScrollX : nextScrollX);
-
+    this.updatePosition();
+  },
+  updatePosition() {
     /**
      * 当存在锁定列情况处理
      */
     if (this.state.shouldFixedColumn) {
-      this.handleWheelByFixedCell();
+      this.updatePositionByFixedCell();
     } else {
       const wheelStyle = {};
       const headerStyle = {};
@@ -479,11 +475,9 @@ const Table = React.createClass({
       addStyle(this.wheelWrapper, wheelStyle);
       addStyle(this.headerWrapper, headerStyle);
     }
-    handelClass[this.scrollY < 0 ? 'add' : 'remove'](findDOMNode(this.tableHeader), 'shadow');
-
+    handleClass[this.scrollY < 0 ? 'add' : 'remove'](findDOMNode(this.tableHeader), 'shadow');
   },
-
-  handleWheelByFixedCell() {
+  updatePositionByFixedCell() {
     const wheelGroupStyle = {};
     const wheelStyle = {};
     const scrollGroups = this.getScrollCellGroups();
@@ -497,17 +491,14 @@ const Table = React.createClass({
     });
 
     addStyle(this.wheelWrapper, wheelStyle);
-
     Array.from(fixedGroups).map((group) => {
-      handelClass[this.scrollX < 0 ? 'add' : 'remove'](group, 'shadow');
+      handleClass[this.scrollX < 0 ? 'add' : 'remove'](group, 'shadow');
     });
   },
-
   shouldHandleWheelX(delta) {
     if (delta === 0) {
       return false;
     }
-    this.scrollbarX.onWheelScroll(delta);
     return (delta >= 0 && this.scrollX > this.minScrollX) ||
       (delta < 0 && this.scrollX < 0);
   },
@@ -515,24 +506,25 @@ const Table = React.createClass({
     if (delta === 0) {
       return false;
     }
-    this.scrollbarY.onWheelScroll(delta);
     return (delta >= 0 && this.scrollY > this.minScrollY) ||
       (delta < 0 && this.scrollY < 0);
   },
+
   componentWillMount() {
     const { children } = this.props;
     const shouldFixedColumn = children.some((child) => {
       return child.props.fixed;
     });
-
     this.scrollY = 0;
     this.scrollX = 0;
-    this.wheelHandler = new WheelHandler(
-      this.onWheel,
+    this.wheelHandler = new WheelHandler((deltaX, deltaY) => {
+      this.handleWheel(deltaX, deltaY);
+      this.scrollbarX.onWheelScroll(deltaX);
+      this.scrollbarY.onWheelScroll(deltaY);
+    },
       this.shouldHandleWheelX,
       this.shouldHandleWheelY
     );
-
     this.setState({ shouldFixedColumn });
   },
   reportTableWidth() {
@@ -546,15 +538,31 @@ const Table = React.createClass({
 
     this.setState({ contentWidth });
     this.minScrollX = -(contentWidth - this.state.width);
+
+    if (this.state.contentWidth !== contentWidth) {
+      this.scrollX = 0;
+      this.scrollbarX.resetScrollBarPosition();
+    }
+
   },
   reportTableContextHeight() {
     const rows = findDOMNode(this.table).querySelectorAll(`.${this.props.classPrefix}-row`);
+    const { height, rowHeight, headerHeight } = this.props;
     let contentHeight = 0;
-    Array.from(rows).forEach(row => {
+    Array.from(rows).forEach((row, index) => {
       contentHeight += getHeight(row);
     });
-    this.setState({ contentHeight });
-    this.minScrollY = -(contentHeight - this.props.height);
+
+    const nextContentHeight = contentHeight - (headerHeight || rowHeight);
+    this.setState({
+      contentHeight: nextContentHeight
+    });
+
+    this.minScrollY = -(contentHeight - height);
+    if (this.state.contentHeight !== nextContentHeight) {
+      this.scrollY = 0;
+      this.scrollbarY.resetScrollBarPosition();
+    }
   },
   componentDidMount() {
     this._onWindowResizeListener = on(window, 'resize', debounce(this.reportTableWidth, 400));
@@ -565,6 +573,7 @@ const Table = React.createClass({
   componentDidUpdate() {
     this.reportTableContextHeight();
     this.reportTableContentWidth();
+    this.updatePosition();
   },
   componentWillUnmount() {
     if (this._onWheelListener) {
