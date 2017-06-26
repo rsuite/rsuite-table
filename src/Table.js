@@ -388,17 +388,11 @@ const Table = React.createClass({
 
       return row;
 
-    }) : (
-
-        <div className={this.prefix('body-info')}>
-          {this.props.locale.emptyMessage}
-        </div>
-      );
+    }) : null;
 
     const wheelStyles = {
       position: 'absolute'
     };
-
 
     return (
       <div ref={ref => this.tableBody = ref}
@@ -409,6 +403,15 @@ const Table = React.createClass({
         <div style={wheelStyles} ref={ref => this.wheelWrapper = ref}>
           {rows}
         </div>
+
+        {
+          rows ? null : (
+            <div className={this.prefix('body-info')}>
+              {this.props.locale.emptyMessage}
+            </div>
+          )
+        }
+
         <Scrollbar
           length={this.state.width}
           onScroll={this.handelScrollX}
@@ -422,7 +425,7 @@ const Table = React.createClass({
           onScroll={this.handelScrollY}
           ref={ref => this.scrollbarY = ref}
         />
-      </div>
+      </div >
     );
   },
   renderMouseArea() {
