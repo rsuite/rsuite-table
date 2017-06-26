@@ -1,3 +1,6 @@
+# 1.1.2
+- *Feature*: Added support Scrollbar
+
 # 1.0.8
 - *Feature*: Add  `onRerenderRowHeight` to  `<Table>`
 
