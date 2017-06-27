@@ -6,6 +6,7 @@ import {
   addStyle,
   addClass,
   removeClass,
+  hasClass,
   toggleClass,
   getWidth,
   getHeight,
@@ -50,8 +51,6 @@ const Table = React.createClass({
     height: PropTypes.number,
     rowHeight: PropTypes.number,
     headerHeight: PropTypes.number,
-    scrollLeft: PropTypes.number,
-    scrollTop: PropTypes.number,
     onRowClick: PropTypes.func,
     isTree: PropTypes.bool,
     expand: PropTypes.bool,
@@ -65,6 +64,9 @@ const Table = React.createClass({
      */
     onSortColumn: PropTypes.func,
     onRerenderRowHeight: PropTypes.func,
+    onTreeToggleOpen: PropTypes.func,
+    disabledScroll: PropTypes.bool,
+    onScroll: PropTypes.func,
   },
   getDefaultProps() {
     return {
@@ -81,8 +83,6 @@ const Table = React.createClass({
       width: this.props.width,
       columnWidth: 0,
       dataKey: 0,
-      scrollLeft: 0,
-      scrollTop: 0,
       shouldFixedColumn: false,
       contentHeight: 0,
       contentWidth: 0
@@ -121,9 +121,20 @@ const Table = React.createClass({
       transform: `translate3d(${x}px, 0px, 0px)`
     });
   },
-  onTreeToggle(rowKey, index) {
-    toggleClass(findDOMNode(this.refs[`children_${rowKey}_${index}`]), 'open');
+  onTreeToggle(rowKey, rowIndex, rowData) {
+    const { onTreeToggleOpen } = this.props;
+    const expandIcon = findDOMNode(this.refs[`children_${rowKey}_${rowIndex}`]);
+    const isOpen = hasClass(expandIcon, 'open');
+
+    if (isOpen) {
+      removeClass(expandIcon, 'open');
+    } else {
+      addClass(expandIcon, 'open');
+    }
+
     this.reportTableContextHeight();
+    onTreeToggleOpen && onTreeToggleOpen(!isOpen, rowData);
+
   },
   cloneCell(Cell, props) {
     return React.cloneElement(Cell, props, Cell.props.children);
@@ -356,6 +367,7 @@ const Table = React.createClass({
       data,
       isTree,
       onRerenderRowHeight,
+      disabledScroll
     } = this.props;
 
     const bodyStyles = {
@@ -412,27 +424,33 @@ const Table = React.createClass({
           )
         }
 
-        <Scrollbar
-          length={this.state.width}
-          onScroll={this.handleScrollX}
-          scrollLength={this.state.contentWidth}
-          ref={ref => this.scrollbarX = ref}
-        />
-        <Scrollbar
-          vertical
-          length={height - (headerHeight || rowHeight)}
-          scrollLength={this.state.contentHeight}
-          onScroll={this.handleScrollY}
-          ref={ref => this.scrollbarY = ref}
-        />
+        {
+          disabledScroll ? null :
+            (
+              <div>
+                <Scrollbar
+                  length={this.state.width}
+                  onScroll={this.handleScrollX}
+                  scrollLength={this.state.contentWidth}
+                  ref={ref => this.scrollbarX = ref}
+                />
+                <Scrollbar
+                  vertical
+                  length={height - (headerHeight || rowHeight)}
+                  scrollLength={this.state.contentHeight}
+                  onScroll={this.handleScrollY}
+                  ref={ref => this.scrollbarY = ref}
+                />
+              </div>
+            )
+        }
+
       </div>
     );
   },
   renderMouseArea() {
 
     const { height } = this.props;
-    const scrollLeft = this.scrollLeft || 0;
-
     const styles = { height };
 
     return (
@@ -450,16 +468,20 @@ const Table = React.createClass({
     this.handleWheel(0, delta);
   },
   handleWheel(deltaX, deltaY) {
+    const { onScroll } = this.props;
 
     if (!this.isMounted()) {
       return;
     }
+
     const nextScrollX = this.scrollX - deltaX;
     const nextScrollY = this.scrollY - deltaY;
 
     this.scrollY = Math.min(0, nextScrollY < this.minScrollY ? this.minScrollY : nextScrollY);
     this.scrollX = Math.min(0, nextScrollX < this.minScrollX ? this.minScrollX : nextScrollX);
     this.updatePosition();
+
+    onScroll && onScroll(this.scrollX, this.scrollY);
   },
   updatePosition() {
     /**
@@ -496,14 +518,16 @@ const Table = React.createClass({
     });
   },
   shouldHandleWheelX(delta) {
-    if (delta === 0) {
+
+    if (delta === 0 || this.props.disabledScroll) {
       return false;
     }
     return (delta >= 0 && this.scrollX > this.minScrollX) ||
       (delta < 0 && this.scrollX < 0);
   },
   shouldHandleWheelY(delta) {
-    if (delta === 0) {
+
+    if (delta === 0 || this.props.disabledScroll) {
       return false;
     }
     return (delta >= 0 && this.scrollY > this.minScrollY) ||
@@ -541,7 +565,7 @@ const Table = React.createClass({
 
     if (this.state.contentWidth !== contentWidth) {
       this.scrollX = 0;
-      this.scrollbarX.resetScrollBarPosition();
+      this.scrollbarX && this.scrollbarX.resetScrollBarPosition();
     }
 
   },
@@ -561,7 +585,7 @@ const Table = React.createClass({
     this.minScrollY = -(contentHeight - height);
     if (this.state.contentHeight !== nextContentHeight) {
       this.scrollY = 0;
-      this.scrollbarY.resetScrollBarPosition();
+      this.scrollbarY && this.scrollbarY.resetScrollBarPosition();
     }
   },
   componentDidMount() {

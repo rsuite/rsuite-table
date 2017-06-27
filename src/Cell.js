@@ -63,6 +63,7 @@ const Cell = React.createClass({
       hasChildren,
       rowIndex,
       rowKey,
+      rowData,
       align,
       sortable,
       ...props
@@ -99,7 +100,7 @@ const Cell = React.createClass({
 
     const expandIcon = hasChildren && firstColumn ? (
       <i className="expand-icon icon"
-        onClick={event => onTreeToggle(rowKey, rowIndex, event)}>
+        onClick={event => onTreeToggle(rowKey, rowIndex, rowData, event)}>
       </i>
     ) : null;
 
