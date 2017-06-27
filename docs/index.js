@@ -14,6 +14,7 @@ import ResizableColumnTable from './examples/ResizableColumnTable';
 import CustomColumnTable from './examples/CustomColumnTable';
 import TreeTable from './examples/TreeTable';
 import FluidColumnTable from './examples/FluidColumnTable';
+import SortTable from './examples/SortTable';
 
 const App = React.createClass({
 
@@ -43,17 +44,19 @@ const App = React.createClass({
         <div className="container">
 
           <Row>
-            <Col md={2}>
+            <Col md={2} xsHidden smHidden>
               <Affix offsetTop={70}>
                 <Nav pills stacked className="sidebar">
-                  <Nav.Item href="#README">概述</Nav.Item>
-                  <Nav.Item href="#FixedColumnTable">锁定列</Nav.Item>
-                  <Nav.Item href="#ResizableColumnTable">自定义调整列宽</Nav.Item>
-                  <Nav.Item href="#FluidColumnTable">自动列宽</Nav.Item>
-                  <Nav.Item href="#CustomColumnTable">自定义单元格</Nav.Item>
-                  <Nav.Item href="#PaginationTable">分页</Nav.Item>
-                  <Nav.Item href="#TreeTable">树形表格</Nav.Item>
-                  <Nav.Item href="#API">API</Nav.Item>
+                  <Nav.Item href="#README"># 概述</Nav.Item>
+                  <Nav.Item href="#examples"># 示例</Nav.Item>
+                  <Nav.Item href="#FixedColumnTable">&nbsp;&nbsp;- 锁定列</Nav.Item>
+                  <Nav.Item href="#ResizableColumnTable">&nbsp;&nbsp;- 自定义调整列宽</Nav.Item>
+                  <Nav.Item href="#FluidColumnTable">&nbsp;&nbsp;- 自动列宽</Nav.Item>
+                  <Nav.Item href="#CustomColumnTable">&nbsp;&nbsp;- 自定义单元格</Nav.Item>
+                  <Nav.Item href="#SortTable">&nbsp;&nbsp;- 排序</Nav.Item>
+                  <Nav.Item href="#PaginationTable">&nbsp;&nbsp;- 分页</Nav.Item>
+                  <Nav.Item href="#TreeTable">&nbsp;&nbsp;- 树形表格</Nav.Item>
+                  <Nav.Item href="#API"># API</Nav.Item>
                 </Nav>
               </Affix>
             </Col>
@@ -62,9 +65,9 @@ const App = React.createClass({
               <a id="README" className="target-fix" ></a>
               <Markdown>{require('../README.md')}</Markdown>
 
-              <h2 id="examples"># 示例</h2>
+              <h2 id="examples" ># 示例</h2>
               <a id="FixedColumnTable" className="target-fix" ></a>
-              <h3 >固定表头,固定前两列 </h3>
+              <h3 >锁定列: 固定表头,固定前两列 </h3>
               <FixedColumnTable />
               <Markdown>{require('./md/FixedColumnTable.md')}</Markdown>
               <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/FixedColumnTable.js" target="_blank" >示例代码</a></p>
@@ -77,7 +80,6 @@ const App = React.createClass({
               <Markdown>{require('./md/ResizableColumnTable.md')}</Markdown>
               <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/ResizableColumnTable.js" target="_blank" >示例代码</a></p>
               <hr />
-
 
 
               <a id="FluidColumnTable" className="target-fix" ></a>
@@ -93,6 +95,13 @@ const App = React.createClass({
               <CustomColumnTable />
               <Markdown>{require('./md/CustomColumnTable.md')}</Markdown>
               <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/CustomColumnTable.js" target="_blank" >示例代码</a></p>
+              <hr />
+
+              <a id="SortTable" className="target-fix" ></a>
+              <h3 >排序 </h3>
+              <SortTable />
+              <Markdown>{require('./md/SortTable.md')}</Markdown>
+              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/SortTable.js" target="_blank" >示例代码</a></p>
               <hr />
 
               <a id="PaginationTable" className="target-fix" ></a>

@@ -1,4 +1,5 @@
-# rsuite-table
+# rsuite-table  [![npm][npm-badge]][npm]
+
 
 `rsuite-table` 是一个 `React` 实现的 `<Table>` 组件，主要特性有：
 
@@ -64,3 +65,11 @@ ReactDOM.render(
     document.getElementById('mount')
 );
 ```
+
+
+[build-badge]: https://travis-ci.org/rsuite/rsuite-table.svg?branch=master
+[build]: https://travis-ci.org/rsuite/rsuite-table
+
+
+[npm-badge]: https://badge.fury.io/js/rsuite-table.svg
+[npm]: http://badge.fury.io/js/rsuite-table
