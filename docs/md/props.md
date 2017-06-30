@@ -10,13 +10,16 @@ height | number | 200 | 高度
 rowHeight | number | 36 | 行高
 headerHeight | number | 36 | 表头高度
 isTree | bool | | 是否展示为树表格
-expand | bool | | 展开所有节点，`isTree`为 `tree` 时，改值有效
+expand | bool | | 展开所有节点，`isTree`为 `tree` 时，该属性有效
+onTreeToggleOpen | func |  | 树形表格，在展开节点的回调函数
 locale | object |  | 本地化语言配置
 sortColumn | string |  | 排序列名称
 sortType | string |  | 排序类型  ['desc', 'asc']
 onRowClick | func  |  | 行点击后的回调函数， 返回 `rowDate`
 onSortColumn | func  |  | 点击排序列的回调函数，返回 `sortColumn`, `sortType` 这两个值
 onRerenderRowHeight| func  |  | 重新渲染行高
+onScroll | func |  | 滚动条滚动时候的回调函数
+disabledScroll | bool | | 禁用滚动
 
 <br>
 ####  `<Column>`

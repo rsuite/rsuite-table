@@ -1,3 +1,6 @@
+# 1.1.4
+- *Feature*: Add `disabledScroll` to `<Table>`
+
 # 1.1.2
 - *Feature*: Added support Scrollbar
 

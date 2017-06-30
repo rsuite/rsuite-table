@@ -19,6 +19,7 @@ const FixedColumnTable = React.createClass({
           onRowClick={(data) => {
             console.log(data);
           }}
+          disabledScroll
         >
           <Column width={70} align="center" fixed>
             <HeaderCell>Id</HeaderCell>
