@@ -8,7 +8,8 @@ const Column = React.createClass({
     fixed: PropTypes.bool,
     resizable: PropTypes.bool,
     sortable: PropTypes.bool,
-    flexGrow: PropTypes.number
+    flexGrow: PropTypes.number,
+    minWidth: PropTypes.number
   },
 
   render() {

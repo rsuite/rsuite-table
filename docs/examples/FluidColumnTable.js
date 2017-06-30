@@ -35,7 +35,7 @@ const ResizableColumnTable = React.createClass({
             <Cell dataKey="lastName" />
           </Column>
 
-          <Column flexGrow={1} sortable>
+          <Column flexGrow={1} sortable >
             <HeaderCell>City <code>flexGrow={1}</code></HeaderCell>
             <Cell dataKey="city" />
           </Column>

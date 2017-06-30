@@ -154,7 +154,7 @@ const Table = React.createClass({
     ReactChildren.map(columns, (column, index) => {
 
       let columnChildren = column.props.children;
-      let { width, fixed, align, sortable, resizable, flexGrow } = column.props;
+      let { width, fixed, align, sortable, resizable, flexGrow, minWidth } = column.props;
 
       if (columnChildren.length !== 2) {
         throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
@@ -163,7 +163,8 @@ const Table = React.createClass({
       let nextWidth = this.state[`${columnChildren[1].props.dataKey}_${index}_width`] || width || 0;
 
       if (tableWidth && flexGrow) {
-        nextWidth = (tableWidth - totalWidth) / totalFlexGrow * flexGrow || 0;
+
+        nextWidth = Math.max((tableWidth - totalWidth) / totalFlexGrow * flexGrow, minWidth || 200);
       }
 
       let cellProps = {

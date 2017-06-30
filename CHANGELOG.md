@@ -1,3 +1,6 @@
+# 1.1.5
+- *Feature*: Add `minWidth` to `<Column>`
+
 # 1.1.4
 - *Feature*: Add `disabledScroll` to `<Table>`
 
