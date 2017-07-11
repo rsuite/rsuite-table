@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
+import isNullOrUndefined from './utils/isNullOrUndefined';
 
 import { assign } from 'lodash';
 
@@ -133,10 +134,12 @@ const Cell = React.createClass({
       fixed
     } = this.props;
 
+
     if (isHeaderCell) {
       return this.renderCell(children);
     }
-    return this.renderCell(children || rowData[dataKey]);
+
+    return this.renderCell(isNullOrUndefined(children) ? rowData[dataKey] : children);
   }
 
 });

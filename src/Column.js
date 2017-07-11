@@ -11,7 +11,11 @@ const Column = React.createClass({
     flexGrow: PropTypes.number,
     minWidth: PropTypes.number
   },
-
+  getDefaultProps() {
+    return {
+      width: 100
+    };
+  },
   render() {
     //组件 <Column> 不需要渲染
     return null;

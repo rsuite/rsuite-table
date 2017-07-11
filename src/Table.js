@@ -31,8 +31,10 @@ function getTotalByColumns(columns) {
   let totalFlexGrow = 0;
   let totalWidth = 0;
   for (let i = 0; i < columns.length; ++i) {
-    totalFlexGrow += columns[i].props.flexGrow || 0;
-    totalWidth += columns[i].props.width || 0;
+    if (React.isValidElement(columns[i])) {
+      totalFlexGrow += columns[i].props.flexGrow || 0;
+      totalWidth += columns[i].props.width || 0;
+    }
   }
   return {
     totalFlexGrow,
@@ -87,6 +89,25 @@ const Table = React.createClass({
       contentHeight: 0,
       contentWidth: 0
     };
+  },
+  componentDidMount() {
+    this._onWindowResizeListener = on(window, 'resize', debounce(this.reportTableWidth, 400));
+    this.reportTableWidth();
+    this.reportTableContextHeight();
+
+  },
+  componentDidUpdate() {
+    this.reportTableContextHeight();
+    this.reportTableContentWidth();
+    this.updatePosition();
+  },
+  componentWillUnmount() {
+    if (this._onWheelListener) {
+      this._onWheelListener.off();
+    }
+    if (this._onWindowResizeListener) {
+      this._onWindowResizeListener.off();
+    }
   },
   getFixedCellGroups() {
     return findDOMNode(this.table).querySelectorAll(`.${this.props.classPrefix}-cell-group.fixed`);
@@ -145,62 +166,72 @@ const Table = React.createClass({
     const headerCells = [];          // Table header cell
     const bodyCells = [];            // Table body cell
     const columns = this.props.children;
-    const { dataKey, columnWidth, width: tableWidth } = this.state;
 
+    if (!columns) {
+      return {
+        headerCells,
+        bodyCells,
+        allColumnsWidth: left
+      };
+    }
+
+    const { dataKey, columnWidth, width: tableWidth } = this.state;
     const { sortColumn, sortType, onSortColumn, rowHeight, headerHeight } = this.props;
     const { totalFlexGrow, totalWidth } = getTotalByColumns(columns);
 
 
     ReactChildren.map(columns, (column, index) => {
 
-      let columnChildren = column.props.children;
-      let { width, fixed, align, sortable, resizable, flexGrow, minWidth } = column.props;
+      if (React.isValidElement(column)) {
 
-      if (columnChildren.length !== 2) {
-        throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
+        let columnChildren = column.props.children;
+        let { width, fixed, align, sortable, resizable, flexGrow, minWidth } = column.props;
+
+        if (columnChildren.length !== 2) {
+          throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
+        }
+
+        let nextWidth = this.state[`${columnChildren[1].props.dataKey}_${index}_width`] || width || 0;
+
+        if (tableWidth && flexGrow) {
+
+          nextWidth = Math.max((tableWidth - totalWidth) / totalFlexGrow * flexGrow, minWidth || 200);
+        }
+
+        let cellProps = {
+          fixed,
+          left,
+          align,
+          resizable,
+          sortable,
+          index,
+          width: nextWidth,
+          height: rowHeight,
+          headerHeight: headerHeight,
+          firstColumn: (index === 0),
+          lastColumn: (index === columns.length - 1),
+          key: index
+        };
+
+        let headerCellsProps = {
+          headerHeight: headerHeight || rowHeight,
+          dataKey: columnChildren[1].props.dataKey,
+          sortColumn,
+          sortType,
+          onSortColumn
+        };
+
+        if (resizable) {
+          headerCellsProps.onColumnResizeEnd = this.onColumnResizeEnd;
+          headerCellsProps.onColumnResizeStart = this.onColumnResizeStart;
+          headerCellsProps.onColumnResizeMove = this.onColumnResizeMove;
+        }
+
+        headerCells.push(this.cloneCell(columnChildren[0], assign(cellProps, headerCellsProps)));
+        bodyCells.push(this.cloneCell(columnChildren[1], cellProps));
+
+        left += nextWidth;
       }
-
-      let nextWidth = this.state[`${columnChildren[1].props.dataKey}_${index}_width`] || width || 0;
-
-      if (tableWidth && flexGrow) {
-
-        nextWidth = Math.max((tableWidth - totalWidth) / totalFlexGrow * flexGrow, minWidth || 200);
-      }
-
-      let cellProps = {
-        fixed,
-        left,
-        align,
-        resizable,
-        sortable,
-        index,
-        width: nextWidth,
-        height: rowHeight,
-        headerHeight: headerHeight,
-        firstColumn: (index === 0),
-        lastColumn: (index === columns.length - 1),
-        key: index
-      };
-
-      let headerCellsProps = {
-        headerHeight: headerHeight || rowHeight,
-        dataKey: columnChildren[1].props.dataKey,
-        sortColumn,
-        sortType,
-        onSortColumn
-      };
-
-      if (resizable) {
-        headerCellsProps.onColumnResizeEnd = this.onColumnResizeEnd;
-        headerCellsProps.onColumnResizeStart = this.onColumnResizeStart;
-        headerCellsProps.onColumnResizeMove = this.onColumnResizeMove;
-      }
-
-      headerCells.push(this.cloneCell(columnChildren[0], assign(cellProps, headerCellsProps)));
-      bodyCells.push(this.cloneCell(columnChildren[1], cellProps));
-
-      left += nextWidth;
-
     });
 
 
@@ -250,41 +281,7 @@ const Table = React.createClass({
     );
 
   },
-  render() {
-    const {
-      children,
-      className,
-      width = 0,
-      height,
-      style,
-      rowHeight,
-      classPrefix,
-      isTree,
-      id
-    } = this.props;
 
-    let { headerCells, bodyCells, allColumnsWidth } = this.getCells();
-    let rowWidth = allColumnsWidth > width ? allColumnsWidth : width;
-
-
-    const clesses = classNames(
-      classPrefix,
-      isTree ? this.prefix('treetable') : '',
-      className, {
-        'column-resizing': this.state.isColumnResizing
-      }
-    );
-
-    const styles = assign({ width: width || 'auto', height }, style);
-
-    return (
-      <div className={clesses} style={styles} ref={ref => this.table = ref} id={id}>
-        {this.renderTableHeader(headerCells, rowWidth)}
-        {this.renderTableBody(bodyCells, rowWidth, allColumnsWidth)}
-        {this.renderMouseArea()}
-      </div>
-    );
-  },
   renderTableHeader(headerCells, rowWidth) {
     const { rowHeight, headerHeight } = this.props;
     const row = this.renderRow({
@@ -351,7 +348,11 @@ const Table = React.createClass({
           key={props.index} >
           {row}
           <div className="children" >
-            {rowData.children.map((child, index) => this.randerRowData(bodyCells, child, Object.assign({}, props, { index })))}
+            {
+              rowData.children.map((child, index) => {
+                return this.randerRowData(bodyCells, child, Object.assign({}, props, { index }));
+              })
+            }
           </div>
         </div>
       );
@@ -495,8 +496,8 @@ const Table = React.createClass({
       const headerStyle = {};
       translateDOMPositionXY(wheelStyle, this.scrollX, this.scrollY);
       translateDOMPositionXY(headerStyle, this.scrollX, 0);
-      addStyle(this.wheelWrapper, wheelStyle);
-      addStyle(this.headerWrapper, headerStyle);
+      this.wheelWrapper && addStyle(this.wheelWrapper, wheelStyle);
+      this.headerWrapper && addStyle(this.headerWrapper, headerStyle);
     }
     handleClass[this.scrollY < 0 ? 'add' : 'remove'](findDOMNode(this.tableHeader), 'shadow');
   },
@@ -523,8 +524,11 @@ const Table = React.createClass({
     if (delta === 0 || this.props.disabledScroll) {
       return false;
     }
+    /**
     return (delta >= 0 && this.scrollX > this.minScrollX) ||
       (delta < 0 && this.scrollX < 0);
+     */
+    return true;
   },
   shouldHandleWheelY(delta) {
 
@@ -537,6 +541,10 @@ const Table = React.createClass({
 
   componentWillMount() {
     const { children } = this.props;
+
+    if (!children) {
+      return;
+    }
     const shouldFixedColumn = children.some((child) => {
       return child.props.fixed;
     });
@@ -571,6 +579,7 @@ const Table = React.createClass({
 
   },
   reportTableContextHeight() {
+
     const rows = findDOMNode(this.table).querySelectorAll(`.${this.props.classPrefix}-row`);
     const { height, rowHeight, headerHeight } = this.props;
     let contentHeight = 0;
@@ -589,24 +598,40 @@ const Table = React.createClass({
       this.scrollbarY && this.scrollbarY.resetScrollBarPosition();
     }
   },
-  componentDidMount() {
-    this._onWindowResizeListener = on(window, 'resize', debounce(this.reportTableWidth, 400));
-    this.reportTableWidth();
-    this.reportTableContextHeight();
+  render() {
+    const {
+      children,
+      className,
+      width = 0,
+      height,
+      style,
+      rowHeight,
+      classPrefix,
+      isTree,
+      id
+    } = this.props;
 
-  },
-  componentDidUpdate() {
-    this.reportTableContextHeight();
-    this.reportTableContentWidth();
-    this.updatePosition();
-  },
-  componentWillUnmount() {
-    if (this._onWheelListener) {
-      this._onWheelListener.off();
-    }
-    if (this._onWindowResizeListener) {
-      this._onWindowResizeListener.off();
-    }
+    let { headerCells, bodyCells, allColumnsWidth } = this.getCells();
+    let rowWidth = allColumnsWidth > width ? allColumnsWidth : width;
+
+
+    const clesses = classNames(
+      classPrefix,
+      isTree ? this.prefix('treetable') : '',
+      className, {
+        'column-resizing': this.state.isColumnResizing
+      }
+    );
+
+    const styles = assign({ width: width || 'auto', height }, style);
+
+    return (
+      <div className={clesses} style={styles} ref={ref => this.table = ref} id={id}>
+        {this.renderTableHeader(headerCells, rowWidth)}
+        {children && this.renderTableBody(bodyCells, rowWidth, allColumnsWidth)}
+        {this.renderMouseArea()}
+      </div>
+    );
   }
 });
 
