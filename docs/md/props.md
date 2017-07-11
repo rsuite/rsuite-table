@@ -43,7 +43,6 @@ minWidth | number | 200 | 当使用了 `flexGrow` 以后，可以通过 `minWidt
 Name | Type | Default | Description |
 ---- | ---- | ------- | ----------- |
 dataKey | string |  |  数据绑定的 `key` ，同时也是排序的 `key`
-align | string |  |  对齐方式 ['left', 'center', 'right']
 rowData | object |  | 行数据
 rowIndex | number |  | 行号
 
