@@ -28,15 +28,28 @@
         top: 0;
         border-bottom: 1px solid @border-color;
     }
-    .@{prefix}table-row-header{
-        background:@head-background;
+
+    .@{prefix}table-row:hover{
+      background: @head-background;
+        .@{prefix}table-cell-group{
+            background: @head-background;
+        }
         .@{prefix}table-cell{
-           background:@head-background;
+            background: @head-background;
         }
-        &.shadow{
-            .box-shadow(0, 2px, 3px, rgba(0, 0, 0, 0.28));
-            z-index: 5;
-        }
+    }
+
+    &.table-hover{
+      .@{prefix}table-row-header{
+          background:@head-background;
+          .@{prefix}table-cell{
+            background:@head-background;
+          }
+          &.shadow{
+              .box-shadow(0, 2px, 3px, rgba(0, 0, 0, 0.28));
+              z-index: 5;
+          }
+      }
     }
 
     .@{prefix}table-header-row-wrapper{
@@ -58,6 +71,9 @@
             position: absolute;
             margin-top: -20px;
             line-height: 40px;
+        }
+        .@{prefix}table-body-wheel-area{
+          width: 100%;
         }
     }
 
