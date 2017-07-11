@@ -30,12 +30,19 @@ const LAYER_WIDTH = 30;
 function getTotalByColumns(columns) {
   let totalFlexGrow = 0;
   let totalWidth = 0;
-  for (let i = 0; i < columns.length; ++i) {
-    if (React.isValidElement(columns[i])) {
-      totalFlexGrow += columns[i].props.flexGrow || 0;
-      totalWidth += columns[i].props.width || 0;
-    }
-  }
+
+  const count = (items) => {
+    items.forEach((column) => {
+      if (React.isValidElement(column)) {
+        const { flexGrow, width = 0 } = column.props;
+        totalFlexGrow += (flexGrow || 0);
+        totalWidth += (flexGrow ? 0 : width);
+      } else if (_.isArray(column)) {
+        count(column);
+      }
+    });
+  };
+  count(columns);
   return {
     totalFlexGrow,
     totalWidth
@@ -68,6 +75,7 @@ const Table = React.createClass({
     onRerenderRowHeight: PropTypes.func,
     onTreeToggleOpen: PropTypes.func,
     disabledScroll: PropTypes.bool,
+    hover: PropTypes.bool,
     onScroll: PropTypes.func,
   },
   getDefaultProps() {
@@ -75,6 +83,7 @@ const Table = React.createClass({
       height: 200,
       rowHeight: 36,
       sortType: 'asc',
+      hover: true,
       locale: {
         emptyMessage: 'No data found'
       }
@@ -193,9 +202,8 @@ const Table = React.createClass({
 
         let nextWidth = this.state[`${columnChildren[1].props.dataKey}_${index}_width`] || width || 0;
 
-        if (tableWidth && flexGrow) {
-
-          nextWidth = Math.max((tableWidth - totalWidth) / totalFlexGrow * flexGrow, minWidth || 200);
+        if (tableWidth && flexGrow && totalFlexGrow) {
+          nextWidth = Math.max((tableWidth - totalWidth) / totalFlexGrow * flexGrow, minWidth || 60);
         }
 
         let cellProps = {
@@ -210,6 +218,7 @@ const Table = React.createClass({
           headerHeight: headerHeight,
           firstColumn: (index === 0),
           lastColumn: (index === columns.length - 1),
+          flexGrow,
           key: index
         };
 
@@ -218,7 +227,8 @@ const Table = React.createClass({
           dataKey: columnChildren[1].props.dataKey,
           sortColumn,
           sortType,
-          onSortColumn
+          onSortColumn,
+          flexGrow
         };
 
         if (resizable) {
@@ -414,7 +424,11 @@ const Table = React.createClass({
         style={bodyStyles}
         onWheel={this.wheelHandler.onWheel}
       >
-        <div style={wheelStyles} ref={ref => this.wheelWrapper = ref}>
+        <div
+          style={wheelStyles}
+          className={this.prefix('body-wheel-area')}
+          ref={ref => this.wheelWrapper = ref}
+        >
           {rows}
         </div>
 
@@ -546,8 +560,9 @@ const Table = React.createClass({
       return;
     }
     const shouldFixedColumn = children.some((child) => {
-      return child.props.fixed;
+      return child.props && child.props.fixed;
     });
+
     this.scrollY = 0;
     this.scrollX = 0;
     this.wheelHandler = new WheelHandler((deltaX, deltaY) => {
@@ -608,6 +623,7 @@ const Table = React.createClass({
       rowHeight,
       classPrefix,
       isTree,
+      hover,
       id
     } = this.props;
 
@@ -619,7 +635,8 @@ const Table = React.createClass({
       classPrefix,
       isTree ? this.prefix('treetable') : '',
       className, {
-        'column-resizing': this.state.isColumnResizing
+        'column-resizing': this.state.isColumnResizing,
+        'table-hover': hover
       }
     );
 

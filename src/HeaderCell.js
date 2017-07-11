@@ -3,7 +3,7 @@ import Cell from './Cell';
 import ClassNameMixin from './mixins/ClassNameMixin';
 import ColumnResizeHandler from './ColumnResizeHandler';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
-
+import isNullOrUndefined from './utils/isNullOrUndefined';
 
 const HeaderCell = React.createClass({
   mixins: [
@@ -29,8 +29,9 @@ const HeaderCell = React.createClass({
     this.props.onColumnResizeEnd(columnWidth, cursorDelta, this.props.dataKey, this.props.index);
   },
   getInitialState() {
+    const { width, flexGrow } = this.props;
     return {
-      columnWidth: this.props.width
+      columnWidth: isNullOrUndefined(flexGrow) ? width : 0
     };
   },
   renderResizeSpanner() {
@@ -84,7 +85,6 @@ const HeaderCell = React.createClass({
 
     const classes = this.prefix('cell-header');
     const { sortable } = this.props;
-
     return (
       <div className={classes} >
         <Cell
