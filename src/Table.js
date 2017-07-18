@@ -538,17 +538,16 @@ const Table = React.createClass({
     if (delta === 0 || this.props.disabledScroll) {
       return false;
     }
-    /**
+
     return (delta >= 0 && this.scrollX > this.minScrollX) ||
       (delta < 0 && this.scrollX < 0);
-     */
-    return true;
   },
   shouldHandleWheelY(delta) {
 
     if (delta === 0 || this.props.disabledScroll) {
       return false;
     }
+    return true;
     return (delta >= 0 && this.scrollY > this.minScrollY) ||
       (delta < 0 && this.scrollY < 0);
   },
@@ -585,7 +584,8 @@ const Table = React.createClass({
     const contentWidth = getWidth(row);
 
     this.setState({ contentWidth });
-    this.minScrollX = -(contentWidth - this.state.width);
+    // 这里 -10 是为了让滚动条不挡住内容部分
+    this.minScrollX = -(contentWidth - this.state.width) - 10;
 
     if (this.state.contentWidth !== contentWidth) {
       this.scrollX = 0;
@@ -606,8 +606,8 @@ const Table = React.createClass({
     this.setState({
       contentHeight: nextContentHeight
     });
-
-    this.minScrollY = -(contentHeight - height);
+    // 这里 -10 是为了让滚动条不挡住内容部分
+    this.minScrollY = -(contentHeight - height) - 10;
     if (this.state.contentHeight !== nextContentHeight) {
       this.scrollY = 0;
       this.scrollbarY && this.scrollbarY.resetScrollBarPosition();
