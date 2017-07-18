@@ -1,53 +1,76 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import ClassNameMixin from './mixins/ClassNameMixin';
-import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
+import _ from 'lodash';
 import isNullOrUndefined from './utils/isNullOrUndefined';
+import { LAYER_WIDTH } from './constants';
+import decorate from './utils/decorate';
 
-import { assign } from 'lodash';
 
-const LAYER_WIDTH = 30;
-const Cell = React.createClass({
-  mixins: [
-    ClassNameMixin,
-    ReactComponentWithPureRenderMixin
-  ],
-  propTypes: {
-    dataKey: PropTypes.string,
+const propTypes = {
+  align: PropTypes.oneOf(['left', 'center', 'right']),
+  className: PropTypes.string,
+  dataKey: PropTypes.string,
+  isHeaderCell: PropTypes.bool,
 
-    align: PropTypes.oneOf(['left', 'center', 'right']),
-    className: PropTypes.string,
-    isHeaderCell: PropTypes.bool,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  left: PropTypes.number,
+  headerHeight: PropTypes.number,
 
-    width: PropTypes.number,
-    height: PropTypes.number,
-    left: PropTypes.number,
-    headerHeight: PropTypes.number,
+  rowKey: PropTypes.string,
+  rowData: PropTypes.object,
+  rowIndex: PropTypes.number,
+  layer: PropTypes.number,  // for tree table
 
-    rowData: PropTypes.object,
-    rowIndex: PropTypes.number,
-    layer: PropTypes.number,  // for tree table
+  style: PropTypes.object,
+  firstColumn: PropTypes.bool,
+  lastColumn: PropTypes.bool,
+  hasChildren: PropTypes.bool,
 
-    cellData: PropTypes.any,
-    cellRenderer: PropTypes.func,
+  onTreeToggle: PropTypes.func,
+  cellRenderer: PropTypes.func,
+  sortable: PropTypes.bool
+};
 
-    fixed: PropTypes.bool,
 
-    style: PropTypes.object,
-    firstColumn: PropTypes.bool,
-    lastColumn: PropTypes.bool,
-    hasChildren: PropTypes.bool,
+const defaultProps = {
+  align: 'left',
+  headerHeight: 36,
+  height: 36,
+  width: 0,
+  layer: 0,
+  left: 0
+};
 
-    onTreeToggle: PropTypes.func,
-  },
-  getDefaultProps() {
-    return {
-      align: 'left',
-      headerHeight: 36,
-      height: 36,
-    };
-  },
-  renderCell(content) {
+class Cell extends React.Component {
+
+  renderExpandIcon() {
+    const {
+      hasChildren,
+      firstColumn,
+      onTreeToggle,
+      rowKey,
+      rowIndex,
+      rowData
+    } = this.props;
+
+    /**
+     * 如果用子节点，同时是第一列,则创建一个 icon 用于展开节点
+     */
+    return (hasChildren && firstColumn) ? (
+      <i
+        role="button"
+        tabIndex={-1}
+        className="expand-icon icon"
+        onClick={(event) => {
+          onTreeToggle && onTreeToggle(rowKey, rowIndex, rowData, event);
+        }}
+      />
+    ) : null;
+  }
+
+  render() {
 
     let {
       width,
@@ -60,38 +83,36 @@ const Cell = React.createClass({
       isHeaderCell,
       headerHeight,
       layer,
-      onTreeToggle,
-      hasChildren,
-      rowIndex,
-      rowKey,
-      rowData,
       align,
       sortable,
+      children,
+      rowData,
+      dataKey,
+      cellRenderer,
       ...props
     } = this.props;
 
 
-    const classes = classNames(
-      this.prefix('cell'),
-      className, {
-        'sortable': sortable && isHeaderCell,
-        'first': firstColumn,
-        'last': lastColumn
-      });
+    const classes = classNames(this.prefix('cell'), {
+      sortable: sortable && isHeaderCell,
+      first: firstColumn,
+      last: lastColumn
+    }, className);
+
     const layerWidth = layer * LAYER_WIDTH;
+    const nextWidth = (!isHeaderCell && firstColumn) ? width - layerWidth : width;
 
-    width = !isHeaderCell && firstColumn ? width - layerWidth : width;
-
-    const styles = assign({
+    const styles = {
+      width: nextWidth,
       height: isHeaderCell ? headerHeight : height,
       zIndex: layer,
-      width: width,
-      left: !isHeaderCell && firstColumn ? left + layerWidth : left,
-    }, style);
+      left: (!isHeaderCell && firstColumn) ? left + layerWidth : left,
+      ...style
+    };
 
 
-    let contentStyles = {
-      width: width,
+    const contentStyles = {
+      width: nextWidth,
       textAlign: align
     };
 
@@ -99,49 +120,35 @@ const Cell = React.createClass({
       contentStyles.paddingRight = 28;
     }
 
-    const expandIcon = hasChildren && firstColumn ? (
-      <i className="expand-icon icon"
-        onClick={event => onTreeToggle(rowKey, rowIndex, rowData, event)}>
-      </i>
-    ) : null;
-
-    content = (
-      <div className={this.prefix('cell-content')} style={contentStyles}
-      >
-        {expandIcon}
-        {content}
-      </div>
-    );
+    const contentChildren = isNullOrUndefined(children) && rowData ? rowData[dataKey] : children;
+    const elementProps = _.omit(props, Object.keys(propTypes));
 
     return (
-      <div className={classes} style={styles} {...props}>
+      <div
+        {...elementProps}
+        className={classes}
+        style={styles}
+      >
         <div className={this.prefix('cell-wrap1')}>
           <div className={this.prefix('cell-wrap2')}>
             <div className={this.prefix('cell-wrap3')}>
-              {content}
+              <div
+                className={this.prefix('cell-content')}
+                style={contentStyles}
+              >
+                {this.renderExpandIcon()}
+                {cellRenderer ? cellRenderer(contentChildren) : contentChildren}
+              </div>
             </div>
           </div>
         </div>
       </div>
     );
-  },
-  render() {
-    const {
-      children,
-      rowData,
-      isHeaderCell,
-      dataKey,
-      fixed
-    } = this.props;
-
-
-    if (isHeaderCell) {
-      return this.renderCell(children);
-    }
-
-    return this.renderCell(isNullOrUndefined(children) ? rowData[dataKey] : children);
   }
+}
 
-});
+Cell.propTypes = propTypes;
+Cell.defaultProps = defaultProps;
 
-export default Cell;
+
+export default decorate()(Cell);
