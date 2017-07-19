@@ -42,3 +42,4 @@ dist
 lib
 .vscode/
 assets
+yarn.lock
