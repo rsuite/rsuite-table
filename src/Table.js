@@ -539,7 +539,7 @@ const Table = React.createClass({
       return false;
     }
 
-    return (delta >= 0 && this.scrollX > this.minScrollX) ||
+    return  (delta >= 0 && this.scrollX > this.minScrollX) ||
       (delta < 0 && this.scrollX < 0);
   },
   shouldHandleWheelY(delta) {
@@ -547,7 +547,6 @@ const Table = React.createClass({
     if (delta === 0 || this.props.disabledScroll) {
       return false;
     }
-    return true;
     return (delta >= 0 && this.scrollY > this.minScrollY) ||
       (delta < 0 && this.scrollY < 0);
   },
