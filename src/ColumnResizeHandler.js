@@ -1,25 +1,9 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import { DOMMouseMoveTracker } from 'dom-lib';
-import ClassNameMixin from './mixins/ClassNameMixin';
-import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
-
-
-function clamp(value, min, max) {
-  if (value < min) {
-    return min;
-  }
-  if (value > max) {
-    return max;
-  }
-  return value;
-}
+import clamp from './utils/clamp';
 
 const ColumnResizeHandler = React.createClass({
-  mixins: [
-    ClassNameMixin,
-    ReactComponentWithPureRenderMixin
-  ],
   propTypes: {
     height: PropTypes.number,
     columnWidth: PropTypes.number,
@@ -73,7 +57,7 @@ const ColumnResizeHandler = React.createClass({
     this.props.onColumnResizeStart({
       clientX: event.clientX,
       clientY: event.clientY,
-      preventDefault: function () { }
+      preventDefault: () => { }
     });
   },
 

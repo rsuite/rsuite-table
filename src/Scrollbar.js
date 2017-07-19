@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
 import ClassNameMixin from './mixins/ClassNameMixin';
 import { DOMMouseMoveTracker, addStyle, translateDOMPositionXY } from 'dom-lib';

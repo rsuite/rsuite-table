@@ -164,7 +164,8 @@ const TablePagination = React.createClass({
             maxButtons={maxButtons}
             pages={pages}
             onSelect={this.handleChangePage}
-            activePage={activePage} />
+            activePage={activePage}
+          />
         </div>
 
       </div>

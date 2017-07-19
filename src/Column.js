@@ -17,7 +17,7 @@ const Column = React.createClass({
     };
   },
   render() {
-    //组件 <Column> 不需要渲染
+    // 组件 <Column> 不需要渲染
     return null;
   }
 });

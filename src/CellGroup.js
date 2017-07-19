@@ -8,8 +8,7 @@ const propTypes = {
   fixed: PropTypes.bool,
   width: PropTypes.number,
   height: PropTypes.number,
-  left: PropTypes.number,
-  style: PropTypes.object
+  left: PropTypes.number
 };
 
 

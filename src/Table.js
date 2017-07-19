@@ -7,20 +7,18 @@ import {
   addClass,
   removeClass,
   hasClass,
-  toggleClass,
   getWidth,
   getHeight,
   translateDOMPositionXY,
   WheelHandler
 } from 'dom-lib';
-
-import { assign } from 'lodash';
+import { debounce, assign } from 'lodash';
 import Row from './Row';
 import CellGroup from './CellGroup';
 
 import ClassNameMixin from './mixins/ClassNameMixin';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
-import debounce from './utils/debounce';
+
 import Scrollbar from './Scrollbar';
 
 const handleClass = { add: addClass, remove: removeClass };
@@ -237,7 +235,10 @@ const Table = React.createClass({
           headerCellsProps.onColumnResizeMove = this.onColumnResizeMove;
         }
 
-        headerCells.push(this.cloneCell(columnChildren[0], assign(cellProps, headerCellsProps)));
+        headerCells.push(this.cloneCell(columnChildren[0], {
+          ...cellProps,
+          ...headerCellsProps
+        }));
         bodyCells.push(this.cloneCell(columnChildren[1], cellProps));
 
         left += nextWidth;
@@ -360,7 +361,10 @@ const Table = React.createClass({
           <div className="children" >
             {
               rowData.children.map((child, index) => {
-                return this.randerRowData(bodyCells, child, Object.assign({}, props, { index }));
+                return this.randerRowData(bodyCells, child, {
+                  ...props,
+                  index
+                });
               })
             }
           </div>
