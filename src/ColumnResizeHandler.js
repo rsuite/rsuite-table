@@ -1,107 +1,123 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import { DOMMouseMoveTracker } from 'dom-lib';
+import _ from 'lodash';
+import decorate from './utils/decorate';
 import clamp from './utils/clamp';
 
-const ColumnResizeHandler = React.createClass({
-  propTypes: {
-    height: PropTypes.number,
-    columnWidth: PropTypes.number,
-    columnLeft: PropTypes.number,
-    columnFixed: PropTypes.bool,
-    onColumnResizeStart: PropTypes.func,
-    onColumnResizeEnd: PropTypes.func,
-    onColumnResizeMove: PropTypes.func,
-  },
-  _columnWidth: 0,
-  _cursorDelta: 0,
-  _onMove(deltaX, deltaY) {
+const propTypes = {
+  height: PropTypes.number,
+  initialEvent: PropTypes.object,
+  columnWidth: PropTypes.number,
+  columnLeft: PropTypes.number,
+  columnFixed: PropTypes.bool,
+  onColumnResizeStart: PropTypes.func,
+  onColumnResizeEnd: PropTypes.func,
+  onColumnResizeMove: PropTypes.func,
+};
+
+class ColumnResizeHandler extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onColumnResizeMouseDown = this.onColumnResizeMouseDown.bind(this);
+    this.onMove = this.onMove.bind(this);
+    this.onColumnResizeEnd = this.onColumnResizeEnd.bind(this);
+    this.columnWidth = props.columnWidth || 0;
+    this.cursorDelta = 0;
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    if (this.isKeyDown && nextProps.initialEvent && !this.mouseMoveTracker.isDragging()) {
+      this.mouseMoveTracker.captureMouseMoves(nextProps.initialEvent);
+    }
+    if (nextProps.columnWidth !== this.props.columnWidth) {
+      this.columnWidth = nextProps.columnWidth;
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.mouseMoveTracker) {
+      this.mouseMoveTracker.releaseMouseMoves();
+      this.mouseMoveTracker = null;
+    }
+  }
+
+  onMove(deltaX) {
 
     if (!this.isKeyDown) {
       return;
     }
 
-    this._cursorDelta += deltaX;
-    this._columnWidth = clamp(this.props.columnWidth + this._cursorDelta, 20);
-    this.props.onColumnResizeMove(this._columnWidth, this.props.columnLeft, this.props.columnFixed);
-  },
+    const { onColumnResizeMove, columnWidth, columnLeft, columnFixed } = this.props;
 
-  _onColumnResizeEnd() {
+    this.cursorDelta += deltaX;
+    this.columnWidth = clamp(columnWidth + this.cursorDelta, 20);
+    onColumnResizeMove && onColumnResizeMove(this.columnWidth, columnLeft, columnFixed);
+  }
 
+  onColumnResizeEnd() {
+
+    const { onColumnResizeEnd } = this.props;
     this.isKeyDown = false;
-
-    this.props.onColumnResizeEnd(
-      this._columnWidth,
-      this._cursorDelta
+    onColumnResizeEnd && onColumnResizeEnd(
+      this.columnWidth,
+      this.cursorDelta
     );
 
-    if (this._mouseMoveTracker) {
-      this._mouseMoveTracker.releaseMouseMoves();
-      this._mouseMoveTracker = null;
+    if (this.mouseMoveTracker) {
+      this.mouseMoveTracker.releaseMouseMoves();
+      this.mouseMoveTracker = null;
     }
-
-  },
-  _getMouseMoveTracker() {
-    return this._mouseMoveTracker || new DOMMouseMoveTracker(
-      this._onMove,
-      this._onColumnResizeEnd,
-      document.body
-    );
-  },
-  _onColumnResizeMouseDown(event) {
-
-    this._mouseMoveTracker = this._getMouseMoveTracker();
+  }
+  onColumnResizeMouseDown(event) {
+    const { onColumnResizeStart } = this.props;
+    this.mouseMoveTracker = this.getMouseMoveTracker();
     this.isKeyDown = true;
-    this._cursorDelta = 0;
+    this.cursorDelta = 0;
 
-    this.props.onColumnResizeStart({
+    onColumnResizeStart && onColumnResizeStart({
       clientX: event.clientX,
       clientY: event.clientY,
       preventDefault: () => { }
     });
-  },
+  }
+  getMouseMoveTracker() {
+    return this.mouseMoveTracker || new DOMMouseMoveTracker(
+      this.onMove,
+      this.onColumnResizeEnd,
+      document.body
+    );
+  }
 
-  componentWillMount() {
-    this._columnWidth = this.props.columnWidth;
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if (this.isKeyDown && nextProps.initialEvent && !this._mouseMoveTracker.isDragging()) {
-      this._mouseMoveTracker.captureMouseMoves(nextProps.initialEvent);
-    }
-    if (nextProps.columnWidth !== this.props.columnWidth) {
-      this._columnWidth = nextProps.columnWidth;
-    }
-  },
-  componentWillUnmount() {
-    if (this._mouseMoveTracker) {
-      this._mouseMoveTracker.releaseMouseMoves();
-      this._mouseMoveTracker = null;
-    }
-  },
   render() {
 
 
-    let { columnLeft, height } = this.props;
-
-    let styles = {
+    const { columnLeft = 0, height, className, style, ...props } = this.props;
+    const styles = {
       width: 6,
-      left: this._columnWidth + columnLeft - 2,
-      height
+      left: (this.columnWidth + columnLeft) - 2,
+      height,
+      ...style
     };
 
-    let classes = classNames(this.prefix('column-resize-spanner'));
+    const classes = classNames(this.prefix('column-resize-spanner'), className);
+    const elementProps = _.omit(props, Object.keys(propTypes));
 
     return (
       <div
+        {...elementProps}
         className={classes}
         style={styles}
-        onMouseDown={this._onColumnResizeMouseDown}
-        ref="spanner"
-      >
-      </div>
+        onMouseDown={this.onColumnResizeMouseDown}
+        role="button"
+        tabIndex={-1}
+      />
     );
   }
-});
 
-export default ColumnResizeHandler;
+}
+
+ColumnResizeHandler.propTypes = propTypes;
+
+export default decorate()(ColumnResizeHandler);
