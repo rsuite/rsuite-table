@@ -1,0 +1,52 @@
+import React from 'react';
+import { findDOMNode } from 'react-dom';
+import ReactTestUtils from 'react-dom/test-utils';
+import Scrollbar from '../src/Scrollbar';
+
+
+describe('Scrollbar', () => {
+
+  it('Should output a scrollbar', () => {
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Scrollbar />
+    );
+
+    const instanceDom = findDOMNode(instance);
+    assert.ok(instanceDom.className.match(/\brsuite-table-scrollbar-wrapper horizontal\b/));
+  });
+
+  it('Should be vertical', () => {
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Scrollbar vertical />
+    );
+
+    const instanceDom = findDOMNode(instance);
+    assert.ok(instanceDom.className.match(/\bvertical\b/));
+  });
+
+  it('Should call onMouseDown callback', (done) => {
+    const doneOp = () => {
+      done();
+    };
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Scrollbar onMouseDown={doneOp} />
+    );
+    ReactTestUtils.Simulate.mouseDown(instance.handle);
+  });
+
+  it('Should have a custom className', () => {
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Scrollbar className="custom" />
+    );
+    assert.ok(findDOMNode(instance).className.match(/\bcustom\b/));
+  });
+
+  it('Should have a custom style', () => {
+    const fontSize = '12px';
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Scrollbar style={{ fontSize }} />
+    );
+    assert.equal(findDOMNode(instance).style.fontSize, fontSize);
+  });
+
+});
