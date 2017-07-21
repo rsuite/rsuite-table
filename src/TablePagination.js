@@ -1,69 +1,66 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Pagination, Dropdown } from 'rsuite';
-import ClassNameMixin from './mixins/ClassNameMixin';
-import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
+import decorate from './utils/decorate';
 
+const propTypes = {
+  lengthMenu: PropTypes.arrayOf(React.PropTypes.shape({
+    value: PropTypes.number,
+    text: PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number
+    ])
+  })),
+  showLengthMenu: PropTypes.bool,
+  showInfo: PropTypes.bool,
+  total: PropTypes.number.isRequired,
+  displayLength: PropTypes.number,
+  formatLengthMenu: PropTypes.func,
+  formatInfo: PropTypes.func,
+  onChangePage: PropTypes.func,
+  onChangeLength: PropTypes.func,
+  prev: PropTypes.bool,
+  next: PropTypes.bool,
+  first: PropTypes.bool,
+  last: PropTypes.bool,
+  maxButtons: PropTypes.number,
+  activePage: PropTypes.number
+};
 
-const TablePagination = React.createClass({
-  mixins: [
-    ClassNameMixin,
-    ReactComponentWithPureRenderMixin
+const defaultProps = {
+  showLengthMenu: true,
+  showInfo: true,
+  lengthMenu: [
+    {
+      value: 30,
+      text: 30,
+    }, {
+      value: 50,
+      text: 50,
+    }, {
+      value: 100,
+      text: 100,
+    }
   ],
-  propTypes: {
-    lengthMenu: PropTypes.arrayOf(React.PropTypes.shape({
-      value: PropTypes.number,
-      text: PropTypes.oneOfType([
-        React.PropTypes.string,
-        React.PropTypes.number
-      ])
-    })),
-    showLengthMenu: PropTypes.bool,
-    showInfo: PropTypes.bool,
-    total: PropTypes.number.isRequired,
-    displayLength: PropTypes.number,
-    formatLengthMenu: PropTypes.func,
-    formatInfo: PropTypes.func,
-    onChangePage: PropTypes.func,
-    onChangeLength: PropTypes.func,
-    prev: PropTypes.bool,
-    next: PropTypes.bool,
-    first: PropTypes.bool,
-    last: PropTypes.bool,
-    maxButtons: PropTypes.number,
-    activePage: PropTypes.number
-  },
-  getDefaultProps() {
-    return {
-      showLengthMenu: true,
-      showInfo: true,
-      lengthMenu: [
-        {
-          value: 30,
-          text: 30,
-        }, {
-          value: 50,
-          text: 50,
-        }, {
-          value: 100,
-          text: 100,
-        }
-      ],
-      displayLength: 30,
-      prev: true,
-      next: true,
-      first: true,
-      last: true,
-      maxButtons: 5
+  displayLength: 30,
+  prev: true,
+  next: true,
+  first: true,
+  last: true,
+  maxButtons: 5
+};
+
+class TablePagination extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      displayLength: props.displayLength,
+      activePage: props.activePage || 1
     };
-  },
-  getInitialState() {
-    const { displayLength, activePage } = this.props;
-    return {
-      displayLength,
-      activePage: activePage || 1
-    };
-  },
+    this.handleChangeLength = this.handleChangeLength.bind(this);
+    this.handleChangePage = this.handleChangePage.bind(this);
+  }
   componentWillReceiveProps(nextProps) {
     const { displayLength, activePage } = this.props;
     if (displayLength !== nextProps.displayLength || activePage !== nextProps.activePage) {
@@ -72,7 +69,8 @@ const TablePagination = React.createClass({
         activePage: nextProps.activePage
       });
     }
-  },
+  }
+
   handleChangeLength(eventKey) {
 
     const { onChangeLength } = this.props;
@@ -80,14 +78,16 @@ const TablePagination = React.createClass({
       displayLength: eventKey
     });
     onChangeLength && onChangeLength(eventKey);
-  },
+  }
+
   handleChangePage(eventKey) {
     const { onChangePage } = this.props;
     this.setState({
       activePage: eventKey
     });
     onChangePage && onChangePage(eventKey);
-  },
+  }
+
   renderLengthMenu() {
 
     const {
@@ -102,19 +102,23 @@ const TablePagination = React.createClass({
       return null;
     }
 
-    const items = lengthMenu.map((item, index) => {
-      return (
-        <Dropdown.Item key={index} eventKey={item.value} >{item.text}</Dropdown.Item>
-      );
-    });
+    const items = lengthMenu.map((item, index) => (
+      <Dropdown.Item
+        key={`${index}_${item.value}`}
+        eventKey={item.value}
+      >
+        {item.text}
+      </Dropdown.Item>
+    ));
 
     const dropdown = (
       <Dropdown
-        shape='default'
+        shape="default"
         activeKey={displayLength}
         onSelect={this.handleChangeLength}
         dropup
-        select>
+        select
+      >
         {items}
       </Dropdown>
     );
@@ -126,7 +130,7 @@ const TablePagination = React.createClass({
         }
       </div>
     );
-  },
+  }
 
   renderInfo() {
 
@@ -142,11 +146,12 @@ const TablePagination = React.createClass({
         {formatInfo ? formatInfo(total, activePage) : <span>Total: {total}</span>}
       </div>
     );
-  },
+  }
+
   render() {
     const { total, prev, next, first, last, maxButtons, className } = this.props;
     const { displayLength, activePage } = this.state;
-    const pages = parseInt(total / displayLength) + (total % displayLength ? 1 : 0);
+    const pages = Math.floor(total / displayLength) + (total % displayLength ? 1 : 0);
     const classes = classNames(this.prefix('pagination-wrapper'), className);
 
     return (
@@ -171,6 +176,9 @@ const TablePagination = React.createClass({
       </div>
     );
   }
-});
+}
 
-export default TablePagination;
+TablePagination.propTypes = propTypes;
+TablePagination.defaultProps = defaultProps;
+
+export default decorate()(TablePagination);

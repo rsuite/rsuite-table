@@ -13,6 +13,7 @@ const propTypes = {
 
 
 class CellGroup extends React.Component {
+
   render() {
 
     const {
@@ -37,6 +38,7 @@ class CellGroup extends React.Component {
       transform: `translate3d(${left || 0}px, 0px, 0px)`,
       ...style
     };
+
     const elementProps = _.omit(props, Object.keys(propTypes));
 
     return (

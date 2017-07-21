@@ -1,9 +1,9 @@
 
 import PropTypes from 'prop-types';
 
-
+export const globalClassName = 'rsuite-table';
 export default function decorate(skin = {
-  prefixClass: 'rsuite-table'
+  prefixClass: globalClassName
 }) {
   return (Component) => {
     const { prefixClass } = skin;

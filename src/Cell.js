@@ -121,7 +121,19 @@ class Cell extends React.Component {
     }
 
     const contentChildren = isNullOrUndefined(children) && rowData ? rowData[dataKey] : children;
-    const elementProps = _.omit(props, Object.keys(propTypes));
+    const elementProps = _.omit(props, [
+      'index',
+      'fixed',
+      'resizable',
+      'flexGrow',
+      'sortColumn',
+      'sortType',
+      'onSortColumn',
+      'onColumnResizeEnd',
+      'onColumnResizeStart',
+      'onColumnResizeMove',
+      ...Object.keys(propTypes)
+    ]);
 
     return (
       <div
