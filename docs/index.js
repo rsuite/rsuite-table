@@ -1,12 +1,12 @@
 
+// 解决 IE 11 兼容性问题
+import 'babel-polyfill';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Header, Navbar, Nav, Row, Col } from 'rsuite';
 import Affix from 'rsuite-affix';
 import { Markdown } from 'markdownloader';
-
-import '../src/less/index.less';
-import './less/index.less';
 
 import FixedColumnTable from './examples/FixedColumnTable';
 import PaginationTable from './examples/PaginationTable';
@@ -15,6 +15,9 @@ import CustomColumnTable from './examples/CustomColumnTable';
 import TreeTable from './examples/TreeTable';
 import FluidColumnTable from './examples/FluidColumnTable';
 import SortTable from './examples/SortTable';
+
+import '../src/less/index.less';
+import './less/index.less';
 
 const App = React.createClass({
 
