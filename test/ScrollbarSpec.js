@@ -24,6 +24,15 @@ describe('Scrollbar', () => {
     assert.ok(instanceDom.className.match(/\bvertical\b/));
   });
 
+  it('Should be vertical', () => {
+    const scrollLength = 1000;
+    const length = 100;
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Scrollbar scrollLength={scrollLength} length={length} />
+    );
+    assert.ok(instance.handle.style.width, `${scrollLength / length}%`);
+  });
+
   it('Should call onMouseDown callback', (done) => {
     const doneOp = () => {
       done();
