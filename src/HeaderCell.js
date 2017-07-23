@@ -23,6 +23,8 @@ class HeaderCell extends React.Component {
       columnWidth: isNullOrUndefined(props.flexGrow) ? props.width : 0
     };
     this.handleClick = this.handleClick.bind(this);
+    this.onColumnResizeStart = this.onColumnResizeStart.bind(this);
+    this.onColumnResizeEnd = this.onColumnResizeEnd.bind(this);
   }
 
   onColumnResizeStart(event) {

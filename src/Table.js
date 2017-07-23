@@ -74,6 +74,7 @@ const propTypes = {
   onTreeToggleOpen: PropTypes.func,
   disabledScroll: PropTypes.bool,
   hover: PropTypes.bool,
+  loading: PropTypes.bool,
   onScroll: PropTypes.func
 };
 
@@ -83,7 +84,13 @@ const defaultProps = {
   sortType: 'asc',
   hover: true,
   locale: {
-    emptyMessage: 'No data found'
+    emptyMessage: 'No data found',
+    loading: (
+      <div>
+        <i className="icon icon-cog icon-lg icon-spin" />
+        <span>Loading...</span>
+      </div>
+    )
   }
 };
 
@@ -372,8 +379,8 @@ class Table extends React.Component {
     });
   }
   shouldHandleWheelX(delta) {
-
-    if (delta === 0 || this.props.disabledScroll) {
+    const { disabledScroll, loading } = this.props;
+    if (delta === 0 || disabledScroll || loading) {
       return false;
     }
 
@@ -381,8 +388,8 @@ class Table extends React.Component {
       (delta < 0 && this.scrollX < 0);
   }
   shouldHandleWheelY(delta) {
-
-    if (delta === 0 || this.props.disabledScroll) {
+    const { disabledScroll, loading } = this.props;
+    if (delta === 0 || disabledScroll || loading) {
       return false;
     }
     return (delta >= 0 && this.scrollY > this.minScrollY) || (delta < 0 && this.scrollY < 0);
@@ -590,8 +597,7 @@ class Table extends React.Component {
       height,
       data,
       isTree,
-      onRerenderRowHeight,
-      disabledScroll
+      onRerenderRowHeight
     } = this.props;
 
     const bodyStyles = {
@@ -600,31 +606,29 @@ class Table extends React.Component {
     };
 
     let top = 0;    // Row position
-    let layer = 0;  // Tree layer
-    let rows = (data && data.length > 0) ? data.map((rowData, index) => {
+    let rows = null;
+    if (data && data.length > 0) {
+      rows = data.map((rowData, index) => {
+        let nextRowHeight = rowHeight;
+        /**
+         * 自定义行高
+         */
+        if (onRerenderRowHeight) {
+          nextRowHeight = onRerenderRowHeight(rowData) || rowHeight;
+        }
 
-      let nextRowHeight = rowHeight;
+        let row = this.randerRowData(bodyCells, rowData, {
+          index,
+          top,
+          rowWidth,
+          layer: 0,
+          rowHeight: nextRowHeight
+        });
 
-      /**
-       * 自定义行高
-       */
-      if (onRerenderRowHeight) {
-        nextRowHeight = onRerenderRowHeight(rowData) || rowHeight;
-      }
-
-      let row = this.randerRowData(bodyCells, rowData, {
-        index,
-        top,
-        rowWidth,
-        layer,
-        rowHeight: nextRowHeight
+        !isTree && (top += nextRowHeight);
+        return row;
       });
-
-      !isTree && (top += nextRowHeight);
-
-      return row;
-
-    }) : null;
+    }
 
     const wheelStyles = {
       position: 'absolute'
@@ -649,41 +653,92 @@ class Table extends React.Component {
           {rows}
         </div>
 
-        {
-          rows ? null : (
-            <div className={this.prefix('body-info')}>
-              {this.props.locale.emptyMessage}
-            </div>
-          )
-        }
 
-        {
-          disabledScroll ? null :
-            (
-              <div>
-                <Scrollbar
-                  length={this.state.width}
-                  onScroll={this.handleScrollX}
-                  scrollLength={this.state.contentWidth}
-                  ref={(ref) => {
-                    this.scrollbarX = ref;
-                  }}
-                />
-                <Scrollbar
-                  vertical
-                  length={height - (headerHeight || rowHeight)}
-                  scrollLength={this.state.contentHeight}
-                  onScroll={this.handleScrollY}
-                  ref={(ref) => {
-                    this.scrollbarY = ref;
-                  }}
-                />
-              </div>
-            )
-        }
+        {this.renderInfo(rows === null)}
+        {this.renderScrollbar()}
+        {this.renderLoading()}
 
       </div>
     );
+  }
+
+  renderInfo(shouldShow) {
+
+    if (!shouldShow) {
+      return null;
+    }
+
+    const { locale } = this.props;
+
+    return (
+
+      <div className={this.prefix('body-info')}>
+        {locale.emptyMessage}
+      </div>
+
+    );
+  }
+
+  renderScrollbar() {
+    const {
+      disabledScroll,
+      headerHeight,
+      rowHeight,
+      height,
+      loading
+    } = this.props;
+
+    const {
+      contentWidth,
+      contentHeight
+    } = this.state;
+
+    if (disabledScroll || loading) {
+      return null;
+    }
+
+    return (
+      <div>
+        <Scrollbar
+          length={this.state.width}
+          onScroll={this.handleScrollX}
+          scrollLength={contentWidth}
+          ref={(ref) => {
+            this.scrollbarX = ref;
+          }}
+        />
+        <Scrollbar
+          vertical
+          length={height - (headerHeight || rowHeight)}
+          scrollLength={contentHeight}
+          onScroll={this.handleScrollY}
+          ref={(ref) => {
+            this.scrollbarY = ref;
+          }}
+        />
+      </div>
+    );
+
+  }
+
+  /**
+   *  show loading
+   */
+  renderLoading() {
+    const { loading, locale } = this.props;
+
+    if (!loading) {
+      return null;
+    }
+
+    return (
+      <div className={this.prefix('loading-wrapper')}>
+        <div className={this.prefix('loading')}>
+          {locale.loading}
+        </div>
+      </div>
+    );
+
   }
 
   render() {
