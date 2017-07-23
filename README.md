@@ -14,7 +14,7 @@
 安装：
 
 ```sh
-npm install rsuite-table --save-dev
+npm i rsuite-table --save
 ```
 
 示例：
