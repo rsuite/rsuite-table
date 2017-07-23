@@ -15,6 +15,7 @@ import CustomColumnTable from './examples/CustomColumnTable';
 import TreeTable from './examples/TreeTable';
 import FluidColumnTable from './examples/FluidColumnTable';
 import SortTable from './examples/SortTable';
+import LoadingTable from './examples/LoadingTable';
 
 import '../src/less/index.less';
 import './less/index.less';
@@ -59,6 +60,8 @@ const App = React.createClass({
                   <Nav.Item href="#SortTable">&nbsp;&nbsp;- 排序</Nav.Item>
                   <Nav.Item href="#PaginationTable">&nbsp;&nbsp;- 分页</Nav.Item>
                   <Nav.Item href="#TreeTable">&nbsp;&nbsp;- 树形表格</Nav.Item>
+                  <Nav.Item href="#LoadingTable">&nbsp;&nbsp;- 加载中...</Nav.Item>
+
                   <Nav.Item href="#API"># API</Nav.Item>
                 </Nav>
               </Affix>
@@ -120,6 +123,11 @@ const App = React.createClass({
               <Markdown>{require('./md/TreeTable.md')}</Markdown>
               <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/TreeTable.js" target="_blank" >示例代码</a></p>
 
+              <a id="LoadingTable" className="target-fix" ></a>
+              <h3 >加载中...</h3>
+              <LoadingTable />
+              <Markdown>{require('./md/LoadingTable.md')}</Markdown>
+              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/LoadinTable.js" target="_blank" >示例代码</a></p>
 
               <a id="API" className="target-fix" ></a>
               <h3 ># API </h3>

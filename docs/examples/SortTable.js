@@ -1,31 +1,7 @@
 import React from 'react';
 import { Table, Column, Cell, HeaderCell } from '../../src';
 import fakeData from '../data/users';
-import _ from 'lodash';
 
-
-export function getLocale(loading) {
-
-  let emptyMessage;
-  let iconClassName;
-
-  if (loading) {
-    emptyMessage = '加载中...';
-    iconClassName = 'icon icon-cog icon-lg icon-spin ';
-  } else {
-    emptyMessage = '数据为空';
-    iconClassName = 'icon icon-info2 icon-lg info';
-  }
-
-  return {
-    emptyMessage: (
-      <div>
-        {iconClassName ? <i className={iconClassName}></i> : null}
-        {emptyMessage ? emptyMessage : null}
-      </div>
-    )
-  };
-}
 
 const FixedColumnTable = React.createClass({
   getInitialState() {
@@ -35,15 +11,13 @@ const FixedColumnTable = React.createClass({
   },
   handleSortColumn(sortColumn, sortType) {
     this.setState({
-      data: [],
-      loading: true,
-      sortColumn,
-      sortType
+      loading: true
     });
 
     setTimeout(() => {
       this.setState({
-        data: fakeData,
+        sortColumn,
+        sortType,
         loading: false
       });
     }, 500);
@@ -80,10 +54,10 @@ const FixedColumnTable = React.createClass({
           sortColumn={this.state.sortColumn}
           sortType={this.state.sortType}
           onSortColumn={this.handleSortColumn}
+          loading={this.state.loading}
           onRowClick={(data) => {
             console.log(data);
           }}
-          locale={getLocale(this.state.loading)}
         >
 
           <Column width={70} align="center" fixed sortable>

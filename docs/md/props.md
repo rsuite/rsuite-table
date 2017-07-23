@@ -20,6 +20,21 @@ onSortColumn | func  |  | 点击排序列的回调函数，返回 `sortColumn`, 
 onRerenderRowHeight| func  |  | 重新渲染行高
 onScroll | func |  | 滚动条滚动时候的回调函数
 disabledScroll | bool | | 禁用滚动
+loading | bool | | 显示 loading 状态
+
+<br>
+> locale 的默认值是:
+```js
+{
+  emptyMessage: 'No data found',
+  loading: (
+    <div>
+      <i className="icon icon-cog icon-lg icon-spin" />
+      <span>Loading...</span>
+    </div>
+  )
+}
+```
 
 <br>
 ####  `<Column>`
