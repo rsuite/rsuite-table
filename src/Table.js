@@ -179,18 +179,17 @@ class Table extends React.Component {
     });
     const mouseAreaLeft = width + left;
     const x = fixed ? mouseAreaLeft : mouseAreaLeft + (this.scrollX || 0);
-    addStyle(this.mouseArea, {
-      display: 'block',
-      transform: `translate3d(${x}px, 0px, 0px)`
-    });
+    const styles = { display: 'block' };
+    translateDOMPositionXY(styles, x, 0);
+    addStyle(this.mouseArea, styles);
   }
 
   onColumnResizeMove(width, left, fixed) {
     const mouseAreaLeft = width + left;
     const x = fixed ? mouseAreaLeft : mouseAreaLeft + (this.scrollX || 0);
-    addStyle(this.mouseArea, {
-      transform: `translate3d(${x}px, 0px, 0px)`
-    });
+    const styles = {};
+    translateDOMPositionXY(styles, x, 0);
+    addStyle(this.mouseArea, styles);
   }
 
   onTreeToggle(rowKey, rowIndex, rowData) {

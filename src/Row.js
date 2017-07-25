@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import _ from 'lodash';
+import { translateDOMPositionXY } from 'dom-lib';
 import decorate from './utils/decorate';
-
 
 const propTypes = {
   width: PropTypes.number,
@@ -41,10 +41,9 @@ class Row extends React.Component {
     const styles = {
       minWidth: width,
       height: isHeaderRow ? headerHeight : height,
-      transform: `translate3d(0px, ${top}px, 0px)`,
       ...style
     };
-
+    translateDOMPositionXY(styles, 0, top);
     const elementProps = _.omit(props, Object.keys(propTypes));
 
     return (

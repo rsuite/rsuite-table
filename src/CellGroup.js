@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import _ from 'lodash';
+import { translateDOMPositionXY } from 'dom-lib';
 import decorate from './utils/decorate';
 
 const propTypes = {
@@ -35,9 +36,10 @@ class CellGroup extends React.Component {
     const styles = {
       width,
       height,
-      transform: `translate3d(${left || 0}px, 0px, 0px)`,
       ...style
     };
+
+    translateDOMPositionXY(styles, left, 0);
 
     const elementProps = _.omit(props, Object.keys(propTypes));
 
