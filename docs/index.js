@@ -1,3 +1,5 @@
+// 解决 IE 11 兼容性问题
+import 'babel-polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

@@ -39,7 +39,8 @@ const common = {
   devServer: {
     hot: true,
     contentBase: path.resolve(__dirname, ''),
-    publicPath: '/'
+    publicPath: '/',
+    disableHostCheck: true
   },
   output: {
     path: path.resolve(__dirname, 'assets'),
@@ -92,6 +93,9 @@ module.exports = (env = {}) => {
   if (NODE_ENV === 'development') {
     return Object.assign({}, common, {
       entry: [
+        'babel-polyfill',
+        'react',
+        'react-dom',
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://127.0.0.1:3100',
         'webpack/hot/only-dev-server',
