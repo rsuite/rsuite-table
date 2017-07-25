@@ -1,6 +1,6 @@
 {
   "name": "rsuite-table",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "RSuite Table",
   "main": "lib/index.js",
   "scripts": {
@@ -9,12 +9,6 @@
     "docs": "rm -rf assets &&  NODE_ENV=production webpack && cp  -rf ./resources  ./assets ",
     "publish-docs": "node docs/gh-pages.js",
     "clean": "rm -rf node_modules/gh-pages/.cache"
-  },
-  "dependencies": {
-    "classnames": "^2.2.5",
-    "dom-lib": "^0.2.3",
-    "element-resize-event": "^2.0.5",
-    "lodash": "^4.13.1"
   },
   "author": "simonguo.2009@gmail.com",
   "license": "MIT",
@@ -25,6 +19,11 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:rsuite/rsuite-table.git"
+  },
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "dom-lib": "^0.2.5",
+    "lodash": "^4.13.1"
   },
   "peerDependencies": {
     "react": ">=0.14.0",
@@ -47,22 +46,22 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "faker": "^4.1.0",
     "file-loader": "^0.10.1",
+    "gh-pages": "^0.12.0",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.28.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "markdown-loader": "2.0.0",
     "markdownloader": "1.0.5",
-    "react-hot-loader": "^3.0.0-beta.6",
     "react": ">=0.14.0",
     "react-dom": ">=0.14.0",
+    "react-hot-loader": "^3.0.0-beta.6",
     "rsuite": "1.0.6",
-    "rsuite-theme": "0.3.22",
     "rsuite-affix": "1.0.3",
+    "rsuite-theme": "0.3.22",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.3.0",
-    "gh-pages": "^0.12.0"
+    "webpack-dev-server": "^2.3.0"
   }
 }
