@@ -139,17 +139,15 @@ const Table = React.createClass({
     });
     const mouseAreaLeft = width + left;
     const x = fixed ? mouseAreaLeft : mouseAreaLeft + (this.scrollX || 0);
-    addStyle(this.mouseArea, {
-      display: 'block',
-      transform: `translate3d(${x}px, 0px, 0px)`
-    });
+    const styles = { display: 'block' };
+    translateDOMPositionXY(styles, x, 0);
+    addStyle(this.mouseArea, styles);
   },
   onColumnResizeMove(width, left, fixed) {
     const mouseAreaLeft = width + left;
     const x = fixed ? mouseAreaLeft : mouseAreaLeft + (this.scrollX || 0);
-    addStyle(this.mouseArea, {
-      transform: `translate3d(${x}px, 0px, 0px)`
-    });
+    translateDOMPositionXY(styles, x, 0);
+    addStyle(this.mouseArea, styles);
   },
   onTreeToggle(rowKey, rowIndex, rowData) {
     const { onTreeToggleOpen } = this.props;
@@ -323,7 +321,6 @@ const Table = React.createClass({
       width: props.rowWidth,
       height: props.rowHeight,
       top: props.top,
-      //transform:`translate3d(0px, ${props.top}px, 0px)`,
       onClick: () => {
         onRowClick && onRowClick(rowData);
       },

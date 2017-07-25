@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
+import { translateDOMPositionXY } from 'dom-lib';
 import ClassNameMixin from './mixins/ClassNameMixin';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
-import { assign } from 'lodash';
 
 const CellGroup = React.createClass({
   mixins: [
@@ -34,11 +34,15 @@ const CellGroup = React.createClass({
       fixed ? 'fixed' : 'scroll'
     );
 
-    let styles = assign({
+
+
+    const styles = {
       width,
-      transform: `translate3d(${left || 0}px, 0px, 0px)`,
-      height
-    }, style);
+      height,
+      ...style
+    };
+
+    translateDOMPositionXY(styles, left, 0);
 
     return (
       <div className={classes} style={styles}>

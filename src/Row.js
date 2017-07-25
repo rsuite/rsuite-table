@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
+import { translateDOMPositionXY } from 'dom-lib';
 import ClassNameMixin from './mixins/ClassNameMixin';
 import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
 
-import { assign } from 'lodash';
 const Row = React.createClass({
   mixins: [
     ClassNameMixin,
@@ -43,12 +43,13 @@ const Row = React.createClass({
       className
     );
 
-    let styles = assign({
+
+    const styles = {
       minWidth: width,
       height: isHeaderRow ? headerHeight : height,
-      transform: `translate3d(0px, ${top}px, 0px)`
-      //top
-    }, style);
+      ...style
+    };
+    translateDOMPositionXY(styles, 0, top);
 
     return (
       <div
