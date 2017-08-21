@@ -22,12 +22,9 @@ class HeaderCell extends React.Component {
     this.state = {
       columnWidth: isNullOrUndefined(props.flexGrow) ? props.width : 0
     };
-    this.handleClick = this.handleClick.bind(this);
-    this.onColumnResizeStart = this.onColumnResizeStart.bind(this);
-    this.onColumnResizeEnd = this.onColumnResizeEnd.bind(this);
   }
 
-  onColumnResizeStart(event) {
+  onColumnResizeStart = (event) => {
 
     const {
       left,
@@ -39,13 +36,13 @@ class HeaderCell extends React.Component {
     onColumnResizeStart && onColumnResizeStart(this.state.columnWidth, left, fixed);
   }
 
-  onColumnResizeEnd(columnWidth, cursorDelta) {
+  onColumnResizeEnd = (columnWidth, cursorDelta) => {
     const { dataKey, index, onColumnResizeEnd } = this.props;
     this.setState({ columnWidth });
     onColumnResizeEnd && onColumnResizeEnd(columnWidth, cursorDelta, dataKey, index);
   }
 
-  handleClick() {
+  handleClick = () => {
     const { sortable, dataKey, sortType, onSortColumn } = this.props;
     sortable && onSortColumn && onSortColumn(dataKey, sortType === 'asc' ? 'desc' : 'asc');
   }
@@ -75,16 +72,16 @@ class HeaderCell extends React.Component {
 
   renderSortColumn() {
     const {
-      left,
-      headerHeight,
+      left = 0,
+      headerHeight = 0,
+      width = 0,
       sortable,
       sortColumn,
       sortType,
       dataKey,
-      width
     } = this.props;
 
-    const { columnWidth } = this.state;
+    const { columnWidth = 0 } = this.state;
     const styles = {
       left: ((columnWidth || width) + left) - 16,
       top: (headerHeight / 2) - 8
@@ -109,7 +106,9 @@ class HeaderCell extends React.Component {
     const classes = this.prefix('cell-header');
 
     return (
-      <div className={classes} >
+      <div
+        className={classes}
+      >
         <Cell
           {...this.props}
           isHeaderCell={true}

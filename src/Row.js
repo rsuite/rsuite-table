@@ -11,7 +11,8 @@ const propTypes = {
   headerHeight: PropTypes.number,
   top: PropTypes.number,
   style: PropTypes.object,
-  isHeaderRow: PropTypes.bool
+  isHeaderRow: PropTypes.bool,
+  rowRef: PropTypes.func
 };
 
 const defaultProps = {
@@ -31,6 +32,7 @@ class Row extends React.Component {
       style,
       isHeaderRow,
       headerHeight,
+      rowRef,
       ...props
     } = this.props;
 
@@ -49,6 +51,7 @@ class Row extends React.Component {
     return (
       <div
         {...elementProps}
+        ref={rowRef}
         className={classes}
         style={styles}
       />

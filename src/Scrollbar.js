@@ -21,17 +21,16 @@ class Scrollbar extends React.Component {
     this.state = {
       handleDown: false
     };
-    this.hanldeDragMove = this.hanldeDragMove.bind(this);
-    this.hanldeDragEnd = this.hanldeDragEnd.bind(this);
-    this.hanldeMouseDown = this.hanldeMouseDown.bind(this);
     this.scrollOffset = 0;
   }
 
   componentWillUnmount() {
+    /* istanbul ignore next */
     this.releaseMouseMoves();
   }
 
   onWheelScroll(delta) {
+    /* istanbul ignore next */
     const { length, scrollLength } = this.props;
     const nextDelta = delta / (scrollLength / length);
     this.updateScrollBarPosition(nextDelta);
@@ -45,7 +44,7 @@ class Scrollbar extends React.Component {
     );
   }
 
-  hanldeMouseDown(event) {
+  hanldeMouseDown = (event) => {
     const { onMouseDown } = this.props;
     this.mouseMoveTracker = this.getMouseMoveTracker();
     this.mouseMoveTracker.captureMouseMoves(event);
@@ -55,7 +54,7 @@ class Scrollbar extends React.Component {
     onMouseDown && onMouseDown(event);
   }
 
-  hanldeDragEnd() {
+  hanldeDragEnd = () => {
     this.releaseMouseMoves();
     this.setState({
       handleDown: false
@@ -94,13 +93,15 @@ class Scrollbar extends React.Component {
   }
 
   releaseMouseMoves() {
+    /* istanbul ignore next */
     if (this.mouseMoveTracker) {
       this.mouseMoveTracker.releaseMouseMoves();
       this.mouseMoveTracker = null;
     }
   }
 
-  hanldeDragMove(deltaX, deltaY, event) {
+  hanldeDragMove = (deltaX, deltaY, event) => {
+    /* istanbul ignore next */
     const { vertical } = this.props;
     if (!this.mouseMoveTracker || !this.mouseMoveTracker.isDragging()) {
       return;

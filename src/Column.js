@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/* eslint-disable */
 const propTypes = {
   align: PropTypes.oneOf(['left', 'center', 'right']),
   width: PropTypes.number,

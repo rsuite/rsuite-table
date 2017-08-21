@@ -58,8 +58,6 @@ class TablePagination extends React.Component {
       displayLength: props.displayLength,
       activePage: props.activePage || 1
     };
-    this.handleChangeLength = this.handleChangeLength.bind(this);
-    this.handleChangePage = this.handleChangePage.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     const { displayLength, activePage } = this.props;
@@ -71,7 +69,7 @@ class TablePagination extends React.Component {
     }
   }
 
-  handleChangeLength(eventKey) {
+  handleChangeLength = (eventKey) => {
 
     const { onChangeLength } = this.props;
     this.setState({
@@ -80,7 +78,7 @@ class TablePagination extends React.Component {
     onChangeLength && onChangeLength(eventKey);
   }
 
-  handleChangePage(eventKey) {
+  handleChangePage = (eventKey) => {
     const { onChangePage } = this.props;
     this.setState({
       activePage: eventKey
@@ -102,9 +100,9 @@ class TablePagination extends React.Component {
       return null;
     }
 
-    const items = lengthMenu.map((item, index) => (
+    const items = lengthMenu.map(item => (
       <Dropdown.Item
-        key={`${index}_${item.value}`}
+        key={item.value}
         eventKey={item.value}
       >
         {item.text}

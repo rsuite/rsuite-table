@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 import classNames from 'classnames';
 import _ from 'lodash';
 import {
@@ -15,7 +14,6 @@ import {
   WheelHandler
 } from 'dom-lib';
 
-import shallowEqual from './utils/shallowEqual';
 import decorate, { globalClassName } from './utils/decorate';
 import Row from './Row';
 import CellGroup from './CellGroup';
@@ -71,7 +69,7 @@ const propTypes = {
    */
   onSortColumn: PropTypes.func,
   onRerenderRowHeight: PropTypes.func,
-  onTreeToggleOpen: PropTypes.func,
+  onTreeToggle: PropTypes.func,
   disabledScroll: PropTypes.bool,
   hover: PropTypes.bool,
   loading: PropTypes.bool,
@@ -107,16 +105,6 @@ class Table extends React.Component {
     };
     this.treeChildren = {};
     this.mounted = false;
-    this.reportTableWidth = this.reportTableWidth.bind(this);
-    this.onColumnResizeEnd = this.onColumnResizeEnd.bind(this);
-    this.onColumnResizeStart = this.onColumnResizeStart.bind(this);
-    this.onColumnResizeMove = this.onColumnResizeMove.bind(this);
-    this.onTreeToggle = this.onTreeToggle.bind(this);
-    this.shouldHandleWheelX = this.shouldHandleWheelX.bind(this);
-    this.shouldHandleWheelY = this.shouldHandleWheelY.bind(this);
-    this.handleWheel = this.handleWheel.bind(this);
-    this.handleScrollX = this.handleScrollX.bind(this);
-    this.handleScrollY = this.handleScrollY.bind(this);
   }
 
 
@@ -146,7 +134,7 @@ class Table extends React.Component {
     this.reportTableContextHeight();
   }
   shouldComponentUpdate(nextProps, nextState) {
-    return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
+    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
   componentDidUpdate() {
     this.reportTableContextHeight();
@@ -163,7 +151,7 @@ class Table extends React.Component {
     }
     this.isMounted = false;
   }
-  onColumnResizeEnd(columnWidth, cursorDelta, dataKey, index) {
+  onColumnResizeEnd = (columnWidth, cursorDelta, dataKey, index) => {
     this.setState({
       isColumnResizing: false,
       [`${dataKey}_${index}_width`]: columnWidth
@@ -173,7 +161,7 @@ class Table extends React.Component {
     });
   }
 
-  onColumnResizeStart(width, left, fixed) {
+  onColumnResizeStart = (width, left, fixed) => {
     this.setState({
       isColumnResizing: true
     });
@@ -184,7 +172,7 @@ class Table extends React.Component {
     addStyle(this.mouseArea, styles);
   }
 
-  onColumnResizeMove(width, left, fixed) {
+  onColumnResizeMove = (width, left, fixed) => {
     const mouseAreaLeft = width + left;
     const x = fixed ? mouseAreaLeft : mouseAreaLeft + (this.scrollX || 0);
     const styles = {};
@@ -192,9 +180,9 @@ class Table extends React.Component {
     addStyle(this.mouseArea, styles);
   }
 
-  onTreeToggle(rowKey, rowIndex, rowData) {
-    const { onTreeToggleOpen } = this.props;
-    const expandIcon = findDOMNode(this.treeChildren[rowKey][rowIndex]);
+  onTreeToggle = (rowKey, rowIndex, rowData) => {
+    const { onTreeToggle } = this.props;
+    const expandIcon = this.treeChildren[rowKey][rowIndex];
     const isOpen = hasClass(expandIcon, 'open');
 
     if (isOpen) {
@@ -204,18 +192,16 @@ class Table extends React.Component {
     }
 
     this.reportTableContextHeight();
-    onTreeToggleOpen && onTreeToggleOpen(!isOpen, rowData);
+    onTreeToggle && onTreeToggle(!isOpen, rowData);
 
   }
 
   getScrollCellGroups() {
-    const table = findDOMNode(this.table);
-    return table.querySelectorAll(`.${this.prefix('cell-group.scroll')}`);
+    return this.table.querySelectorAll(`.${this.prefix('cell-group.scroll')}`);
   }
 
   getFixedCellGroups() {
-    const table = findDOMNode(this.table);
-    return table.querySelectorAll(`.${this.prefix('cell-group.fixed')}`);
+    return this.table.querySelectorAll(`.${this.prefix('cell-group.fixed')}`);
   }
 
   getCells() {
@@ -317,21 +303,25 @@ class Table extends React.Component {
     };
   }
 
+  get isMounted() {
+    return this.mounted;
+  }
+  set isMounted(isMounted) {
+    this.mounted = isMounted;
+  }
 
-  handleScrollX(delta) {
+  handleScrollX = (delta) => {
     this.handleWheel(delta, 0);
   }
-  handleScrollY(delta) {
+  handleScrollY = (delta) => {
     this.handleWheel(0, delta);
   }
-  handleWheel(deltaX, deltaY) {
+  handleWheel = (deltaX, deltaY) => {
 
     const { onScroll } = this.props;
-
     if (!this.isMounted) {
       return;
     }
-
     const nextScrollX = this.scrollX - deltaX;
     const nextScrollY = this.scrollY - deltaY;
 
@@ -357,7 +347,7 @@ class Table extends React.Component {
       this.wheelWrapper && addStyle(this.wheelWrapper, wheelStyle);
       this.headerWrapper && addStyle(this.headerWrapper, headerStyle);
     }
-    handleClass[this.scrollY < 0 ? 'add' : 'remove'](findDOMNode(this.tableHeader), 'shadow');
+    handleClass[this.scrollY < 0 ? 'add' : 'remove'](this.tableHeader, 'shadow');
   }
   updatePositionByFixedCell() {
     const wheelGroupStyle = {};
@@ -377,7 +367,7 @@ class Table extends React.Component {
       handleClass[this.scrollX < 0 ? 'add' : 'remove'](group, 'shadow');
     });
   }
-  shouldHandleWheelX(delta) {
+  shouldHandleWheelX = (delta) => {
     const { disabledScroll, loading } = this.props;
     if (delta === 0 || disabledScroll || loading) {
       return false;
@@ -386,19 +376,14 @@ class Table extends React.Component {
     return (delta >= 0 && this.scrollX > this.minScrollX) ||
       (delta < 0 && this.scrollX < 0);
   }
-  shouldHandleWheelY(delta) {
+  shouldHandleWheelY = (delta) => {
     const { disabledScroll, loading } = this.props;
     if (delta === 0 || disabledScroll || loading) {
       return false;
     }
     return (delta >= 0 && this.scrollY > this.minScrollY) || (delta < 0 && this.scrollY < 0);
   }
-  get isMounted() {
-    return this.mounted;
-  }
-  set isMounted(isMounted) {
-    this.mounted = isMounted;
-  }
+
   randerRowData(bodyCells, rowData, props) {
 
     const { onRowClick } = this.props;
@@ -464,8 +449,8 @@ class Table extends React.Component {
     return row;
   }
 
-  reportTableWidth() {
-    const table = findDOMNode(this.table);
+  reportTableWidth = () => {
+    const table = this.table;
     if (table) {
       this.setState({
         width: getWidth(table)
@@ -475,7 +460,7 @@ class Table extends React.Component {
   }
 
   reportTableContentWidth() {
-    const table = findDOMNode(this.table);
+    const table = this.table;
 
     const row = table.querySelectorAll(`.${this.prefix('row-header')}`)[0];
     const contentWidth = getWidth(row);
@@ -491,7 +476,7 @@ class Table extends React.Component {
   }
 
   reportTableContextHeight() {
-    const table = findDOMNode(this.table);
+    const table = this.table;
     const rows = table.querySelectorAll(`.${this.prefix('row')}`);
     const { height, rowHeight, headerHeight } = this.props;
     let contentHeight = 0;
@@ -567,7 +552,7 @@ class Table extends React.Component {
   renderTableHeader(headerCells, rowWidth) {
     const { rowHeight, headerHeight } = this.props;
     const row = this.renderRow({
-      ref: (ref) => {
+      rowRef: (ref) => {
         this.tableHeader = ref;
       },
       width: rowWidth,
@@ -766,6 +751,7 @@ class Table extends React.Component {
       height,
       ...style
     };
+
     const elementProps = _.omit(props, Object.keys(propTypes));
 
     return (
