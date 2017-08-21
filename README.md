@@ -1,5 +1,4 @@
-# rsuite-table  [![npm][npm-badge]][npm]
-
+# rsuite-table
 
 `rsuite-table` 是一个 `React` 实现的 `<Table>` 组件，主要特性有：
 
@@ -8,6 +7,13 @@
 - 支持自定义单元格内容；
 - 支持显示树状表格；
 - 支持排序。
+
+版本与状态
+
+- [![npm][npm-badge]][npm] `Stable`
+- [![npm][npm-beta-badge]][npm-beta] `Beta`
+- [![Travis][build-badge]][build] [![Coverage Status][coverage-badge]][coverage]
+
 
 ## # 快速开始
 
@@ -67,9 +73,16 @@ ReactDOM.render(
 ```
 
 
-[build-badge]: https://travis-ci.org/rsuite/rsuite-table.svg?branch=master
+[npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg
+[npm]: https://www.npmjs.com/package/rsuite-table
+
+
+[npm-beta-badge]: https://cnpmjs.org/badge/v/rsuite-table.svg?&tag=beta&subject=npm
+[npm-beta]: https://www.npmjs.com/package/rsuite-table
+
+
+[build-badge]: https://travis-ci.org/rsuite/rsuite-table.svg
 [build]: https://travis-ci.org/rsuite/rsuite-table
 
-
-[npm-badge]: https://badge.fury.io/js/rsuite-table.svg
-[npm]: http://badge.fury.io/js/rsuite-table
+[coverage-badge]: https://coveralls.io/repos/github/rsuite/rsuite-table/badge.svg?branch=next
+[coverage]: https://coveralls.io/github/rsuite/rsuite-table
