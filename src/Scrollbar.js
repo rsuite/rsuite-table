@@ -25,12 +25,12 @@ class Scrollbar extends React.Component {
   }
 
   componentWillUnmount() {
-    /* istanbul ignore next */
+
     this.releaseMouseMoves();
   }
 
   onWheelScroll(delta) {
-    /* istanbul ignore next */
+
     const { length, scrollLength } = this.props;
     const nextDelta = delta / (scrollLength / length);
     this.updateScrollBarPosition(nextDelta);
@@ -93,7 +93,7 @@ class Scrollbar extends React.Component {
   }
 
   releaseMouseMoves() {
-    /* istanbul ignore next */
+
     if (this.mouseMoveTracker) {
       this.mouseMoveTracker.releaseMouseMoves();
       this.mouseMoveTracker = null;
@@ -101,7 +101,7 @@ class Scrollbar extends React.Component {
   }
 
   hanldeDragMove = (deltaX, deltaY, event) => {
-    /* istanbul ignore next */
+
     const { vertical } = this.props;
     if (!this.mouseMoveTracker || !this.mouseMoveTracker.isDragging()) {
       return;

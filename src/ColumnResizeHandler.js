@@ -29,13 +29,13 @@ class ColumnResizeHandler extends React.Component {
       this.mouseMoveTracker.captureMouseMoves(nextProps.initialEvent);
     }
     if (nextProps.columnWidth !== this.props.columnWidth) {
-      /* istanbul ignore next */
+
       this.columnWidth = nextProps.columnWidth;
     }
   }
 
   componentWillUnmount() {
-    /* istanbul ignore next */
+
     if (this.mouseMoveTracker) {
       this.mouseMoveTracker.releaseMouseMoves();
       this.mouseMoveTracker = null;
@@ -48,10 +48,11 @@ class ColumnResizeHandler extends React.Component {
       return;
     }
 
-    /* istanbul ignore next */
+
+
     const { onColumnResizeMove, columnWidth, columnLeft, columnFixed } = this.props;
     this.cursorDelta += deltaX;
-    this.columnWidth = _.clamp(columnWidth + this.cursorDelta, 20);
+    this.columnWidth = _.clamp(columnWidth + this.cursorDelta, 20, 20000);
     onColumnResizeMove && onColumnResizeMove(this.columnWidth, columnLeft, columnFixed);
   }
   onColumnResizeEnd = () => {
@@ -75,7 +76,7 @@ class ColumnResizeHandler extends React.Component {
     this.isKeyDown = true;
     this.cursorDelta = 0;
 
-    /* istanbul ignore next */
+
     onColumnResizeStart && onColumnResizeStart({
       clientX: event.clientX,
       clientY: event.clientY,
@@ -84,7 +85,7 @@ class ColumnResizeHandler extends React.Component {
   }
   getMouseMoveTracker() {
 
-    /* istanbul ignore next */
+
     return this.mouseMoveTracker || new DOMMouseMoveTracker(
       this.onMove,
       this.onColumnResizeEnd,
