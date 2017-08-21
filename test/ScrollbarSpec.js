@@ -24,7 +24,7 @@ describe('Scrollbar', () => {
     assert.ok(instanceDom.className.match(/\bvertical\b/));
   });
 
-  it('Should be vertical', () => {
+  it('Should render a scroll handle', () => {
     const scrollLength = 1000;
     const length = 100;
     const instance = ReactTestUtils.renderIntoDocument(
@@ -43,12 +43,6 @@ describe('Scrollbar', () => {
     ReactTestUtils.Simulate.mouseDown(instance.handle);
   });
 
-  it('Should have a custom className', () => {
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Scrollbar className="custom" />
-    );
-    assert.ok(findDOMNode(instance).className.match(/\bcustom\b/));
-  });
 
   it('Should have a custom style', () => {
     const fontSize = '12px';

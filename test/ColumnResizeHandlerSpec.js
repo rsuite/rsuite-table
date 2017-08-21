@@ -35,7 +35,7 @@ describe('ColumnResizeHandler', () => {
     assert.equal(instanceDom.style.left, `${columnWidth + columnLeft + handlerLeft}px`);
   });
 
-  it('Should call onColumnResizeStart callback ', (done) => {
+  it('Should call `onColumnResizeStart` callback ', (done) => {
     const doneOp = () => {
       done();
     };
@@ -46,6 +46,7 @@ describe('ColumnResizeHandler', () => {
     const instanceDom = findDOMNode(instance);
     ReactTestUtils.Simulate.mouseDown(instanceDom);
   });
+
 
   it('Should have a custom className', () => {
     const instance = ReactTestUtils.renderIntoDocument(
