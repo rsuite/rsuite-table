@@ -24,7 +24,7 @@ module.exports = (config) => {
       'sinon-chai'
     ],
     colors: true,
-    reporters: ['mocha'],
+    reporters: ['mocha', 'coverage'],
 
     logLevel: config.LOG_INFO,
     preprocessors: {
@@ -40,6 +40,13 @@ module.exports = (config) => {
         base: 'Chrome',
         flags: ['--no-sandbox'],
       },
+    },
+    coverageReporter: {
+      dir: 'coverage',
+      reporters: [
+        { type: 'html' },
+        { type: 'lcov', subdir: 'lcov' }  // lcov
+      ]
     }
   });
 };
