@@ -48,8 +48,6 @@ class ColumnResizeHandler extends React.Component {
       return;
     }
 
-
-
     const { onColumnResizeMove, columnWidth, columnLeft, columnFixed } = this.props;
     this.cursorDelta += deltaX;
     this.columnWidth = _.clamp(columnWidth + this.cursorDelta, 20, 20000);
