@@ -373,6 +373,10 @@ class Table extends React.Component {
       return false;
     }
 
+    if (this.state.contentWidth <= this.state.width) {
+      return false;
+    }
+
     return (delta >= 0 && this.scrollX > this.minScrollX) ||
       (delta < 0 && this.scrollX < 0);
   }
