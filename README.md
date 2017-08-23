@@ -10,10 +10,11 @@
 
 版本与状态
 
-- [![npm][npm-badge]][npm] `Stable`
-- [![npm][npm-beta-badge]][npm-beta] `Beta`
-- [![Travis][build-badge]][build] [![Coverage Status][coverage-badge]][coverage]
+[![npm][npm-badge]][npm]
 
+[![npm][npm-beta-badge]][npm-beta]
+
+[![Travis][build-badge]][build] [![Coverage Status][coverage-badge]][coverage]
 
 ## # 快速开始
 
@@ -77,7 +78,7 @@ ReactDOM.render(
 [npm]: https://www.npmjs.com/package/rsuite-table
 
 
-[npm-beta-badge]: https://cnpmjs.org/badge/v/rsuite-table.svg?&tag=beta&subject=npm
+[npm-beta-badge]: https://img.shields.io/npm/v/rsuite-table/beta.svg
 [npm-beta]: https://www.npmjs.com/package/rsuite-table
 
 
@@ -86,3 +87,5 @@ ReactDOM.render(
 
 [coverage-badge]: https://coveralls.io/repos/github/rsuite/rsuite-table/badge.svg?branch=next
 [coverage]: https://coveralls.io/github/rsuite/rsuite-table
+
+

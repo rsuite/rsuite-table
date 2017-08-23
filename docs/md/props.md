@@ -12,13 +12,13 @@
 | isTree              | boolean                                   |         | 是否展示为树表格                                    |
 | expand              | boolean                                   |         | 展开所有节点，`isTree`为 `tree` 时，该属性有效             |
 | onTreeToggle        | function(isOpen:boolean,rowData:object)   |         | 树形表格，在展开节点的回调函数                             |
-| renderTreeToggle    | function(icon:node,rowData:object)        |         | 树形表格，在展开节点的回调函数                             |
+| renderTreeToggle    | (icon:node,rowData:object)=> node         |         | 树形表格，在展开节点的回调函数                             |
 | locale              | object                                    |         | 本地化语言配置                                     |
 | sortColumn          | string                                    |         | 排序列名称                                       |
 | sortType            | string                                    |         | 排序类型  ['desc', 'asc']                       |
 | onRowClick          | function(rowData:object)                  |         | 行点击后的回调函数， 返回 `rowDate`                     |
 | onSortColumn        | function(dataKey:string, sortType:string) |         | 点击排序列的回调函数，返回 `sortColumn`, `sortType` 这两个值 |
-| onRerenderRowHeight | function(rowData:object)                  |         | 重新渲染行高                                      |
+| onRerenderRowHeight | (rowData:object)=> number                 |         | 重新渲染行高                                      |
 | onScroll            | function(scrollX:object, scrollY:object)  |         | 滚动条滚动时候的回调函数                                |
 | disabledScroll      | boolean                                   |         | 禁用滚动                                        |
 | loading             | boolean                                   |         | 显示 loading 状态                               |
@@ -66,20 +66,20 @@
 
 表格分页工具栏
 
-| Name             | Type         | Default                                                                   | Description                  |
-|------------------|--------------|---------------------------------------------------------------------------|------------------------------|
-| lengthMenu       | array        | `[{value: 30,text: 30,}, {value: 50,text: 50,}, {value: 100,text: 100,}]` | 分页显示行数配置，默认为 30, 50, 100     |
-| showLengthMenu   | bool         | true                                                                      | 显示多少行的菜单，默认显示                |
-| showInfo         | bool         | true                                                                      | 显示分页信息                       |
-| total            | number       |                                                                           | 总数据条目数                       |
-| displayLength    | number       | 30                                                                        | 配置每页显示多少行条目数，对应 `lengthMenu` |
-| formatLengthMenu | functiontion |                                                                           | 格式化 `lengthMenu`             |
-| formatInfo       | functiontion |                                                                           | 格式化 `info`                   |
-| onChangePage     | functiontion |                                                                           | page 改变时候触发的回调函数             |
-| onChangeLength   | functiontion |                                                                           | `lengthMenu` 值发生改变的时候触发的回调函数 |
-| prev             | bool         | true                                                                      | 显示上一页按钮                      |
-| next             | bool         | true                                                                      | 显示下一页按钮                      |
-| first            | bool         | true                                                                      | 显示第一页按钮                      |
-| last             | bool         | true                                                                      | 显示最后一页按钮                     |
-| maxButtons       | number       | 5                                                                         | 配置最多显示按钮数量                   |
-| activePage       | number       | 1                                                                         | 配置当前页号                       |
+| Name             | Type                                     | Default | Description                  |
+|------------------|------------------------------------------|---------|------------------------------|
+| lengthMenu       | array                                    | `[...]` | 分页显示行数配置，默认为 30, 50, 100     |
+| showLengthMenu   | boolean                                  | true    | 显示多少行的菜单，默认显示                |
+| showInfo         | boolean                                  | true    | 显示分页信息                       |
+| total            | number                                   |         | 总数据条目数                       |
+| displayLength    | number                                   | 30      | 配置每页显示多少行条目数，对应 `lengthMenu` |
+| formatLengthMenu | (dropdown:node) => node                  |         | 格式化 `lengthMenu`             |
+| formatInfo       | (total:number, activePage:number)=> node |         | 格式化 `info`                   |
+| onChangePage     | function(eventKey:number)                |         | page 改变时候触发的回调函数             |
+| onChangeLength   | function(eventKey:number)                |         | `lengthMenu` 值发生改变的时候触发的回调函数 |
+| prev             | boolean                                  | true    | 显示上一页按钮                      |
+| next             | boolean                                  | true    | 显示下一页按钮                      |
+| first            | boolean                                  | true    | 显示第一页按钮                      |
+| last             | boolean                                  | true    | 显示最后一页按钮                     |
+| maxButtons       | number                                   | 5       | 配置最多显示按钮数量                   |
+| activePage       | number                                   | 1       | 配置当前页号                       |
