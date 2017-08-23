@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import _ from 'lodash';
+import omit from 'lodash/omit';
 import isNullOrUndefined from './utils/isNullOrUndefined';
 import { LAYER_WIDTH } from './constants';
 import decorate from './utils/decorate';
@@ -29,6 +29,7 @@ const propTypes = {
   hasChildren: PropTypes.bool,
 
   onTreeToggle: PropTypes.func,
+  renderTreeToggle: PropTypes.func,
   cellRenderer: PropTypes.func,
   sortable: PropTypes.bool
 };
@@ -52,13 +53,11 @@ class Cell extends React.Component {
       onTreeToggle,
       rowKey,
       rowIndex,
-      rowData
+      rowData,
+      renderTreeToggle
     } = this.props;
 
-    /**
-     * 如果用子节点，同时是第一列,则创建一个 icon 用于展开节点
-     */
-    return (hasChildren && firstColumn) ? (
+    const expandButton = (
       <i
         role="button"
         tabIndex={-1}
@@ -67,7 +66,17 @@ class Cell extends React.Component {
           onTreeToggle && onTreeToggle(rowKey, rowIndex, rowData, event);
         }}
       />
-    ) : null;
+    );
+
+
+    /**
+     * 如果用子节点，同时是第一列,则创建一个 icon 用于展开节点
+     */
+    if (hasChildren && firstColumn) {
+      return renderTreeToggle ? renderTreeToggle(expandButton, rowData) : expandButton;
+    }
+
+    return null;
   }
 
   render() {
@@ -121,7 +130,7 @@ class Cell extends React.Component {
     }
 
     const contentChildren = isNullOrUndefined(children) && rowData ? rowData[dataKey] : children;
-    const elementProps = _.omit(props, [
+    const elementProps = omit(props, [
       'index',
       'fixed',
       'resizable',

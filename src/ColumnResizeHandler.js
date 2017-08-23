@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import { DOMMouseMoveTracker } from 'dom-lib';
-import _ from 'lodash';
+import clamp from 'lodash/clamp';
+import omit from 'lodash/omit';
 import decorate from './utils/decorate';
 
 
@@ -50,7 +51,7 @@ class ColumnResizeHandler extends React.Component {
 
     const { onColumnResizeMove, columnWidth, columnLeft, columnFixed } = this.props;
     this.cursorDelta += deltaX;
-    this.columnWidth = _.clamp(columnWidth + this.cursorDelta, 20, 20000);
+    this.columnWidth = clamp(columnWidth + this.cursorDelta, 20, 20000);
     onColumnResizeMove && onColumnResizeMove(this.columnWidth, columnLeft, columnFixed);
   }
   onColumnResizeEnd = () => {
@@ -103,7 +104,7 @@ class ColumnResizeHandler extends React.Component {
     };
 
     const classes = classNames(this.prefix('column-resize-spanner'), className);
-    const elementProps = _.omit(props, Object.keys(propTypes));
+    const elementProps = omit(props, Object.keys(propTypes));
 
     return (
       <div

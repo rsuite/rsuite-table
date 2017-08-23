@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import _ from 'lodash';
+import omit from 'lodash/omit';
 import { translateDOMPositionXY } from 'dom-lib';
 import decorate from './utils/decorate';
 
@@ -40,8 +40,7 @@ class CellGroup extends React.Component {
     };
 
     translateDOMPositionXY(styles, left, 0);
-
-    const elementProps = _.omit(props, Object.keys(propTypes));
+    const elementProps = omit(props, Object.keys(propTypes));
 
     return (
       <div

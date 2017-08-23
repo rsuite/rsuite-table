@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import _ from 'lodash';
+import isArray from 'lodash/isArray';
+import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
+import omit from 'lodash/omit';
+import pick from 'lodash/pick';
+
 import {
   on,
   addStyle,
@@ -18,6 +23,7 @@ import decorate, { globalClassName } from './utils/decorate';
 import Row from './Row';
 import CellGroup from './CellGroup';
 import Scrollbar from './Scrollbar';
+import Column from './Column';
 
 const handleClass = { add: addClass, remove: removeClass };
 const ReactChildren = React.Children;
@@ -27,14 +33,13 @@ function getTotalByColumns(columns) {
   let totalFlexGrow = 0;
   let totalWidth = 0;
 
-
   const count = (items) => {
     Array.from(items).forEach((column) => {
       if (React.isValidElement(column)) {
         const { flexGrow, width = 0 } = column.props;
         totalFlexGrow += (flexGrow || 0);
         totalWidth += (flexGrow ? 0 : width);
-      } else if (_.isArray(column)) {
+      } else if (isArray(column)) {
         count(column);
       }
     });
@@ -70,6 +75,7 @@ const propTypes = {
   onSortColumn: PropTypes.func,
   onRerenderRowHeight: PropTypes.func,
   onTreeToggle: PropTypes.func,
+  renderTreeToggle: PropTypes.func,
   disabledScroll: PropTypes.bool,
   hover: PropTypes.bool,
   loading: PropTypes.bool,
@@ -129,12 +135,12 @@ class Table extends React.Component {
   }
 
   componentDidMount() {
-    this.onWindowResizeListener = on(window, 'resize', _.debounce(this.reportTableWidth, 400));
+    this.onWindowResizeListener = on(window, 'resize', debounce(this.reportTableWidth, 400));
     this.reportTableWidth();
     this.reportTableContextHeight();
   }
   shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
   componentDidUpdate() {
     this.reportTableContextHeight();
@@ -237,8 +243,8 @@ class Table extends React.Component {
 
       if (React.isValidElement(column)) {
 
-        let columnChildren = column.props.children;
-        let { width, fixed, align, sortable, resizable, flexGrow, minWidth } = column.props;
+        const columnChildren = column.props.children;
+        const { width, resizable, flexGrow, minWidth } = column.props;
 
         if (columnChildren.length !== 2) {
           throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
@@ -254,18 +260,14 @@ class Table extends React.Component {
         }
 
         let cellProps = {
-          fixed,
+          ...pick(column.props, Object.keys(Column.propTypes)),
           left,
-          align,
-          resizable,
-          sortable,
           index,
           headerHeight,
           width: nextWidth,
           height: rowHeight,
           firstColumn: (index === 0),
           lastColumn: (index === columns.length - 1),
-          flexGrow,
           key: index
         };
 
@@ -390,10 +392,8 @@ class Table extends React.Component {
 
   randerRowData(bodyCells, rowData, props) {
 
-    const { onRowClick } = this.props;
-    const hasChildren = this.props.isTree && rowData.children &&
-      Array.isArray(rowData.children) &&
-      rowData.children.length > 0;
+    const { onRowClick, renderTreeToggle } = this.props;
+    const hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children);
 
     const rowKey = `_${(Math.random() * 1E18).toString(36).slice(0, 5).toUpperCase()}`;
     const row = this.renderRow({
@@ -409,6 +409,7 @@ class Table extends React.Component {
       layer: props.layer,
       height: props.rowHeight,
       rowIndex: props.index,
+      renderTreeToggle,
       onTreeToggle: this.onTreeToggle,
       rowKey,
       rowData
@@ -756,7 +757,7 @@ class Table extends React.Component {
       ...style
     };
 
-    const elementProps = _.omit(props, Object.keys(propTypes));
+    const elementProps = omit(props, Object.keys(propTypes));
 
     return (
       <div

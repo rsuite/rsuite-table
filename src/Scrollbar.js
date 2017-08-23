@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import omit from 'lodash/omit';
 import classNames from 'classnames';
 import { DOMMouseMoveTracker, addStyle, translateDOMPositionXY } from 'dom-lib';
 import decorate from './utils/decorate';
@@ -124,7 +124,7 @@ class Scrollbar extends React.Component {
       [vertical ? 'height' : 'width']: `${(length / scrollLength) * 100}%`,
       [vertical ? 'minHeight' : 'minWidth']: SCROLLBAR_MIN_WIDTH,
     };
-    const elementProps = _.omit(props, Object.keys(propTypes));
+    const elementProps = omit(props, Object.keys(propTypes));
 
     return (
       <div

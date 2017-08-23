@@ -12,6 +12,7 @@ const propTypes = {
   minWidth: PropTypes.number
 };
 
+
 const defaultProps = {
   width: 100
 };
