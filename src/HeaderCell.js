@@ -84,7 +84,7 @@ class HeaderCell extends React.Component {
     const { columnWidth = 0 } = this.state;
     const styles = {
       left: ((columnWidth || width) + left) - 16,
-      top: (headerHeight / 2) - 8
+      top: (headerHeight / 2) - 10
     };
 
     if (sortable) {

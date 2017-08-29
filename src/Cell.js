@@ -110,10 +110,11 @@ class Cell extends React.Component {
 
     const layerWidth = layer * LAYER_WIDTH;
     const nextWidth = (!isHeaderCell && firstColumn) ? width - layerWidth : width;
+    const nextHeight = isHeaderCell ? headerHeight : height;
 
     const styles = {
       width: nextWidth,
-      height: isHeaderCell ? headerHeight : height,
+      height: nextHeight,
       zIndex: layer,
       left: (!isHeaderCell && firstColumn) ? left + layerWidth : left,
       ...style
@@ -122,6 +123,7 @@ class Cell extends React.Component {
 
     const contentStyles = {
       width: nextWidth,
+      height: nextHeight,
       textAlign: align
     };
 
