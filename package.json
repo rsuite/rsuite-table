@@ -1,6 +1,6 @@
 {
   "name": "rsuite-table",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "RSuite Table",
   "main": "lib/index.js",
   "scripts": {
@@ -28,8 +28,7 @@
     "classnames": "^2.2.5",
     "dom-lib": "^0.2.4",
     "lodash": "^4.13.1",
-    "prop-types": "^15.5.10",
-    "rsuite-table": "^2.0.0-alpha"
+    "prop-types": "^15.5.10"
   },
   "peerDependencies": {
     "react": "^0.14.9 || >=15.3.0",
