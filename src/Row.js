@@ -1,32 +1,30 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import omit from 'lodash/omit';
 import { translateDOMPositionXY } from 'dom-lib';
-import ClassNameMixin from './mixins/ClassNameMixin';
-import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
+import decorate from './utils/decorate';
 
-const Row = React.createClass({
-  mixins: [
-    ClassNameMixin,
-    ReactComponentWithPureRenderMixin
-  ],
-  PropTypes: {
-    width: PropTypes.number,
-    height: PropTypes.number,
-    headerHeight: PropTypes.number,
-    top: PropTypes.number,
-    style: PropTypes.object,
-    isHeaderRow: PropTypes.bool
-  },
-  getDefaultProps() {
-    return {
-      height: 36,
-      headerHeight: 36,
-      isHeaderRow: false
-    };
-  },
+const propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
+  headerHeight: PropTypes.number,
+  top: PropTypes.number,
+  style: PropTypes.object,
+  isHeaderRow: PropTypes.bool,
+  rowRef: PropTypes.func
+};
+
+const defaultProps = {
+  height: 36,
+  headerHeight: 36,
+  isHeaderRow: false
+};
+
+class Row extends React.Component {
   render() {
+
     const {
-      children,
       className,
       width,
       height,
@@ -34,15 +32,13 @@ const Row = React.createClass({
       style,
       isHeaderRow,
       headerHeight,
+      rowRef,
       ...props
     } = this.props;
 
-    let classes = classNames(
-      this.prefix('row'),
-      isHeaderRow ? this.prefix('row-header') : '',
-      className
-    );
-
+    const classes = classNames(this.prefix('row'), {
+      [this.prefix('row-header')]: isHeaderRow
+    }, className);
 
     const styles = {
       minWidth: width,
@@ -50,18 +46,20 @@ const Row = React.createClass({
       ...style
     };
     translateDOMPositionXY(styles, 0, top);
+    const elementProps = omit(props, Object.keys(propTypes));
 
     return (
       <div
+        {...elementProps}
+        ref={rowRef}
         className={classes}
         style={styles}
-        {...props}
-      >
-        {children}
-      </div>
+      />
     );
   }
+}
 
-});
+Row.propTypes = propTypes;
+Row.defaultProps = defaultProps;
 
-export default Row;
+export default decorate()(Row);

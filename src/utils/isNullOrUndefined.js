@@ -1,5 +1,6 @@
-import _ from 'lodash';
+import isNull from 'lodash/isNull';
+import isUndefined from 'lodash/isUndefined';
 
 export default function isNullOrUndefined(value) {
-  return _.isNull(value) || _.isUndefined(value);
+  return isNull(value) || isUndefined(value);
 }

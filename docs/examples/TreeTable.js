@@ -22,7 +22,21 @@ const TreeTable = React.createClass({
     const { data } = this.state;
     return (
       <div>
-        <Table height={400} data={data} isTree expand>
+        <Table
+          height={400}
+          data={data}
+          isTree
+          expand
+          onTreeToggle={(isOpen, rowData) => {
+            console.log(isOpen, rowData);
+          }}
+          renderTreeToggle={(icon, rowData) => {
+            if (rowData.labelName === '手机') {
+              return (<i className="icon icon-spin icon-spinner" />);
+            }
+            return icon;
+          }}
+        >
 
           <Column width={300} >
             <HeaderCell>Label</HeaderCell>

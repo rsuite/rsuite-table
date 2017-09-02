@@ -1,40 +1,37 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import omit from 'lodash/omit';
 import { translateDOMPositionXY } from 'dom-lib';
-import ClassNameMixin from './mixins/ClassNameMixin';
-import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
+import decorate from './utils/decorate';
 
-const CellGroup = React.createClass({
-  mixins: [
-    ClassNameMixin,
-    ReactComponentWithPureRenderMixin
-  ],
-  propTypes: {
-    fixed: PropTypes.bool,
-    width: PropTypes.number,
-    height: PropTypes.number,
-    left: PropTypes.number,
-    style: PropTypes.string
-  },
+const propTypes = {
+  fixed: PropTypes.bool,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  left: PropTypes.number
+};
+
+
+class CellGroup extends React.Component {
+
   render() {
 
-    let {
-      children,
+    const {
       fixed,
       width,
       left,
       height,
       style,
-      className
+      className,
+      ...props
     } = this.props;
 
-    let classes = classNames(
-      className,
+    const classes = classNames(
       this.prefix('cell-group'),
-      fixed ? 'fixed' : 'scroll'
+      fixed ? 'fixed' : 'scroll',
+      className
     );
-
-
 
     const styles = {
       width,
@@ -43,14 +40,18 @@ const CellGroup = React.createClass({
     };
 
     translateDOMPositionXY(styles, left, 0);
+    const elementProps = omit(props, Object.keys(propTypes));
 
     return (
-      <div className={classes} style={styles}>
-        {children}
-      </div>
+      <div
+        {...elementProps}
+        className={classes}
+        style={styles}
+      />
     );
   }
+}
 
-});
+CellGroup.propTypes = propTypes;
 
-export default CellGroup;
+export default decorate()(CellGroup);

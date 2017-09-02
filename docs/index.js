@@ -1,14 +1,14 @@
 // 解决 IE 11 兼容性问题
 import 'babel-polyfill';
 
+// 解决 IE 11 兼容性问题
+import 'babel-polyfill';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Header, Navbar, Nav, Row, Col } from 'rsuite';
 import Affix from 'rsuite-affix';
 import { Markdown } from 'markdownloader';
-
-import '../src/less/index.less';
-import './less/index.less';
 
 import FixedColumnTable from './examples/FixedColumnTable';
 import PaginationTable from './examples/PaginationTable';
@@ -17,6 +17,11 @@ import CustomColumnTable from './examples/CustomColumnTable';
 import TreeTable from './examples/TreeTable';
 import FluidColumnTable from './examples/FluidColumnTable';
 import SortTable from './examples/SortTable';
+import LoadingTable from './examples/LoadingTable';
+import EditTable from './examples/EditTable';
+
+import '../src/less/index.less';
+import './less/index.less';
 
 const App = React.createClass({
 
@@ -58,6 +63,9 @@ const App = React.createClass({
                   <Nav.Item href="#SortTable">&nbsp;&nbsp;- 排序</Nav.Item>
                   <Nav.Item href="#PaginationTable">&nbsp;&nbsp;- 分页</Nav.Item>
                   <Nav.Item href="#TreeTable">&nbsp;&nbsp;- 树形表格</Nav.Item>
+                  <Nav.Item href="#EditTable">&nbsp;&nbsp;- 可编辑的表格</Nav.Item>
+                  <Nav.Item href="#LoadingTable">&nbsp;&nbsp;- 加载中...</Nav.Item>
+
                   <Nav.Item href="#API"># API</Nav.Item>
                 </Nav>
               </Affix>
@@ -119,6 +127,18 @@ const App = React.createClass({
               <Markdown>{require('./md/TreeTable.md')}</Markdown>
               <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/TreeTable.js" target="_blank" >示例代码</a></p>
 
+              <a id="EditTable" className="target-fix" ></a>
+              <h3 >可编辑的表格</h3>
+              <EditTable />
+              <Markdown>{require('./md/EditTable.md')}</Markdown>
+              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/EditTable.js" target="_blank" >示例代码</a></p>
+
+
+              <a id="LoadingTable" className="target-fix" ></a>
+              <h3 >加载中...</h3>
+              <LoadingTable />
+              <Markdown>{require('./md/LoadingTable.md')}</Markdown>
+              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/LoadinTable.js" target="_blank" >示例代码</a></p>
 
               <a id="API" className="target-fix" ></a>
               <h3 ># API </h3>

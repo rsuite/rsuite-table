@@ -80,6 +80,7 @@ export default [
     children: [{
       labelName: '手机',
       status: 'ENABLED',
+      children: []
     }, {
       labelName: '电脑',
       status: 'DISABLED',

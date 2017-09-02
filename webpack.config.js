@@ -17,8 +17,9 @@ const plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NamedModulesPlugin(),
   new webpack.DefinePlugin({
-    'NODE_ENV': JSON.stringify(NODE_ENV)
+    'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
   }),
+
   extractLess,
   new HtmlwebpackPlugin({
     title: 'RSUITE Table',

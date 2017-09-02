@@ -1,69 +1,82 @@
-import React, { PropTypes } from 'react';
-import { findDOMNode } from 'react-dom';
+import React from 'react';
+import PropTypes from 'prop-types';
+import omit from 'lodash/omit';
 import classNames from 'classnames';
-import ClassNameMixin from './mixins/ClassNameMixin';
 import { DOMMouseMoveTracker, addStyle, translateDOMPositionXY } from 'dom-lib';
+import decorate from './utils/decorate';
+import { SCROLLBAR_MIN_WIDTH } from './constants';
 
+const propTypes = {
+  vertical: PropTypes.bool,
+  length: PropTypes.number,
+  scrollLength: PropTypes.number,
+  onScroll: PropTypes.func,
+  onMouseDown: PropTypes.func
+};
 
-const BAR_MIN_WIDTH = 20;
+class Scrollbar extends React.Component {
 
-const Scrollbar = React.createClass({
-  mixins: [
-    ClassNameMixin
-  ],
-  propTypes: {
-    vertical: PropTypes.bool,
-    length: PropTypes.number,
-    scrollLength: PropTypes.number,
-    onScroll: PropTypes.func,
-  },
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       handleDown: false
     };
-  },
+    this.scrollOffset = 0;
+  }
+
+  componentWillUnmount() {
+
+    this.releaseMouseMoves();
+  }
+
+  onWheelScroll(delta) {
+
+    const { length, scrollLength } = this.props;
+    const nextDelta = delta / (scrollLength / length);
+    this.updateScrollBarPosition(nextDelta);
+  }
+
   getMouseMoveTracker() {
-    return this._mouseMoveTracker || new DOMMouseMoveTracker(
+    return this.mouseMoveTracker || new DOMMouseMoveTracker(
       this.hanldeDragMove,
       this.hanldeDragEnd,
       document.body
     );
-  },
-  releaseMouseMoves() {
-    if (this._mouseMoveTracker) {
-      this._mouseMoveTracker.releaseMouseMoves();
-      this._mouseMoveTracker = null;
-    }
-  },
-  hanldeMouseDown(event) {
+  }
 
-    this._mouseMoveTracker = this.getMouseMoveTracker();
-    this._mouseMoveTracker.captureMouseMoves(event);
+  hanldeMouseDown = (event) => {
+    const { onMouseDown } = this.props;
+    this.mouseMoveTracker = this.getMouseMoveTracker();
+    this.mouseMoveTracker.captureMouseMoves(event);
     this.setState({
       handleDown: true
     });
+    onMouseDown && onMouseDown(event);
+  }
 
-  },
-  hanldeDragEnd() {
+  hanldeDragEnd = () => {
     this.releaseMouseMoves();
     this.setState({
       handleDown: false
     });
-  },
+  }
+
   handleScroll(delta, event) {
-    const { length, scrollLength, vertical, onScroll } = this.props;
-    const style = {};
+    const { length, scrollLength, onScroll } = this.props;
     const scrollDelta = delta * (scrollLength / length);
     this.updateScrollBarPosition(delta);
     onScroll && onScroll(scrollDelta, event);
-  },
+  }
+
   resetScrollBarPosition() {
     this.scrollOffset = 0;
     this.updateScrollBarPosition(0);
-  },
+  }
+
   updateScrollBarPosition(delta) {
+
     const { vertical, length, scrollLength } = this.props;
-    const max = length - (length / scrollLength * length);
+    const max = length - ((length / scrollLength) * length);
     const styles = {};
 
     this.scrollOffset += delta;
@@ -75,56 +88,67 @@ const Scrollbar = React.createClass({
     } else {
       translateDOMPositionXY(styles, this.scrollOffset, 0);
     }
-    addStyle(this.handle, styles);
-  },
-  onWheelScroll(delta) {
 
-    const { length, scrollLength } = this.props;
-    const nextDelta = delta / (scrollLength / length);
-    this.updateScrollBarPosition(nextDelta);
-  },
-  hanldeDragMove(deltaX, deltaY, event) {
+    addStyle(this.handle, styles);
+  }
+
+  releaseMouseMoves() {
+
+    if (this.mouseMoveTracker) {
+      this.mouseMoveTracker.releaseMouseMoves();
+      this.mouseMoveTracker = null;
+    }
+  }
+
+  hanldeDragMove = (deltaX, deltaY, event) => {
+
     const { vertical } = this.props;
-    if (!this._mouseMoveTracker || !this._mouseMoveTracker.isDragging()) {
+    if (!this.mouseMoveTracker || !this.mouseMoveTracker.isDragging()) {
       return;
     }
     this.handleScroll(vertical ? deltaY : deltaX, event);
-  },
-  componentWillMount() {
-    this.scrollOffset = 0;
-  },
+  }
 
-  componentWillUnmount() {
-    this.releaseMouseMoves();
-  },
   render() {
-    const { vertical, length, scrollLength } = this.props;
-    const { handleDown } = this.state;
 
+    const { vertical, length, scrollLength, className, ...props } = this.props;
+    const { handleDown } = this.state;
     const classes = classNames(this.prefix('scrollbar-wrapper'), {
       vertical,
       horizontal: !vertical,
       hide: scrollLength <= length,
       active: handleDown
-    });
+    }, className);
 
     let styles = {
-      [vertical ? 'height' : 'width']: `${length / scrollLength * 100}%`,
-      [vertical ? 'minHeight' : 'minWidth']: BAR_MIN_WIDTH
+      [vertical ? 'height' : 'width']: `${(length / scrollLength) * 100}%`,
+      [vertical ? 'minHeight' : 'minWidth']: SCROLLBAR_MIN_WIDTH,
     };
+    const elementProps = omit(props, Object.keys(propTypes));
 
     return (
-      <div className={classes}>
+      <div
+        {...elementProps}
+        className={classes}
+      >
         <div
-          ref={ref => this.handle = ref}
-          className='scrollbar-handle'
+          ref={(ref) => {
+            this.handle = ref;
+          }}
+          className="scrollbar-handle"
           style={styles}
           onMouseDown={this.hanldeMouseDown}
+          role="button"
+          tabIndex={-1}
         />
 
       </div>
     );
   }
-});
 
-export default Scrollbar;
+}
+
+Scrollbar.propTypes = propTypes;
+
+
+export default decorate()(Scrollbar);

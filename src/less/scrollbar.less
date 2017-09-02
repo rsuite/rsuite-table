@@ -1,57 +1,55 @@
-.@{prefix}table{
-  .@{prefix}table-scrollbar-wrapper{
-    background: rgba(45,45,45,0.05);
+&-table {
+  &-scrollbar-wrapper {
+    background: rgba(45, 45, 45, 0.05);
     position: absolute;
     transition: background 1s;
-    &.active{
-      background: rgba(45,45,45,0.1);
+    &.active {
+      background: rgba(45, 45, 45, 0.1);
     }
-    &.hide{
+    &.hide {
       display: none;
     }
-
-    .scrollbar-handle{
+    .scrollbar-handle {
       position: absolute;
-      background: rgba(45,45,45,0.5);
+      background: rgba(45, 45, 45, 0.5);
       border-radius: 4px;
     }
-
-    &.horizontal{
+    &.horizontal {
       width: 100%;
       height: 10px;
       bottom: 2px;
-      &:hover,&.active{
+      &:hover, &.active {
         height: 14px;
         box-shadow: 1px 1px 2px #ddd inset;
-        .scrollbar-handle{
-          top:2px;
+        .scrollbar-handle {
+          top: 2px;
           height: 10px;
         }
       }
-      .scrollbar-handle{
+      .scrollbar-handle {
         height: 8px;
         left: 0px;
-        top:1px;
+        top: 1px;
       }
     }
-    &.vertical{
+    &.vertical {
       top: 0;
       right: 0px;
       width: 10px;
       bottom: 2px;
-      &:hover,&.active{
+      &:hover, &.active {
         width: 14px;
         box-shadow: 1px 1px 2px #ddd inset;
-        .scrollbar-handle{
-          left:2px;
+        .scrollbar-handle {
+          left: 2px;
           width: 10px;
         }
       }
-      .scrollbar-handle{
+      .scrollbar-handle {
         min-height: 20px;
         width: 8px;
         top: 0px;
-        left:1px;
+        left: 1px;
       }
     }
   }

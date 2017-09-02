@@ -1,39 +1,52 @@
 @import '../../node_modules/rsuite-theme/dist/less/rsuite.less';
 @import "../../node_modules/markdownloader/less/highlight.less";
-
 @base-color: #004889;
-
-.doc-page{
-    margin-top: 70px;
+.doc-page {
+  margin-top: 70px;
 }
 
-.prefix{
-    color:#0ae;
-}
-.green{
-    color: #1b9451;
+.prefix {
+  color: #0ae;
 }
 
-.gray{
-    color: #ddd;
+.green {
+  color: #1b9451;
 }
 
-h2{
-    font-size: 20px;
-    margin-top: 20px;
+.gray {
+  color: #ddd;
 }
-h3{
-    font-size: 16px;
+
+a {
+  cursor: pointer;
 }
-blockquote{
-    font-size: 14px;
+
+h2 {
+  font-size: 20px;
+  margin-top: 20px;
 }
-.sidebar{
+
+h3 {
+  font-size: 16px;
+}
+
+blockquote {
+  font-size: 14px;
+}
+
+.sidebar {
   border-right: 1px solid #f1f1f1;
 }
+
 .target-fix {
-    position: relative;
-    top: -70px; // 偏移值
-    display: block;
-    height: 0;
+  position: relative;
+  top: -70px; // 偏移值
+  display: block;
+  height: 0;
+}
+
+.rsuite-table-cell-content {
+  .input {
+    width: 100%
+  }
 }

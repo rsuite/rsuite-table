@@ -1,24 +1,25 @@
 //treeTable
-.@{prefix}table-treetable{
-    .@{prefix}table-row{
-        position: relative;
-        .expand-icon{
-            width: 10px;
-            cursor: pointer;
-            &:before {
-                content: "\f0da";
-            }
-        }
+&-table-treetable {
+  .rsuite-table-row {
+    position: relative;
+    .expand-icon {
+      width: 10px;
+      cursor: pointer;
+      outline: none;
+      &:before {
+        content: "\f0da";
+      }
     }
-    .children{
-        display: none;
+  }
+  .children {
+    display: none;
+  }
+  .open {
+    > .children {
+      display: block;
     }
-    .open{
-        > .children{
-            display: block;
-        }
-        > .@{prefix}table-row .expand-icon:before {
-            content: "\f0d7";
-        }
+    > .rsuite-table-row .expand-icon:before {
+      content: "\f0d7";
     }
+  }
 }

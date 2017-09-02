@@ -1,39 +1,52 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Cell from './Cell';
-import ClassNameMixin from './mixins/ClassNameMixin';
 import ColumnResizeHandler from './ColumnResizeHandler';
-import ReactComponentWithPureRenderMixin from './mixins/ReactComponentWithPureRenderMixin';
 import isNullOrUndefined from './utils/isNullOrUndefined';
+import decorate from './utils/decorate';
 
-const HeaderCell = React.createClass({
-  mixins: [
-    ClassNameMixin,
-    ReactComponentWithPureRenderMixin
-  ],
-  propTypes: {
-    sortable: PropTypes.bool,
-    resizable: PropTypes.bool,
-    onColumnResizeEnd: PropTypes.func,
-    onColumnResizeStart: PropTypes.func,
-    onColumnResizeMove: PropTypes.func,
-    onSortColumn: PropTypes.func,
-    headerHeight: PropTypes.number
-  },
-  _onColumnResizeStart(event) {
-    const { left, fixed } = this.props;
-    this.setState({ initialEvent: event });
-    this.props.onColumnResizeStart(this.state.columnWidth, left, fixed);
-  },
-  _onColumnResizeEnd(columnWidth, cursorDelta) {
-    this.setState({ columnWidth });
-    this.props.onColumnResizeEnd(columnWidth, cursorDelta, this.props.dataKey, this.props.index);
-  },
-  getInitialState() {
-    const { width, flexGrow } = this.props;
-    return {
-      columnWidth: isNullOrUndefined(flexGrow) ? width : 0
+const propTypes = {
+  ...Cell.propTypes,
+  sortable: PropTypes.bool,
+  resizable: PropTypes.bool,
+  onColumnResizeEnd: PropTypes.func,
+  onColumnResizeStart: PropTypes.func,
+  onColumnResizeMove: PropTypes.func,
+  onSortColumn: PropTypes.func,
+  headerHeight: PropTypes.number
+};
+
+class HeaderCell extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      columnWidth: isNullOrUndefined(props.flexGrow) ? props.width : 0
     };
-  },
+  }
+
+  onColumnResizeStart = (event) => {
+
+    const {
+      left,
+      fixed,
+      onColumnResizeStart
+    } = this.props;
+
+    this.setState({ initialEvent: event });
+    onColumnResizeStart && onColumnResizeStart(this.state.columnWidth, left, fixed);
+  }
+
+  onColumnResizeEnd = (columnWidth, cursorDelta) => {
+    const { dataKey, index, onColumnResizeEnd } = this.props;
+    this.setState({ columnWidth });
+    onColumnResizeEnd && onColumnResizeEnd(columnWidth, cursorDelta, dataKey, index);
+  }
+
+  handleClick = () => {
+    const { sortable, dataKey, sortType, onSortColumn } = this.props;
+    sortable && onSortColumn && onSortColumn(dataKey, sortType === 'asc' ? 'desc' : 'asc');
+  }
+
   renderResizeSpanner() {
 
     const { resizable, left, onColumnResizeMove, fixed, headerHeight } = this.props;
@@ -51,17 +64,27 @@ const HeaderCell = React.createClass({
         height={headerHeight}
         initialEvent={initialEvent}
         onColumnResizeMove={onColumnResizeMove}
-        onColumnResizeStart={this._onColumnResizeStart}
-        onColumnResizeEnd={this._onColumnResizeEnd}
+        onColumnResizeStart={this.onColumnResizeStart}
+        onColumnResizeEnd={this.onColumnResizeEnd}
       />
     );
-  },
+  }
+
   renderSortColumn() {
-    const { left, headerHeight, sortable, sortColumn, sortType, dataKey, width } = this.props;
-    const { columnWidth } = this.state;
+    const {
+      left = 0,
+      headerHeight = 0,
+      width = 0,
+      sortable,
+      sortColumn,
+      sortType,
+      dataKey,
+    } = this.props;
+
+    const { columnWidth = 0 } = this.state;
     const styles = {
-      left: (columnWidth || width) + left - 16,
-      top: headerHeight / 2 - 8
+      left: ((columnWidth || width) + left) - 16,
+      top: (headerHeight / 2) - 10
     };
 
     if (sortable) {
@@ -70,35 +93,34 @@ const HeaderCell = React.createClass({
           style={styles}
           className={this.prefix('sortable')}
         >
-          <i className={sortColumn === dataKey ? `icon icon-sort-${sortType}` : 'icon icon-sort'}></i>
+          <i className={sortColumn === dataKey ? `icon icon-sort-${sortType}` : 'icon icon-sort'} />
         </div>
       );
     }
 
     return null;
-  },
-  handleClick() {
-    const { sortable, dataKey, sortType, onSortColumn } = this.props;
-    sortable && onSortColumn && onSortColumn(dataKey, sortType === 'asc' ? 'desc' : 'asc');
-  },
+  }
+
   render() {
 
     const classes = this.prefix('cell-header');
-    const { sortable } = this.props;
+
     return (
-      <div className={classes} >
+      <div
+        className={classes}
+      >
         <Cell
           {...this.props}
           isHeaderCell={true}
           onClick={this.handleClick}
-        >
-        </Cell>
+        />
         {this.renderSortColumn()}
         {this.renderResizeSpanner()}
       </div>
     );
   }
+}
 
-});
+HeaderCell.propTypes = propTypes;
 
-export default HeaderCell;
+export default decorate()(HeaderCell);
