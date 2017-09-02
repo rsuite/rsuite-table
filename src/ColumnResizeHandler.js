@@ -8,6 +8,8 @@ import decorate from './utils/decorate';
 
 const propTypes = {
   height: PropTypes.number,
+
+  /* eslint-disable */
   initialEvent: PropTypes.object,
   columnWidth: PropTypes.number,
   columnLeft: PropTypes.number,

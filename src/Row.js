@@ -10,7 +10,6 @@ const propTypes = {
   height: PropTypes.number,
   headerHeight: PropTypes.number,
   top: PropTypes.number,
-  style: PropTypes.object,
   isHeaderRow: PropTypes.bool,
   rowRef: PropTypes.func
 };

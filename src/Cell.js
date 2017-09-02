@@ -19,6 +19,8 @@ const propTypes = {
   headerHeight: PropTypes.number,
 
   rowKey: PropTypes.string,
+
+  /* eslint-disable */
   rowData: PropTypes.object,
   rowIndex: PropTypes.number,
   layer: PropTypes.number,  // for tree table

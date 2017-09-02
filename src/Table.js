@@ -57,6 +57,7 @@ function cloneCell(Cell, props) {
 
 const propTypes = {
   width: PropTypes.number,
+  /* eslint-disable */
   data: PropTypes.array,
   height: PropTypes.number,
   rowHeight: PropTypes.number,
@@ -64,6 +65,7 @@ const propTypes = {
   onRowClick: PropTypes.func,
   isTree: PropTypes.bool,
   expand: PropTypes.bool,
+  /* eslint-disable */
   locale: PropTypes.object,
   sortColumn: PropTypes.string,
   sortType: PropTypes.oneOf(['desc', 'asc']),
