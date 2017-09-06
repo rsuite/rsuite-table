@@ -1,9 +1,6 @@
 // 解决 IE 11 兼容性问题
 import 'babel-polyfill';
 
-// 解决 IE 11 兼容性问题
-import 'babel-polyfill';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Header, Navbar, Nav, Row, Col } from 'rsuite';
@@ -138,15 +135,11 @@ const App = React.createClass({
               <h3 >加载中...</h3>
               <LoadingTable />
               <Markdown>{require('./md/LoadingTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/LoadinTable.js" target="_blank" >示例代码</a></p>
+              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/LoadingTable.js" target="_blank" >示例代码</a></p>
 
               <a id="API" className="target-fix" ></a>
               <h3 ># API </h3>
-              <Markdown>
-                {
-                  require('./md/props.md')
-                }
-              </Markdown>
+              <Markdown>{require('./md/props.md')}</Markdown>
 
             </Col>
 
