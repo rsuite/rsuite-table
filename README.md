@@ -24,6 +24,12 @@
 npm i rsuite-table --save
 ```
 
+> `rsuite-table` 中的组件依赖 `rsuite`，所有如果你未安装 `rsuite`，需要安装一下。
+
+```sh
+npm i rsuite --save
+```
+
 示例：
 
 ```js
