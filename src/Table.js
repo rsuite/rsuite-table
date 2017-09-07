@@ -392,7 +392,7 @@ class Table extends React.Component {
     return (delta >= 0 && this.scrollY > this.minScrollY) || (delta < 0 && this.scrollY < 0);
   }
 
-  randerRowData(bodyCells, rowData, props) {
+  renderRowData(bodyCells, rowData, props) {
 
     const { onRowClick, renderTreeToggle } = this.props;
     const hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children);
@@ -442,7 +442,7 @@ class Table extends React.Component {
           <div className="children" >
             {
               rowData.children.map((child, index) => (
-                this.randerRowData(bodyCells, child, {
+                this.renderRowData(bodyCells, child, {
                   ...props,
                   index
                 })
