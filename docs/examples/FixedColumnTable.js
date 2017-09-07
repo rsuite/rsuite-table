@@ -1,14 +1,14 @@
 import React from 'react';
 import { Table, Column, Cell, HeaderCell } from '../../src';
 import fakeData from '../data/users';
-import _ from 'lodash';
 
-const FixedColumnTable = React.createClass({
-  getInitialState() {
-    return {
+class FixedColumnTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       data: fakeData
     };
-  },
+  }
   render() {
 
     return (
@@ -75,6 +75,6 @@ const FixedColumnTable = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default FixedColumnTable;

@@ -2,12 +2,14 @@ import React from 'react';
 import { Table, Column, Cell, HeaderCell } from '../../src';
 import fakeData from '../data/users';
 
-const ResizableColumnTable = React.createClass({
-  getInitialState() {
-    return {
+class FluidColumnTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       data: fakeData
     };
-  },
+  }
+
   render() {
     const { data } = this.state;
     return (
@@ -49,6 +51,7 @@ const ResizableColumnTable = React.createClass({
       </div>
     );
   }
-});
 
-export default ResizableColumnTable;
+}
+
+export default FluidColumnTable;

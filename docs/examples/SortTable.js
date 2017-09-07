@@ -2,26 +2,15 @@ import React from 'react';
 import { Table, Column, Cell, HeaderCell } from '../../src';
 import fakeData from '../data/users';
 
-
-const FixedColumnTable = React.createClass({
-  getInitialState() {
-    return {
+class SortTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       data: fakeData
     };
-  },
-  handleSortColumn(sortColumn, sortType) {
-    this.setState({
-      loading: true
-    });
+    this.handleSortColumn = this.handleSortColumn.bind(this);
+  }
 
-    setTimeout(() => {
-      this.setState({
-        sortColumn,
-        sortType,
-        loading: false
-      });
-    }, 500);
-  },
   getData() {
     const { data, sortColumn, sortType } = this.state;
 
@@ -43,7 +32,22 @@ const FixedColumnTable = React.createClass({
       });
     }
     return data;
-  },
+  }
+
+  handleSortColumn(sortColumn, sortType) {
+    this.setState({
+      loading: true
+    });
+
+    setTimeout(() => {
+      this.setState({
+        sortColumn,
+        sortType,
+        loading: false
+      });
+    }, 500);
+  }
+
   render() {
 
     return (
@@ -101,6 +105,7 @@ const FixedColumnTable = React.createClass({
       </div>
     );
   }
-});
 
-export default FixedColumnTable;
+}
+
+export default SortTable;

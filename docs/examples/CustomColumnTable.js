@@ -58,12 +58,13 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
   );
 };
 
-const CustomColumnTable = React.createClass({
-  getInitialState() {
-    return {
+class CustomColumnTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       data: fakeData
     };
-  },
+  }
   render() {
     const { data } = this.state;
     return (
@@ -109,6 +110,7 @@ const CustomColumnTable = React.createClass({
       </div>
     );
   }
-});
+}
+
 
 export default CustomColumnTable;

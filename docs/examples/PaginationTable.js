@@ -24,25 +24,29 @@ function formatInfo(total, activePage) {
   );
 }
 
-const PaginationTable = React.createClass({
-  getInitialState() {
-    return {
+class PaginationTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       displayLength: 100,
       data: fakeData
     };
-  },
+    this.handleChangePage = this.handleChangePage.bind(this);
+    this.handleChangeLength = this.handleChangeLength.bind(this);
+
+  }
   handleChangePage(dataKey) {
     const { displayLength } = this.state;
     this.setState({
       data: fakeData
     });
-  },
+  }
   handleChangeLength(dataKey) {
     this.setState({
       displayLength: dataKey,
       data: fakeData
     });
-  },
+  }
   render() {
     const { data } = this.state;
     return (
@@ -103,6 +107,6 @@ const PaginationTable = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default PaginationTable;

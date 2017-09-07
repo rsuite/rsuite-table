@@ -12,12 +12,13 @@ export const StatesCell = ({ rowData, dataKey, ...props }) => {
   );
 };
 
-const TreeTable = React.createClass({
-  getInitialState() {
-    return {
+class TreeTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       data: fakeData
     };
-  },
+  }
   render() {
     const { data } = this.state;
     return (
@@ -57,6 +58,6 @@ const TreeTable = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default TreeTable;

@@ -34,12 +34,15 @@ const ActionCell = ({ rowData, dataKey, onClick, ...props }) => {
   );
 };
 
-const EditTable = React.createClass({
-  getInitialState() {
-    return {
+class EditTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       data: fakeData.filter((item, index) => index < 20)
     };
-  },
+    this.handleChange = this.handleChange.bind(this);
+    this.handleEditState = this.handleEditState.bind(this);
+  }
   handleChange(id, key, value) {
     const { data } = this.state;
     const nextData = _.clone(data);
@@ -47,7 +50,7 @@ const EditTable = React.createClass({
     this.setState({
       data: nextData
     });
-  },
+  }
   handleEditState(id) {
     const { data } = this.state;
     const nextData = _.clone(data);
@@ -57,7 +60,7 @@ const EditTable = React.createClass({
     this.setState({
       data: nextData
     });
-  },
+  }
   render() {
     const { data } = this.state;
     return (
@@ -102,6 +105,6 @@ const EditTable = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default EditTable;
