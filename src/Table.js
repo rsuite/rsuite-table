@@ -608,7 +608,7 @@ class Table extends React.Component {
           nextRowHeight = onRerenderRowHeight(rowData) || rowHeight;
         }
 
-        let row = this.randerRowData(bodyCells, rowData, {
+        let row = this.renderRowData(bodyCells, rowData, {
           index,
           top,
           rowWidth,
