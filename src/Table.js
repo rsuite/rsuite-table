@@ -335,6 +335,34 @@ class Table extends React.Component {
 
     onScroll && onScroll(this.scrollX, this.scrollY);
   }
+
+  /**
+   * 处理移动端 Touch 事件
+   * Start 的时候初始化 x,y
+   **/
+  handleTouchStart = (event) => {
+    const { pageX, pageY } = event.touches[0];
+    this.touchX = pageX;
+    this.touchY = pageY;
+  }
+
+  /**
+   * 处理移动端 Touch 事件
+   * Move 的时候初始化，更新 scroll
+   **/
+  handleTouchMove = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    const { pageX: nextPageX, pageY: nextPageY } = event.touches[0];
+    const deltaX = this.touchX - nextPageX;
+    const deltaY = this.touchY - nextPageY;
+    this.handleWheel(deltaX, deltaY);
+    this.scrollbarX.onWheelScroll(deltaX);
+    this.scrollbarY.onWheelScroll(deltaY);
+    this.touchX = nextPageX;
+    this.touchY = nextPageY;
+  }
+
   updatePosition() {
     /**
     * 当存在锁定列情况处理
@@ -632,6 +660,8 @@ class Table extends React.Component {
         }}
         className={this.prefix('body-row-wrapper')}
         style={bodyStyles}
+        onTouchStart={this.handleTouchStart}
+        onTouchMove={this.handleTouchMove}
         onWheel={this.wheelHandler.onWheel}
       >
         <div
