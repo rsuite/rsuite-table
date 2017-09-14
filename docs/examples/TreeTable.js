@@ -1,4 +1,5 @@
 import React from 'react';
+import { Toggle } from 'rsuite';
 import { Table, Column, Cell, HeaderCell } from '../../src';
 import fakeData from '../data/treeData';
 
@@ -23,11 +24,35 @@ class TreeTable extends React.Component {
     const { data } = this.state;
     return (
       <div>
+        <div className="btn-toolbar">
+          <h5>全部节点</h5>
+          <Toggle
+            defaultChecked
+            checkedChildren="展开"
+            unCheckedChildren="收起"
+            onChange={(open) => {
+              this.table.treeToggle(open);
+            }}
+          />
+          <h5>只操作部分节点</h5>
+          <Toggle
+            defaultChecked
+            checkedChildren="展开"
+            unCheckedChildren="收起"
+            onChange={(open) => {
+              this.table.treeToggleBy(open, rowData => rowData.labelName === '2系');
+            }}
+          />
+
+        </div>
         <Table
           height={400}
           data={data}
           isTree
           expand
+          ref={(ref) => {
+            this.table = ref;
+          }}
           onTreeToggle={(isOpen, rowData) => {
             console.log(isOpen, rowData);
           }}
@@ -38,7 +63,6 @@ class TreeTable extends React.Component {
             return icon;
           }}
         >
-
           <Column width={300} >
             <HeaderCell>Label</HeaderCell>
             <Cell dataKey="labelName" />
@@ -55,6 +79,8 @@ class TreeTable extends React.Component {
           </Column>
 
         </Table>
+
+
       </div>
     );
   }
