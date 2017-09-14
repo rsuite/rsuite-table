@@ -5,6 +5,7 @@ import isArray from 'lodash/isArray';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import omit from 'lodash/omit';
+import isUndefined from 'lodash/isUndefined';
 import pick from 'lodash/pick';
 
 import {
@@ -190,7 +191,7 @@ class Table extends React.Component {
 
   onTreeToggle = (rowKey, rowIndex, rowData) => {
     const { onTreeToggle } = this.props;
-    const expandIcon = this.treeChildren[rowKey][rowIndex];
+    const expandIcon = this.treeChildren[rowKey].ref;
     const isOpen = hasClass(expandIcon, 'open');
 
     if (isOpen) {
@@ -202,6 +203,30 @@ class Table extends React.Component {
     this.reportTableContextHeight();
     onTreeToggle && onTreeToggle(!isOpen, rowData);
 
+  }
+
+  /**
+   * public api
+   * @param {*} open
+   */
+  treeToggle(open, iteratee) {
+    const buttons = this.treeChildren;
+    const toggle = { addClass, removeClass };
+    const key = open ? 'addClass' : 'removeClass';
+    Object.values(buttons).forEach(item => {
+      if (isUndefined(iteratee)) {
+        toggle[key](item.ref, 'open');
+      } else {
+        if (iteratee(item.rowData)) {
+          toggle[key](item.ref, 'open');
+        }
+      }
+    });
+    this.reportTableContextHeight();
+  }
+
+  treeToggleBy(open, iteratee) {
+    this.treeToggle(open, iteratee);
   }
 
   getScrollCellGroups() {
@@ -425,7 +450,7 @@ class Table extends React.Component {
     const { onRowClick, renderTreeToggle } = this.props;
     const hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children);
 
-    const rowKey = `_${(Math.random() * 1E18).toString(36).slice(0, 5).toUpperCase()}`;
+    const rowKey = `_${(Math.random() * 1E18).toString(36).slice(0, 5).toUpperCase()}_${props.index}`;
     const row = this.renderRow({
       key: props.index,
       width: props.rowWidth,
@@ -460,10 +485,9 @@ class Table extends React.Component {
           key={props.index}
           data-layer={props.layer}
           ref={(ref) => {
-            if (!this.treeChildren[rowKey]) {
-              this.treeChildren[rowKey] = {};
+            if (ref) {
+              this.treeChildren[rowKey] = { ref, rowData };
             }
-            this.treeChildren[rowKey][props.index] = ref;
           }}
         >
           {row}
