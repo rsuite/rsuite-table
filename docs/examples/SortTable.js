@@ -6,6 +6,7 @@ class SortTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      addColumn: false,
       data: fakeData
     };
     this.handleSortColumn = this.handleSortColumn.bind(this);
@@ -40,6 +41,7 @@ class SortTable extends React.Component {
     });
 
     setTimeout(() => {
+      console.log(sortColumn);
       this.setState({
         sortColumn,
         sortType,
@@ -47,7 +49,18 @@ class SortTable extends React.Component {
       });
     }, 500);
   }
-
+  renderColumns() {
+    return [
+      <Column width={130} sortable key="words">
+        <HeaderCell>Words</HeaderCell>
+        <Cell dataKey="words" />
+      </Column>,
+      <Column width={130} sortable key="zipCode">
+        <HeaderCell>ZipCode</HeaderCell>
+        <Cell dataKey="zipCode" />
+      </Column>
+    ];
+  }
   render() {
 
     return (
@@ -79,6 +92,8 @@ class SortTable extends React.Component {
             <Cell dataKey="lastName" />
           </Column>
 
+          {this.state.addColumn ? this.renderColumns() : null}
+
           <Column width={200} sortable>
             <HeaderCell>City</HeaderCell>
             <Cell dataKey="city" />
@@ -102,6 +117,15 @@ class SortTable extends React.Component {
 
 
         </Table>
+        <button
+          onClick={() => {
+            this.setState({
+              addColumn: true
+            });
+          }}
+        >
+          Add Column
+        </button>
       </div>
     );
   }
