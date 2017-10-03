@@ -20,10 +20,9 @@ import EditTable from './examples/EditTable';
 import '../src/less/index.less';
 import './less/index.less';
 
-const App = React.createClass({
 
+class App extends React.Component {
   render() {
-
     return (
       <div className="doc-page">
 
@@ -151,7 +150,7 @@ const App = React.createClass({
 
     );
   }
-});
+}
 
 ReactDOM.render(<App />,
   document.getElementById('app')
