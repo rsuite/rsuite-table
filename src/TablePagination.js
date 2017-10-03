@@ -5,11 +5,11 @@ import { Pagination, Dropdown } from 'rsuite';
 import decorate from './utils/decorate';
 
 const propTypes = {
-  lengthMenu: PropTypes.arrayOf(React.PropTypes.shape({
+  lengthMenu: PropTypes.arrayOf(PropTypes.shape({
     value: PropTypes.number,
     text: PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number
+      PropTypes.string,
+      PropTypes.number
     ])
   })),
   showLengthMenu: PropTypes.bool,
