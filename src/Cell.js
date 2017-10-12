@@ -59,23 +59,36 @@ class Cell extends React.Component {
       renderTreeToggle
     } = this.props;
 
+    const handleExpandClick = (event) => {
+      onTreeToggle && onTreeToggle(rowKey, rowIndex, rowData, event);
+    };
+
     const expandButton = (
       <i
         role="button"
         tabIndex={-1}
         className="expand-icon icon"
         onClick={(event) => {
-          onTreeToggle && onTreeToggle(rowKey, rowIndex, rowData, event);
+          event.stopPropagation();
+          handleExpandClick(event);
         }}
       />
     );
-
 
     /**
      * 如果用子节点，同时是第一列,则创建一个 icon 用于展开节点
      */
     if (hasChildren && firstColumn) {
-      return renderTreeToggle ? renderTreeToggle(expandButton, rowData) : expandButton;
+      return renderTreeToggle ?
+        (
+          <span
+            className="expand-wrapper"
+            onClick={handleExpandClick}
+          >
+            {renderTreeToggle(expandButton, rowData)}
+          </span>
+        ) :
+        expandButton;
     }
 
     return null;
