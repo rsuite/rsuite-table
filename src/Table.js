@@ -82,6 +82,7 @@ const propTypes = {
   disabledScroll: PropTypes.bool,
   hover: PropTypes.bool,
   loading: PropTypes.bool,
+  bordered: PropTypes.bool,
   onScroll: PropTypes.func
 };
 
@@ -796,6 +797,7 @@ class Table extends React.Component {
       rowHeight,
       isTree,
       hover,
+      bordered,
       ...props
   } = this.props;
 
@@ -803,6 +805,7 @@ class Table extends React.Component {
     const rowWidth = allColumnsWidth > width ? allColumnsWidth : width;
     const clesses = classNames(globalClassName, {
       [this.prefix('treetable')]: isTree,
+      [this.prefix('bordered')]: bordered,
       'column-resizing': this.state.isColumnResizing,
       'table-hover': hover
     }, className);

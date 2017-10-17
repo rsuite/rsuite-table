@@ -88,7 +88,7 @@
   &-cell {
     height: 36px;
     border-style: solid;
-    border-width: 0 1px 0 0;
+    border-width: 0;
     border-color: @border-color;
     display: block;
     overflow: hidden;
@@ -145,5 +145,11 @@
     position: absolute;
     width: 1px;
     z-index: 6;
+  }
+
+  &-bordered{
+    .rsuite-table-cell{
+      border-width: 0 1px 0 0;
+    }
   }
 }
