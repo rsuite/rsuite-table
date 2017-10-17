@@ -13,7 +13,11 @@ class ResizableColumnTable extends React.Component {
     const { data } = this.state;
     return (
       <div>
-        <Table height={400} data={data} >
+        <Table
+          bordered
+          height={400}
+          data={data}
+        >
 
           <Column width={50} align="center" fixed>
             <HeaderCell>Id</HeaderCell>

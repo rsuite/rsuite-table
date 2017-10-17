@@ -22,7 +22,7 @@
 | onScroll            | function(scrollX:object, scrollY:object)  |         | 滚动条滚动时候的回调函数                                |
 | disabledScroll      | boolean                                   |         | 禁用滚动                                        |
 | loading             | boolean                                   |         | 显示 loading 状态                               |
-
+| bordered            | boolean                                   |         | 显示边框线                                     |
 <br>
 > locale 的默认值是:
 ```js
