@@ -1,4 +1,13 @@
-# next 2.0.0
+# 2.0.1 next
+
+- 修复多个 bug
+- 修改 renderTreeToggle
+- 支持 `bordered` 属性
+- 支持 `treeToggle` 和 `treeToggleBy` 属性
+- 支持 touch events
+
+
+# 2.0.0
 - 升级 React 版本 15.* ,同时兼容 0.14.9 版本
 - 删除 Minxin, 改用高阶组件
 - 改进表格许多性能问题
