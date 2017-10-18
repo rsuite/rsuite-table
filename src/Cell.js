@@ -113,8 +113,13 @@ class Cell extends React.Component {
       rowData,
       dataKey,
       cellRenderer,
+      removed,
       ...props
     } = this.props;
+
+    if (removed) {
+      return null;
+    }
 
 
     const classes = classNames(this.prefix('cell'), {
@@ -158,6 +163,7 @@ class Cell extends React.Component {
       'onColumnResizeEnd',
       'onColumnResizeStart',
       'onColumnResizeMove',
+      'colSpan',
       ...Object.keys(propTypes)
     ]);
 

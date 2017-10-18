@@ -9,7 +9,8 @@ const propTypes = {
   resizable: PropTypes.bool,
   sortable: PropTypes.bool,
   flexGrow: PropTypes.number,
-  minWidth: PropTypes.number
+  minWidth: PropTypes.number,
+  colSpan: PropTypes.number,
 };
 
 

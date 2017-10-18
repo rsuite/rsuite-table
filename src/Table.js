@@ -21,6 +21,7 @@ import {
 } from 'dom-lib';
 
 import decorate, { globalClassName } from './utils/decorate';
+import isNullOrUndefined from './utils/isNullOrUndefined';
 import Row from './Row';
 import CellGroup from './CellGroup';
 import Scrollbar from './Scrollbar';
@@ -54,6 +55,40 @@ function getTotalByColumns(columns) {
 
 function cloneCell(Cell, props) {
   return React.cloneElement(Cell, props);
+}
+
+function colSpanCells(cells) {
+  const nextCells = [];
+  for (let i = 0; i < cells.length; i += 1) {
+    let { width, colSpan } = cells[i].props;
+    /**
+     * 如果存在 colSpan 属性，就去找它的下一个 Cell,
+     * 看看值是否是 isNullOrUndefined，，如果为空这可以合并这个单元格
+     */
+    if (colSpan) {
+      let nextWidth = width;
+      for (let j = 0; j < colSpan; j += 1) {
+        let nextCell = cells[i + j];
+        if (nextCell) {
+          let { rowData, dataKey, width: colSpanWidth } = nextCell.props;
+          if (rowData && isNullOrUndefined(rowData[dataKey])) {
+            nextWidth += colSpanWidth;
+            cells[i + j] = cloneCell(nextCell, {
+              removed: true
+            });
+          }
+        }
+      }
+
+      nextCells.push(cloneCell(cells[i], {
+        width: nextWidth
+      }));
+      /* eslint-disable */
+      continue;
+    }
+    nextCells.push(cells[i]);
+  }
+  return nextCells;
 }
 
 const propTypes = {
@@ -565,9 +600,10 @@ class Table extends React.Component {
       let otherCells = cells.filter(cell => !cell.props.fixed);
       let fixedCellGroupWidth = 0;
 
-      fixedCells.forEach((item) => {
-        fixedCellGroupWidth += item.props.width;
-      });
+      for (let i = 0; i < fixedCells.length; i += 1) {
+        fixedCellGroupWidth += fixedCells[i].props.width;
+      }
+
 
       return (
         <Row {...props}>
@@ -576,9 +612,9 @@ class Table extends React.Component {
             height={props.isHeaderRow ? props.headerHeight : props.height}
             width={fixedCellGroupWidth}
           >
-            {fixedCells}
+            {colSpanCells(fixedCells)}
           </CellGroup>
-          <CellGroup>{otherCells}</CellGroup>
+          <CellGroup>{colSpanCells(otherCells)}</CellGroup>
         </Row>
       );
 
@@ -586,7 +622,7 @@ class Table extends React.Component {
 
     return (
       <Row {...props}>
-        <CellGroup>{cells}</CellGroup>
+        <CellGroup>{colSpanCells(cells)}</CellGroup>
       </Row>
     );
 
