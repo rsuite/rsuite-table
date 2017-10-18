@@ -5,7 +5,7 @@
 - 支持 `bordered` 属性
 - 支持 `treeToggle` 和 `treeToggleBy` 属性
 - 支持 touch events
-
+- `<Column>` 支持 `colSpan` 属性, 可以合并列单元格
 
 # 2.0.0
 - 升级 React 版本 15.* ,同时兼容 0.14.9 版本
