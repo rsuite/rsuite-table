@@ -16,6 +16,7 @@ import FluidColumnTable from './examples/FluidColumnTable';
 import SortTable from './examples/SortTable';
 import LoadingTable from './examples/LoadingTable';
 import EditTable from './examples/EditTable';
+import ColspanTable from './examples/ColspanTable';
 
 import '../src/less/index.less';
 import './less/index.less';
@@ -61,6 +62,7 @@ class App extends React.Component {
                   <Nav.Item href="#TreeTable">&nbsp;&nbsp;- 树形表格</Nav.Item>
                   <Nav.Item href="#EditTable">&nbsp;&nbsp;- 可编辑的表格</Nav.Item>
                   <Nav.Item href="#LoadingTable">&nbsp;&nbsp;- 加载中...</Nav.Item>
+                  <Nav.Item href="#ColspanTable">&nbsp;&nbsp;- 合并列单元格</Nav.Item>
 
                   <Nav.Item href="#API"># API</Nav.Item>
                 </Nav>
@@ -135,6 +137,12 @@ class App extends React.Component {
               <LoadingTable />
               <Markdown>{require('./md/LoadingTable.md')}</Markdown>
               <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/LoadingTable.js" target="_blank" >示例代码</a></p>
+
+              <a id="ColspanTable" className="target-fix" ></a>
+              <h3>合并列单元格</h3>
+              <ColspanTable />
+              <Markdown>{require('./md/ColspanTable.md')}</Markdown>
+              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/ColspanTable.js" target="_blank" >示例代码</a></p>
 
               <a id="API" className="target-fix" ></a>
               <h3 ># API </h3>

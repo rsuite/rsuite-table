@@ -49,6 +49,7 @@
 | sortable  | bool   |         | 可排序                                                        |
 | flexGrow  | number |         | 设置列宽自动调节的比例，当设置了 `flexGrow` 就不能设置 `resizable` 与 `width` 属性 |
 | minWidth  | number | 200     | 当使用了 `flexGrow` 以后，可以通过 `minWidth` 设置一个最小宽度                |
+| colSpan   | number |         | 合并列单元格，当被合并列的 `dataKey` 对应的值为 `null` 或者 `undefined`时，才会合并。
 <br>
 > `sortable` 是用来定义该列是否可排序，但是根据什么 `key` 排序需要 在 `Cell` 设置一个 `dataKey`
 > 这里的排序是服务端排序，所以需要在 `<Table>` 的 `onSortColumn` 回调函数中处理逻辑，回调函数会返回 `sortColumn`, `sortType` 这两个值。
