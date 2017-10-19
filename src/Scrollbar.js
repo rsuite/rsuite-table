@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
 import classNames from 'classnames';
-import { DOMMouseMoveTracker, addStyle, translateDOMPositionXY } from 'dom-lib';
+import { DOMMouseMoveTracker, addStyle, getOffset, translateDOMPositionXY } from 'dom-lib';
 import decorate from './utils/decorate';
 import { SCROLLBAR_MIN_WIDTH } from './constants';
 
@@ -19,18 +19,21 @@ class Scrollbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      barOffset: 0,
       handleDown: false
     };
     this.scrollOffset = 0;
   }
 
-  componentWillUnmount() {
+  componentDidMount() {
+    this.updateBar();
+  }
 
+  componentWillUnmount() {
     this.releaseMouseMoves();
   }
 
   onWheelScroll(delta) {
-
     const { length, scrollLength } = this.props;
     const nextDelta = delta / (scrollLength / length);
     this.updateScrollBarPosition(nextDelta);
@@ -42,6 +45,14 @@ class Scrollbar extends React.Component {
       this.hanldeDragEnd,
       document.body
     );
+  }
+
+  updateBar() {
+    setTimeout(() => {
+      this.setState({
+        barOffset: getOffset(this.bar)
+      });
+    }, 1);
   }
 
   hanldeMouseDown = (event) => {
@@ -76,7 +87,7 @@ class Scrollbar extends React.Component {
   updateScrollBarPosition(delta) {
 
     const { vertical, length, scrollLength } = this.props;
-    const max = length - ((length / scrollLength) * length);
+    const max = scrollLength ? length - ((length / scrollLength) * length) : 0;
     const styles = {};
 
     this.scrollOffset += delta;
@@ -108,6 +119,22 @@ class Scrollbar extends React.Component {
     }
     this.handleScroll(vertical ? deltaY : deltaX, event);
   }
+  hanldeClick = (event) => {
+    if (this.handle.contains(event.target)) {
+      return;
+    }
+
+    const { vertical, length, scrollLength } = this.props;
+    const { barOffset } = this.state;
+    const offset = vertical ? event.pageY - barOffset.top : event.pageX - barOffset.left;
+
+    const handleWidth = (length / scrollLength) * length;
+    const delta = offset - handleWidth;
+
+    const nextDelta = offset > this.scrollOffset ? delta - this.scrollOffset :
+      offset - this.scrollOffset;
+    this.handleScroll(nextDelta, event);
+  }
 
   render() {
 
@@ -129,7 +156,11 @@ class Scrollbar extends React.Component {
     return (
       <div
         {...elementProps}
+        ref={(ref) => {
+          this.bar = ref;
+        }}
         className={classes}
+        onClick={this.hanldeClick}
       >
         <div
           ref={(ref) => {
@@ -137,6 +168,7 @@ class Scrollbar extends React.Component {
           }}
           className="scrollbar-handle"
           style={styles}
+
           onMouseDown={this.hanldeMouseDown}
           role="button"
           tabIndex={-1}
