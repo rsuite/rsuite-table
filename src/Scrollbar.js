@@ -161,6 +161,7 @@ class Scrollbar extends React.Component {
         }}
         className={classes}
         onClick={this.hanldeClick}
+        role="toolbar"
       >
         <div
           ref={(ref) => {
