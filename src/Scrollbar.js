@@ -49,7 +49,7 @@ class Scrollbar extends React.Component {
 
   updateBar() {
     setTimeout(() => {
-      this.setState({
+      this.bar && this.setState({
         barOffset: getOffset(this.bar)
       });
     }, 1);
