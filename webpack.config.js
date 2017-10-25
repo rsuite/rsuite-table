@@ -37,6 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 const common = {
   entry: path.resolve(__dirname, 'src/'),
+  devtool: 'source-map',
   devServer: {
     hot: true,
     contentBase: path.resolve(__dirname, ''),
