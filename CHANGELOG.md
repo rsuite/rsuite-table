@@ -7,6 +7,7 @@
 - 支持 touch events
 - `<Column>` 支持 `colSpan` 属性, 可以合并列单元格
 - Scrollbar 支持点击滚动到指定位置
+- 更新 `rsuite-theme`, 解决分页按钮禁用样式问题
 
 
 # 2.0.0
