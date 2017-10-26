@@ -5,6 +5,7 @@ import isArray from 'lodash/isArray';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import omit from 'lodash/omit';
+import merge from 'lodash/merge';
 import isUndefined from 'lodash/isUndefined';
 import pick from 'lodash/pick';
 
@@ -70,8 +71,11 @@ function colSpanCells(cells) {
       for (let j = 0; j < colSpan; j += 1) {
         let nextCell = cells[i + j];
         if (nextCell) {
-          let { rowData, dataKey, width: colSpanWidth } = nextCell.props;
-          if (rowData && isNullOrUndefined(rowData[dataKey])) {
+          let { rowData, dataKey, children, width: colSpanWidth, isHeaderCell } = nextCell.props;
+          if (
+            (rowData && isNullOrUndefined(rowData[dataKey])) ||
+            (isHeaderCell && isNullOrUndefined(children))
+          ) {
             nextWidth += colSpanWidth;
             cells[i + j] = cloneCell(nextCell, {
               removed: true
@@ -335,8 +339,11 @@ class Table extends React.Component {
         };
 
         let headerCellsProps = {
+          ...pick(column.props, Object.keys(Column.propTypes)),
+          width: nextWidth,
           headerHeight: headerHeight || rowHeight,
           dataKey: columnChildren[1].props.dataKey,
+          isHeaderCell: true,
           sortColumn,
           sortType,
           onSortColumn,
@@ -344,9 +351,11 @@ class Table extends React.Component {
         };
 
         if (resizable) {
-          headerCellsProps.onColumnResizeEnd = this.onColumnResizeEnd;
-          headerCellsProps.onColumnResizeStart = this.onColumnResizeStart;
-          headerCellsProps.onColumnResizeMove = this.onColumnResizeMove;
+          merge(headerCellsProps, {
+            onColumnResizeEnd: this.onColumnResizeEnd,
+            onColumnResizeStart: this.onColumnResizeStart,
+            onColumnResizeMove: this.onColumnResizeMove
+          });
         }
 
         headerCells.push(cloneCell(columnChildren[0], {
