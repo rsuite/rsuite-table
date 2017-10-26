@@ -34,7 +34,7 @@ class TreeTable extends React.Component {
               this.table.treeToggle(open);
             }}
           />
-          <h5>只操作部分节点</h5>
+          <h5>只操作部分节点 (2系)</h5>
           <Toggle
             defaultChecked
             checkedChildren="展开"
