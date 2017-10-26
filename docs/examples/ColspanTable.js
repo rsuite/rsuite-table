@@ -27,24 +27,25 @@ class FixedColumnTable extends React.Component {
           </Column>
 
           <Column width={130} fixed colSpan={2} resizable>
-            <HeaderCell>First Name</HeaderCell>
+            <HeaderCell>Name</HeaderCell>
             <Cell dataKey="firstName" />
           </Column>
 
           <Column width={130} fixed resizable>
-            <HeaderCell>Last Name</HeaderCell>
+            <HeaderCell />
             <Cell dataKey="lastName" />
           </Column>
 
-          <Column width={200} resizable>
-            <HeaderCell>City</HeaderCell>
-            <Cell dataKey="city" colSpan={2} />
+          <Column width={200} resizable colSpan={2} >
+            <HeaderCell>Address</HeaderCell>
+            <Cell dataKey="city" />
           </Column>
 
           <Column width={200} resizable>
-            <HeaderCell>Street</HeaderCell>
+            <HeaderCell />
             <Cell dataKey="street" />
           </Column>
+
 
           <Column width={200} >
             <HeaderCell>Company Name</HeaderCell>
