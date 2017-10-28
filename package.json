@@ -82,13 +82,14 @@
     "react": "^15.6.0",
     "react-dom": "^15.6.0",
     "react-hot-loader": "^3.0.0-beta.6",
-    "rsuite": "^2.0.3",
+    "rsuite": "^2.0.8",
     "rsuite-affix": "1.0.3",
     "sinon": "^2.3.8",
     "sinon-chai": "^2.12.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.3.0"
+    "webpack-dev-server": "^2.3.0",
+    "why-did-you-update": "^0.0.9"
   }
 }
