@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import omit from 'lodash/omit';
+import isEqual from 'lodash/isEqual';
+
 import isNullOrUndefined from './utils/isNullOrUndefined';
 import { LAYER_WIDTH } from './constants';
 import decorate from './utils/decorate';
@@ -47,7 +49,9 @@ const defaultProps = {
 };
 
 class Cell extends React.Component {
-
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(this.props, nextProps);
+  }
   renderExpandIcon() {
     const {
       hasChildren,

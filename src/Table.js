@@ -653,13 +653,14 @@ class Table extends React.Component {
     );
   }
 
+  getTableHeaderRef = (ref) => {
+    this.tableHeader = ref;
+  }
 
   renderTableHeader(headerCells, rowWidth) {
     const { rowHeight, headerHeight } = this.props;
     const row = this.renderRow({
-      rowRef: (ref) => {
-        this.tableHeader = ref;
-      },
+      rowRef: this.getTableHeaderRef,
       width: rowWidth,
       height: rowHeight,
       headerHeight,

@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
+
 import Cell from './Cell';
 import ColumnResizeHandler from './ColumnResizeHandler';
 import isNullOrUndefined from './utils/isNullOrUndefined';
@@ -23,6 +25,7 @@ class HeaderCell extends React.Component {
       columnWidth: isNullOrUndefined(props.flexGrow) ? props.width : 0
     };
   }
+
   componentWillReceiveProps(nextProps) {
     if (
       this.props.width !== nextProps.width ||
@@ -32,6 +35,10 @@ class HeaderCell extends React.Component {
         columnWidth: isNullOrUndefined(nextProps.flexGrow) ? nextProps.width : 0
       };
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
 
 

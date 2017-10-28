@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import omit from 'lodash/omit';
+import isEqual from 'lodash/isEqual';
 import { translateDOMPositionXY } from 'dom-lib';
+
 import decorate from './utils/decorate';
 
 const propTypes = {
@@ -21,6 +23,10 @@ const defaultProps = {
 };
 
 class Row extends React.Component {
+
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(this.props, nextProps);
+  }
   render() {
 
     const {

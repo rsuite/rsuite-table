@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
+import isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
 import { DOMMouseMoveTracker, addStyle, getOffset, translateDOMPositionXY } from 'dom-lib';
 import decorate from './utils/decorate';
@@ -27,6 +28,9 @@ class Scrollbar extends React.Component {
 
   componentDidMount() {
     this.updateBar();
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
 
   componentWillUnmount() {
