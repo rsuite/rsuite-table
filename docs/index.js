@@ -21,6 +21,11 @@ import ColspanTable from './examples/ColspanTable';
 import '../src/less/index.less';
 import './less/index.less';
 
+if (process.env.NODE_ENV !== 'production') {
+  const { whyDidYouUpdate } = require('why-did-you-update');
+  whyDidYouUpdate(React);
+}
+
 
 class App extends React.Component {
   render() {
