@@ -1,9 +1,6 @@
-sudo: false
-
-
 language: node_js
 node_js:
-  - stable
+  - 7.2.1
 
 env:
   - BROWSER=ChromeCi
