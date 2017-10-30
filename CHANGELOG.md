@@ -1,4 +1,4 @@
-# 2.0.1 next
+# 2.0.1
 
 - 修复多个 bug
 - 修改 renderTreeToggle
