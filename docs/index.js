@@ -21,8 +21,6 @@ import ColspanTable from './examples/ColspanTable';
 import '../src/less/index.less';
 import './less/index.less';
 
-
-
 class App extends React.Component {
   render() {
     return (
