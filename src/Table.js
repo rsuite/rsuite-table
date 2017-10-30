@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import isArray from 'lodash/isArray';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
 import omit from 'lodash/omit';
 import merge from 'lodash/merge';
 import isUndefined from 'lodash/isUndefined';
@@ -66,6 +67,7 @@ function colSpanCells(cells) {
      * 如果存在 colSpan 属性，就去找它的下一个 Cell,
      * 看看值是否是 isNullOrUndefined，，如果为空这可以合并这个单元格
      */
+
     if (colSpan) {
       let nextWidth = width;
       for (let j = 0; j < colSpan; j += 1) {
@@ -73,7 +75,7 @@ function colSpanCells(cells) {
         if (nextCell) {
           let { rowData, dataKey, children, width: colSpanWidth, isHeaderCell } = nextCell.props;
           if (
-            (rowData && isNullOrUndefined(rowData[dataKey])) ||
+            (rowData && isNullOrUndefined(get(rowData, dataKey))) ||
             (isHeaderCell && isNullOrUndefined(children))
           ) {
             nextWidth += colSpanWidth;

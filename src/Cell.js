@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import omit from 'lodash/omit';
 import isEqual from 'lodash/isEqual';
+import get from 'lodash/get';
 
 import isNullOrUndefined from './utils/isNullOrUndefined';
 import { LAYER_WIDTH } from './constants';
@@ -155,7 +156,7 @@ class Cell extends React.Component {
       contentStyles.paddingRight = 28;
     }
 
-    const contentChildren = isNullOrUndefined(children) && rowData ? rowData[dataKey] : children;
+    const contentChildren = isNullOrUndefined(children) && rowData ? get(rowData, dataKey) : children;
     const elementProps = omit(props, [
       'index',
       'fixed',
