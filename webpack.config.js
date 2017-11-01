@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CompressionPlugin = require("compression-webpack-plugin");
+const CompressionPlugin = require('compression-webpack-plugin');
 const markdownLoader = require('markdownloader').renderer;
 const { NODE_ENV } = process.env;
 
@@ -36,8 +36,8 @@ if (process.env.NODE_ENV === 'production') {
   plugins.push(new webpack.optimize.UglifyJsPlugin());
   plugins.push(new webpack.BannerPlugin({ banner: `Last update: ${new Date().toString()}` }));
   plugins.push(new CompressionPlugin({
-    asset: "[path].gz[query]",
-    algorithm: "gzip",
+    asset: '[path].gz[query]',
+    algorithm: 'gzip',
     test: /\.(js|html)$/,
     threshold: 10240,
     minRatio: 0.8
