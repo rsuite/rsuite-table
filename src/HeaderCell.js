@@ -91,7 +91,6 @@ class HeaderCell extends React.Component {
   renderSortColumn() {
     const {
       left = 0,
-      headerHeight = 0,
       width = 0,
       sortable,
       sortColumn,
@@ -100,9 +99,10 @@ class HeaderCell extends React.Component {
     } = this.props;
 
     const { columnWidth = 0 } = this.state;
+
     const styles = {
       left: ((columnWidth || width) + left) - 16,
-      top: (headerHeight / 2) - 10
+      // top: (headerHeight / 2) - 10
     };
 
     if (sortable) {
