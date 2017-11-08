@@ -160,6 +160,97 @@ describe('Table', () => {
     assert.equal(instanceDom.querySelectorAll('.rsuite-table-cell-group.fixed').length, 1);
   });
 
+  it('Should call `onTouchMove` callback', (done) => {
 
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Table
+        isTree
+        onTouchMove={() => {
+          done();
+        }}
+        data={[{
+          id: 1,
+          name: 'a'
+        }]}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      </Table>
+    );
+    ReactTestUtils.Simulate.touchMove(instance.tableBody);
+  });
+
+  it('Should call `onTouchStart` callback', (done) => {
+
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Table
+        isTree
+        onTouchStart={() => {
+          done();
+        }}
+        data={[{
+          id: 1,
+          name: 'a'
+        }]}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      </Table>
+    );
+    ReactTestUtils.Simulate.touchStart(instance.tableBody);
+  });
+
+
+  it('Should call `onTreeToggle` callback', () => {
+
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Table
+        isTree
+        data={[{
+          id: 1,
+          name: 'a',
+          children: [{
+            id: 2,
+            name: 'b',
+            children: [{
+              id: 3,
+              name: 'c',
+              children: [{
+                id: 4,
+                name: 'd',
+                children: [{
+                  id: 1,
+                  name: 'e',
+                }]
+              }]
+            }]
+          }]
+        }]}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      </Table>
+    );
+    const instanceDom = findDOMNode(instance);
+
+    instance.treeToggleBy(true, (item) => {
+      return item.name === 'd';
+    });
+
+    assert.ok(instanceDom.querySelector('.open'));
+
+    instance.treeToggleBy(false, (item) => {
+      return item.name === 'd';
+    });
+
+    assert.ok(!instanceDom.querySelector('.open'));
+
+  });
 
 });

@@ -124,7 +124,10 @@ const propTypes = {
   hover: PropTypes.bool,
   loading: PropTypes.bool,
   bordered: PropTypes.bool,
-  onScroll: PropTypes.func
+  onScroll: PropTypes.func,
+
+  onTouchStart: PropTypes.func, //for test
+  onTouchMove: PropTypes.func, //for test
 };
 
 const defaultProps = {
@@ -413,9 +416,11 @@ class Table extends React.Component {
    * Start 的时候初始化 x,y
    **/
   handleTouchStart = (event) => {
-    const { pageX, pageY } = event.touches[0];
+    const { onTouchStart } = this.props;
+    const { pageX, pageY } = event.touches ? event.touches[0] : {};
     this.touchX = pageX;
     this.touchY = pageY;
+    onTouchStart && onTouchStart(event)
   }
 
   /**
@@ -425,7 +430,9 @@ class Table extends React.Component {
   handleTouchMove = (event) => {
     event.stopPropagation();
     event.preventDefault();
-    const { pageX: nextPageX, pageY: nextPageY } = event.touches[0];
+
+    const { onTouchMove } = this.props;
+    const { pageX: nextPageX, pageY: nextPageY } = event.touches ? event.touches[0] : {};
     const deltaX = this.touchX - nextPageX;
     const deltaY = this.touchY - nextPageY;
     this.handleWheel(deltaX, deltaY);
@@ -433,6 +440,8 @@ class Table extends React.Component {
     this.scrollbarY.onWheelScroll(deltaY);
     this.touchX = nextPageX;
     this.touchY = nextPageY;
+
+    onTouchMove && onTouchMove(event)
   }
 
   updatePosition() {
