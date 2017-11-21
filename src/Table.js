@@ -318,6 +318,10 @@ class Table extends React.Component {
         const columnChildren = column.props.children;
         const { width, resizable, flexGrow, minWidth } = column.props;
 
+        if (resizable && flexGrow) {
+          console.warn(`Cannot set 'resizable' and 'flexGrow' together in <Column>, column index: ${index}`);
+        }
+
         if (columnChildren.length !== 2) {
           throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
         }
