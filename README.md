@@ -91,7 +91,7 @@ ReactDOM.render(
 [build-badge]: https://travis-ci.org/rsuite/rsuite-table.svg
 [build]: https://travis-ci.org/rsuite/rsuite-table
 
-[coverage-badge]: https://coveralls.io/repos/github/rsuite/rsuite-table/badge.svg?branch=next
+[coverage-badge]: https://coveralls.io/repos/github/rsuite/rsuite-table/badge.svg
 [coverage]: https://coveralls.io/github/rsuite/rsuite-table
 
 
