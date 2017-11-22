@@ -31,18 +31,16 @@ const propTypes = {
 const defaultProps = {
   showLengthMenu: true,
   showInfo: true,
-  lengthMenu: [
-    {
-      value: 30,
-      text: 30,
-    }, {
-      value: 50,
-      text: 50,
-    }, {
-      value: 100,
-      text: 100,
-    }
-  ],
+  lengthMenu: [{
+    value: 30,
+    text: 30,
+  }, {
+    value: 50,
+    text: 50,
+  }, {
+    value: 100,
+    text: 100,
+  }],
   displayLength: 30,
   prev: true,
   next: true,

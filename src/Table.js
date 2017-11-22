@@ -197,9 +197,6 @@ class Table extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.onWheelListener) {
-      this.onWheelListener.off();
-    }
     if (this.onWindowResizeListener) {
       this.onWindowResizeListener.off();
     }
@@ -860,7 +857,7 @@ class Table extends React.Component {
       hover,
       bordered,
       ...props
-  } = this.props;
+    } = this.props;
 
     const { headerCells, bodyCells, allColumnsWidth } = this.getCells();
     const rowWidth = allColumnsWidth > width ? allColumnsWidth : width;
