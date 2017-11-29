@@ -131,8 +131,6 @@ describe('ColumnResizeHandler', () => {
       columnWidth: 20
     });
 
-    console.log(wrapper.html());
-
     assert.ok(wrapper.html().match(/left: 18px;/));
 
     wrapper.simulate('mouseDown');
