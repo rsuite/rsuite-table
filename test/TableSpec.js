@@ -71,6 +71,24 @@ describe('Table', () => {
     assert.ok(instanceDom.querySelectorAll('.rsuite-table-loading').length);
   });
 
+  it('Should be wordWrap', () => {
+    const instance = ReactTestUtils.renderIntoDocument(
+      <Table wordWrap>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+
+    const instanceDom = findDOMNode(instance);
+    assert.ok(instanceDom.className.match(/\brsuite-table-word-wrap\b/));
+  });
+
   it('Should call `onRerenderRowHeight` callback', (done) => {
     const doneOp = () => {
       done();
