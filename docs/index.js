@@ -3,23 +3,22 @@ import 'babel-polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Header, Navbar, Nav, Row, Col } from 'rsuite';
+import { Header, Navbar, Nav, Row, Col, Popover, Whisper, Toggle } from 'rsuite';
 import Affix from 'rsuite-affix';
-import { Markdown } from 'markdownloader';
+import { Markdown } from 'react-markdown-reader';
+import CodeView from 'react-code-view';
+import _ from 'lodash';
 
-import FixedColumnTable from './examples/FixedColumnTable';
-import PaginationTable from './examples/PaginationTable';
-import ResizableColumnTable from './examples/ResizableColumnTable';
-import CustomColumnTable from './examples/CustomColumnTable';
-import TreeTable from './examples/TreeTable';
-import FluidColumnTable from './examples/FluidColumnTable';
-import SortTable from './examples/SortTable';
-import LoadingTable from './examples/LoadingTable';
-import EditTable from './examples/EditTable';
-import ColspanTable from './examples/ColspanTable';
 
+import 'react-code-view/lib/less/index.less';
 import '../src/less/index.less';
 import './less/index.less';
+
+
+import { Table, Column, Cell, HeaderCell, TablePagination } from '../src';
+import fakeData from './data/users';
+import fakeTreeData from './data/treeData';
+import fakeDataForColSpan from './data/usersForColSpan';
 
 class App extends React.Component {
   render() {
@@ -30,14 +29,14 @@ class App extends React.Component {
           <div className="container">
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="#"><span className="prefix">R</span>Suite  Table</a>
+                <a href="#">RSUITE Table</a>
               </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
 
               <Nav pullRight>
-                <Nav.Item href="https://rsuite.github.io">RSuite</Nav.Item>
+                <Nav.Item href="https://rsuite.github.io">RSUITE</Nav.Item>
                 <Nav.Item href="https://github.com/rsuite/rsuite-table">GitHub</Nav.Item>
               </Nav>
             </Navbar.Collapse>
@@ -55,6 +54,7 @@ class App extends React.Component {
                   <Nav.Item href="#FixedColumnTable">&nbsp;&nbsp;- 锁定列</Nav.Item>
                   <Nav.Item href="#ResizableColumnTable">&nbsp;&nbsp;- 自定义调整列宽</Nav.Item>
                   <Nav.Item href="#FluidColumnTable">&nbsp;&nbsp;- 自动列宽</Nav.Item>
+                  <Nav.Item href="#WordWrapTable">&nbsp;&nbsp;- 自动换行</Nav.Item>
                   <Nav.Item href="#CustomColumnTable">&nbsp;&nbsp;- 自定义单元格</Nav.Item>
                   <Nav.Item href="#SortTable">&nbsp;&nbsp;- 排序</Nav.Item>
                   <Nav.Item href="#PaginationTable">&nbsp;&nbsp;- 分页</Nav.Item>
@@ -74,74 +74,145 @@ class App extends React.Component {
 
               <h2 id="examples" ># 示例</h2>
               <a id="FixedColumnTable" className="target-fix" ></a>
-              <h3 >锁定列: 固定表头,固定前两列 </h3>
-              <FixedColumnTable />
-              <Markdown>{require('./md/FixedColumnTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/FixedColumnTable.js" target="_blank" >示例代码</a></p>
-              <hr />
+
+              <CodeView
+                source={require('./md/FixedColumnTable.md')}
+                dependencies={{
+                  fakeData,
+                  Table,
+                  Column,
+                  Cell,
+                  HeaderCell
+                }}
+              />
 
 
               <a id="ResizableColumnTable" className="target-fix" ></a>
-              <h3 >自定义调整列宽 </h3>
-              <ResizableColumnTable />
-              <Markdown>{require('./md/ResizableColumnTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/ResizableColumnTable.js" target="_blank" >示例代码</a></p>
-              <hr />
-
+              <CodeView
+                source={require('./md/ResizableColumnTable.md')}
+                dependencies={{
+                  fakeData,
+                  Table,
+                  Column,
+                  Cell,
+                  HeaderCell
+                }}
+              />
 
               <a id="FluidColumnTable" className="target-fix" ></a>
-              <h3 >自动列宽 </h3>
-              <FluidColumnTable />
-              <Markdown>{require('./md/FluidColumnTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/FluidColumnTable.js" target="_blank" >示例代码</a></p>
+              <CodeView
+                source={require('./md/FluidColumnTable.md')}
+                dependencies={{
+                  fakeData,
+                  Table,
+                  Column,
+                  Cell,
+                  HeaderCell
+                }}
+              />
 
-              <hr />
+              <a id="WordWrapTable" className="target-fix" ></a>
+              <CodeView
+                source={require('./md/WordWrapTable.md')}
+                dependencies={{
+                  fakeData,
+                  Table,
+                  Column,
+                  Cell,
+                  HeaderCell
+                }}
+              />
 
               <a id="CustomColumnTable" className="target-fix" ></a>
-              <h3 >自定义单元格 </h3>
-              <CustomColumnTable />
-              <Markdown>{require('./md/CustomColumnTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/CustomColumnTable.js" target="_blank" >示例代码</a></p>
-              <hr />
+              <CodeView
+                source={require('./md/CustomColumnTable.md')}
+                dependencies={{
+                  fakeData,
+                  Table,
+                  Column,
+                  Cell,
+                  HeaderCell,
+                  Popover,
+                  Whisper
+                }}
+              />
 
               <a id="SortTable" className="target-fix" ></a>
-              <h3 >排序 </h3>
-              <SortTable />
-              <Markdown>{require('./md/SortTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/SortTable.js" target="_blank" >示例代码</a></p>
-              <hr />
+              <CodeView
+                source={require('./md/SortTable.md')}
+                dependencies={{
+                  fakeData,
+                  Table,
+                  Column,
+                  Cell,
+                  HeaderCell
+                }}
+              />
 
               <a id="PaginationTable" className="target-fix" ></a>
-              <h3 >分页 </h3>
-              <PaginationTable />
-              <Markdown>{require('./md/PaginationTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/PaginationTable.js" target="_blank" >示例代码</a></p>
-              <hr />
+              <CodeView
+                source={require('./md/PaginationTable.md')}
+                dependencies={{
+                  fakeData,
+                  Table,
+                  Column,
+                  Cell,
+                  HeaderCell,
+                  TablePagination
+                }}
+              />
+
 
               <a id="TreeTable" className="target-fix" ></a>
-              <h3 >树形表格</h3>
-              <TreeTable />
-              <Markdown>{require('./md/TreeTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/TreeTable.js" target="_blank" >示例代码</a></p>
+              <CodeView
+                source={require('./md/TreeTable.md')}
+                dependencies={{
+                  fakeData: fakeTreeData,
+                  Table,
+                  Column,
+                  Cell,
+                  Toggle,
+                  HeaderCell
+                }}
+              />
 
               <a id="EditTable" className="target-fix" ></a>
-              <h3 >可编辑的表格</h3>
-              <EditTable />
-              <Markdown>{require('./md/EditTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/EditTable.js" target="_blank" >示例代码</a></p>
-
+              <CodeView
+                source={require('./md/EditTable.md')}
+                dependencies={{
+                  fakeData,
+                  Table,
+                  Column,
+                  Cell,
+                  HeaderCell,
+                  _
+                }}
+              />
 
               <a id="LoadingTable" className="target-fix" ></a>
-              <h3 >加载中...</h3>
-              <LoadingTable />
-              <Markdown>{require('./md/LoadingTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/LoadingTable.js" target="_blank" >示例代码</a></p>
+              <CodeView
+                source={require('./md/LoadingTable.md')}
+                dependencies={{
+                  fakeData,
+                  Table,
+                  Column,
+                  Cell,
+                  HeaderCell
+                }}
+              />
 
               <a id="ColspanTable" className="target-fix" ></a>
-              <h3>合并列单元格</h3>
-              <ColspanTable />
-              <Markdown>{require('./md/ColspanTable.md')}</Markdown>
-              <p><a href="https://github.com/rsuite/rsuite-table/tree/master/docs/examples/ColspanTable.js" target="_blank" >示例代码</a></p>
+
+              <CodeView
+                source={require('./md/ColspanTable.md')}
+                dependencies={{
+                  fakeData: fakeDataForColSpan,
+                  Table,
+                  Column,
+                  Cell,
+                  HeaderCell
+                }}
+              />
 
               <a id="API" className="target-fix" ></a>
               <h3 ># API </h3>

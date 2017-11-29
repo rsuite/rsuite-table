@@ -1,4 +1,77 @@
-<br>
+import React from 'react';
+import { Table, Column, Cell, HeaderCell } from '../../src';
+
+### 合并列单元格
+
+<!--start-code-->
+```js
+
+class FixedColumnTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: fakeData
+    };
+  }
+  render() {
+
+    return (
+      <div>
+        <Table
+          bordered
+          height={400}
+          data={this.state.data}
+          onRowClick={(data) => {
+            console.log(data);
+          }}
+        >
+          <Column width={70} align="center" fixed>
+            <HeaderCell>Id</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+
+          <Column width={130} fixed colSpan={2} resizable>
+            <HeaderCell>Name</HeaderCell>
+            <Cell dataKey="firstName" />
+          </Column>
+
+          <Column width={130} fixed resizable>
+            <HeaderCell />
+            <Cell dataKey="lastName" />
+          </Column>
+
+          <Column width={200} resizable colSpan={2} >
+            <HeaderCell>Address</HeaderCell>
+            <Cell dataKey="city" />
+          </Column>
+
+          <Column width={200} resizable>
+            <HeaderCell />
+            <Cell dataKey="street" />
+          </Column>
+
+
+          <Column width={200} >
+            <HeaderCell>Company Name</HeaderCell>
+            <Cell dataKey="companyName" />
+          </Column>
+
+          <Column width={200} >
+            <HeaderCell>Email</HeaderCell>
+            <Cell dataKey="email" />
+          </Column>
+
+        </Table>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<FixedColumnTable />);
+
+```
+<!--end-code-->
+
 
 > 在某些情况下，需要合并列来组织数据之间的关系，可以在 `<Column>` 组件上设置一个 `colSpan` 属性，例如：
 

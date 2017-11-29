@@ -80,18 +80,16 @@ ReactDOM.render(
 ```
 
 
-[npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg
+
+[npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/rsuite-table
 
 
-[npm-beta-badge]: https://img.shields.io/npm/v/rsuite-table/beta.svg
+[npm-beta-badge]: https://img.shields.io/npm/v/rsuite-table/beta.svg?style=flat-square
 [npm-beta]: https://www.npmjs.com/package/rsuite-table
 
-
-[build-badge]: https://travis-ci.org/rsuite/rsuite-table.svg
+[build-badge]: https://img.shields.io/travis/rsuite/rsuite-table.svg?style=flat-square
 [build]: https://travis-ci.org/rsuite/rsuite-table
 
-[coverage-badge]: https://coveralls.io/repos/github/rsuite/rsuite-table/badge.svg
+[coverage-badge]: https://img.shields.io/coveralls/rsuite/rsuite-table.svg?style=flat-square
 [coverage]: https://coveralls.io/github/rsuite/rsuite-table
-
-

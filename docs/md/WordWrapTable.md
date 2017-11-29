@@ -1,8 +1,9 @@
-import React from 'react';
-import { Table, Column, Cell, HeaderCell } from '../../src';
-import fakeData from '../data/users';
+### 自动换行
 
-class LoadingTable extends React.Component {
+<!--start-code-->
+```js
+
+class WordWrapTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,9 +15,12 @@ class LoadingTable extends React.Component {
     return (
       <div>
         <Table
-          loading
+          wordWrap
           height={400}
           data={this.state.data}
+          onRowClick={(data) => {
+            console.log(data);
+          }}
         >
           <Column width={70} align="center" fixed>
             <HeaderCell>Id</HeaderCell>
@@ -73,7 +77,9 @@ class LoadingTable extends React.Component {
       </div>
     );
   }
-
 }
+ReactDOM.render(<WordWrapTable />);
+```
+<!--end-code-->
 
-export default LoadingTable;
+> 如果想让单元格自动换行，只需要设置 `wordWrap`
