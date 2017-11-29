@@ -190,22 +190,7 @@ class Table extends React.Component {
     this.onWindowResizeListener = on(window, 'resize', debounce(this.reportTableWidth, 400));
     this.reportTableWidth();
     this.reportTableContextHeight();
-    if (wordWrap) {
-
-      const tableRowsMaxHeight = [];
-      this.tableRows.forEach((row, index) => {
-        let cells = row.querySelectorAll('.rsuite-table-cell-wrap') || [];
-        let maxHeight = 0;
-        cells.forEach(cell => {
-          let h = getHeight(cell);
-          maxHeight = Math.max(maxHeight, h);
-        });
-        tableRowsMaxHeight.push(maxHeight);
-      });
-
-      this.setState({ tableRowsMaxHeight });
-
-    }
+    this.calculateRowMaxHeight();
 
   }
   shouldComponentUpdate(nextProps, nextState) {
@@ -214,6 +199,7 @@ class Table extends React.Component {
   componentDidUpdate() {
     this.reportTableContextHeight();
     this.reportTableContentWidth();
+    this.calculateRowMaxHeight();
     this.updatePosition();
   }
 
@@ -588,6 +574,24 @@ class Table extends React.Component {
     }
 
     return row;
+  }
+
+  calculateRowMaxHeight() {
+    const { wordWrap } = this.props
+    if (wordWrap) {
+      const tableRowsMaxHeight = [];
+      this.tableRows.forEach((row, index) => {
+        let cells = row.querySelectorAll('.rsuite-table-cell-wrap') || [];
+        let maxHeight = 0;
+        cells.forEach(cell => {
+          let h = getHeight(cell);
+          maxHeight = Math.max(maxHeight, h);
+        });
+        tableRowsMaxHeight.push(maxHeight);
+      });
+      this.setState({ tableRowsMaxHeight });
+    }
+
   }
 
   reportTableWidth = () => {
