@@ -36,7 +36,8 @@ const propTypes = {
   onTreeToggle: PropTypes.func,
   renderTreeToggle: PropTypes.func,
   cellRenderer: PropTypes.func,
-  sortable: PropTypes.bool
+  sortable: PropTypes.bool,
+  wordWrap: PropTypes.bool
 };
 
 
@@ -119,6 +120,7 @@ class Cell extends React.Component {
       dataKey,
       cellRenderer,
       removed,
+      wordWrap,
       ...props
     } = this.props;
 
@@ -181,13 +183,27 @@ class Cell extends React.Component {
         <div className={this.prefix('cell-wrap1')}>
           <div className={this.prefix('cell-wrap2')}>
             <div className={this.prefix('cell-wrap3')}>
-              <div
-                className={this.prefix('cell-content')}
-                style={contentStyles}
-              >
-                {this.renderExpandIcon()}
-                {cellRenderer ? cellRenderer(contentChildren) : contentChildren}
-              </div>
+
+              {wordWrap ? (
+                <div
+                  className={this.prefix('cell-content')}
+                  style={contentStyles}
+                >
+                  <div className={this.prefix('cell-wrap')}>
+                    {this.renderExpandIcon()}
+                    {cellRenderer ? cellRenderer(contentChildren) : contentChildren}
+                  </div>
+                </div>
+              ) : (
+                  <div
+                    className={this.prefix('cell-content')}
+                    style={contentStyles}
+                  >
+                    {this.renderExpandIcon()}
+                    {cellRenderer ? cellRenderer(contentChildren) : contentChildren}
+                  </div>
+                )
+              }
             </div>
           </div>
         </div>

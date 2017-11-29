@@ -31,9 +31,9 @@ class HeaderCell extends React.Component {
       this.props.width !== nextProps.width ||
       this.props.flexGrow !== nextProps.flexGrow
     ) {
-      this.state = {
+      this.setState({
         columnWidth: isNullOrUndefined(nextProps.flexGrow) ? nextProps.width : 0
-      };
+      });
     }
   }
 

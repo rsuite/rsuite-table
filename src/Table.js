@@ -124,6 +124,7 @@ const propTypes = {
   hover: PropTypes.bool,
   loading: PropTypes.bool,
   bordered: PropTypes.bool,
+  wordWrap: PropTypes.bool,
   onScroll: PropTypes.func,
 
   onTouchStart: PropTypes.func, //for test
@@ -155,9 +156,11 @@ class Table extends React.Component {
       dataKey: 0,
       shouldFixedColumn: false,
       contentHeight: 0,
-      contentWidth: 0
+      contentWidth: 0,
+      tableRowsMaxHeight: []
     };
     this.treeChildren = {};
+    this.tableRows = [];
     this.mounted = false;
   }
 
@@ -183,9 +186,27 @@ class Table extends React.Component {
   }
 
   componentDidMount() {
+    const { wordWrap } = this.props;
     this.onWindowResizeListener = on(window, 'resize', debounce(this.reportTableWidth, 400));
     this.reportTableWidth();
     this.reportTableContextHeight();
+    if (wordWrap) {
+
+      const tableRowsMaxHeight = [];
+      this.tableRows.forEach((row, index) => {
+        let cells = row.querySelectorAll('.rsuite-table-cell-wrap') || [];
+        let maxHeight = 0;
+        cells.forEach(cell => {
+          let h = getHeight(cell);
+          maxHeight = Math.max(maxHeight, h);
+        });
+        tableRowsMaxHeight.push(maxHeight);
+      });
+
+      this.setState({ tableRowsMaxHeight });
+
+    }
+
   }
   shouldComponentUpdate(nextProps, nextState) {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
@@ -504,11 +525,14 @@ class Table extends React.Component {
 
   renderRowData(bodyCells, rowData, props) {
 
-    const { onRowClick, renderTreeToggle } = this.props;
+    const { onRowClick, renderTreeToggle, wordWrap } = this.props;
     const hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children);
-
     const rowKey = `_${(Math.random() * 1E18).toString(36).slice(0, 5).toUpperCase()}_${props.index}`;
+
     const row = this.renderRow({
+      rowRef: (ref) => {
+        this.tableRows[props.index] = ref;
+      },
       key: props.index,
       width: props.rowWidth,
       height: props.rowHeight,
@@ -524,7 +548,8 @@ class Table extends React.Component {
       renderTreeToggle,
       onTreeToggle: this.onTreeToggle,
       rowKey,
-      rowData
+      rowData,
+      wordWrap
     })));
 
 
@@ -702,6 +727,10 @@ class Table extends React.Component {
       onRerenderRowHeight
     } = this.props;
 
+    const { tableRowsMaxHeight } = this.state;
+
+
+
     const bodyStyles = {
       top: isTree ? 0 : headerHeight || rowHeight,
       height: height - (headerHeight || rowHeight)
@@ -711,7 +740,9 @@ class Table extends React.Component {
     let rows = null;
     if (data && data.length > 0) {
       rows = data.map((rowData, index) => {
-        let nextRowHeight = rowHeight;
+        let maxHeight = tableRowsMaxHeight[index];
+        let nextRowHeight = maxHeight ? maxHeight + 18 : rowHeight;
+
         /**
          * 自定义行高
          */
@@ -856,12 +887,14 @@ class Table extends React.Component {
       isTree,
       hover,
       bordered,
+      wordWrap,
       ...props
     } = this.props;
 
     const { headerCells, bodyCells, allColumnsWidth } = this.getCells();
     const rowWidth = allColumnsWidth > width ? allColumnsWidth : width;
     const clesses = classNames(globalClassName, {
+      [this.prefix('word-wrap')]: wordWrap,
       [this.prefix('treetable')]: isTree,
       [this.prefix('bordered')]: bordered,
       'column-resizing': this.state.isColumnResizing,
