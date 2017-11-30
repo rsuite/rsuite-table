@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf lib && babel src --out-dir lib && cp -R src/less lib",
     "dev": "NODE_ENV=development webpack-dev-server  --inline --progress --colors --port 3100 --host 0.0.0.0 ",
-    "docs": "rm -rf assets &&  NODE_ENV=production webpack && cp  -rf ./resources  ./assets ",
+    "docs": "rm -rf assets &&  NODE_ENV=production webpack",
     "publish-docs": "node docs/gh-pages.js",
     "tdd": "karma start",
     "lint": "eslint src  *.js",
