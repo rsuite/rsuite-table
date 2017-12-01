@@ -88,7 +88,7 @@
     "react-markdown-reader": "^1.0.1",
     "react-test-renderer": "^16.0.0",
     "rsuite": "^2.0.8",
-    "rsuite-docs": "^0.1.4",
+    "rsuite-docs": "^0.1.6",
     "sinon": "^4.0.2",
     "sinon-chai": "^2.12.0",
     "style-loader": "^0.13.1",
