@@ -1,6 +1,3 @@
-import React from 'react';
-import { Table, Column, Cell, HeaderCell } from '../../src';
-
 ### 合并列单元格
 
 <!--start-code-->

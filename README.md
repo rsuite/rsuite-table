@@ -16,7 +16,7 @@
 
 [![Travis][build-badge]][build] [![Coverage Status][coverage-badge]][coverage]
 
-## # 快速开始
+## 快速开始
 
 安装：
 
