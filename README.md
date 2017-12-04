@@ -18,7 +18,7 @@
 
 ## 快速开始
 
-安装：
+### 安装
 
 ```sh
 npm i rsuite-table --save
@@ -30,13 +30,19 @@ npm i rsuite-table --save
 npm i rsuite --save
 ```
 
-示例：
+### 样式
+
+在 `less` 文件中引入:
+
+```css
+@import '~rsuite-table/lib/less/index.less';
+```
+
+
+### 示例代码
 
 ```js
-import react from 'react';
-import ReactDOM from 'react-dom';
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import 'rsuite-table/lib/less/index.less';
 
 const dataList = [
     {id:1, name:'a', email:'a@email.com',avartar:'...'},
@@ -50,33 +56,28 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
     </Cell>
 );
 
-ReactDOM.render(
 
-    <Table data = {dataList}  >
-        <Column  width = {100} sort fixed resizable>
-            <HeaderCell>ID</HeaderCell>
-            <Cell dataKey="id"></Cell>
-        </Column>
+<Table data = {dataList}  >
+    <Column  width = {100} sort fixed resizable>
+        <HeaderCell>ID</HeaderCell>
+        <Cell dataKey="id"></Cell>
+    </Column>
 
-        <Column  width = {100} sort resizable>
-            <HeaderCell>Name</HeaderCell>
-            <Cell dataKey="name"></Cell>
-        </Column>
+    <Column  width = {100} sort resizable>
+        <HeaderCell>Name</HeaderCell>
+        <Cell dataKey="name"></Cell>
+    </Column>
 
-        <Column  width = {100} sort resizable>
-            <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="email"></Cell>
-        </Column>
+    <Column  width = {100} sort resizable>
+        <HeaderCell>Email</HeaderCell>
+        <Cell dataKey="email"></Cell>
+    </Column>
 
-        <Column  width = {100} resizable>
-            <HeaderCell>Avartar</HeaderCell>
-            <ImageCell dataKey="avartar"></ImageCell>
-        </Column>
-
-    </Table> ,
-
-    document.getElementById('mount')
-);
+    <Column  width = {100} resizable>
+        <HeaderCell>Avartar</HeaderCell>
+        <ImageCell dataKey="avartar"></ImageCell>
+    </Column>
+</Table>
 ```
 
 

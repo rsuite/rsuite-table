@@ -25,14 +25,11 @@ class App extends React.Component {
         githubURL="https://github.com/rsuite/rsuite-table"
         activeKey="Table"
       >
-        <a id="README" className="target-fix" ></a>
+
         <Markdown>{require('../README.md')}</Markdown>
 
         <h2 id="examples" >示例</h2>
-        <a id="FixedColumnTable" className="target-fix" ></a>
-
         <CodeView
-          source={require('./md/FixedColumnTable.md')}
           dependencies={{
             fakeData,
             Table,
@@ -40,12 +37,11 @@ class App extends React.Component {
             Cell,
             HeaderCell
           }}
-        />
+        >
+          {require('./md/FixedColumnTable.md')}
+        </CodeView>
 
-
-        <a id="ResizableColumnTable" className="target-fix" ></a>
         <CodeView
-          source={require('./md/ResizableColumnTable.md')}
           dependencies={{
             fakeData,
             Table,
@@ -53,11 +49,11 @@ class App extends React.Component {
             Cell,
             HeaderCell
           }}
-        />
+        >
+          {require('./md/ResizableColumnTable.md')}
+        </CodeView>
 
-        <a id="FluidColumnTable" className="target-fix" ></a>
         <CodeView
-          source={require('./md/FluidColumnTable.md')}
           dependencies={{
             fakeData,
             Table,
@@ -65,11 +61,11 @@ class App extends React.Component {
             Cell,
             HeaderCell
           }}
-        />
+        >
+          {require('./md/FluidColumnTable.md')}
+        </CodeView>
 
-        <a id="WordWrapTable" className="target-fix" ></a>
         <CodeView
-          source={require('./md/WordWrapTable.md')}
           dependencies={{
             fakeData,
             Table,
@@ -77,11 +73,11 @@ class App extends React.Component {
             Cell,
             HeaderCell
           }}
-        />
+        >
+          {require('./md/WordWrapTable.md')}
+        </CodeView>
 
-        <a id="CustomColumnTable" className="target-fix" ></a>
         <CodeView
-          source={require('./md/CustomColumnTable.md')}
           dependencies={{
             fakeData,
             Table,
@@ -91,11 +87,11 @@ class App extends React.Component {
             Popover,
             Whisper
           }}
-        />
+        >
+          {require('./md/CustomColumnTable.md')}
+        </CodeView>
 
-        <a id="SortTable" className="target-fix" ></a>
         <CodeView
-          source={require('./md/SortTable.md')}
           dependencies={{
             fakeData,
             Table,
@@ -103,11 +99,11 @@ class App extends React.Component {
             Cell,
             HeaderCell
           }}
-        />
+        >
+          {require('./md/SortTable.md')}
+        </CodeView>
 
-        <a id="PaginationTable" className="target-fix" ></a>
         <CodeView
-          source={require('./md/PaginationTable.md')}
           dependencies={{
             fakeData,
             Table,
@@ -116,12 +112,12 @@ class App extends React.Component {
             HeaderCell,
             TablePagination
           }}
-        />
+        >
+          {require('./md/PaginationTable.md')}
+        </CodeView>
 
 
-        <a id="TreeTable" className="target-fix" ></a>
         <CodeView
-          source={require('./md/TreeTable.md')}
           dependencies={{
             fakeData: fakeTreeData,
             Table,
@@ -130,11 +126,11 @@ class App extends React.Component {
             Toggle,
             HeaderCell
           }}
-        />
+        >
+          {require('./md/TreeTable.md')}
+        </CodeView>
 
-        <a id="EditTable" className="target-fix" ></a>
         <CodeView
-          source={require('./md/EditTable.md')}
           dependencies={{
             fakeData,
             Table,
@@ -143,11 +139,11 @@ class App extends React.Component {
             HeaderCell,
             _
           }}
-        />
+        >
+          {require('./md/EditTable.md')}
+        </CodeView>
 
-        <a id="LoadingTable" className="target-fix" ></a>
         <CodeView
-          source={require('./md/LoadingTable.md')}
           dependencies={{
             fakeData,
             Table,
@@ -155,12 +151,11 @@ class App extends React.Component {
             Cell,
             HeaderCell
           }}
-        />
-
-        <a id="ColspanTable" className="target-fix" ></a>
+        >
+          {require('./md/LoadingTable.md')}
+        </CodeView>
 
         <CodeView
-          source={require('./md/ColspanTable.md')}
           dependencies={{
             fakeData: fakeDataForColSpan,
             Table,
@@ -168,11 +163,13 @@ class App extends React.Component {
             Cell,
             HeaderCell
           }}
-        />
+        >
+          {require('./md/ColspanTable.md')}
+        </CodeView>
 
-        <a id="API" className="target-fix" ></a>
-        <h2>API</h2>
-        <Markdown>{require('./md/props.md')}</Markdown>
+        <Markdown>
+          {require('./md/props.md')}
+        </Markdown>
       </PageContainer>
     );
   }
