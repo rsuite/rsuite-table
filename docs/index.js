@@ -103,19 +103,6 @@ class App extends React.Component {
           {require('./md/SortTable.md')}
         </CodeView>
 
-        <CodeView
-          dependencies={{
-            fakeData,
-            Table,
-            Column,
-            Cell,
-            HeaderCell,
-            TablePagination
-          }}
-        >
-          {require('./md/PaginationTable.md')}
-        </CodeView>
-
 
         <CodeView
           dependencies={{

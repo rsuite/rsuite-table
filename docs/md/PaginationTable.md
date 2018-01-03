@@ -111,7 +111,6 @@ class PaginationTable extends React.Component {
   }
 }
 
-
 ReactDOM.render(<PaginationTable />);
 
 ```

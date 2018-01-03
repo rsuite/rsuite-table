@@ -64,7 +64,7 @@ class TreeTable extends React.Component {
             return icon;
           }}
         >
-          <Column width={300} >
+          <Column flexGrow={1}>
             <HeaderCell>Label</HeaderCell>
             <Cell dataKey="labelName" />
           </Column>
