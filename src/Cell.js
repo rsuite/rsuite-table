@@ -164,6 +164,7 @@ class Cell extends React.Component {
       'fixed',
       'resizable',
       'flexGrow',
+      'minWidth',
       'sortColumn',
       'sortType',
       'onSortColumn',
