@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
 import isEqual from 'lodash/isEqual';
+import isUndefined from 'lodash/isUndefined';
 import classNames from 'classnames';
 import { DOMMouseMoveTracker, addStyle, getOffset, translateDOMPositionXY } from 'dom-lib';
 import decorate from './utils/decorate';
@@ -83,27 +84,30 @@ class Scrollbar extends React.Component {
     onScroll && onScroll(scrollDelta, event);
   }
 
-  resetScrollBarPosition() {
+  resetScrollBarPosition(forceDelta = 0) {
     this.scrollOffset = 0;
-    this.updateScrollBarPosition(0);
+    this.updateScrollBarPosition(0, forceDelta);
   }
 
-  updateScrollBarPosition(delta) {
+  updateScrollBarPosition(delta, forceDelta) {
 
     const { vertical, length, scrollLength } = this.props;
     const max = scrollLength ? length - ((length / scrollLength) * length) : 0;
     const styles = {};
 
-    this.scrollOffset += delta;
-    this.scrollOffset = Math.max(this.scrollOffset, 0);
-    this.scrollOffset = Math.min(this.scrollOffset, max);
+    if (isUndefined(forceDelta)) {
+      this.scrollOffset += delta;
+      this.scrollOffset = Math.max(this.scrollOffset, 0);
+      this.scrollOffset = Math.min(this.scrollOffset, max);
+    } else {
+      this.scrollOffset = forceDelta;
+    }
 
     if (vertical) {
       translateDOMPositionXY(styles, 0, this.scrollOffset);
     } else {
       translateDOMPositionXY(styles, this.scrollOffset, 0);
     }
-
     addStyle(this.handle, styles);
   }
 
