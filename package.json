@@ -1,6 +1,10 @@
 {
   "name": "rsuite-table",
+<<<<<<< HEAD
   "version": "3.0.0-next.3",
+=======
+  "version": "2.1.4",
+>>>>>>> master
   "description": "RSuite Table",
   "main": "lib/index.js",
   "scripts": {
@@ -27,6 +31,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "dom-lib": "^0.2.4",
+    "element-resize-event": "^2.0.9",
     "lodash": "^4.13.1",
     "prop-types": "^15.5.10"
   },

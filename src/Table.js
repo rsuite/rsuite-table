@@ -9,9 +9,9 @@ import omit from 'lodash/omit';
 import merge from 'lodash/merge';
 import isUndefined from 'lodash/isUndefined';
 import pick from 'lodash/pick';
+import onResize from 'element-resize-event';
 
 import {
-  on,
   addStyle,
   addClass,
   removeClass,
@@ -187,10 +187,10 @@ class Table extends React.Component {
 
   componentDidMount() {
     const { wordWrap } = this.props;
-    this.onWindowResizeListener = on(window, 'resize', debounce(this.reportTableWidth, 400));
     this.reportTableWidth();
     this.reportTableContextHeight();
     this.calculateRowMaxHeight();
+    onResize(this.table, debounce(this.reportTableWidth, 400))
 
   }
   shouldComponentUpdate(nextProps, nextState) {
@@ -204,9 +204,6 @@ class Table extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.onWindowResizeListener) {
-      this.onWindowResizeListener.off();
-    }
     this.isMounted = false;
   }
   onColumnResizeEnd = (columnWidth, cursorDelta, dataKey, index) => {
@@ -597,6 +594,8 @@ class Table extends React.Component {
   reportTableWidth = () => {
     const table = this.table;
     if (table) {
+      this.scrollX = 0;
+      this.scrollbarX && this.scrollbarX.resetScrollBarPosition();
       this.setState({
         width: getWidth(table)
       });
@@ -605,15 +604,14 @@ class Table extends React.Component {
   }
 
   reportTableContentWidth() {
-    const table = this.table;
 
+    const table = this.table;
     const row = table.querySelectorAll(`.${this.prefix('row-header')}`)[0];
     const contentWidth = getWidth(row);
 
     this.setState({ contentWidth });
     // 这里 -10 是为了让滚动条不挡住内容部分
     this.minScrollX = -(contentWidth - this.state.width) - 10;
-
     if (this.state.contentWidth !== contentWidth) {
       this.scrollX = 0;
       this.scrollbarX && this.scrollbarX.resetScrollBarPosition();
