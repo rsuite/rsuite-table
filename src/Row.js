@@ -1,34 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+
+import * as React from 'react';
 import classNames from 'classnames';
-import omit from 'lodash/omit';
-import isEqual from 'lodash/isEqual';
+import _ from 'lodash';
 import { translateDOMPositionXY } from 'dom-lib';
 
-import decorate from './utils/decorate';
+import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 
-const propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
-  headerHeight: PropTypes.number,
-  top: PropTypes.number,
-  isHeaderRow: PropTypes.bool,
-  rowRef: PropTypes.func
+type Props = {
+  width?: number,
+  height?: number,
+  headerHeight?: number,
+  top?: number,
+  isHeaderRow?: boolean,
+  rowRef: React.ElementRef<*>,
+  className?: string,
+  classPrefix?: string,
+  style?: Object
 };
 
-const defaultProps = {
-  height: 36,
-  headerHeight: 36,
-  isHeaderRow: false
-};
-
-class Row extends React.Component {
-
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(this.props, nextProps);
+class Row extends React.Component<Props> {
+  static defaultProps = {
+    classPrefix: defaultClassPrefix('table-row'),
+    height: 36,
+    headerHeight: 36,
+    isHeaderRow: false
+  };
+  shouldComponentUpdate(nextProps: Props) {
+    return !_.isEqual(this.props, nextProps);
   }
   render() {
-
     const {
       className,
       width,
@@ -38,12 +39,14 @@ class Row extends React.Component {
       isHeaderRow,
       headerHeight,
       rowRef,
-      ...props
+      classPrefix,
+      ...rest
     } = this.props;
 
-    const classes = classNames(this.prefix('row'), {
-      [this.prefix('row-header')]: isHeaderRow
-    }, className);
+    const addPrefix = prefix(classPrefix);
+    const classes = classNames(classPrefix, className, {
+      [addPrefix('header')]: isHeaderRow
+    });
 
     const styles = {
       minWidth: width,
@@ -51,20 +54,11 @@ class Row extends React.Component {
       ...style
     };
     translateDOMPositionXY(styles, 0, top);
-    const elementProps = omit(props, Object.keys(propTypes));
 
-    return (
-      <div
-        {...elementProps}
-        ref={rowRef}
-        className={classes}
-        style={styles}
-      />
-    );
+    const unhandled = getUnhandledProps(Row, rest);
+
+    return <div {...unhandled} ref={rowRef} className={classes} style={styles} />;
   }
 }
 
-Row.propTypes = propTypes;
-Row.defaultProps = defaultProps;
-
-export default decorate()(Row);
+export default Row;

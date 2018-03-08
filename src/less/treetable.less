@@ -1,25 +1,27 @@
 //treeTable
-&-table-treetable {
-  .rsuite-table-row {
-    position: relative;
-    .expand-icon {
-      width: 10px;
-      cursor: pointer;
-      outline: none;
-      &:before {
-        content: "\f0da";
-      }
-    }
-  }
-  .children {
-    display: none;
-  }
-  .open {
-    > .children {
-      display: block;
-    }
-    > .rsuite-table-row .expand-icon:before {
-      content: "\f0d7";
-    }
+
+&-table-treetable &-table-row {
+  position: relative;
+}
+
+&-table-treetable &-table-row-children {
+  display: none;
+}
+
+&-table-row-open > &-table-row-children {
+  display: block;
+}
+
+&-table-row-open > &-table-row &-table-cell-expand-icon:before {
+  content: '-';
+}
+
+&-table-cell-expand-icon {
+  width: 10px;
+  cursor: pointer;
+  outline: none;
+  &:before {
+    font-family: -webkit-pictograph;
+    content: '+';
   }
 }

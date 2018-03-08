@@ -1,14 +1,17 @@
 {
   "presets": [
-    "stage-0",
+    "env",
     "react",
-    "es2015"
+    "stage-0"
   ],
   "plugins": [
+    "flow-react-proptypes",
+    "transform-react-flow-handled-props",
+    "lodash",
     "transform-class-properties"
   ],
   "env": {
-    "test": {
+    "coverage": {
       "plugins": [
         "istanbul"
       ]

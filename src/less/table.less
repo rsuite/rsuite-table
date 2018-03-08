@@ -6,16 +6,7 @@
     cursor: ew-resize;
     .user-select();
   }
-  &-sortable {
-    top: 8px;
-    position: absolute;
-    .icon-sort {
-      color: #aaa;
-    }
-    .icon-sort-asc, .icon-sort-desc {
-      color: #0ae;
-    }
-  }
+
   &-row {
     overflow: hidden;
     position: absolute;
@@ -33,18 +24,27 @@
       background: @head-background;
     }
   }
-  &.table-hover {
-    .rsuite-table-row-header {
-      background: @head-background;
-      .rsuite-table-cell {
-        background: @head-background;
-      }
-      &.shadow {
-        .box-shadow(0, 2px, 3px, rgba(0, 0, 0, 0.28));
-        z-index: 5;
-      }
-    }
+
+  &-row-header {
+    background: @head-background;
   }
+  &-row-header &-cell {
+    background: @head-background;
+  }
+
+  &-row-header &-cell-group-shadow {
+    .box-shadow(0, 2px, 3px, rgba(0, 0, 0, 0.28));
+    z-index: 5;
+  }
+
+  &-hover &-row:hover &-cell-group {
+    background: @head-background;
+  }
+
+  &-hover &-row:hover &-cell {
+    background: @head-background;
+  }
+
   &-header-row-wrapper {
     z-index: 2;
     position: relative;
@@ -96,9 +96,6 @@
     position: absolute;
     white-space: normal;
     background: @body-background;
-    &.sortable {
-      cursor: pointer;
-    }
     &.first {
       border-left-width: 0;
     }
@@ -116,6 +113,31 @@
       padding: 8px;
       .ellipsis();
     }
+
+    &-header {
+      &-sort-wrapper {
+        cursor: pointer;
+        top: 8px;
+        position: absolute;
+      }
+
+      &-icon-sort {
+        width: 10px;
+        height: 10px;
+      }
+      &-icon-sort::after {
+        content: '↑↓';
+        font-family: -webkit-pictograph;
+      }
+      &-icon-sort-asc::after {
+        content: '↑';
+        color: @H500;
+      }
+      &-icon-sort-desc::after {
+        content: '↓';
+        color: @H500;
+      }
+    }
   }
   &-column-resize-spanner {
     height: 36px;
@@ -129,12 +151,12 @@
     }
   }
   &-cell-group {
-    &.fixed {
+    &-fixed {
       position: absolute;
       z-index: 4;
       background: @body-background;
     }
-    &.shadow {
+    &-shadow {
       .box-shadow(3px, 0px, 5px, rgba(9, 9, 9, 0.08));
     }
   }

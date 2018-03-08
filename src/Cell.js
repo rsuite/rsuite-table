@@ -1,71 +1,80 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+
+import * as React from 'react';
 import classNames from 'classnames';
-import omit from 'lodash/omit';
-import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
 
-import isNullOrUndefined from './utils/isNullOrUndefined';
+import _ from 'lodash';
 import { LAYER_WIDTH } from './constants';
-import decorate from './utils/decorate';
 
+import { isNullOrUndefined, defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 
-const propTypes = {
-  align: PropTypes.oneOf(['left', 'center', 'right']),
-  className: PropTypes.string,
-  dataKey: PropTypes.string,
-  isHeaderCell: PropTypes.bool,
+type Props = {
+  align?: 'left' | 'center' | 'right',
+  className?: string,
+  classPrefix?: string,
+  dataKey?: string,
+  isHeaderCell?: boolean,
 
-  width: PropTypes.number,
-  height: PropTypes.number,
-  left: PropTypes.number,
-  headerHeight: PropTypes.number,
+  width: number,
+  height?: number,
+  left?: number,
+  headerHeight?: number,
 
-  rowKey: PropTypes.string,
+  style?: Object,
+  firstColumn?: boolean,
+  lastColumn?: boolean,
+  hasChildren?: boolean,
+  children?: React.Node,
 
-  /* eslint-disable */
-  rowData: PropTypes.object,
-  rowIndex: PropTypes.number,
-  layer: PropTypes.number,  // for tree table
+  rowKey?: string,
+  rowIndex?: number,
+  rowData?: Object,
+  layer: number,
 
-  style: PropTypes.object,
-  firstColumn: PropTypes.bool,
-  lastColumn: PropTypes.bool,
-  hasChildren: PropTypes.bool,
+  onTreeToggle?: (
+    rowKey?: string,
+    rowIndex?: number,
+    rowData?: Object,
+    event?: SyntheticEvent<*>
+  ) => void,
 
-  onTreeToggle: PropTypes.func,
-  renderTreeToggle: PropTypes.func,
-  cellRenderer: PropTypes.func,
-  sortable: PropTypes.bool,
-  wordWrap: PropTypes.bool
+  renderTreeToggle?: (expandButton: React.Node, rowData?: Object) => React.Node,
+  renderCell?: (contentChildren: React.Node) => React.Node,
+
+  sortable?: boolean,
+  wordWrap?: boolean,
+  removed?: boolean
 };
 
+class Cell extends React.Component<Props> {
+  static defaultProps = {
+    classPrefix: defaultClassPrefix('table-cell'),
+    align: 'left',
+    headerHeight: 36,
+    height: 36,
+    width: 0,
+    layer: 0,
+    left: 0
+  };
 
-const defaultProps = {
-  align: 'left',
-  headerHeight: 36,
-  height: 36,
-  width: 0,
-  layer: 0,
-  left: 0
-};
-
-class Cell extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(this.props, nextProps);
+  shouldComponentUpdate(nextProps: Props) {
+    return !_.isEqual(this.props, nextProps);
   }
+
+  addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
+
   renderExpandIcon() {
     const {
       hasChildren,
       firstColumn,
-      onTreeToggle,
       rowKey,
       rowIndex,
       rowData,
-      renderTreeToggle
+      renderTreeToggle,
+      onTreeToggle
     } = this.props;
 
-    const handleExpandClick = (event) => {
+    const handleExpandClick = event => {
       onTreeToggle && onTreeToggle(rowKey, rowIndex, rowData, event);
     };
 
@@ -73,8 +82,8 @@ class Cell extends React.Component {
       <i
         role="button"
         tabIndex={-1}
-        className="expand-icon icon"
-        onClick={(event) => {
+        className={this.addPrefix('expand-icon')}
+        onClick={event => {
           event.stopPropagation();
           handleExpandClick(event);
         }}
@@ -85,24 +94,25 @@ class Cell extends React.Component {
      * 如果用子节点，同时是第一列,则创建一个 icon 用于展开节点
      */
     if (hasChildren && firstColumn) {
-      return renderTreeToggle ?
-        (
-          <span
-            className="expand-wrapper"
-            onClick={handleExpandClick}
-          >
-            {renderTreeToggle(expandButton, rowData)}
-          </span>
-        ) :
-        expandButton;
+      return renderTreeToggle ? (
+        <span
+          role="button"
+          tabIndex={-1}
+          className={this.addPrefix('expand-wrapper')}
+          onClick={handleExpandClick}
+        >
+          {renderTreeToggle(expandButton, rowData)}
+        </span>
+      ) : (
+        expandButton
+      );
     }
 
     return null;
   }
 
   render() {
-
-    let {
+    const {
       width,
       left,
       height,
@@ -118,37 +128,36 @@ class Cell extends React.Component {
       children,
       rowData,
       dataKey,
-      cellRenderer,
+      renderCell,
       removed,
       wordWrap,
-      ...props
+      classPrefix,
+      ...rest
     } = this.props;
 
     if (removed) {
       return null;
     }
 
-
-    const classes = classNames(this.prefix('cell'), {
+    const classes = classNames(classPrefix, className, {
       sortable: sortable && isHeaderCell,
       first: firstColumn,
       last: lastColumn
-    }, className);
+    });
 
     const layerWidth = layer * LAYER_WIDTH;
-    const nextWidth = (!isHeaderCell && firstColumn) ? width - layerWidth : width;
+    const nextWidth = !isHeaderCell && firstColumn ? width - layerWidth : width;
     const nextHeight = isHeaderCell ? headerHeight : height;
 
     const styles = {
       width: nextWidth,
       height: nextHeight,
       zIndex: layer,
-      left: (!isHeaderCell && firstColumn) ? left + layerWidth : left,
+      left: !isHeaderCell && firstColumn ? left + layerWidth : left,
       ...style
     };
 
-
-    const contentStyles = {
+    const contentStyles: Object = {
       width: nextWidth,
       height: nextHeight,
       textAlign: align
@@ -158,8 +167,10 @@ class Cell extends React.Component {
       contentStyles.paddingRight = 28;
     }
 
-    const contentChildren = isNullOrUndefined(children) && rowData ? get(rowData, dataKey) : children;
-    const elementProps = omit(props, [
+    const contentChildren =
+      isNullOrUndefined(children) && rowData ? _.get(rowData, dataKey) : children;
+
+    const unhandled = getUnhandledProps(Cell, rest, [
       'index',
       'fixed',
       'resizable',
@@ -171,50 +182,27 @@ class Cell extends React.Component {
       'onColumnResizeEnd',
       'onColumnResizeStart',
       'onColumnResizeMove',
-      'colSpan',
-      ...Object.keys(propTypes)
+      'colSpan'
     ]);
 
     return (
-      <div
-        {...elementProps}
-        className={classes}
-        style={styles}
-      >
-        <div className={this.prefix('cell-wrap1')}>
-          <div className={this.prefix('cell-wrap2')}>
-            <div className={this.prefix('cell-wrap3')}>
-
-              {wordWrap ? (
-                <div
-                  className={this.prefix('cell-content')}
-                  style={contentStyles}
-                >
-                  <div className={this.prefix('cell-wrap')}>
-                    {this.renderExpandIcon()}
-                    {cellRenderer ? cellRenderer(contentChildren) : contentChildren}
-                  </div>
-                </div>
-              ) : (
-                  <div
-                    className={this.prefix('cell-content')}
-                    style={contentStyles}
-                  >
-                    {this.renderExpandIcon()}
-                    {cellRenderer ? cellRenderer(contentChildren) : contentChildren}
-                  </div>
-                )
-              }
+      <div {...unhandled} className={classes} style={styles}>
+        {wordWrap ? (
+          <div className={this.addPrefix('content')} style={contentStyles}>
+            <div className={this.addPrefix('wrap')}>
+              {this.renderExpandIcon()}
+              {renderCell ? renderCell(contentChildren) : contentChildren}
             </div>
           </div>
-        </div>
+        ) : (
+          <div className={this.addPrefix('content')} style={contentStyles}>
+            {this.renderExpandIcon()}
+            {renderCell ? renderCell(contentChildren) : contentChildren}
+          </div>
+        )}
       </div>
     );
   }
 }
 
-Cell.propTypes = propTypes;
-Cell.defaultProps = defaultProps;
-
-
-export default decorate()(Cell);
+export default Cell;
