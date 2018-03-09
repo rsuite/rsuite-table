@@ -807,13 +807,14 @@ class Table extends React.Component<Props, State> {
       ...rest
     } = this.props;
 
+    const { isColumnResizing } = this.state;
     const { headerCells, bodyCells, allColumnsWidth } = this.getCells();
     const rowWidth = allColumnsWidth > width ? allColumnsWidth : width;
     const clesses = classNames(classPrefix, className, {
       [this.addPrefix('word-wrap')]: wordWrap,
       [this.addPrefix('treetable')]: isTree,
       [this.addPrefix('bordered')]: bordered,
-      'column-resizing': this.state.isColumnResizing,
+      [this.addPrefix('column-resizing')]: isColumnResizing,
       [this.addPrefix('hover')]: hover
     });
 

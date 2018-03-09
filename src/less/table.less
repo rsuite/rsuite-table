@@ -2,7 +2,7 @@
   border: 1px solid @border-color;
   position: relative;
   overflow: hidden;
-  &.column-resizing {
+  &-column-resizing {
     cursor: ew-resize;
     .user-select();
   }
@@ -15,14 +15,13 @@
     top: 0;
     border-bottom: 1px solid @border-color;
   }
-  &-row:hover {
+
+  &-row:hover &-cell-group {
     background: @head-background;
-    .rsuite-table-cell-group {
-      background: @head-background;
-    }
-    .rsuite-table-cell {
-      background: @head-background;
-    }
+  }
+
+  &-row:hover &-cell {
+    background: @head-background;
   }
 
   &-row-header {
@@ -169,15 +168,13 @@
     width: 1px;
     z-index: 6;
   }
-  &-bordered {
-    .rsuite-table-cell {
-      border-width: 0 1px 0 0;
-    }
+
+  &-bordered &-cell {
+    border-width: 0 1px 0 0;
   }
-  &-word-wrap {
-    .rsuite-table-cell-content {
-      white-space: unset;
-      word-break: break-all;
-    }
+
+  &-word-wrap &-cell-content {
+    white-space: unset;
+    word-break: break-all;
   }
 }
