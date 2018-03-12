@@ -41,7 +41,6 @@ type Props = {
   renderTreeToggle?: (expandButton: React.Node, rowData?: Object) => React.Node,
   renderCell?: (contentChildren: React.Node) => React.Node,
 
-  sortable?: boolean,
   wordWrap?: boolean,
   removed?: boolean
 };
@@ -56,10 +55,6 @@ class Cell extends React.Component<Props> {
     layer: 0,
     left: 0
   };
-
-  shouldComponentUpdate(nextProps: Props) {
-    return !_.isEqual(this.props, nextProps);
-  }
 
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 
@@ -124,7 +119,6 @@ class Cell extends React.Component<Props> {
       headerHeight,
       layer,
       align,
-      sortable,
       children,
       rowData,
       dataKey,
@@ -140,7 +134,6 @@ class Cell extends React.Component<Props> {
     }
 
     const classes = classNames(classPrefix, className, {
-      sortable: sortable && isHeaderCell,
       first: firstColumn,
       last: lastColumn
     });
@@ -162,10 +155,6 @@ class Cell extends React.Component<Props> {
       height: nextHeight,
       textAlign: align
     };
-
-    if (sortable) {
-      contentStyles.paddingRight = 28;
-    }
 
     const contentChildren =
       isNullOrUndefined(children) && rowData ? _.get(rowData, dataKey) : children;

@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
-import _ from 'lodash';
 import { translateDOMPositionXY } from 'dom-lib';
+import _ from 'lodash';
 
 import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 
@@ -22,13 +22,15 @@ type Props = {
 class Row extends React.Component<Props> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-row'),
-    height: 36,
-    headerHeight: 36,
+    height: 46,
+    headerHeight: 40,
     isHeaderRow: false
   };
+  /*
   shouldComponentUpdate(nextProps: Props) {
     return !_.isEqual(this.props, nextProps);
   }
+  */
   render() {
     const {
       className,

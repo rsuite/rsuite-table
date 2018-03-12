@@ -21,9 +21,11 @@ class CellGroup extends React.Component<Props> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-cell-group')
   };
+  /*
   shouldComponentUpdate(nextProps: Props) {
     return !_.isEqual(this.props, nextProps);
   }
+  */
 
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 

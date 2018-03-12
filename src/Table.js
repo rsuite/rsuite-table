@@ -37,7 +37,7 @@ type Props = {
   data?: Array<Object>,
   height: number,
   rowHeight: number,
-  headerHeight?: number,
+  headerHeight: number,
   onRowClick?: Function,
   isTree?: boolean,
   expand?: boolean,
@@ -65,7 +65,8 @@ type Props = {
   onScroll?: Function,
 
   onTouchStart?: Function, // for tests
-  onTouchMove?: Function // for tests
+  onTouchMove?: Function, // for tests
+  getMethods?: (publicMethods: Object) => void
 };
 
 type State = {
@@ -83,7 +84,8 @@ class Table extends React.Component<Props, State> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table'),
     height: 200,
-    rowHeight: 36,
+    rowHeight: 46,
+    headerHeight: 40,
     sortType: 'asc',
     hover: true,
     locale: {
@@ -93,8 +95,9 @@ class Table extends React.Component<Props, State> {
   };
   constructor(props: Props) {
     super(props);
+    const { width } = props;
     this.state = {
-      width: props.width || 0,
+      width: width || 0,
       columnWidth: 0,
       dataKey: 0,
       shouldFixedColumn: false,
@@ -103,6 +106,7 @@ class Table extends React.Component<Props, State> {
       tableRowsMaxHeight: []
     };
   }
+
   componentWillMount() {
     const { children = [] } = this.props;
     const shouldFixedColumn = Array.from(children).some(child => _.get(child, 'props.fixed'));
@@ -120,17 +124,29 @@ class Table extends React.Component<Props, State> {
     );
     this.setState({ shouldFixedColumn });
   }
-
   componentDidMount() {
     this.calculateTableWidth();
     this.calculateTableContextHeight();
     this.calculateRowMaxHeight();
     onResize(this.table, _.debounce(this.calculateTableWidth, 400));
+
+    const { getMethods } = this.props;
+    const publicMethods = {
+      treeToggle: this.treeToggle.bind(this),
+      treeToggleBy: this.treeToggleBy.bind(this)
+    };
+    getMethods && getMethods(publicMethods);
   }
+
   shouldComponentUpdate(nextProps: Props, nextState: State) {
+    // contentHeight
+    // contentWidth
+    // tableRowsMaxHeight
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
-  componentDidUpdate() {
+
+  componentDidUpdate(prevProps: Props) {
+
     this.calculateTableContextHeight();
     this.calculateTableContentWidth();
     this.calculateRowMaxHeight();
@@ -198,7 +214,6 @@ class Table extends React.Component<Props, State> {
           'width',
           'fixed',
           'resizable',
-          'sortable',
           'flexGrow',
           'minWidth',
           'colSpan'
@@ -209,19 +224,17 @@ class Table extends React.Component<Props, State> {
           left,
           index,
           headerHeight,
+          key: index,
           width: nextWidth,
           height: rowHeight,
           firstColumn: index === 0,
-          lastColumn: index === columns.length - 1,
-          key: index
+          lastColumn: index === columns.length - 1
         };
 
         let headerCellsProps = {
-          ..._.pick(column.props, columnHandledProps),
-          width: nextWidth,
-          headerHeight: headerHeight || rowHeight,
           dataKey: columnChildren[1].props.dataKey,
           isHeaderCell: true,
+          sortable: column.props.sortable,
           sortColumn,
           sortType,
           onSortColumn,
@@ -460,7 +473,7 @@ class Table extends React.Component<Props, State> {
     if (wordWrap) {
       const tableRowsMaxHeight = [];
       this.tableRows.forEach(row => {
-        let cells = row.querySelectorAll('.rsuite-table-cell-wrap') || [];
+        let cells = row.querySelectorAll(`.${this.addPrefix('cell-wrap')}`) || [];
         let maxHeight = 0;
         cells.forEach(cell => {
           let h = getHeight(cell);
@@ -622,7 +635,7 @@ class Table extends React.Component<Props, State> {
   }
 
   renderMouseArea() {
-    const { height } = this.props;
+    const { height, headerHeight } = this.props;
     const styles = { height };
 
     return (
@@ -632,7 +645,13 @@ class Table extends React.Component<Props, State> {
         }}
         className={this.addPrefix('mouse-area')}
         style={styles}
-      />
+      >
+        <span
+          style={{
+            height: headerHeight - 1
+          }}
+        />
+      </div>
     );
   }
 
@@ -780,12 +799,10 @@ class Table extends React.Component<Props, State> {
     }
 
     return (
-      <div className={this.addPrefix('loading-wrapper')}>
-        <div className={this.addPrefix('loading')}>
-          <div>
-            <i className="icon icon-cog icon-lg icon-spin" />
-            <span>{locale.loading}</span>
-          </div>
+      <div className={this.addPrefix('loader-wrapper')}>
+        <div className={this.addPrefix('loader')}>
+          <i className={this.addPrefix('loader-icon')} />
+          <span className={this.addPrefix('loader-text')}>{locale.loading}</span>
         </div>
       </div>
     );

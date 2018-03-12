@@ -14,6 +14,8 @@ type Props = {
   left?: number,
   className?: string,
   classPrefix?: string,
+  headerHeight?: number,
+  children?: React.Node,
 
   // self props
   index?: number,
@@ -30,7 +32,6 @@ type Props = {
   ) => void,
   onColumnResizeMove?: (columnWidth?: number, columnLeft?: number, columnFixed?: boolean) => void,
   onSortColumn?: Function,
-  headerHeight?: number,
   flexGrow?: number,
   fixed?: boolean
 };
@@ -59,10 +60,11 @@ class HeaderCell extends React.Component<Props, State> {
       });
     }
   }
-
+  /*
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
+  */
 
   handleColumnResizeStart = (event: any) => {
     const { left, fixed, onColumnResizeStart } = this.props;
@@ -97,7 +99,7 @@ class HeaderCell extends React.Component<Props, State> {
         columnWidth={columnWidth}
         columnLeft={left}
         columnFixed={fixed}
-        height={headerHeight}
+        height={headerHeight ? headerHeight - 1 : undefined}
         initialEvent={initialEvent}
         onColumnResizeMove={onColumnResizeMove}
         onColumnResizeStart={this.handleColumnResizeStart}
@@ -107,30 +109,36 @@ class HeaderCell extends React.Component<Props, State> {
   }
 
   renderSortColumn() {
-    const { left = 0, width = 0, sortable, sortColumn, sortType, dataKey } = this.props;
-    const { columnWidth = 0 } = this.state;
-    const styles = {
-      left: (columnWidth || width) + left - 16
-    };
+    const { sortable, sortColumn, sortType, dataKey } = this.props;
 
     if (sortable) {
+      const iconClasses = classNames(this.addPrefix('icon-sort'), {
+        [this.addPrefix(`icon-sort-${sortType}`)]: sortColumn === dataKey
+      });
       return (
-        <div style={styles} className={this.addPrefix('sort-wrapper')}>
-          <i
-            className={classNames(this.addPrefix('icon-sort'), {
-              [this.addPrefix(`icon-sort-${sortType}`)]: sortColumn === dataKey
-            })}
-          />
-        </div>
+        <span className={this.addPrefix('sort-wrapper')}>
+          <i className={iconClasses} />
+        </span>
       );
     }
-
     return null;
   }
 
   render() {
-    const { className, width, dataKey, left, classPrefix, ...rest } = this.props;
-    const classes = classNames(classPrefix, className);
+    const {
+      className,
+      width,
+      dataKey,
+      headerHeight,
+      children,
+      left,
+      sortable,
+      classPrefix,
+      ...rest
+    } = this.props;
+    const classes = classNames(classPrefix, className, {
+      [this.addPrefix('sortable')]: sortable
+    });
     const unhandled = getUnhandledProps(HeaderCell, rest);
 
     return (
@@ -140,10 +148,14 @@ class HeaderCell extends React.Component<Props, State> {
           width={width}
           dataKey={dataKey}
           left={left}
+          headerHeight={headerHeight}
           isHeaderCell={true}
           onClick={this.handleClick}
-        />
-        {this.renderSortColumn()}
+        >
+          {children}
+          {this.renderSortColumn()}
+        </Cell>
+
         {this.renderResizeSpanner()}
       </div>
     );

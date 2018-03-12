@@ -111,7 +111,6 @@ class ColumnResizeHandler extends React.Component<Props> {
   render() {
     const { columnLeft = 0, classPrefix, height, className, style, ...rest } = this.props;
     const styles = {
-      width: 6,
       left: this.columnWidth + columnLeft - 2,
       height,
       ...style

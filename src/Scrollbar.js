@@ -27,7 +27,7 @@ type Offset = {
 
 type State = {
   barOffset: Offset,
-  handleDown: boolean
+  handlePressed: boolean
 };
 
 class Scrollbar extends React.Component<Props, State> {
@@ -44,15 +44,12 @@ class Scrollbar extends React.Component<Props, State> {
         top: 0,
         left: 0
       },
-      handleDown: false
+      handlePressed: false
     };
   }
 
   componentDidMount() {
-    this.updateBar();
-  }
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+    // this.updateBar();
   }
 
   componentWillUnmount() {
@@ -87,7 +84,7 @@ class Scrollbar extends React.Component<Props, State> {
     this.mouseMoveTracker = this.getMouseMoveTracker();
     this.mouseMoveTracker.captureMouseMoves(event);
     this.setState({
-      handleDown: true
+      handlePressed: true
     });
     onMouseDown && onMouseDown(event);
   };
@@ -95,7 +92,7 @@ class Scrollbar extends React.Component<Props, State> {
   hanldeDragEnd = () => {
     this.releaseMouseMoves();
     this.setState({
-      handleDown: false
+      handlePressed: false
     });
   };
 
@@ -172,13 +169,13 @@ class Scrollbar extends React.Component<Props, State> {
 
   render() {
     const { vertical, length, scrollLength, classPrefix, className, ...rest } = this.props;
-    const { handleDown } = this.state;
+    const { handlePressed } = this.state;
     const addPrefix = prefix(classPrefix);
     const classes = classNames(classPrefix, className, {
       [addPrefix('vertical')]: vertical,
       [addPrefix('horizontal')]: !vertical,
       [addPrefix('hide')]: scrollLength <= length,
-      [addPrefix('active')]: !handleDown
+      [addPrefix('pressed')]: handlePressed
     });
 
     let styles = {
