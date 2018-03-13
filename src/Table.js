@@ -548,9 +548,9 @@ class Table extends React.Component<Props, State> {
   }
 
   shouldRenderExpandedRow(rowData: Object) {
-    const { rowKey } = this.props;
+    const { rowKey, renderRowExpanded } = this.props;
     const expandedRowKeys = this.getExpandedRowKeys() || [];
-    return expandedRowKeys.some(key => key === rowData[rowKey]);
+    return expandedRowKeys.some(key => key === rowData[rowKey]) && _.isFunction(renderRowExpanded);
   }
 
   renderRowData(
