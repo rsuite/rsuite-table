@@ -146,14 +146,14 @@ class Cell extends React.Component<Props> {
       width: nextWidth,
       height: nextHeight,
       zIndex: layer,
-      left: !isHeaderCell && firstColumn ? left + layerWidth : left,
-      ...style
+      left: !isHeaderCell && firstColumn ? left + layerWidth : left
     };
 
     const contentStyles: Object = {
       width: nextWidth,
       height: nextHeight,
-      textAlign: align
+      textAlign: align,
+      ...style
     };
 
     const contentChildren =
