@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
-import _ from 'lodash';
 
 import Cell from './Cell';
 import ColumnResizeHandler from './ColumnResizeHandler';
@@ -60,12 +59,6 @@ class HeaderCell extends React.Component<Props, State> {
       });
     }
   }
-  /*
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
-  }
-  */
-
   handleColumnResizeStart = (event: any) => {
     const { left, fixed, onColumnResizeStart } = this.props;
 

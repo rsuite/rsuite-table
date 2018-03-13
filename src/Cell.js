@@ -26,13 +26,13 @@ type Props = {
   hasChildren?: boolean,
   children?: React.Node,
 
-  rowKey?: string,
+  rowKey?: string | number,
   rowIndex?: number,
   rowData?: Object,
   layer: number,
 
   onTreeToggle?: (
-    rowKey?: string,
+    rowKey?: string | number,
     rowIndex?: number,
     rowData?: Object,
     event?: SyntheticEvent<*>

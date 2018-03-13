@@ -3,8 +3,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { translateDOMPositionXY } from 'dom-lib';
-import _ from 'lodash';
-
 import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 
 type Props = {
@@ -26,11 +24,6 @@ class Row extends React.Component<Props> {
     headerHeight: 40,
     isHeaderRow: false
   };
-  /*
-  shouldComponentUpdate(nextProps: Props) {
-    return !_.isEqual(this.props, nextProps);
-  }
-  */
   render() {
     const {
       className,

@@ -3,14 +3,12 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
-
 import onResize from 'element-resize-event';
 
 import {
   addStyle,
   addClass,
   removeClass,
-  hasClass,
   getWidth,
   getHeight,
   translateDOMPositionXY,
@@ -32,29 +30,33 @@ import {
 const handleClass = { add: addClass, remove: removeClass };
 const ReactChildren = React.Children;
 
+type SortType = 'desc' | 'asc';
 type Props = {
   width?: number,
-  data?: Array<Object>,
+  data: Array<Object>,
   height: number,
   rowHeight: number,
+  setRowHeight?: (rowData: Object) => number,
+  rowKey: string | number,
   headerHeight: number,
-  onRowClick?: Function,
+
   isTree?: boolean,
-  expand?: boolean,
+
+  defaultExpandAllRows?: boolean,
+  defaultExpandedRowKeys?: Array<string | number>,
+  expandedRowKeys?: Array<string | number>,
+  renderTreeToggle?: (expandButton: React.Node, rowData: Object) => React.Node,
+
+  renderRowExpanded?: (rowDate?: Object) => React.Node,
+  rowExpandedHeight?: number,
+
   locale: Object,
   style?: Object,
   sortColumn?: string,
-  sortType: 'desc' | 'asc',
-  /**
-   * @callback
-   * @params: sortColumn dataKey
-   * @params: sortType
-   */
-  onSortColumn?: Function,
-  onRerenderRowHeight?: Function,
-  onTreeToggle?: Function,
-  renderTreeToggle?: Function,
+  sortType: SortType,
+
   disabledScroll?: boolean,
+
   hover: boolean,
   loading?: boolean,
   className?: string,
@@ -62,11 +64,12 @@ type Props = {
   children?: React.ChildrenArray<*>,
   bordered?: boolean,
   wordWrap?: boolean,
-  onScroll?: Function,
-
-  onTouchStart?: Function, // for tests
-  onTouchMove?: Function, // for tests
-  getMethods?: (publicMethods: Object) => void
+  onRowClick?: (rowData: Object) => void,
+  onScroll?: (scrollX: number, scrollY: number) => void,
+  onSortColumn?: (dataKey: string, sortType: SortType) => void,
+  onExpandChange?: (expanded: boolean, rowData: Object) => void,
+  onTouchStart?: (event: SyntheticTouchEvent<*>) => void, // for tests
+  onTouchMove?: (event: SyntheticTouchEvent<*>) => void // for tests
 };
 
 type State = {
@@ -77,17 +80,34 @@ type State = {
   contentHeight: number,
   contentWidth: number,
   tableRowsMaxHeight: Array<number>,
-  isColumnResizing?: boolean
+  isColumnResizing?: boolean,
+  expandedRowKeys: Array<string | number>
 };
+
+function findRowKeys(rows, rowKey, expanded) {
+  let keys = [];
+  rows.forEach(item => {
+    if (item.children) {
+      keys.push(item[rowKey]);
+      keys = [...keys, ...findRowKeys(item.children, rowKey)];
+    } else if (expanded) {
+      keys.push(item[rowKey]);
+    }
+  });
+  return keys;
+}
 
 class Table extends React.Component<Props, State> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table'),
+    data: [],
     height: 200,
     rowHeight: 46,
     headerHeight: 40,
+    rowExpandedHeight: 100,
     sortType: 'asc',
     hover: true,
+    rowKey: 'key',
     locale: {
       emptyMessage: 'No data found',
       loading: 'Loading...'
@@ -95,8 +115,20 @@ class Table extends React.Component<Props, State> {
   };
   constructor(props: Props) {
     super(props);
-    const { width } = props;
+    const {
+      width,
+      data,
+      rowKey,
+      defaultExpandAllRows,
+      renderRowExpanded,
+      defaultExpandedRowKeys
+    } = props;
+    const expandedRowKeys = defaultExpandAllRows
+      ? findRowKeys(data, rowKey, _.isFunction(renderRowExpanded))
+      : defaultExpandedRowKeys || [];
+
     this.state = {
+      expandedRowKeys,
       width: width || 0,
       columnWidth: 0,
       dataKey: 0,
@@ -108,8 +140,12 @@ class Table extends React.Component<Props, State> {
   }
 
   componentWillMount() {
-    const { children = [] } = this.props;
+    const { children = [], isTree, rowKey } = this.props;
     const shouldFixedColumn = Array.from(children).some(child => _.get(child, 'props.fixed'));
+
+    if (isTree && !rowKey) {
+      throw new Error('The `rowKey` is required when set isTree');
+    }
 
     this.scrollY = 0;
     this.scrollX = 0;
@@ -129,28 +165,22 @@ class Table extends React.Component<Props, State> {
     this.calculateTableContextHeight();
     this.calculateRowMaxHeight();
     onResize(this.table, _.debounce(this.calculateTableWidth, 400));
-
-    const { getMethods } = this.props;
-    const publicMethods = {
-      treeToggle: this.treeToggle.bind(this),
-      treeToggleBy: this.treeToggleBy.bind(this)
-    };
-    getMethods && getMethods(publicMethods);
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    // contentHeight
-    // contentWidth
-    // tableRowsMaxHeight
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
-  componentDidUpdate(prevProps: Props) {
-
+  componentDidUpdate() {
     this.calculateTableContextHeight();
     this.calculateTableContentWidth();
     this.calculateRowMaxHeight();
     this.updatePosition();
+  }
+
+  getExpandedRowKeys() {
+    const { expandedRowKeys } = this.props;
+    return _.isUndefined(expandedRowKeys) ? this.state.expandedRowKeys : expandedRowKeys;
   }
 
   getTableHeaderRef = (ref: React.ElementRef<*>) => {
@@ -267,26 +297,6 @@ class Table extends React.Component<Props, State> {
       allColumnsWidth: left
     };
   }
-
-  treeToggle(open: boolean, iteratee?: (rowData: any) => boolean) {
-    const buttons = this.treeChildren;
-    const toggle = { addClass, removeClass };
-    const key = open ? 'addClass' : 'removeClass';
-    const openClassName = this.addPrefix('row-open');
-    Object.values(buttons).forEach((item: any) => {
-      if (item && typeof iteratee === 'undefined') {
-        toggle[key](item.ref, openClassName);
-      } else if (iteratee && iteratee(item.rowData) && item.ref) {
-        toggle[key](item.ref, openClassName);
-      }
-    });
-    this.calculateTableContextHeight();
-  }
-
-  treeToggleBy(open: boolean, iteratee: (rowData: any) => boolean) {
-    this.treeToggle(open, iteratee);
-  }
-
   handleColumnResizeEnd = (
     columnWidth: number,
     cursorDelta: number,
@@ -323,19 +333,26 @@ class Table extends React.Component<Props, State> {
   };
 
   handleTreeToggle = (rowKey: any, rowIndex: number, rowData: any) => {
-    const { onTreeToggle } = this.props;
-    const expandIcon = this.treeChildren[rowKey].ref;
-    const openClassName = this.addPrefix('row-open');
-    const isOpen = hasClass(expandIcon, openClassName);
+    const { onExpandChange } = this.props;
+    const { expandedRowKeys } = this.state;
 
-    if (isOpen) {
-      removeClass(expandIcon, openClassName);
-    } else {
-      addClass(expandIcon, openClassName);
+    let open = false;
+    const nextExpandedRowKeys = [];
+    expandedRowKeys.forEach(key => {
+      if (key === rowKey) {
+        open = true;
+      } else {
+        nextExpandedRowKeys.push(key);
+      }
+    });
+
+    if (!open) {
+      nextExpandedRowKeys.push(rowKey);
     }
-
-    this.calculateTableContextHeight();
-    onTreeToggle && onTreeToggle(!isOpen, rowData);
+    this.setState({
+      expandedRowKeys: nextExpandedRowKeys
+    });
+    onExpandChange && onExpandChange(!open, rowData);
   };
 
   handleScrollX = (delta: number) => {
@@ -447,7 +464,6 @@ class Table extends React.Component<Props, State> {
     return (delta >= 0 && this.scrollY > this.minScrollY) || (delta < 0 && this.scrollY < 0);
   };
 
-  treeChildren = {};
   tableRows = [];
   mounted = false;
   scrollY = 0;
@@ -526,66 +542,75 @@ class Table extends React.Component<Props, State> {
     // 这里 -10 是为了让滚动条不挡住内容部分
     this.minScrollY = -(contentHeight - height) - 10;
     if (this.state.contentHeight !== nextContentHeight) {
-      this.scrollY = 0;
-      this.scrollbarY && this.scrollbarY.resetScrollBarPosition();
+      // this.scrollY = 0;
+      // this.scrollbarY && this.scrollbarY.resetScrollBarPosition(30);
     }
   }
 
-  renderRowData(bodyCells: Array<any>, rowData: Object, props: Object) {
-    const { onRowClick, renderTreeToggle, wordWrap } = this.props;
-    const hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children);
-    const rowKey = `_${(Math.random() * 1e18)
-      .toString(36)
-      .slice(0, 5)
-      .toUpperCase()}_${props.index}`;
+  shouldRenderExpandedRow(rowData: Object) {
+    const { rowKey } = this.props;
+    const expandedRowKeys = this.getExpandedRowKeys() || [];
+    return expandedRowKeys.some(key => key === rowData[rowKey]);
+  }
 
-    const row = this.renderRow(
-      {
-        rowRef: ref => {
-          this.tableRows[props.index] = ref;
-        },
-        key: props.index,
-        width: props.rowWidth,
-        height: props.rowHeight,
-        top: props.top,
-        onClick: () => {
-          onRowClick && onRowClick(rowData);
-        }
+  renderRowData(
+    bodyCells: Array<any>,
+    rowData: Object,
+    props: Object,
+    shouldRenderExpandedRow?: boolean
+  ) {
+    const { onRowClick, renderTreeToggle, rowKey, wordWrap } = this.props;
+
+    const hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children);
+    const nextRowKey =
+      rowData[rowKey] ||
+      `_${(Math.random() * 1e18)
+        .toString(36)
+        .slice(0, 5)
+        .toUpperCase()}_${props.index}`;
+
+    const rowProps = {
+      rowRef: ref => {
+        this.tableRows[props.index] = ref;
       },
-      bodyCells.map(cell =>
-        React.cloneElement(cell, {
-          hasChildren,
-          layer: props.layer,
-          height: props.rowHeight,
-          rowIndex: props.index,
-          renderTreeToggle,
-          onTreeToggle: this.handleTreeToggle,
-          rowKey,
-          rowData,
-          wordWrap
-        })
-      )
+      key: props.index,
+      width: props.rowWidth,
+      height: props.rowHeight,
+      top: props.top,
+      onClick: () => {
+        onRowClick && onRowClick(rowData);
+      }
+    };
+
+    const cells = bodyCells.map(cell =>
+      React.cloneElement(cell, {
+        hasChildren,
+        layer: props.layer,
+        height: props.rowHeight,
+        rowIndex: props.index,
+        renderTreeToggle,
+        onTreeToggle: this.handleTreeToggle,
+        rowKey: nextRowKey,
+        rowData,
+        wordWrap
+      })
     );
+
+    const row = this.renderRow(rowProps, cells, shouldRenderExpandedRow, rowData);
 
     // insert children
     if (hasChildren) {
       props.layer += 1;
 
+      const expandedRowKeys = this.getExpandedRowKeys() || [];
+      const open = expandedRowKeys.some(key => key === rowData[rowKey]);
+
       const childrenClasses = classNames(this.addPrefix('row-has-children'), {
-        [this.addPrefix('row-open')]: this.props.expand
+        [this.addPrefix('row-open')]: open
       });
 
       return (
-        <div
-          className={childrenClasses}
-          key={props.index}
-          data-layer={props.layer}
-          ref={ref => {
-            if (ref) {
-              this.treeChildren[rowKey] = { ref, rowData };
-            }
-          }}
-        >
+        <div className={childrenClasses} key={props.index} data-layer={props.layer}>
           {row}
           <div className={this.addPrefix('row-children')}>
             {rowData.children.map((child, index) =>
@@ -602,9 +627,10 @@ class Table extends React.Component<Props, State> {
     return row;
   }
 
-  renderRow(props: Object, cells: Array<any>) {
+  renderRow(props: Object, cells: Array<any>, shouldRenderExpandedRow?: boolean, rowData?: Object) {
+    const { shouldFixedColumn } = this.state;
     // IF there are fixed columns, add a fixed group
-    if (this.state.shouldFixedColumn) {
+    if (shouldFixedColumn) {
       let fixedCells = cells.filter(cell => cell.props.fixed);
       let otherCells = cells.filter(cell => !cell.props.fixed);
       let fixedCellGroupWidth = 0;
@@ -623,6 +649,7 @@ class Table extends React.Component<Props, State> {
             {colSpanCells(fixedCells)}
           </CellGroup>
           <CellGroup>{colSpanCells(otherCells)}</CellGroup>
+          {shouldRenderExpandedRow && this.renderRowExpanded(rowData)}
         </Row>
       );
     }
@@ -630,8 +657,26 @@ class Table extends React.Component<Props, State> {
     return (
       <Row {...props}>
         <CellGroup>{colSpanCells(cells)}</CellGroup>
+        {shouldRenderExpandedRow && this.renderRowExpanded(rowData)}
       </Row>
     );
+  }
+
+  renderRowExpanded(rowData?: Object) {
+    const { renderRowExpanded, rowExpandedHeight } = this.props;
+    const styles = {
+      height: rowExpandedHeight
+    };
+
+    if (typeof renderRowExpanded === 'function') {
+      return (
+        <div className={this.addPrefix('row-expanded')} style={styles}>
+          {renderRowExpanded(rowData)}
+        </div>
+      );
+    }
+
+    return null;
   }
 
   renderMouseArea() {
@@ -657,17 +702,14 @@ class Table extends React.Component<Props, State> {
 
   renderTableHeader(headerCells: Array<any>, rowWidth: number) {
     const { rowHeight, headerHeight } = this.props;
-    const row = this.renderRow(
-      {
-        rowRef: this.getTableHeaderRef,
-        width: rowWidth,
-        height: rowHeight,
-        headerHeight,
-        isHeaderRow: true,
-        top: 0
-      },
-      headerCells
-    );
+    const rowProps = {
+      rowRef: this.getTableHeaderRef,
+      width: rowWidth,
+      height: rowHeight,
+      headerHeight,
+      isHeaderRow: true,
+      top: 0
+    };
 
     return (
       <div
@@ -676,12 +718,21 @@ class Table extends React.Component<Props, State> {
         }}
         className={this.addPrefix('header-row-wrapper')}
       >
-        {row}
+        {this.renderRow(rowProps, headerCells)}
       </div>
     );
   }
   renderTableBody(bodyCells: Array<any>, rowWidth: number) {
-    const { headerHeight, rowHeight, height, data, isTree, onRerenderRowHeight } = this.props;
+    const {
+      headerHeight,
+      rowHeight,
+      rowExpandedHeight,
+      height,
+      data,
+      isTree,
+      setRowHeight
+    } = this.props;
+
     const { tableRowsMaxHeight } = this.state;
     const bodyStyles = {
       top: isTree ? 0 : headerHeight || rowHeight,
@@ -694,21 +745,31 @@ class Table extends React.Component<Props, State> {
       rows = data.map((rowData, index) => {
         let maxHeight = tableRowsMaxHeight[index];
         let nextRowHeight = maxHeight ? maxHeight + 18 : rowHeight;
+        let shouldRenderExpandedRow = this.shouldRenderExpandedRow(rowData);
+
+        if (shouldRenderExpandedRow) {
+          nextRowHeight += rowExpandedHeight;
+        }
 
         /**
          * 自定义行高
          */
-        if (onRerenderRowHeight) {
-          nextRowHeight = onRerenderRowHeight(rowData) || rowHeight;
+        if (setRowHeight) {
+          nextRowHeight = setRowHeight(rowData) || rowHeight;
         }
 
-        let row = this.renderRowData(bodyCells, rowData, {
-          index,
-          top,
-          rowWidth,
-          layer: 0,
-          rowHeight: nextRowHeight
-        });
+        let row = this.renderRowData(
+          bodyCells,
+          rowData,
+          {
+            index,
+            top,
+            rowWidth,
+            layer: 0,
+            rowHeight: nextRowHeight
+          },
+          shouldRenderExpandedRow
+        );
 
         !isTree && (top += nextRowHeight);
         return row;
