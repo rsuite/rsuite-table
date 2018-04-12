@@ -491,7 +491,7 @@ class Table extends React.Component<Props, State> {
       this.tableRows.forEach(row => {
         let cells = row.querySelectorAll(`.${this.addPrefix('cell-wrap')}`) || [];
         let maxHeight = 0;
-        cells.forEach(cell => {
+        Array.from(cells).forEach(cell => {
           let h = getHeight(cell);
           maxHeight = Math.max(maxHeight, h);
         });
