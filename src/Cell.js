@@ -134,8 +134,8 @@ class Cell extends React.Component<Props> {
     }
 
     const classes = classNames(classPrefix, className, {
-      first: firstColumn,
-      last: lastColumn
+      [this.addPrefix('first')]: firstColumn,
+      [this.addPrefix('last')]: lastColumn
     });
 
     const layerWidth = layer * LAYER_WIDTH;

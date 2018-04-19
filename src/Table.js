@@ -29,6 +29,7 @@ import {
 
 const handleClass = { add: addClass, remove: removeClass };
 const ReactChildren = React.Children;
+const CELL_PADDING_HEIGHT = 26;
 
 type SortType = 'desc' | 'asc';
 type Props = {
@@ -748,7 +749,7 @@ class Table extends React.Component<Props, State> {
     if (data && data.length > 0) {
       rows = data.map((rowData, index) => {
         let maxHeight = tableRowsMaxHeight[index];
-        let nextRowHeight = maxHeight ? maxHeight + 18 : rowHeight;
+        let nextRowHeight = maxHeight ? maxHeight + CELL_PADDING_HEIGHT : rowHeight;
         let shouldRenderExpandedRow = this.shouldRenderExpandedRow(rowData);
 
         if (shouldRenderExpandedRow) {

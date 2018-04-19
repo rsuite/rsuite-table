@@ -2,9 +2,8 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
-import _ from 'lodash';
-
 import { translateDOMPositionXY } from 'dom-lib';
+
 import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 
 type Props = {
@@ -21,11 +20,6 @@ class CellGroup extends React.Component<Props> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-cell-group')
   };
-  /*
-  shouldComponentUpdate(nextProps: Props) {
-    return !_.isEqual(this.props, nextProps);
-  }
-  */
 
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 

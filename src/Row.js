@@ -11,7 +11,7 @@ type Props = {
   headerHeight?: number,
   top?: number,
   isHeaderRow?: boolean,
-  rowRef: React.ElementRef<*>,
+  rowRef?: React.ElementRef<*>,
   className?: string,
   classPrefix?: string,
   style?: Object
