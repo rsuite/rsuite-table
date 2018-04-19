@@ -1,25 +1,21 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import Cell from '../src/Cell';
+
+import { getDOMNode, getInstance } from './TestWrapper';
 import HeaderCell from '../src/HeaderCell';
 
-
 describe('Table', () => {
-
   it('Should output a table', () => {
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Table />
-    );
-    const instanceDom = findDOMNode(instance);
-    assert.ok(instanceDom.className.match(/\brsuite-table\b/));
+    const instanceDom = getDOMNode(<Table />);
+    assert.ok(instanceDom.className.match(/\brs-table\b/));
   });
 
   it('Should output 2 cell', () => {
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Table >
+    const instanceDom = getDOMNode(
+      <Table>
         <Column>
           <HeaderCell>11</HeaderCell>
           <Cell>12</Cell>
@@ -31,12 +27,11 @@ describe('Table', () => {
       </Table>
     );
 
-    const instanceDom = findDOMNode(instance);
-    assert.equal(instanceDom.querySelectorAll('.rsuite-table-cell').length, 2);
+    assert.equal(instanceDom.querySelectorAll('.rs-table-cell').length, 2);
   });
 
   it('Should be disabled scroll', () => {
-    const instance = ReactTestUtils.renderIntoDocument(
+    const instanceDom = getDOMNode(
       <Table disabledScroll>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -49,12 +44,11 @@ describe('Table', () => {
       </Table>
     );
 
-    const instanceDom = findDOMNode(instance);
     assert.equal(instanceDom.querySelectorAll('.scrollbar-handle').length, 0);
   });
 
   it('Should be loading', () => {
-    const instance = ReactTestUtils.renderIntoDocument(
+    const instanceDom = getDOMNode(
       <Table loading>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -67,12 +61,11 @@ describe('Table', () => {
       </Table>
     );
 
-    const instanceDom = findDOMNode(instance);
-    assert.ok(instanceDom.querySelectorAll('.rsuite-table-loading').length);
+    assert.ok(instanceDom.querySelectorAll('.rs-table-loader').length);
   });
 
   it('Should be wordWrap', () => {
-    const instance = ReactTestUtils.renderIntoDocument(
+    const instanceDom = getDOMNode(
       <Table wordWrap>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -85,21 +78,22 @@ describe('Table', () => {
       </Table>
     );
 
-    const instanceDom = findDOMNode(instance);
-    assert.ok(instanceDom.className.match(/\brsuite-table-word-wrap\b/));
+    assert.include(instanceDom.className, 'rs-table-word-wrap');
   });
 
-  it('Should call `onRerenderRowHeight` callback', (done) => {
+  it('Should call `setRowHeight` callback', done => {
     const doneOp = () => {
       done();
     };
-    const instance = ReactTestUtils.renderIntoDocument(
+    getDOMNode(
       <Table
-        onRerenderRowHeight={doneOp}
-        data={[{
-          id: 1,
-          name: 'a'
-        }]}
+        setRowHeight={doneOp}
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          }
+        ]}
       >
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -109,17 +103,19 @@ describe('Table', () => {
     );
   });
 
-  it('Should call `onWheel` callback', (done) => {
+  it('Should call `onWheel` callback', done => {
     const doneOp = () => {
       done();
     };
-    const instance = ReactTestUtils.renderIntoDocument(
+    const instanceDom = getDOMNode(
       <Table
         onWheel={doneOp}
-        data={[{
-          id: 1,
-          name: 'a'
-        }]}
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          }
+        ]}
         height={10}
       >
         <Column>
@@ -128,27 +124,31 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    const instanceDom = findDOMNode(instance);
-    ReactTestUtils.Simulate.wheel(instanceDom.querySelector('.rsuite-table-body-row-wrapper'));
+
+    ReactTestUtils.Simulate.wheel(instanceDom.querySelector('.rs-table-body-row-wrapper'));
   });
 
-  it('Should call `onTreeToggle` callback', (done) => {
+  it('Should call `onExpandChange` callback', done => {
     const doneOp = () => {
       done();
     };
-    const instance = ReactTestUtils.renderIntoDocument(
+    const instanceDom = getDOMNode(
       <Table
-        onTreeToggle={doneOp}
+        onExpandChange={doneOp}
         isTree
-        data={[{
-          id: 1,
-          name: 'a',
-          hasChildren: true,
-          children: [{
-            id: 2,
-            name: 'b'
-          }]
-        }]}
+        data={[
+          {
+            id: 1,
+            name: 'a',
+            hasChildren: true,
+            children: [
+              {
+                id: 2,
+                name: 'b'
+              }
+            ]
+          }
+        ]}
       >
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -156,13 +156,13 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    const instanceDom = findDOMNode(instance);
-    ReactTestUtils.Simulate.click(instanceDom.querySelector('.expand-icon'));
+
+    ReactTestUtils.Simulate.click(instanceDom.querySelector('.rs-table-cell-expand-icon'));
   });
 
   it('Should be fixed `Column`', () => {
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Table >
+    const instanceDom = getDOMNode(
+      <Table>
         <Column fixed>
           <HeaderCell>11</HeaderCell>
           <Cell>12</Cell>
@@ -174,22 +174,25 @@ describe('Table', () => {
       </Table>
     );
 
-    const instanceDom = findDOMNode(instance);
-    assert.equal(instanceDom.querySelectorAll('.rsuite-table-cell-group.fixed').length, 1);
+    assert.equal(
+      instanceDom.querySelectorAll('.rs-table-cell-group.rs-table-cell-group-fixed').length,
+      1
+    );
   });
 
-  it('Should call `onTouchMove` callback', (done) => {
-
-    const instance = ReactTestUtils.renderIntoDocument(
+  it('Should call `onTouchMove` callback', done => {
+    const instance = getInstance(
       <Table
         isTree
         onTouchMove={() => {
           done();
         }}
-        data={[{
-          id: 1,
-          name: 'a'
-        }]}
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          }
+        ]}
       >
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -200,18 +203,19 @@ describe('Table', () => {
     ReactTestUtils.Simulate.touchMove(instance.tableBody);
   });
 
-  it('Should call `onTouchStart` callback', (done) => {
-
-    const instance = ReactTestUtils.renderIntoDocument(
+  it('Should call `onTouchStart` callback', done => {
+    const instance = getInstance(
       <Table
         isTree
         onTouchStart={() => {
           done();
         }}
-        data={[{
-          id: 1,
-          name: 'a'
-        }]}
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          }
+        ]}
       >
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -221,54 +225,4 @@ describe('Table', () => {
     );
     ReactTestUtils.Simulate.touchStart(instance.tableBody);
   });
-
-
-  it('Should call `onTreeToggle` callback', () => {
-
-    const instance = ReactTestUtils.renderIntoDocument(
-      <Table
-        isTree
-        data={[{
-          id: 1,
-          name: 'a',
-          children: [{
-            id: 2,
-            name: 'b',
-            children: [{
-              id: 3,
-              name: 'c',
-              children: [{
-                id: 4,
-                name: 'd',
-                children: [{
-                  id: 1,
-                  name: 'e',
-                }]
-              }]
-            }]
-          }]
-        }]}
-      >
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell dataKey="id" />
-        </Column>
-      </Table>
-    );
-    const instanceDom = findDOMNode(instance);
-
-    instance.treeToggleBy(true, (item) => {
-      return item.name === 'd';
-    });
-
-    assert.ok(instanceDom.querySelector('.open'));
-
-    instance.treeToggleBy(false, (item) => {
-      return item.name === 'd';
-    });
-
-    assert.ok(!instanceDom.querySelector('.open'));
-
-  });
-
 });

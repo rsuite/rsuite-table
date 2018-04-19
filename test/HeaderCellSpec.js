@@ -1,67 +1,45 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
-import sinon from 'sinon';
-import { mount } from 'enzyme';
 
+import { getDOMNode, getInstance } from './TestWrapper';
 import HeaderCell from '../src/HeaderCell';
 
-
-
 describe('HeaderCell', () => {
-
   it('Should output a header', () => {
-    const instance = ReactTestUtils.renderIntoDocument(
-      <HeaderCell >test</HeaderCell>
-    );
-
-    const instanceDom = findDOMNode(instance);
-    assert.equal(instanceDom.className, 'rsuite-table-cell-header');
+    const instanceDom = getDOMNode(<HeaderCell>test</HeaderCell>);
+    assert.equal(instanceDom.className, 'rs-table-cell-header');
   });
 
-
-  it('Should call `onSortColumn` callback', (done) => {
-
+  it('Should call `onSortColumn` callback', done => {
     const doneOp = () => {
       done();
     };
 
-    const instance = ReactTestUtils.renderIntoDocument(
-      <HeaderCell onSortColumn={doneOp} sortable>test</HeaderCell>
+    const instanceDom = getDOMNode(
+      <HeaderCell onSortColumn={doneOp} sortable>
+        test
+      </HeaderCell>
     );
-    const instanceDom = findDOMNode(instance);
-    ReactTestUtils.Simulate.click(instanceDom.querySelector('.rsuite-table-cell'));
+
+    ReactTestUtils.Simulate.click(instanceDom.querySelector('.rs-table-cell'));
   });
 
-  it('Should call `onColumnResizeStart` callback', (done) => {
-
+  it('Should call `onColumnResizeStart` callback', done => {
     const doneOp = () => {
       done();
     };
 
-    const instance = ReactTestUtils.renderIntoDocument(
-      <HeaderCell onColumnResizeStart={doneOp} resizable>test</HeaderCell>
+    const instanceDom = getDOMNode(
+      <HeaderCell onColumnResizeStart={doneOp} resizable>
+        test
+      </HeaderCell>
     );
-    const instanceDom = findDOMNode(instance);
-    ReactTestUtils.Simulate.mouseDown(instanceDom.querySelector('.rsuite-table-column-resize-spanner'));
+
+    ReactTestUtils.Simulate.mouseDown(instanceDom.querySelector('.rs-table-column-resize-spanner'));
   });
 
-  it('Should update props', () => {
-
-    const wrapper = mount(<HeaderCell width={100} flexGrow={1} />);
-    wrapper.setProps({
-      width: 200,
-      flexGrow: 2
-    });
-
-    expect(wrapper.props().width).to.equal(200);
-    expect(wrapper.props().flexGrow).to.equal(2);
-
-  });
-
-  it('Should call `onColumnResizeEnd` callback', (done) => {
-
-    const wrapper = mount(
+  it('Should call `onColumnResizeEnd` callback', done => {
+    const instance = getInstance(
       <HeaderCell
         width={100}
         onColumnResizeEnd={() => {
@@ -69,8 +47,6 @@ describe('HeaderCell', () => {
         }}
       />
     );
-    wrapper.instance().onColumnResizeEnd(10, 2);
-
+    instance.handleColumnResizeEnd(10, 2);
   });
-
 });
