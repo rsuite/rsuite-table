@@ -1,4 +1,3 @@
-
 const faker = require('faker');
 
 function createFakeRowObjectData(index) {
@@ -16,7 +15,7 @@ function createFakeRowObjectData(index) {
     catchPhrase: faker.company.catchPhrase(),
     companyName: faker.company.companyName(),
     words: faker.lorem.words(),
-    sentence: faker.lorem.sentence(),
+    sentence: faker.lorem.sentence()
   };
 }
 
@@ -27,4 +26,3 @@ module.exports = function fakeObjectDataListStore(size) {
   }
   return dataList;
 };
-

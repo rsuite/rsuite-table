@@ -45,7 +45,7 @@ class EditTable extends React.Component {
   }
   handleChange(id, key, value) {
     const { data } = this.state;
-    const nextData = _.clone(data);
+    const nextData = clone(data);
     nextData.find(item => item.id === id)[key] = value;
     this.setState({
       data: nextData
@@ -53,7 +53,7 @@ class EditTable extends React.Component {
   }
   handleEditState(id) {
     const { data } = this.state;
-    const nextData = _.clone(data);
+    const nextData = clone(data);
     const activeItem = nextData.find(item => item.id === id);
     activeItem.status = activeItem.status ? null : 'EDIT';
 
@@ -68,9 +68,7 @@ class EditTable extends React.Component {
         <Table
           height={400}
           data={data}
-          isTree
-          expand
-          onTreeToggle={(isOpen, rowData) => {
+          onExpandChange={(isOpen, rowData) => {
             console.log(isOpen, rowData);
           }}
           renderTreeToggle={(icon, rowData) => {

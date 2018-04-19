@@ -1,19 +1,11 @@
-// 解决 IE 11 兼容性问题
-import 'babel-polyfill';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Popover, Whisper, Toggle } from 'rsuite';
+import { Popover, Whisper, Toggle, Grid, Button } from 'rsuite';
 import { Markdown } from 'react-markdown-reader';
-import CodeView from 'react-code-view';
-import _ from 'lodash';
-import { PageContainer } from 'rsuite-docs';
-
-import 'react-code-view/lib/less/index.less';
+import clone from 'lodash/clone';
+import Examples from './Examples';
 import './less/index.less';
-
-
-import { Table, Column, Cell, HeaderCell, TablePagination } from '../src';
+import { Table, Column, Cell, HeaderCell } from '../src';
 import fakeData from './data/users';
 import fakeTreeData from './data/treeData';
 import fakeDataForColSpan from './data/usersForColSpan';
@@ -21,147 +13,57 @@ import fakeDataForColSpan from './data/usersForColSpan';
 class App extends React.Component {
   render() {
     return (
-      <PageContainer
-        githubURL="https://github.com/rsuite/rsuite-table"
-        activeKey="Table"
-      >
-
+      <Grid>
         <Markdown>{require('../README.md')}</Markdown>
-
-        <h2 id="examples" >示例</h2>
-        <CodeView
+        <h2 id="examples">示例</h2>
+        <Examples
           dependencies={{
-            fakeData,
-            Table,
-            Column,
-            Cell,
-            HeaderCell
-          }}
-        >
-          {require('./md/FixedColumnTable.md')}
-        </CodeView>
-
-        <CodeView
-          dependencies={{
-            fakeData,
-            Table,
-            Column,
-            Cell,
-            HeaderCell
-          }}
-        >
-          {require('./md/ResizableColumnTable.md')}
-        </CodeView>
-
-        <CodeView
-          dependencies={{
-            fakeData,
-            Table,
-            Column,
-            Cell,
-            HeaderCell
-          }}
-        >
-          {require('./md/FluidColumnTable.md')}
-        </CodeView>
-
-        <CodeView
-          dependencies={{
-            fakeData,
-            Table,
-            Column,
-            Cell,
-            HeaderCell
-          }}
-        >
-          {require('./md/WordWrapTable.md')}
-        </CodeView>
-
-        <CodeView
-          dependencies={{
-            fakeData,
-            Table,
-            Column,
-            Cell,
-            HeaderCell,
+            Button,
             Popover,
-            Whisper
-          }}
-        >
-          {require('./md/CustomColumnTable.md')}
-        </CodeView>
-
-        <CodeView
-          dependencies={{
-            fakeData,
-            Table,
-            Column,
-            Cell,
-            HeaderCell
-          }}
-        >
-          {require('./md/SortTable.md')}
-        </CodeView>
-
-
-        <CodeView
-          dependencies={{
-            fakeData: fakeTreeData,
-            Table,
-            Column,
-            Cell,
+            Whisper,
             Toggle,
-            HeaderCell
-          }}
-        >
-          {require('./md/TreeTable.md')}
-        </CodeView>
-
-        <CodeView
-          dependencies={{
             fakeData,
+            fakeTreeData,
+            fakeDataForColSpan,
             Table,
             Column,
             Cell,
             HeaderCell,
-            _
+            clone
           }}
-        >
-          {require('./md/EditTable.md')}
-        </CodeView>
+          list={[
 
-        <CodeView
-          dependencies={{
-            fakeData,
-            Table,
-            Column,
-            Cell,
-            HeaderCell
-          }}
-        >
-          {require('./md/LoadingTable.md')}
-        </CodeView>
+            require('./md/FixedColumnTable.md'),
+            require('./md/ResizableColumnTable.md'),
+            /*
+            require('./md/FluidColumnTable.md'),
+            require('./md/WordWrapTable.md'),
+            require('./md/CustomColumnTable.md'),
+            require('./md/SortTable.md'),
 
-        <CodeView
-          dependencies={{
-            fakeData: fakeDataForColSpan,
-            Table,
-            Column,
-            Cell,
-            HeaderCell
-          }}
-        >
-          {require('./md/ColspanTable.md')}
-        </CodeView>
 
-        <Markdown>
-          {require('./md/props.md')}
-        </Markdown>
-      </PageContainer>
+            require('./md/TreeTable.md'),
+            require('./md/Expanded.md'),
+
+            require('./md/EditTable.md'),
+            require('./md/LoadingTable.md'),
+            require('./md/ColspanTable.md')
+            */
+
+          ]}
+        />
+
+        <Markdown>{require('./md/props.md')}</Markdown>
+      </Grid>
     );
   }
 }
 
-ReactDOM.render(<App />,
-  document.getElementById('app')
-);
+/*
+if (process.env.NODE_ENV !== 'production') {
+  const { whyDidYouUpdate } = require('why-did-you-update');
+  whyDidYouUpdate(React);
+}
+*/
+
+ReactDOM.render(<App />, document.getElementById('app'));

@@ -7,7 +7,7 @@ class FixedColumnTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: fakeData
+      data: fakeDataForColSpan
     };
   }
   render() {
