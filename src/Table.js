@@ -142,7 +142,9 @@ class Table extends React.Component<Props, State> {
 
   componentWillMount() {
     const { children = [], isTree, rowKey } = this.props;
-    const shouldFixedColumn = Array.from(children).some(child => _.get(child, 'props.fixed'));
+    const shouldFixedColumn = Array.from(children).some((child: any) =>
+      _.get(child, 'props.fixed')
+    );
 
     if (isTree && !rowKey) {
       throw new Error('The `rowKey` is required when set isTree');
@@ -169,7 +171,7 @@ class Table extends React.Component<Props, State> {
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+    return !_.eq(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
   componentDidUpdate() {
@@ -542,10 +544,6 @@ class Table extends React.Component<Props, State> {
     });
     // 这里 -10 是为了让滚动条不挡住内容部分
     this.minScrollY = -(contentHeight - height) - 10;
-    if (this.state.contentHeight !== nextContentHeight) {
-      // this.scrollY = 0;
-      // this.scrollbarY && this.scrollbarY.resetScrollBarPosition(30);
-    }
   }
 
   shouldRenderExpandedRow(rowData: Object) {
