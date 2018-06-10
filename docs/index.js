@@ -32,15 +32,13 @@ class App extends React.Component {
             clone
           }}
           list={[
-
             require('./md/FixedColumnTable.md'),
             require('./md/ResizableColumnTable.md'),
-            /*
+
             require('./md/FluidColumnTable.md'),
             require('./md/WordWrapTable.md'),
             require('./md/CustomColumnTable.md'),
             require('./md/SortTable.md'),
-
 
             require('./md/TreeTable.md'),
             require('./md/Expanded.md'),
@@ -48,8 +46,6 @@ class App extends React.Component {
             require('./md/EditTable.md'),
             require('./md/LoadingTable.md'),
             require('./md/ColspanTable.md')
-            */
-
           ]}
         />
 
