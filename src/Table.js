@@ -70,7 +70,8 @@ type Props = {
   onSortColumn?: (dataKey: string, sortType: SortType) => void,
   onExpandChange?: (expanded: boolean, rowData: Object) => void,
   onTouchStart?: (event: SyntheticTouchEvent<*>) => void, // for tests
-  onTouchMove?: (event: SyntheticTouchEvent<*>) => void // for tests
+  onTouchMove?: (event: SyntheticTouchEvent<*>) => void, // for tests
+  bodyRef?: React.ElementRef<*>
 };
 
 type State = {
@@ -185,10 +186,6 @@ class Table extends React.Component<Props, State> {
     const { expandedRowKeys } = this.props;
     return _.isUndefined(expandedRowKeys) ? this.state.expandedRowKeys : expandedRowKeys;
   }
-
-  getTableHeaderRef = (ref: React.ElementRef<*>) => {
-    this.tableHeader = ref;
-  };
 
   getScrollCellGroups() {
     return this.table.querySelectorAll(`.${this.addPrefix('cell-group-scroll')}`);
@@ -568,6 +565,44 @@ class Table extends React.Component<Props, State> {
     );
   }
 
+  bindTableRowsRef = (index: number) => (ref: React.ElementRef<*>) => {
+    this.tableRows[index] = ref;
+  };
+
+  bindMouseAreaRef = (ref: React.ElementRef<*>) => {
+    this.mouseArea = ref;
+  };
+
+  bindTableHeaderRef = (ref: React.ElementRef<*>) => {
+    this.tableHeader = ref;
+  };
+
+  bindHeaderWrapperRef = (ref: React.ElementRef<*>) => {
+    this.headerWrapper = ref;
+  };
+
+  bindTableRef = (ref: React.ElementRef<*>) => {
+    this.table = ref;
+  };
+
+  bindWheelWrapperRef = (ref: React.ElementRef<*>) => {
+    const { bodyRef } = this.props;
+    this.wheelWrapper = ref;
+    bodyRef && bodyRef(ref);
+  };
+
+  bindBodyRef = (ref: React.ElementRef<*>) => {
+    this.tableBody = ref;
+  };
+
+  bindScrollbarXRef = (ref: React.ElementRef<*>) => {
+    this.scrollbarX = ref;
+  };
+
+  bindScrollbarYRef = (ref: React.ElementRef<*>) => {
+    this.scrollbarY = ref;
+  };
+
   renderRowData(
     bodyCells: Array<any>,
     rowData: Object,
@@ -585,9 +620,7 @@ class Table extends React.Component<Props, State> {
         .toUpperCase()}_${props.index}`;
 
     const rowProps = {
-      rowRef: ref => {
-        this.tableRows[props.index] = ref;
-      },
+      rowRef: this.bindTableRowsRef(props.index),
       key: props.index,
       width: props.rowWidth,
       height: props.rowHeight,
@@ -699,13 +732,7 @@ class Table extends React.Component<Props, State> {
     const styles = { height };
 
     return (
-      <div
-        ref={ref => {
-          this.mouseArea = ref;
-        }}
-        className={this.addPrefix('mouse-area')}
-        style={styles}
-      >
+      <div ref={this.bindMouseAreaRef} className={this.addPrefix('mouse-area')} style={styles}>
         <span
           style={{
             height: headerHeight - 1
@@ -718,7 +745,7 @@ class Table extends React.Component<Props, State> {
   renderTableHeader(headerCells: Array<any>, rowWidth: number) {
     const { rowHeight, headerHeight } = this.props;
     const rowProps = {
-      rowRef: this.getTableHeaderRef,
+      rowRef: this.bindTableHeaderRef,
       width: rowWidth,
       height: rowHeight,
       headerHeight,
@@ -727,16 +754,12 @@ class Table extends React.Component<Props, State> {
     };
 
     return (
-      <div
-        ref={ref => {
-          this.headerWrapper = ref;
-        }}
-        className={this.addPrefix('header-row-wrapper')}
-      >
+      <div className={this.addPrefix('header-row-wrapper')} ref={this.bindHeaderWrapperRef}>
         {this.renderRow(rowProps, headerCells)}
       </div>
     );
   }
+
   renderTableBody(bodyCells: Array<any>, rowWidth: number) {
     const {
       headerHeight,
@@ -756,6 +779,7 @@ class Table extends React.Component<Props, State> {
 
     let top = 0; // Row position
     let rows = null;
+    let bodyHeight = 0;
     if (data && data.length > 0) {
       rows = data.map((rowData, index) => {
         let maxHeight = tableRowsMaxHeight[index];
@@ -772,6 +796,8 @@ class Table extends React.Component<Props, State> {
         if (setRowHeight) {
           nextRowHeight = setRowHeight(rowData) || rowHeight;
         }
+
+        bodyHeight += nextRowHeight;
 
         let row = this.renderRowData(
           bodyCells,
@@ -792,14 +818,13 @@ class Table extends React.Component<Props, State> {
     }
 
     const wheelStyles = {
-      position: 'absolute'
+      position: 'absolute',
+      height: bodyHeight
     };
 
     return (
       <div
-        ref={ref => {
-          this.tableBody = ref;
-        }}
+        ref={this.bindBodyRef}
         className={this.addPrefix('body-row-wrapper')}
         style={bodyStyles}
         onTouchStart={this.handleTouchStart}
@@ -809,9 +834,7 @@ class Table extends React.Component<Props, State> {
         <div
           style={wheelStyles}
           className={this.addPrefix('body-wheel-area')}
-          ref={ref => {
-            this.wheelWrapper = ref;
-          }}
+          ref={this.bindWheelWrapperRef}
         >
           {rows}
         </div>
@@ -847,18 +870,14 @@ class Table extends React.Component<Props, State> {
           length={this.state.width}
           onScroll={this.handleScrollX}
           scrollLength={contentWidth}
-          ref={ref => {
-            this.scrollbarX = ref;
-          }}
+          ref={this.bindScrollbarXRef}
         />
         <Scrollbar
           vertical
           length={height - (headerHeight || rowHeight)}
           scrollLength={contentHeight}
           onScroll={this.handleScrollY}
-          ref={ref => {
-            this.scrollbarY = ref;
-          }}
+          ref={this.bindScrollbarYRef}
         />
       </div>
     );
@@ -920,14 +939,7 @@ class Table extends React.Component<Props, State> {
     const unhandled = getUnhandledProps(Table, rest);
 
     return (
-      <div
-        {...unhandled}
-        className={clesses}
-        style={styles}
-        ref={ref => {
-          this.table = ref;
-        }}
-      >
+      <div {...unhandled} className={clesses} style={styles} ref={this.bindTableRef}>
         {this.renderTableHeader(headerCells, rowWidth)}
         {children && this.renderTableBody(bodyCells, rowWidth)}
         {this.renderMouseArea()}
