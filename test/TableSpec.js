@@ -225,4 +225,28 @@ describe('Table', () => {
     );
     ReactTestUtils.Simulate.touchStart(instance.tableBody);
   });
+
+  it('Should get the body DOM', () => {
+    const data = [
+      {
+        id: 1,
+        name: 'a'
+      }
+    ];
+    let body;
+    const instance = getInstance(
+      <Table
+        bodyRef={ref => {
+          body = ref;
+        }}
+        data={data}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      </Table>
+    );
+    assert.equal(body.style.height, `${data.length * 46}px`);
+  });
 });
