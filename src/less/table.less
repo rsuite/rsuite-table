@@ -186,4 +186,31 @@
     padding: 10px;
     background: #f5f5f5;
   }
+
+  &-loader-wrapper {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, .9);
+  }
+
+  &-loader {
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    position: absolute;
+    margin-top: -20px;
+    line-height: 40px;
+
+    &-icon {
+      .set-side-length(18px);
+      .loader-spin;
+
+      display: inline-block;
+      position: relative;
+      margin-right: 12px;
+      // Make sure loader vertical-align center
+      padding-top: 3px;
+    }
+  }
 }
