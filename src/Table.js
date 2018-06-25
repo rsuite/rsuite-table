@@ -533,13 +533,13 @@ class Table extends React.Component<Props, State> {
   calculateTableContextHeight() {
     const table = this.table;
     const rows = table.querySelectorAll(`.${this.addPrefix('row')}`);
-    const { height, rowHeight, headerHeight } = this.props;
+    const { height, headerHeight } = this.props;
     let contentHeight = 0;
     Array.from(rows).forEach(row => {
       contentHeight += getHeight(row);
     });
 
-    const nextContentHeight = contentHeight - (headerHeight || rowHeight);
+    const nextContentHeight = contentHeight - headerHeight;
     this.setState({
       contentHeight: nextContentHeight
     });
@@ -773,8 +773,8 @@ class Table extends React.Component<Props, State> {
 
     const { tableRowsMaxHeight } = this.state;
     const bodyStyles = {
-      top: isTree ? 0 : headerHeight || rowHeight,
-      height: height - (headerHeight || rowHeight)
+      top: isTree ? 0 : headerHeight,
+      height: height - headerHeight
     };
 
     let top = 0; // Row position
@@ -799,18 +799,15 @@ class Table extends React.Component<Props, State> {
 
         bodyHeight += nextRowHeight;
 
-        let row = this.renderRowData(
-          bodyCells,
-          rowData,
-          {
-            index,
-            top,
-            rowWidth,
-            layer: 0,
-            rowHeight: nextRowHeight
-          },
-          shouldRenderExpandedRow
-        );
+        let rowProps = {
+          index,
+          top,
+          rowWidth,
+          layer: 0,
+          rowHeight: nextRowHeight
+        };
+
+        let row = this.renderRowData(bodyCells, rowData, rowProps, shouldRenderExpandedRow);
 
         !isTree && (top += nextRowHeight);
         return row;
@@ -857,8 +854,7 @@ class Table extends React.Component<Props, State> {
   }
 
   renderScrollbar() {
-    const { disabledScroll, headerHeight, rowHeight, height, loading } = this.props;
-
+    const { disabledScroll, headerHeight, height, loading } = this.props;
     const { contentWidth, contentHeight } = this.state;
 
     if (disabledScroll || loading) {
@@ -875,7 +871,7 @@ class Table extends React.Component<Props, State> {
         />
         <Scrollbar
           vertical
-          length={height - (headerHeight || rowHeight)}
+          length={height - headerHeight}
           scrollLength={contentHeight}
           onScroll={this.handleScrollY}
           ref={this.bindScrollbarYRef}
@@ -888,12 +884,7 @@ class Table extends React.Component<Props, State> {
    *  show loading
    */
   renderLoading() {
-    const { loading, locale } = this.props;
-
-    if (!loading) {
-      return null;
-    }
-
+    const { locale } = this.props;
     return (
       <div className={this.addPrefix('loader-wrapper')}>
         <div className={this.addPrefix('loader')}>
@@ -917,6 +908,7 @@ class Table extends React.Component<Props, State> {
       bordered,
       wordWrap,
       classPrefix,
+      loading,
       ...rest
     } = this.props;
 
@@ -928,7 +920,8 @@ class Table extends React.Component<Props, State> {
       [this.addPrefix('treetable')]: isTree,
       [this.addPrefix('bordered')]: bordered,
       [this.addPrefix('column-resizing')]: isColumnResizing,
-      [this.addPrefix('hover')]: hover
+      [this.addPrefix('hover')]: hover,
+      [this.addPrefix('loading')]: loading
     });
 
     const styles = {

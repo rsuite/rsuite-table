@@ -67,24 +67,6 @@
       width: 100%;
     }
   }
-  &-loading-wrapper {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background: rgba(45, 45, 45, 0.5);
-    color: #fff;
-  }
-  &-loading {
-    .icon {
-      margin: 0 10px;
-    }
-    width: 100%;
-    text-align: center;
-    top: 50%;
-    position: absolute;
-    margin-top: -20px;
-    line-height: 40px;
-  }
   &-cell {
     height: 36px;
     border-style: solid;
@@ -188,10 +170,11 @@
   }
 
   &-loader-wrapper {
+    visibility: hidden;
     position: absolute;
     height: 100%;
     width: 100%;
-    background-color: rgba(255, 255, 255, .9);
+    background-color: rgba(255, 255, 255, 0.9);
   }
 
   &-loader {
@@ -212,5 +195,8 @@
       // Make sure loader vertical-align center
       padding-top: 3px;
     }
+  }
+  &-loading &-loader-wrapper {
+    visibility: visible;
   }
 }
