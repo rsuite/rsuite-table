@@ -10,7 +10,7 @@ import HeaderCell from '../src/HeaderCell';
 describe('Table', () => {
   it('Should output a table', () => {
     const instanceDom = getDOMNode(<Table />);
-    assert.ok(instanceDom.className.match(/\brs-table\b/));
+    assert.include(instanceDom.className, 'rs-table');
   });
 
   it('Should output 2 cell', () => {
@@ -61,6 +61,7 @@ describe('Table', () => {
       </Table>
     );
 
+    assert.include(instanceDom.className, 'rs-table-loading');
     assert.ok(instanceDom.querySelectorAll('.rs-table-loader').length);
   });
 
@@ -77,7 +78,6 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-
     assert.include(instanceDom.className, 'rs-table-word-wrap');
   });
 
@@ -234,7 +234,7 @@ describe('Table', () => {
       }
     ];
     let body;
-    const instance = getInstance(
+    getInstance(
       <Table
         bodyRef={ref => {
           body = ref;
