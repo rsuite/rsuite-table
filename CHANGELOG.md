@@ -1,3 +1,14 @@
+# 3.0.3
+
+> 2018-6-25
+
+- Chore: Allowed header height can be 0 ([#25])
+- Chore: Update style for loading ([#25])
+- Bugfix: Set minimum height for table body ([#24])
+
+[25]: https://github.com/rsuite/rsuite-table/pull/25
+[24]: https://github.com/rsuite/rsuite-table/pull/24
+
 # 3.0.2
 
 > 2018-6-10
