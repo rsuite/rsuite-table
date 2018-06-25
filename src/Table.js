@@ -819,7 +819,8 @@ class Table extends React.Component<Props, State> {
 
     const wheelStyles = {
       position: 'absolute',
-      height: bodyHeight
+      height: bodyHeight,
+      minHeight: height
     };
 
     return (
