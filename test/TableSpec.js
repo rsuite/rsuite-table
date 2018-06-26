@@ -54,14 +54,22 @@ describe('Table', () => {
           <HeaderCell>11</HeaderCell>
           <Cell>12</Cell>
         </Column>
+      </Table>
+    );
+
+    assert.include(instanceDom.className, 'rs-table-loading');
+    assert.ok(instanceDom.querySelectorAll('.rs-table-loader').length);
+  });
+
+  it('Should render loader dom element when set `loadAnimation`', () => {
+    const instanceDom = getDOMNode(
+      <Table loadAnimation>
         <Column>
           <HeaderCell>11</HeaderCell>
           <Cell>12</Cell>
         </Column>
       </Table>
     );
-
-    assert.include(instanceDom.className, 'rs-table-loading');
     assert.ok(instanceDom.querySelectorAll('.rs-table-loader').length);
   });
 
