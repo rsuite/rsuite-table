@@ -2,10 +2,8 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
-
 import _ from 'lodash';
 import { LAYER_WIDTH } from './constants';
-
 import { isNullOrUndefined, defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 
 type Props = {
@@ -58,21 +56,12 @@ class Cell extends React.Component<Props> {
 
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 
+  handleExpandClick = (event: SyntheticEvent<*>) => {
+    const { onTreeToggle, rowKey, rowIndex, rowData } = this.props;
+    onTreeToggle && onTreeToggle(rowKey, rowIndex, rowData, event);
+  };
   renderExpandIcon() {
-    const {
-      hasChildren,
-      firstColumn,
-      rowKey,
-      rowIndex,
-      rowData,
-      renderTreeToggle,
-      onTreeToggle
-    } = this.props;
-
-    const handleExpandClick = event => {
-      onTreeToggle && onTreeToggle(rowKey, rowIndex, rowData, event);
-    };
-
+    const { hasChildren, firstColumn, rowData, renderTreeToggle } = this.props;
     const expandButton = (
       <i
         role="button"
@@ -80,7 +69,7 @@ class Cell extends React.Component<Props> {
         className={this.addPrefix('expand-icon')}
         onClick={event => {
           event.stopPropagation();
-          handleExpandClick(event);
+          this.handleExpandClick(event);
         }}
       />
     );
@@ -94,7 +83,7 @@ class Cell extends React.Component<Props> {
           role="button"
           tabIndex={-1}
           className={this.addPrefix('expand-wrapper')}
-          onClick={handleExpandClick}
+          onClick={this.handleExpandClick}
         >
           {renderTreeToggle(expandButton, rowData)}
         </span>

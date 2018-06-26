@@ -2,9 +2,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
-
 import { DOMMouseMoveTracker, addStyle, getOffset, translateDOMPositionXY } from 'dom-lib';
-
 import { SCROLLBAR_MIN_WIDTH } from './constants';
 import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 
@@ -49,7 +47,7 @@ class Scrollbar extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    // this.updateBar();
+    this.initBarOffset();
   }
 
   componentWillUnmount() {
@@ -58,8 +56,8 @@ class Scrollbar extends React.Component<Props, State> {
 
   onWheelScroll(delta: number) {
     const { length, scrollLength } = this.props;
-
     const nextDelta = delta / (scrollLength / length);
+
     this.updateScrollBarPosition(nextDelta);
   }
 
@@ -70,7 +68,7 @@ class Scrollbar extends React.Component<Props, State> {
     );
   }
 
-  updateBar() {
+  initBarOffset() {
     setTimeout(() => {
       this.bar &&
         this.setState({
@@ -98,8 +96,8 @@ class Scrollbar extends React.Component<Props, State> {
 
   handleScroll(delta: number, event: SyntheticEvent<*>) {
     const { length, scrollLength, onScroll } = this.props;
-
     const scrollDelta = delta * (scrollLength / length);
+
     this.updateScrollBarPosition(delta);
     onScroll && onScroll(scrollDelta, event);
   }
@@ -111,7 +109,7 @@ class Scrollbar extends React.Component<Props, State> {
 
   updateScrollBarPosition(delta: number, forceDelta?: number) {
     const { vertical, length, scrollLength } = this.props;
-    const max = scrollLength && length ? length - length / scrollLength * length : 0;
+    const max = scrollLength && length ? length - (length / scrollLength) * length : 0;
     const styles = {};
 
     if (_.isUndefined(forceDelta)) {
@@ -140,11 +138,16 @@ class Scrollbar extends React.Component<Props, State> {
 
   hanldeDragMove = (deltaX: number, deltaY: number, event: SyntheticEvent<*>) => {
     const { vertical } = this.props;
+
     if (!this.mouseMoveTracker || !this.mouseMoveTracker.isDragging()) {
       return;
     }
     this.handleScroll(vertical ? deltaY : deltaX, event);
   };
+
+  /**
+   * 点击滚动条，然后滚动到指定位置
+   */
   hanldeClick = (event: SyntheticMouseEvent<*>) => {
     if (this.handle && this.handle.contains(event.target)) {
       return;
@@ -154,7 +157,7 @@ class Scrollbar extends React.Component<Props, State> {
     const { barOffset } = this.state;
     const offset = vertical ? event.pageY - barOffset.top : event.pageX - barOffset.left;
 
-    const handleWidth = length / scrollLength * length;
+    const handleWidth = (length / scrollLength) * length;
     const delta = offset - handleWidth;
 
     const nextDelta =
@@ -166,6 +169,14 @@ class Scrollbar extends React.Component<Props, State> {
   mouseMoveTracker: any;
   handle: any;
   bar: any;
+
+  bindBarRef = (ref: React.ElementRef<*>) => {
+    this.bar = ref;
+  };
+
+  bindHandleRef = (ref: React.ElementRef<*>) => {
+    this.handle = ref;
+  };
 
   render() {
     const { vertical, length, scrollLength, classPrefix, className, ...rest } = this.props;
@@ -179,7 +190,7 @@ class Scrollbar extends React.Component<Props, State> {
     });
 
     let styles = {
-      [vertical ? 'height' : 'width']: `${length / scrollLength * 100}%`,
+      [vertical ? 'height' : 'width']: `${(length / scrollLength) * 100}%`,
       [vertical ? 'minHeight' : 'minWidth']: SCROLLBAR_MIN_WIDTH
     };
     const unhandled = getUnhandledProps(Scrollbar, rest);
@@ -187,17 +198,13 @@ class Scrollbar extends React.Component<Props, State> {
     return (
       <div
         {...unhandled}
-        ref={ref => {
-          this.bar = ref;
-        }}
+        ref={this.bindBarRef}
         className={classes}
         onClick={this.hanldeClick}
         role="toolbar"
       >
         <div
-          ref={ref => {
-            this.handle = ref;
-          }}
+          ref={this.bindHandleRef}
           className={addPrefix('handle')}
           style={styles}
           onMouseDown={this.hanldeMouseDown}
