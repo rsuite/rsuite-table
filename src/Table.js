@@ -71,7 +71,8 @@ type Props = {
   onExpandChange?: (expanded: boolean, rowData: Object) => void,
   onTouchStart?: (event: SyntheticTouchEvent<*>) => void, // for tests
   onTouchMove?: (event: SyntheticTouchEvent<*>) => void, // for tests
-  bodyRef?: React.ElementRef<*>
+  bodyRef?: React.ElementRef<*>,
+  loadAnimation?: boolean
 };
 
 type State = {
@@ -883,7 +884,12 @@ class Table extends React.Component<Props, State> {
    *  show loading
    */
   renderLoading() {
-    const { locale } = this.props;
+    const { locale, loading, loadAnimation } = this.props;
+
+    if (!loadAnimation && !loading) {
+      return null;
+    }
+
     return (
       <div className={this.addPrefix('loader-wrapper')}>
         <div className={this.addPrefix('loader')}>
