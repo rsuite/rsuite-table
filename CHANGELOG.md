@@ -1,3 +1,13 @@
+# 3.0.4
+
+> 2018-6-26
+
+- Feature: Support `loadAnimaction` on `<Table>` ([#27])
+- Bugfix: The position was updated incorrectly when the scrollbar was clicked on `<Table>` ([#26])
+
+[27]: https://github.com/rsuite/rsuite-table/pull/27
+[26]: https://github.com/rsuite/rsuite-table/pull/26
+
 # 3.0.3
 
 > 2018-6-25
