@@ -807,10 +807,9 @@ class Table extends React.Component<Props, State> {
           rowHeight: nextRowHeight
         };
 
-        let row = this.renderRowData(bodyCells, rowData, rowProps, shouldRenderExpandedRow);
-
         !isTree && (top += nextRowHeight);
-        return row;
+
+        return this.renderRowData(bodyCells, rowData, rowProps, shouldRenderExpandedRow);
       });
     }
 
