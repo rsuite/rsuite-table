@@ -61,6 +61,32 @@ describe('Table', () => {
     assert.ok(instanceDom.querySelectorAll('.rs-table-loader').length);
   });
 
+  it('Should be bordered', () => {
+    const instanceDom = getDOMNode(
+      <Table bordered>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+
+    assert.include(instanceDom.className, 'rs-table-bordered');
+  });
+
+  it('Should be bordered for cell', () => {
+    const instanceDom = getDOMNode(
+      <Table cellBordered>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+
+    assert.include(instanceDom.className, 'rs-table-cell-bordered');
+  });
+
   it('Should render loader dom element when set `loadAnimation`', () => {
     const instanceDom = getDOMNode(
       <Table loadAnimation>
