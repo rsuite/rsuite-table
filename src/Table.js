@@ -64,6 +64,7 @@ type Props = {
   classPrefix?: string,
   children?: React.ChildrenArray<*>,
   bordered?: boolean,
+  cellBordered?: boolean,
   wordWrap?: boolean,
   onRowClick?: (rowData: Object) => void,
   onScroll?: (scrollX: number, scrollY: number) => void,
@@ -911,6 +912,7 @@ class Table extends React.Component<Props, State> {
       isTree,
       hover,
       bordered,
+      cellBordered,
       wordWrap,
       classPrefix,
       loading,
@@ -924,6 +926,7 @@ class Table extends React.Component<Props, State> {
       [this.addPrefix('word-wrap')]: wordWrap,
       [this.addPrefix('treetable')]: isTree,
       [this.addPrefix('bordered')]: bordered,
+      [this.addPrefix('cell-bordered')]: cellBordered,
       [this.addPrefix('column-resizing')]: isColumnResizing,
       [this.addPrefix('hover')]: hover,
       [this.addPrefix('loading')]: loading
