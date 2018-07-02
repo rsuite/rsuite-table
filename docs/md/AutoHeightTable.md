@@ -1,4 +1,4 @@
-### 锁定列: 固定表头,固定前两列
+### 自动高度
 
 <!--start-code-->
 
@@ -15,6 +15,7 @@ class FixedColumnTable extends React.Component {
       <div>
         <Table
           height={400}
+          autoHeight
           data={this.state.data}
           onRowClick={data => {
             console.log(data);

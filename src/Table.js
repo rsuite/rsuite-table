@@ -5,15 +5,7 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import onResize from 'element-resize-event';
 
-import {
-  addStyle,
-  addClass,
-  removeClass,
-  getWidth,
-  getHeight,
-  translateDOMPositionXY,
-  WheelHandler
-} from 'dom-lib';
+import { addStyle, getWidth, getHeight, translateDOMPositionXY, WheelHandler } from 'dom-lib';
 
 import Row from './Row';
 import CellGroup from './CellGroup';
@@ -24,23 +16,33 @@ import {
   colSpanCells,
   getUnhandledProps,
   defaultClassPrefix,
+  toggleClass,
   prefix
 } from './utils';
 
-const handleClass = { add: addClass, remove: removeClass };
 const ReactChildren = React.Children;
 const CELL_PADDING_HEIGHT = 26;
+const columnHandledProps = [
+  'align',
+  'width',
+  'fixed',
+  'resizable',
+  'flexGrow',
+  'minWidth',
+  'colSpan'
+];
 
 type SortType = 'desc' | 'asc';
 type Props = {
   width?: number,
   data: Array<Object>,
   height: number,
+  autoHeight?: boolean,
+  minHeight: number,
   rowHeight: number,
+  headerHeight: number,
   setRowHeight?: (rowData: Object) => number,
   rowKey: string | number,
-  headerHeight: number,
-
   isTree?: boolean,
 
   defaultExpandAllRows?: boolean,
@@ -108,6 +110,7 @@ class Table extends React.Component<Props, State> {
     height: 200,
     rowHeight: 46,
     headerHeight: 40,
+    minHeight: 0,
     rowExpandedHeight: 100,
     sortType: 'asc',
     hover: true,
@@ -197,6 +200,15 @@ class Table extends React.Component<Props, State> {
     return this.table.querySelectorAll(`.${this.addPrefix('cell-group-fixed')}`);
   }
 
+  /**
+   * 获取 Table 需要渲染的高度
+   */
+  getTableHeight() {
+    const { contentHeight } = this.state;
+    const { headerHeight, minHeight, height, autoHeight } = this.props;
+    return autoHeight ? Math.max(headerHeight + contentHeight, minHeight) : height;
+  }
+
   getCells() {
     let left = 0; // Cell left margin
     const headerCells = []; // Table header cell
@@ -241,17 +253,7 @@ class Table extends React.Component<Props, State> {
           );
         }
 
-        const columnHandledProps = [
-          'align',
-          'width',
-          'fixed',
-          'resizable',
-          'flexGrow',
-          'minWidth',
-          'colSpan'
-        ];
-
-        let cellProps = {
+        const cellProps = {
           ..._.pick(column.props, columnHandledProps),
           left,
           index,
@@ -263,7 +265,7 @@ class Table extends React.Component<Props, State> {
           lastColumn: index === columns.length - 1
         };
 
-        let headerCellsProps = {
+        const headerCellProps = {
           dataKey: columnChildren[1].props.dataKey,
           isHeaderCell: true,
           sortable: column.props.sortable,
@@ -274,7 +276,7 @@ class Table extends React.Component<Props, State> {
         };
 
         if (resizable) {
-          _.merge(headerCellsProps, {
+          _.merge(headerCellProps, {
             onColumnResizeEnd: this.handleColumnResizeEnd,
             onColumnResizeStart: this.handleColumnResizeStart,
             onColumnResizeMove: this.handleColumnResizeMove
@@ -284,7 +286,7 @@ class Table extends React.Component<Props, State> {
         headerCells.push(
           React.cloneElement(columnChildren[0], {
             ...cellProps,
-            ...headerCellsProps
+            ...headerCellProps
           })
         );
         bodyCells.push(React.cloneElement(columnChildren[1], cellProps));
@@ -420,11 +422,9 @@ class Table extends React.Component<Props, State> {
       this.wheelWrapper && addStyle(this.wheelWrapper, wheelStyle);
       this.headerWrapper && addStyle(this.headerWrapper, headerStyle);
     }
-    handleClass[this.scrollY < 0 ? 'add' : 'remove'](
-      this.tableHeader,
-      this.addPrefix('cell-group-shadow')
-    );
+    toggleClass(this.tableHeader, this.addPrefix('cell-group-shadow'), this.scrollY < 0);
   }
+
   updatePositionByFixedCell() {
     const wheelGroupStyle = {};
     const wheelStyle = {};
@@ -441,8 +441,11 @@ class Table extends React.Component<Props, State> {
       addStyle(this.wheelWrapper, wheelStyle);
     }
 
+    const shadowClassName = this.addPrefix('cell-group-shadow');
+    const condition = this.scrollX < 0;
+
     Array.from(fixedGroups).forEach(group => {
-      handleClass[this.scrollX < 0 ? 'add' : 'remove'](group, this.addPrefix('cell-group-shadow'));
+      toggleClass(group, shadowClassName, condition);
     });
   }
   shouldHandleWheelX = (delta: number) => {
@@ -535,18 +538,20 @@ class Table extends React.Component<Props, State> {
   calculateTableContextHeight() {
     const table = this.table;
     const rows = table.querySelectorAll(`.${this.addPrefix('row')}`);
-    const { height, headerHeight } = this.props;
-    let contentHeight = 0;
-    Array.from(rows).forEach(row => {
-      contentHeight += getHeight(row);
-    });
+    const { height, autoHeight, headerHeight, rowHeight } = this.props;
+    const contentHeight = Array.from(rows)
+      .map(row => getHeight(row) || rowHeight)
+      .reduce((x, y) => x + y);
 
     const nextContentHeight = contentHeight - headerHeight;
     this.setState({
       contentHeight: nextContentHeight
     });
-    // 这里 -10 是为了让滚动条不挡住内容部分
-    this.minScrollY = -(contentHeight - height) - 10;
+
+    if (!autoHeight) {
+      // 这里 -10 是为了让滚动条不挡住内容部分
+      this.minScrollY = -(contentHeight - height) - 10;
+    }
 
     /**
      * 当 content height 更新后，更新纵向滚动条
@@ -611,9 +616,8 @@ class Table extends React.Component<Props, State> {
     props: Object,
     shouldRenderExpandedRow?: boolean
   ) {
-    const { onRowClick, renderTreeToggle, rowKey, wordWrap } = this.props;
-
-    const hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children);
+    const { onRowClick, renderTreeToggle, rowKey, wordWrap, isTree } = this.props;
+    const hasChildren = isTree && rowData.children && Array.isArray(rowData.children);
     const nextRowKey =
       rowData[rowKey] ||
       `_${(Math.random() * 1e18)
@@ -730,8 +734,8 @@ class Table extends React.Component<Props, State> {
   }
 
   renderMouseArea() {
-    const { height, headerHeight } = this.props;
-    const styles = { height };
+    const { headerHeight } = this.props;
+    const styles = { height: this.getTableHeight() };
 
     return (
       <div ref={this.bindMouseAreaRef} className={this.addPrefix('mouse-area')} style={styles}>
@@ -763,17 +767,9 @@ class Table extends React.Component<Props, State> {
   }
 
   renderTableBody(bodyCells: Array<any>, rowWidth: number) {
-    const {
-      headerHeight,
-      rowHeight,
-      rowExpandedHeight,
-      height,
-      data,
-      isTree,
-      setRowHeight
-    } = this.props;
-
+    const { headerHeight, rowHeight, rowExpandedHeight, data, isTree, setRowHeight } = this.props;
     const { tableRowsMaxHeight } = this.state;
+    const height = this.getTableHeight();
     const bodyStyles = {
       top: isTree ? 0 : headerHeight,
       height: height - headerHeight
@@ -855,8 +851,9 @@ class Table extends React.Component<Props, State> {
   }
 
   renderScrollbar() {
-    const { disabledScroll, headerHeight, height, loading } = this.props;
+    const { disabledScroll, headerHeight, loading } = this.props;
     const { contentWidth, contentHeight } = this.state;
+    const height = this.getTableHeight();
 
     if (disabledScroll || loading) {
       return null;
@@ -906,7 +903,6 @@ class Table extends React.Component<Props, State> {
       children,
       className,
       width = 0,
-      height,
       style,
       rowHeight,
       isTree,
@@ -934,7 +930,7 @@ class Table extends React.Component<Props, State> {
 
     const styles = {
       width: width || 'auto',
-      height,
+      height: this.getTableHeight(),
       ...style
     };
 

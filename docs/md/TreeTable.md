@@ -15,10 +15,12 @@ class TreeTable extends React.Component {
     return (
       <div>
         <Table
-          height={400}
-          data={data}
+          autoHeight
           isTree
           defaultExpandAllRows
+          minHeight={260}
+          height={400}
+          data={data}
           onExpandChange={(isOpen, rowData) => {
             console.log(isOpen, rowData);
           }}
