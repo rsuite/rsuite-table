@@ -342,4 +342,20 @@ describe('Table', () => {
     );
     assert.equal(body.style.height, `${data.length * 46}px`);
   });
+
+  it('Should not be displayed header', () => {
+    const instanceDom = getDOMNode(
+      <Table showHeader={false}>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+    assert.equal(instanceDom.querySelectorAll('.rs-table-header-row-wrapper').length, 0);
+  });
 });

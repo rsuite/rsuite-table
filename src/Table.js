@@ -75,7 +75,8 @@ type Props = {
   onTouchStart?: (event: SyntheticTouchEvent<*>) => void, // for tests
   onTouchMove?: (event: SyntheticTouchEvent<*>) => void, // for tests
   bodyRef?: React.ElementRef<*>,
-  loadAnimation?: boolean
+  loadAnimation?: boolean,
+  showHeader?: boolean
 };
 
 type State = {
@@ -114,6 +115,7 @@ class Table extends React.Component<Props, State> {
     rowExpandedHeight: 100,
     sortType: 'asc',
     hover: true,
+    showHeader: true,
     rowKey: 'key',
     locale: {
       emptyMessage: 'No data found',
@@ -201,11 +203,20 @@ class Table extends React.Component<Props, State> {
   }
 
   /**
+   * 获取表头高度
+   */
+  getTableHeaderHeight() {
+    const { headerHeight, showHeader } = this.props;
+    return showHeader ? headerHeight : 0;
+  }
+
+  /**
    * 获取 Table 需要渲染的高度
    */
   getTableHeight() {
     const { contentHeight } = this.state;
-    const { headerHeight, minHeight, height, autoHeight } = this.props;
+    const { minHeight, height, autoHeight } = this.props;
+    const headerHeight = this.getTableHeaderHeight();
     return autoHeight ? Math.max(headerHeight + contentHeight, minHeight) : height;
   }
 
@@ -224,8 +235,8 @@ class Table extends React.Component<Props, State> {
     }
 
     const { width: tableWidth } = this.state;
-    const { sortColumn, sortType, onSortColumn, rowHeight, headerHeight } = this.props;
-
+    const { sortColumn, sortType, onSortColumn, rowHeight, showHeader } = this.props;
+    const headerHeight = this.getTableHeaderHeight();
     const { totalFlexGrow, totalWidth } = getTotalByColumns(columns);
 
     ReactChildren.forEach(columns, (column, index) => {
@@ -265,30 +276,33 @@ class Table extends React.Component<Props, State> {
           lastColumn: index === columns.length - 1
         };
 
-        const headerCellProps = {
-          dataKey: columnChildren[1].props.dataKey,
-          isHeaderCell: true,
-          sortable: column.props.sortable,
-          sortColumn,
-          sortType,
-          onSortColumn,
-          flexGrow
-        };
+        if (showHeader && headerHeight) {
+          const headerCellProps = {
+            dataKey: columnChildren[1].props.dataKey,
+            isHeaderCell: true,
+            sortable: column.props.sortable,
+            sortColumn,
+            sortType,
+            onSortColumn,
+            flexGrow
+          };
 
-        if (resizable) {
-          _.merge(headerCellProps, {
-            onColumnResizeEnd: this.handleColumnResizeEnd,
-            onColumnResizeStart: this.handleColumnResizeStart,
-            onColumnResizeMove: this.handleColumnResizeMove
-          });
+          if (resizable) {
+            _.merge(headerCellProps, {
+              onColumnResizeEnd: this.handleColumnResizeEnd,
+              onColumnResizeStart: this.handleColumnResizeStart,
+              onColumnResizeMove: this.handleColumnResizeMove
+            });
+          }
+
+          headerCells.push(
+            React.cloneElement(columnChildren[0], {
+              ...cellProps,
+              ...headerCellProps
+            })
+          );
         }
 
-        headerCells.push(
-          React.cloneElement(columnChildren[0], {
-            ...cellProps,
-            ...headerCellProps
-          })
-        );
         bodyCells.push(React.cloneElement(columnChildren[1], cellProps));
 
         left += nextWidth;
@@ -422,7 +436,9 @@ class Table extends React.Component<Props, State> {
       this.wheelWrapper && addStyle(this.wheelWrapper, wheelStyle);
       this.headerWrapper && addStyle(this.headerWrapper, headerStyle);
     }
-    toggleClass(this.tableHeader, this.addPrefix('cell-group-shadow'), this.scrollY < 0);
+    if (this.tableHeader) {
+      toggleClass(this.tableHeader, this.addPrefix('cell-group-shadow'), this.scrollY < 0);
+    }
   }
 
   updatePositionByFixedCell() {
@@ -519,8 +535,8 @@ class Table extends React.Component<Props, State> {
 
   calculateTableContentWidth() {
     const table = this.table;
-    const row = table.querySelectorAll(`.${this.addPrefix('row-header')}`)[0];
-    const contentWidth = getWidth(row);
+    const row = table.querySelector(`.${this.addPrefix('row')}`);
+    const contentWidth = row ? getWidth(row) : 0;
 
     this.setState({ contentWidth });
     // 这里 -10 是为了让滚动条不挡住内容部分
@@ -537,11 +553,14 @@ class Table extends React.Component<Props, State> {
 
   calculateTableContextHeight() {
     const table = this.table;
-    const rows = table.querySelectorAll(`.${this.addPrefix('row')}`);
-    const { height, autoHeight, headerHeight, rowHeight } = this.props;
-    const contentHeight = Array.from(rows)
-      .map(row => getHeight(row) || rowHeight)
-      .reduce((x, y) => x + y);
+    const rows = table.querySelectorAll(`.${this.addPrefix('row')}`) || [];
+    const { height, autoHeight, rowHeight } = this.props;
+    const headerHeight = this.getTableHeaderHeight();
+    const contentHeight = rows.length
+      ? Array.from(rows)
+          .map(row => getHeight(row) || rowHeight)
+          .reduce((x, y) => x + y)
+      : 0;
 
     const nextContentHeight = contentHeight - headerHeight;
     this.setState({
@@ -734,7 +753,7 @@ class Table extends React.Component<Props, State> {
   }
 
   renderMouseArea() {
-    const { headerHeight } = this.props;
+    const headerHeight = this.getTableHeaderHeight();
     const styles = { height: this.getTableHeight() };
 
     return (
@@ -749,7 +768,8 @@ class Table extends React.Component<Props, State> {
   }
 
   renderTableHeader(headerCells: Array<any>, rowWidth: number) {
-    const { rowHeight, headerHeight } = this.props;
+    const { rowHeight } = this.props;
+    const headerHeight = this.getTableHeaderHeight();
     const rowProps = {
       rowRef: this.bindTableHeaderRef,
       width: rowWidth,
@@ -767,7 +787,8 @@ class Table extends React.Component<Props, State> {
   }
 
   renderTableBody(bodyCells: Array<any>, rowWidth: number) {
-    const { headerHeight, rowHeight, rowExpandedHeight, data, isTree, setRowHeight } = this.props;
+    const { rowHeight, rowExpandedHeight, data, isTree, setRowHeight } = this.props;
+    const headerHeight = this.getTableHeaderHeight();
     const { tableRowsMaxHeight } = this.state;
     const height = this.getTableHeight();
     const bodyStyles = {
@@ -851,7 +872,8 @@ class Table extends React.Component<Props, State> {
   }
 
   renderScrollbar() {
-    const { disabledScroll, headerHeight, loading } = this.props;
+    const { disabledScroll, loading } = this.props;
+    const headerHeight = this.getTableHeaderHeight();
     const { contentWidth, contentHeight } = this.state;
     const height = this.getTableHeight();
 
@@ -912,6 +934,7 @@ class Table extends React.Component<Props, State> {
       wordWrap,
       classPrefix,
       loading,
+      showHeader,
       ...rest
     } = this.props;
 
@@ -938,9 +961,9 @@ class Table extends React.Component<Props, State> {
 
     return (
       <div {...unhandled} className={clesses} style={styles} ref={this.bindTableRef}>
-        {this.renderTableHeader(headerCells, rowWidth)}
+        {showHeader && this.renderTableHeader(headerCells, rowWidth)}
         {children && this.renderTableBody(bodyCells, rowWidth)}
-        {this.renderMouseArea()}
+        {showHeader && this.renderMouseArea()}
       </div>
     );
   }

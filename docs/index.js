@@ -41,12 +41,12 @@ class App extends React.Component {
               content: require('./md/AutoHeightTable.md')
             },
             {
-              title: '调整列宽',
-              content: require('./md/ResizableColumnTable.md')
-            },
-            {
               title: '自动列宽',
               content: require('./md/FluidColumnTable.md')
+            },
+            {
+              title: '自定义调整列宽',
+              content: require('./md/ResizableColumnTable.md')
             },
             {
               title: '自动换行',
@@ -79,6 +79,14 @@ class App extends React.Component {
             {
               title: '合并列单元格',
               content: require('./md/ColspanTable.md')
+            },
+            {
+              title: '隐藏表头',
+              content: require('./md/HideTableHeader.md')
+            },
+            {
+              title: '数据为空',
+              content: require('./md/EmptyDataTable.md')
             }
           ]}
         />
