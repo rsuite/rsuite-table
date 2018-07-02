@@ -20,8 +20,6 @@ class Examples extends React.Component {
   render() {
     const { list, dependencies } = this.props;
     const { index } = this.state;
-    console.log(index);
-
     return (
       <div>
         <ButtonToolbar size="xs">
