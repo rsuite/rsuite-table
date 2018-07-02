@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Nav } from 'rsuite';
+import { Row, Col, Nav, ButtonToolbar, Button } from 'rsuite';
 import CodeView from 'react-code-view';
 
 const CustomCodeView = ({ ...props }) => (
@@ -24,22 +24,22 @@ class Examples extends React.Component {
 
     return (
       <div>
-        <Nav tabs>
+        <ButtonToolbar size="xs">
           {list.map((item, i) => {
             return (
-              <Nav.Item
-                eventKey={i}
-                active={index === i}
+              <Button
+                size="xs"
+                shape={index === i ? 'primary' : 'default'}
                 key={i}
                 onClick={() => {
                   this.setState({ index: i });
                 }}
               >
                 {item.title}
-              </Nav.Item>
+              </Button>
             );
           })}
-        </Nav>
+        </ButtonToolbar>
         <CustomCodeView key={index} dependencies={dependencies}>
           {list[index].content}
         </CustomCodeView>

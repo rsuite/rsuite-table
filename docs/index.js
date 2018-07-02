@@ -37,6 +37,10 @@ class App extends React.Component {
               content: require('./md/FixedColumnTable.md')
             },
             {
+              title: '自动高度',
+              content: require('./md/AutoHeightTable.md')
+            },
+            {
               title: '调整列宽',
               content: require('./md/ResizableColumnTable.md')
             },

@@ -115,6 +115,65 @@ describe('Table', () => {
     assert.include(instanceDom.className, 'rs-table-word-wrap');
   });
 
+  it('Should be automatic height', () => {
+    const instanceDom = getDOMNode(
+      <Table
+        autoHeight
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          },
+          {
+            id: 2,
+            name: 'b'
+          }
+        ]}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+    // 2 rows + header row
+    const height = 46 * 2 + 46;
+    assert.equal(instanceDom.style.height, `${height}px`);
+  });
+
+  it('Should be min height', () => {
+    const instanceDom = getDOMNode(
+      <Table
+        autoHeight
+        minHeight={500}
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          },
+          {
+            id: 2,
+            name: 'b'
+          }
+        ]}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+    assert.equal(instanceDom.style.height, `${500}px`);
+  });
+
   it('Should call `setRowHeight` callback', done => {
     const doneOp = () => {
       done();
