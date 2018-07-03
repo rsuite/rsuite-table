@@ -1,3 +1,15 @@
+# 3.0.5
+
+> 2018-7-3
+
+- Feature: Support `showHeader` on `<Table>` ([#30])
+- Feature: Support `autoHeight` and `minHeight` on `<Table>` ([#29])
+- Feature: Support `cellBordered` on `<Table>` ([#28])
+
+[30]: https://github.com/rsuite/rsuite-table/pull/30
+[29]: https://github.com/rsuite/rsuite-table/pull/29
+[28]: https://github.com/rsuite/rsuite-table/pull/28
+
 # 3.0.4
 
 > 2018-6-26
