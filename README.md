@@ -24,12 +24,6 @@
 npm i rsuite-table --save
 ```
 
-> `rsuite-table` 中的组件依赖了 `rsuite`，所以需要安装一下 `rsuite`。
-
-```sh
-npm i rsuite --save
-```
-
 ### 样式
 
 在 `less` 文件中引入:
@@ -38,59 +32,51 @@ npm i rsuite --save
 @import '~rsuite-table/lib/less/index.less';
 ```
 
-
 ### 示例代码
 
 ```js
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 
 const dataList = [
-    {id:1, name:'a', email:'a@email.com',avartar:'...'},
-    {id:2, name:'b', email:'b@email.com',avartar:'...'},
-    {id:3, name:'c', email:'c@email.com',avartar:'...'}
+  { id: 1, name: 'a', email: 'a@email.com', avartar: '...' },
+  { id: 2, name: 'b', email: 'b@email.com', avartar: '...' },
+  { id: 3, name: 'c', email: 'c@email.com', avartar: '...' }
 ];
 
 const ImageCell = ({ rowData, dataKey, ...props }) => (
-    <Cell {...props}>
-        <img src={rowData[dataKey]} width="50" />
-    </Cell>
+  <Cell {...props}>
+    <img src={rowData[dataKey]} width="50" />
+  </Cell>
 );
 
+<Table data={dataList}>
+  <Column width={100} sort fixed resizable>
+    <HeaderCell>ID</HeaderCell>
+    <Cell dataKey="id" />
+  </Column>
 
-<Table data = {dataList}  >
-    <Column  width = {100} sort fixed resizable>
-        <HeaderCell>ID</HeaderCell>
-        <Cell dataKey="id"></Cell>
-    </Column>
+  <Column width={100} sort resizable>
+    <HeaderCell>Name</HeaderCell>
+    <Cell dataKey="name" />
+  </Column>
 
-    <Column  width = {100} sort resizable>
-        <HeaderCell>Name</HeaderCell>
-        <Cell dataKey="name"></Cell>
-    </Column>
+  <Column width={100} sort resizable>
+    <HeaderCell>Email</HeaderCell>
+    <Cell dataKey="email" />
+  </Column>
 
-    <Column  width = {100} sort resizable>
-        <HeaderCell>Email</HeaderCell>
-        <Cell dataKey="email"></Cell>
-    </Column>
-
-    <Column  width = {100} resizable>
-        <HeaderCell>Avartar</HeaderCell>
-        <ImageCell dataKey="avartar"></ImageCell>
-    </Column>
-</Table>
+  <Column width={100} resizable>
+    <HeaderCell>Avartar</HeaderCell>
+    <ImageCell dataKey="avartar" />
+  </Column>
+</Table>;
 ```
-
-
 
 [npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/rsuite-table
-
-
 [npm-beta-badge]: https://img.shields.io/npm/v/rsuite-table/beta.svg?style=flat-square
 [npm-beta]: https://www.npmjs.com/package/rsuite-table
-
 [build-badge]: https://img.shields.io/travis/rsuite/rsuite-table.svg?style=flat-square
 [build]: https://travis-ci.org/rsuite/rsuite-table
-
 [coverage-badge]: https://img.shields.io/coveralls/rsuite/rsuite-table.svg?style=flat-square
 [coverage]: https://coveralls.io/github/rsuite/rsuite-table
