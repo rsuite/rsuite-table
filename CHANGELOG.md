@@ -1,3 +1,9 @@
+# 3.0.6
+
+- Chore: Remove dependency for `rsuite-theme` ([#32])
+
+[32]: https://github.com/rsuite/rsuite-table/pull/32
+
 # 3.0.5
 
 > 2018-7-3
