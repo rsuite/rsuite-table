@@ -92,7 +92,6 @@
     "react-test-renderer": "^16.0.0",
     "rsuite": "^2.0.12",
     "rsuite-docs": "^0.1.13",
-    "rsuite-theme": "^2.0.17",
     "sinon": "^4.0.2",
     "sinon-chai": "^2.12.0",
     "style-loader": "^0.13.1",
