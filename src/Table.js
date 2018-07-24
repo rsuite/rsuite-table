@@ -511,7 +511,7 @@ class Table extends React.Component {
     const { onRowClick, renderTreeToggle, wordWrap } = this.props;
     const hasChildren = this.props.isTree && rowData.children && Array.isArray(rowData.children);
     const rowKey = `_${(Math.random() * 1E18).toString(36).slice(0, 5).toUpperCase()}_${props.index}`;
-
+    this.tableRows=[];
     const row = this.renderRow({
       rowRef: (ref) => {
         this.tableRows[props.index] = ref;
@@ -578,13 +578,15 @@ class Table extends React.Component {
     if (wordWrap) {
       const tableRowsMaxHeight = [];
       this.tableRows.forEach((row, index) => {
-        let cells = row.querySelectorAll('.rsuite-table-cell-wrap') || [];
-        let maxHeight = 0;
-        cells.forEach(cell => {
-          let h = getHeight(cell);
-          maxHeight = Math.max(maxHeight, h);
-        });
-        tableRowsMaxHeight.push(maxHeight);
+        if(row){
+          let cells = row.querySelectorAll('.rsuite-table-cell-wrap') || [];
+          let maxHeight = 0;
+          cells.forEach(cell => {
+            let h = getHeight(cell);
+            maxHeight = Math.max(maxHeight, h);
+          });
+          tableRowsMaxHeight.push(maxHeight);
+        }
       });
       this.setState({ tableRowsMaxHeight });
     }
