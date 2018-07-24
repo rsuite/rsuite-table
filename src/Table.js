@@ -592,7 +592,9 @@ class Table extends React.Component<Props, State> {
   }
 
   bindTableRowsRef = (index: number) => (ref: React.ElementRef<*>) => {
-    this.tableRows[index] = ref;
+    if (ref) {
+      this.tableRows[index] = ref;
+    }
   };
 
   bindMouseAreaRef = (ref: React.ElementRef<*>) => {
