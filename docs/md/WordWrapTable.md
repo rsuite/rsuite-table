@@ -1,8 +1,8 @@
 ### 自动换行
 
 <!--start-code-->
-```js
 
+```js
 class WordWrapTable extends React.Component {
   constructor(props) {
     super(props);
@@ -11,14 +11,13 @@ class WordWrapTable extends React.Component {
     };
   }
   render() {
-
     return (
       <div>
         <Table
           wordWrap
           height={400}
           data={this.state.data}
-          onRowClick={(data) => {
+          onRowClick={data => {
             console.log(data);
           }}
         >
@@ -32,54 +31,63 @@ class WordWrapTable extends React.Component {
             <Cell dataKey="firstName" />
           </Column>
 
-          <Column width={130} >
+          <Column width={130}>
             <HeaderCell>Last Name</HeaderCell>
             <Cell dataKey="lastName" />
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>City</HeaderCell>
             <Cell dataKey="city" />
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Street</HeaderCell>
             <Cell dataKey="street" />
           </Column>
 
-
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Company Name</HeaderCell>
             <Cell dataKey="companyName" />
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
-
         </Table>
+        <hr />
+        <button
+          onClick={() => {
+            this.setState({
+              data: []
+            });
+          }}
+        >
+          Clear Data
+        </button>
       </div>
     );
   }
 }
 ReactDOM.render(<WordWrapTable />);
 ```
+
 <!--end-code-->
 
 > 如果想让单元格自动换行，只需要设置 `wordWrap`
