@@ -1,3 +1,9 @@
+# 3.0.7
+
+- Chore: filter the ref value of `null` for `tableRows`([#33])
+
+[32]: https://github.com/rsuite/rsuite-table/pull/333
+
 # 3.0.6
 
 - Chore: Remove dependency for `rsuite-theme` ([#32])
