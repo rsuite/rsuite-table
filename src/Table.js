@@ -186,7 +186,6 @@ class Table extends React.Component {
   }
 
   componentDidMount() {
-    const { wordWrap } = this.props;
     this.reportTableWidth();
     this.reportTableContextHeight();
     this.calculateRowMaxHeight();
@@ -514,7 +513,9 @@ class Table extends React.Component {
     this.tableRows=[];
     const row = this.renderRow({
       rowRef: (ref) => {
-        this.tableRows[props.index] = ref;
+        if(ref){
+          this.tableRows[props.index] = ref;
+        }
       },
       key: props.index,
       width: props.rowWidth,
@@ -581,7 +582,7 @@ class Table extends React.Component {
         if(row){
           let cells = row.querySelectorAll('.rsuite-table-cell-wrap') || [];
           let maxHeight = 0;
-          cells.forEach(cell => {
+          Array.from(cells).forEach(cell => {
             let h = getHeight(cell);
             maxHeight = Math.max(maxHeight, h);
           });
