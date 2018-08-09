@@ -1,3 +1,7 @@
+# 3.1.0
+
+- Chore: Migrated to new lifecycle method
+
 # 3.0.7
 
 - Chore: filter the ref value of `null` for `tableRows`([#33])
