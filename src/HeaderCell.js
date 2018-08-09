@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
+import { polyfill } from 'react-lifecycles-compat';
 
 import Cell from './Cell';
 import ColumnResizeHandler from './ColumnResizeHandler';
@@ -37,7 +38,9 @@ type Props = {
 
 type State = {
   initialEvent?: Object,
-  columnWidth?: number
+  columnWidth?: number,
+  width?: number,
+  flexGrow?: number
 };
 
 class HeaderCell extends React.Component<Props, State> {
@@ -45,20 +48,28 @@ class HeaderCell extends React.Component<Props, State> {
     classPrefix: defaultClassPrefix('table-cell-header'),
     sortType: 'asc'
   };
+
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    if (nextProps.width !== prevState.width || nextProps.flexGrow !== prevState.flexGrow) {
+      return {
+        width: nextProps.width,
+        flexGrow: nextProps.flexGrow,
+        columnWidth: isNullOrUndefined(nextProps.flexGrow) ? nextProps.width : 0
+      };
+    }
+
+    return null;
+  }
+
   constructor(props: Props) {
     super(props);
     this.state = {
+      width: props.width,
+      flexGrow: props.flexGrow,
       columnWidth: isNullOrUndefined(props.flexGrow) ? props.width : 0
     };
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (this.props.width !== nextProps.width || this.props.flexGrow !== nextProps.flexGrow) {
-      this.setState({
-        columnWidth: isNullOrUndefined(nextProps.flexGrow) ? nextProps.width : 0
-      });
-    }
-  }
   handleColumnResizeStart = (event: any) => {
     const { left, fixed, onColumnResizeStart } = this.props;
 
@@ -154,5 +165,7 @@ class HeaderCell extends React.Component<Props, State> {
     );
   }
 }
+
+polyfill(HeaderCell);
 
 export default HeaderCell;

@@ -37,7 +37,7 @@ class ColumnResizeHandler extends React.Component<Props> {
     this.columnWidth = props.columnWidth || 0;
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  shouldComponentUpdate(nextProps: Props) {
     if (
       nextProps.initialEvent &&
       this.isKeyDown &&
@@ -50,6 +50,7 @@ class ColumnResizeHandler extends React.Component<Props> {
     if (nextProps.columnWidth !== this.props.columnWidth) {
       this.columnWidth = nextProps.columnWidth;
     }
+    return true;
   }
 
   componentWillUnmount() {

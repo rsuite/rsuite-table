@@ -5,8 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "rm -rf lib && babel src --out-dir lib && cp -R src/less lib",
-    "dev":
-      "NODE_ENV=development webpack-dev-server  --inline --progress --colors --port 3100 --host 0.0.0.0 ",
+    "dev": "NODE_ENV=development webpack-dev-server  --inline --progress --colors --port 3100 --host 0.0.0.0 ",
     "docs": "rm -rf assets &&  NODE_ENV=production webpack",
     "publish-docs": "node docs/gh-pages.js",
     "tdd": "karma start",
@@ -17,7 +16,11 @@
   },
   "author": "simonguo.2009@gmail.com",
   "license": "MIT",
-  "files": ["CHANGELOG.md", "lib", "src"],
+  "files": [
+    "CHANGELOG.md",
+    "lib",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:rsuite/rsuite-table.git"
@@ -26,7 +29,8 @@
     "classnames": "^2.2.5",
     "dom-lib": "^1.0.0",
     "element-resize-event": "^2.0.9",
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.5",
+    "react-lifecycles-compat": "^3.0.4"
   },
   "peerDependencies": {
     "react": "^0.14.9 || >=15.3.0",
@@ -56,11 +60,13 @@
     "es6-promise": "^4.1.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-flowtype": "^2.46.1",
     "eslint-plugin-import": "^2.6.1",
     "eslint-plugin-json": "^1.2.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.3.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "faker": "^4.1.0",
