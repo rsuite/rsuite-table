@@ -130,26 +130,14 @@ class Table extends React.Component<Props, State> {
       rowKey,
       defaultExpandAllRows,
       renderRowExpanded,
-      defaultExpandedRowKeys
+      defaultExpandedRowKeys,
+      children = [],
+      isTree
     } = props;
     const expandedRowKeys = defaultExpandAllRows
       ? findRowKeys(data, rowKey, _.isFunction(renderRowExpanded))
       : defaultExpandedRowKeys || [];
 
-    this.state = {
-      expandedRowKeys,
-      width: width || 0,
-      columnWidth: 0,
-      dataKey: 0,
-      shouldFixedColumn: false,
-      contentHeight: 0,
-      contentWidth: 0,
-      tableRowsMaxHeight: []
-    };
-  }
-
-  componentWillMount() {
-    const { children = [], isTree, rowKey } = this.props;
     const shouldFixedColumn = Array.from(children).some((child: any) =>
       _.get(child, 'props.fixed')
     );
@@ -157,6 +145,16 @@ class Table extends React.Component<Props, State> {
     if (isTree && !rowKey) {
       throw new Error('The `rowKey` is required when set isTree');
     }
+    this.state = {
+      expandedRowKeys,
+      shouldFixedColumn,
+      width: width || 0,
+      columnWidth: 0,
+      dataKey: 0,
+      contentHeight: 0,
+      contentWidth: 0,
+      tableRowsMaxHeight: []
+    };
 
     this.scrollY = 0;
     this.scrollX = 0;
@@ -169,8 +167,8 @@ class Table extends React.Component<Props, State> {
       this.shouldHandleWheelX,
       this.shouldHandleWheelY
     );
-    this.setState({ shouldFixedColumn });
   }
+
   componentDidMount() {
     this.calculateTableWidth();
     this.calculateTableContextHeight();
