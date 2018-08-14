@@ -539,7 +539,6 @@ class Table extends React.Component<Props, State> {
     this.setState({ contentWidth });
     // 这里 -10 是为了让滚动条不挡住内容部分
     this.minScrollX = -(contentWidth - this.state.width) - 10;
-
     /**
      * 当 content width 更新后，更新横向滚动条
      */
@@ -877,7 +876,7 @@ class Table extends React.Component<Props, State> {
     const { contentWidth, contentHeight } = this.state;
     const height = this.getTableHeight();
 
-    if (disabledScroll || loading) {
+    if (disabledScroll) {
       return null;
     }
 
