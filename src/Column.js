@@ -8,7 +8,8 @@ type Props = {
   sortable?: boolean,
   flexGrow?: number,
   minWidth?: number,
-  colSpan?: number
+  colSpan?: number,
+  onResize?: (columnWidth?: number, dataKey?: string) => void
 };
 
 /* eslint-disable */

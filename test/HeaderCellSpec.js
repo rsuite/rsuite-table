@@ -49,4 +49,19 @@ describe('HeaderCell', () => {
     );
     instance.handleColumnResizeEnd(10, 2);
   });
+
+
+  it('Should call `onResize` callback', done => {
+    const instance = getInstance(
+      <HeaderCell
+        width={100}
+        onResize={() => {
+          done();
+        }}
+      />
+    );
+    instance.handleColumnResizeEnd(10, 2);
+  });
+
+
 });

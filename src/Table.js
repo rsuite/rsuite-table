@@ -240,7 +240,7 @@ class Table extends React.Component<Props, State> {
     ReactChildren.forEach(columns, (column, index) => {
       if (React.isValidElement(column)) {
         const columnChildren = column.props.children;
-        const { width, resizable, flexGrow, minWidth } = column.props;
+        const { width, resizable, flexGrow, minWidth, onResize } = column.props;
 
         if (resizable && flexGrow) {
           console.warn(
@@ -287,6 +287,7 @@ class Table extends React.Component<Props, State> {
 
           if (resizable) {
             _.merge(headerCellProps, {
+              onResize,
               onColumnResizeEnd: this.handleColumnResizeEnd,
               onColumnResizeStart: this.handleColumnResizeStart,
               onColumnResizeMove: this.handleColumnResizeMove

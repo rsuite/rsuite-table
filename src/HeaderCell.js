@@ -30,6 +30,7 @@ type Props = {
     dataKey?: any,
     index?: number
   ) => void,
+  onResize?: (columnWidth?: number, dataKey?: string) => void,
   onColumnResizeMove?: (columnWidth?: number, columnLeft?: number, columnFixed?: boolean) => void,
   onSortColumn?: Function,
   flexGrow?: number,
@@ -78,9 +79,10 @@ class HeaderCell extends React.Component<Props, State> {
   };
 
   handleColumnResizeEnd = (columnWidth?: number, cursorDelta?: number) => {
-    const { dataKey, index, onColumnResizeEnd } = this.props;
+    const { dataKey, index, onColumnResizeEnd, onResize } = this.props;
     this.setState({ columnWidth });
     onColumnResizeEnd && onColumnResizeEnd(columnWidth, cursorDelta, dataKey, index);
+    onResize && onResize(columnWidth, dataKey);
   };
 
   handleClick = () => {
