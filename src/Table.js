@@ -833,7 +833,7 @@ class Table extends React.Component {
       contentHeight
     } = this.state;
 
-    if (disabledScroll || loading) {
+    if (disabledScroll) {
       return null;
     }
 
