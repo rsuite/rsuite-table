@@ -1,3 +1,6 @@
+# 2.1.8
+- Bugfix: The scrollbar position is reset when the data is loaded
+
 # 2.0.1
 
 - 修复多个 bug
