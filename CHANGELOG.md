@@ -1,3 +1,11 @@
+# 3.1.1
+
+- Feature: Support `onResize` on `<Table.Column>`
+- Bugfix: The scrollbar position is reset when the data is loaded
+
+[37]: https://github.com/rsuite/rsuite-table/pull/37
+[36]: https://github.com/rsuite/rsuite-table/pull/36
+
 # 3.1.0
 
 - Chore: Migrated to new lifecycle method
@@ -6,7 +14,7 @@
 
 - Chore: filter the ref value of `null` for `tableRows`([#33])
 
-[32]: https://github.com/rsuite/rsuite-table/pull/333
+[32]: https://github.com/rsuite/rsuite-table/pull/33
 
 # 3.0.6
 
