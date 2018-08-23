@@ -1,7 +1,13 @@
+# 3.1.2
+
+- Bugfix: `flexGrow` is invalid when there is only one column ([#39])
+
+[39]: https://github.com/rsuite/rsuite-table/pull/39
+
 # 3.1.1
 
-- Feature: Support `onResize` on `<Table.Column>`
-- Bugfix: The scrollbar position is reset when the data is loaded
+- Feature: Support `onResize` on `<Table.Column>` ([#37])
+- Bugfix: The scrollbar position is reset when the data is loaded ([#36])
 
 [37]: https://github.com/rsuite/rsuite-table/pull/37
 [36]: https://github.com/rsuite/rsuite-table/pull/36
