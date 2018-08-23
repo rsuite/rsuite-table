@@ -16,7 +16,16 @@ function getTotalByColumns(columns) {
       }
     });
   };
-  count(columns);
+
+  if (_.isArray(columns)) {
+    count(columns);
+  } else if (_.isPlainObject(columns)) {
+    const { flexGrow, width = 0 } = columns.props;
+
+    totalFlexGrow = flexGrow || 0;
+    totalWidth = flexGrow ? 0 : width;
+  }
+
   return {
     totalFlexGrow,
     totalWidth
