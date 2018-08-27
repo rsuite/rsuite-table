@@ -1,3 +1,9 @@
+# 3.1.3
+
+- Bugfix: The default value of `sortType` on `<Table>` should be `desc` ([#40])
+
+[40]: https://github.com/rsuite/rsuite-table/pull/40
+
 # 3.1.2
 
 - Bugfix: `flexGrow` is invalid when there is only one column ([#39])
