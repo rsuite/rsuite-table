@@ -11,12 +11,14 @@ describe('HeaderCell', () => {
   });
 
   it('Should call `onSortColumn` callback', done => {
-    const doneOp = () => {
-      done();
+    const doneOp = (dataKey, sortType) => {
+      if (dataKey === 'name' && sortType === 'desc') {
+        done();
+      }
     };
 
     const instanceDom = getDOMNode(
-      <HeaderCell onSortColumn={doneOp} sortable>
+      <HeaderCell onSortColumn={doneOp} sortable dataKey="name">
         test
       </HeaderCell>
     );
@@ -50,7 +52,6 @@ describe('HeaderCell', () => {
     instance.handleColumnResizeEnd(10, 2);
   });
 
-
   it('Should call `onResize` callback', done => {
     const instance = getInstance(
       <HeaderCell
@@ -62,6 +63,4 @@ describe('HeaderCell', () => {
     );
     instance.handleColumnResizeEnd(10, 2);
   });
-
-
 });
