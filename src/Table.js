@@ -540,13 +540,6 @@ class Table extends React.Component<Props, State> {
     this.setState({ contentWidth });
     // 这里 -10 是为了让滚动条不挡住内容部分
     this.minScrollX = -(contentWidth - this.state.width) - 10;
-    /**
-     * 当 content width 更新后，更新横向滚动条
-     */
-    if (this.state.contentWidth !== contentWidth) {
-      this.scrollX = 0;
-      this.scrollbarX && this.scrollbarX.resetScrollBarPosition();
-    }
   }
 
   calculateTableContextHeight() {
