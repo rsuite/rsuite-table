@@ -1,3 +1,9 @@
+# 3.1.5
+
+- Bugfix: Column Widths change affects the scroll bar ([#rsuite-224])
+
+[rsuite-224]: https://github.com/rsuite/rsuite/issues/224
+
 # 3.1.3
 
 - Bugfix: The default value of `sortType` on `<Table>` should be `desc` ([#40])
