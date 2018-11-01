@@ -180,9 +180,9 @@ class Table extends React.Component<Props, State> {
     return !_.eq(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: Props) {
     this.calculateTableContextHeight();
-    this.calculateTableContentWidth();
+    this.calculateTableContentWidth(prevProps);
     this.calculateRowMaxHeight();
     this.updatePosition();
   }
@@ -532,7 +532,7 @@ class Table extends React.Component<Props, State> {
     }
   };
 
-  calculateTableContentWidth() {
+  calculateTableContentWidth(prevProps: Props) {
     const table = this.table;
     const row = table.querySelector(`.${this.addPrefix('row')}`);
     const contentWidth = row ? getWidth(row) : 0;
@@ -540,6 +540,20 @@ class Table extends React.Component<Props, State> {
     this.setState({ contentWidth });
     // 这里 -10 是为了让滚动条不挡住内容部分
     this.minScrollX = -(contentWidth - this.state.width) - 10;
+
+    /**
+     * 1.判断 Table 内容区域是否宽度有变化
+     * 2.判断 Table 列数是否发生变化
+     *
+     * 满足 1 和 2 则更新横向滚动条位置
+     */
+    if (
+      this.state.contentWidth !== contentWidth &&
+      _.flatten(this.props.children).length !== _.flatten(prevProps.children).length
+    ) {
+      this.scrollX = 0;
+      this.scrollbarX && this.scrollbarX.resetScrollBarPosition();
+    }
   }
 
   calculateTableContextHeight() {
