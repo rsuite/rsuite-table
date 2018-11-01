@@ -1,3 +1,7 @@
+# 3.1.6
+
+- Bugfix: The scroll bar is not reset after the column has changed
+
 # 3.1.5
 
 - Bugfix: Column Widths change affects the scroll bar ([#rsuite-224])
