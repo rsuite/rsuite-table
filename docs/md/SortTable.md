@@ -1,12 +1,13 @@
 ### 排序
 
 <!--start-code-->
-```js
 
+```js
 class SortTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      sortColumn: 'id',
       addColumn: false,
       data: fakeData
     };
@@ -63,7 +64,6 @@ class SortTable extends React.Component {
     ];
   }
   render() {
-
     return (
       <div>
         <Table
@@ -73,11 +73,10 @@ class SortTable extends React.Component {
           sortType={this.state.sortType}
           onSortColumn={this.handleSortColumn}
           loading={this.state.loading}
-          onRowClick={(data) => {
+          onRowClick={data => {
             console.log(data);
           }}
         >
-
           <Column width={70} align="center" fixed sortable>
             <HeaderCell>Id</HeaderCell>
             <Cell dataKey="id" />
@@ -105,18 +104,15 @@ class SortTable extends React.Component {
             <Cell dataKey="street" />
           </Column>
 
-
           <Column width={200} sortable>
             <HeaderCell>Company Name</HeaderCell>
             <Cell dataKey="companyName" />
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
-
-
         </Table>
         <button
           onClick={() => {
@@ -130,19 +126,17 @@ class SortTable extends React.Component {
       </div>
     );
   }
-
 }
 
 ReactDOM.render(<SortTable />);
 ```
+
 <!--end-code-->
 
 > 在需要排序的列 `<Column>` 设置一个 `sortable` 属性。
 > 同时在 `<Table>` 定义一个 `onSortColumn` 回调函数，点击列头排序图标的时候，会触发该方法，并返回 `sortColumn` 和 `sortType`。
 
-
 ```html
-
 <Table
   onSortColumn={(sortColumn, sortType)=>{
     console.log(sortColumn, sortType);

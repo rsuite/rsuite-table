@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
+import _ from 'lodash';
 import { polyfill } from 'react-lifecycles-compat';
 
 import Cell from './Cell';
@@ -20,7 +21,8 @@ type Props = {
   // self props
   index?: number,
   sortColumn?: string,
-  sortType: 'desc' | 'asc',
+  sortType?: 'desc' | 'asc',
+  defaultSortType?: 'desc' | 'asc',
   sortable?: boolean,
   resizable?: boolean,
   onColumnResizeStart?: (columnWidth?: number, left?: number, fixed?: boolean) => void,
@@ -47,8 +49,7 @@ type State = {
 
 class HeaderCell extends React.Component<Props, State> {
   static defaultProps = {
-    classPrefix: defaultClassPrefix('table-cell-header'),
-    sortType: 'asc'
+    classPrefix: defaultClassPrefix('table-cell-header')
   };
 
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
@@ -66,11 +67,16 @@ class HeaderCell extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      sortType: props.sortType,
+      sortType: props.defaultSortType || 'asc',
       width: props.width,
       flexGrow: props.flexGrow,
       columnWidth: isNullOrUndefined(props.flexGrow) ? props.width : 0
     };
+  }
+
+  getSortType() {
+    const { sortType } = this.props;
+    return _.isUndefined(sortType) ? this.state.sortType : sortType;
   }
 
   handleColumnResizeStart = (event: any) => {
@@ -90,7 +96,7 @@ class HeaderCell extends React.Component<Props, State> {
   handleClick = () => {
     const { sortable, dataKey, onSortColumn } = this.props;
     if (sortable) {
-      const sortType = this.state.sortType === 'asc' ? 'desc' : 'asc';
+      const sortType = this.getSortType() === 'asc' ? 'desc' : 'asc';
       this.setState({
         sortType
       });
@@ -124,7 +130,7 @@ class HeaderCell extends React.Component<Props, State> {
 
   renderSortColumn() {
     const { sortable, sortColumn, dataKey } = this.props;
-    const { sortType } = this.state;
+    const sortType = this.getSortType();
 
     if (sortable) {
       const iconClasses = classNames(this.addPrefix('icon-sort'), {
