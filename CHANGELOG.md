@@ -1,3 +1,9 @@
+# 3.1.7
+
+- Feature: Support `rowClassName` on Table
+- Feature: Support `defaultSortType` on `<Table>` and let `sortType` be controlled
+- Chore: Update element-resize-event
+
 # 3.1.6
 
 - Bugfix: The scroll bar is not reset after the column has changed
