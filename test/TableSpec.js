@@ -358,4 +358,68 @@ describe('Table', () => {
     );
     assert.equal(instanceDom.querySelectorAll('.rs-table-header-row-wrapper').length, 0);
   });
+
+  it('Should hava row className', () => {
+    const instanceDom = getDOMNode(
+      <Table
+        rowClassName="custom-row"
+        minHeight={500}
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          },
+          {
+            id: 2,
+            name: 'b'
+          }
+        ]}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+    assert.equal(instanceDom.querySelectorAll('.rs-table-row.custom-row').length, 3);
+  });
+
+  it('Should hava row className by rowClassName()', () => {
+    const instanceDom = getDOMNode(
+      <Table
+        rowClassName={rowData => {
+          if (rowData && rowData.id === 1) {
+            return 'custom-row';
+          }
+          return 'default-row';
+        }}
+        minHeight={500}
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          },
+          {
+            id: 2,
+            name: 'b'
+          }
+        ]}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+    assert.equal(instanceDom.querySelectorAll('.rs-table-row.custom-row').length, 1);
+    assert.equal(instanceDom.querySelectorAll('.rs-table-row.default-row').length, 2);
+  });
 });
