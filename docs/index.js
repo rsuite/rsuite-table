@@ -14,8 +14,7 @@ class App extends React.Component {
   render() {
     return (
       <Grid>
-        <Markdown>{require('../README.md')}</Markdown>
-        <h2 id="examples">示例</h2>
+        <h2>Examples</h2>
         <Examples
           dependencies={{
             Button,
@@ -90,8 +89,7 @@ class App extends React.Component {
             }
           ]}
         />
-
-        <Markdown>{require('./md/props.md')}</Markdown>
+        <Markdown>{require('../README.md')}</Markdown>
       </Grid>
     );
   }

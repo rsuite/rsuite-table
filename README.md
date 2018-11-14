@@ -1,40 +1,34 @@
 # rsuite-table
 
-`rsuite-table` 是一个 `React` 实现的 `<Table>` 组件，主要特性有：
+A React table component,
 
-- 支持固定表头，固定列（固定在左侧）；
-- 支持自定义调整列宽；
-- 支持自定义单元格内容；
-- 支持显示树状表格；
-- 支持排序。
-
-版本与状态
 
 [![npm][npm-badge]][npm]
 
-
 [![Travis][build-badge]][build] [![Coverage Status][coverage-badge]][coverage]
 
-## 快速开始
 
-### 安装
+## Features
+
+- Support fixed header, fixed column.
+- Support custom adjustment column width.
+- Support for custom cell content.
+- Support for displaying a tree form.
+- Support for sorting.
+
+
+## Install
 
 ```sh
 npm i rsuite-table --save
 ```
 
-### 样式
 
-在 `less` 文件中引入:
-
-```css
-@import '~rsuite-table/lib/less/index.less';
-```
-
-### 示例代码
+### Usage
 
 ```js
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
+import 'rsuite-table/lib/less/index.less'
 
 const dataList = [
   { id: 1, name: 'a', email: 'a@email.com', avartar: '...' },
@@ -74,75 +68,69 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 
 ## API
 
+
 ### `<Table>`
 
-| Name             | Type                                      | Default | Description                                                  |
-| ---------------- | ----------------------------------------- | ------- | ------------------------------------------------------------ |
-| bordered         | boolean                                   |         | 显示边框线                                                   |
-| data             | Array                                     |         | 表格数据                                                     |
-| disabledScroll   | boolean                                   |         | 禁用滚动                                                     |
-| expand           | boolean                                   |         | 展开所有节点，`isTree`为 `tree` 时，该属性有效               |
-| headerHeight     | number                                    | 36      | 表头高度                                                     |
-| height           | number                                    | 200     | 高度                                                         |
-| isTree           | boolean                                   |         | 是否展示为树表格                                             |
-| loading          | boolean                                   |         | 显示 loading 状态                                            |
-| locale           | object                                    |         | 本地化语言配置                                               |
-| onExpandChange   | function(isOpen:boolean,rowData:object)   |         | 树形表格，在展开节点的回调函数                               |
-| onRowClick       | function(rowData:object)                  |         | 行点击后的回调函数， 返回 `rowDate`                          |
-| onScroll         | function(scrollX:object, scrollY:object)  |         | 滚动条滚动时候的回调函数                                     |
-| onSortColumn     | function(dataKey:string, sortType:string) |         | 点击排序列的回调函数，返回 `sortColumn`, `sortType` 这两个值 |
-| renderTreeToggle | (icon:node,rowData:object)=> node         |         | 树形表格，在展开节点的回调函数                               |
-| rowClassName     | string ,(rowData:object)=>string          |         | 自定义行 className                                           |
-| rowHeight        | number                                    | 36      | 行高                                                         |
-| setRowHeight     | (rowData:object)=> number                 |         | 重新渲染行高                                                 |
-| sortColumn       | string                                    |         | 排序列名称                                                   |
-| sortType         | string                                    |         | 排序类型 ['desc', 'asc']                                     |
-| width            | number                                    |         | 宽度                                                         |
+| Property               | Type `(Default)`                        | Description                                                                                   |
+| ---------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------- |
+| autoHeight             | boolean                                 | Automatic height                                                                              |
+| bordered               | boolean                                 | Show border                                                                                   |
+| cellBordered           | boolean                                 | Show cell border                                                                              |
+| data \*                | Array&lt;Object&gt;                     | Table data                                                                                    |
+| defaultExpandAllRows   | boolean                                 | Expand all nodes By default                                                                   |
+| defaultExpandedRowKeys | Array&lt;string&gt;                     | Specify the default expanded row by `rowkey`                                                  |
+| defaultSortType        | enum: 'desc', 'asc'                     | Sort type                                                                                     |
+| expandedRowKeys        | Array&lt;string&gt;                     | Specify the default expanded row by `rowkey` (Controlled)                                     |
+| headerHeight           | number`(40)`                            | Table Header Height                                                                           |
+| height                 | number`(200)`                           | Table height                                                                                  |
+| isTree                 | boolean                                 | Show as Tree table                                                                            |
+| loading                | boolean                                 | Show loading                                                                                  |
+| minHeight              | number `(0)`                            | Minimum height                                                                                |
+| onExpandChange         | (expanded:boolean,rowData:object)=>void | Tree table, the callback function in the expanded node                                        |
+| onRowClick             | (rowData:object)=>void                  | Click the callback function after the row and return to `rowDate`                             |
+| onScroll               | (scrollX:object, scrollY:object)=>void  | Callback function for scroll bar scrolling                                                    |
+| onSortColumn           | (dataKey:string, sortType:string)=>void | Click the callback function of the sort sequence to return the value `sortColumn`, `sortType` |
+| renderRowExpanded      | (rowDate?: Object) => React.Node        | Customize what you can do to expand a zone                                                    |
+| renderTreeToggle       | (icon:node,rowData:object)=> node       | Tree table, the callback function in the expanded node                                        |
+| rowClassName           | string , (rowData:object)=>string       | Add an optional extra class name to row                                                       |
+| rowExpandedHeight      | number `(100)`                          | Set the height of an expandable area                                                          |
+| rowHeight              | number`(46)`                            | Row height                                                                                    |
+| rowKey                 | string `('key')`                        | Each row corresponds to the unique `key` in `data`                                            |
+| setRowHeight           | (rowData:object)=> number               | Custom Settings Row Height                                                                    |
+| showHeader             | boolean `(true)`                        | Display header                                                                                |
+| sortColumn             | string                                  | Sort column name ˝                                                                            |
+| sortType               | enum: 'desc', 'asc'                     | Sort type (Controlled)                                                                        |
+| width                  | number                                  | Table width                                                                                   |
 
 
-<br>
-> locale 的默认值是:
-```js
-{
-  emptyMessage: 'No data found',
-  loading: (
-    <div>
-      <i className="icon icon-cog icon-lg icon-spin" />
-      <span>Loading...</span>
-    </div>
-  )
-}
-```
+### `<Column>`
 
-<br>
-###  `<Column>`
-
-| Name      | Type                                           | Default | Description                                                                           |
-| --------- | ---------------------------------------------- | ------- | ------------------------------------------------------------------------------------- |
-| align     | string                                         |         | 对齐方式 ['left', 'center', 'right']                                                  |
-| colSpan   | number                                         |         | 合并列单元格，当被合并列的 `dataKey` 对应的值为 `null` 或者 `undefined`时，才会合并。 |
-| fixed     | bool                                           |         | 固定列                                                                                |
-| flexGrow  | number                                         |         | 设置列宽自动调节的比例，当设置了 `flexGrow` 就不能设置 `resizable` 与 `width` 属性    |
-| minWidth  | number                                         | 200     | 当使用了 `flexGrow` 以后，可以通过 `minWidth` 设置一个最小宽度                        |
-| onResize  | (columnWidth: number, dataKey: string) => void |         | 列宽改变后的回调函数                                                                  |
-| resizable | bool                                           |         | 可自定义调整列宽                                                                      |
-| sortable  | bool                                           |         | 可排序                                                                                |
-| width     | number                                         |         | 列宽                                                                                  |
+| Property  | Type `(Default)`                                 | Description                                                                                                 |
+| --------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| align     | enum: 'left','center','right'                    | Alignment                                                                                                   |
+| colSpan   | number                                           | Merges column cells to merge when the `dataKey` value for the merged column is `null` or `undefined`.       |
+| fixed     | boolean                                          | Fixed column                                                                                                |
+| flexGrow  | number                                           | Set the column width automatically adjusts, when set `flexGrow` cannot set `resizable` and `width` property |
+| minWidth  | number`(200)`                                    | When you use `flexGrow`, you can set a minimum width by `minwidth`                                          |
+| onResize  | (columnWidth?: number, dataKey?: string) => void | Callback after column width change                                                                          |
+| resizable | boolean                                          | Customizable Resize Column width                                                                            |
+| sortable  | boolean                                          | Sortable                                                                                                    |
+| width     | number                                           | Column width                                                                                                |
 
 
-<br>
-> `sortable` 是用来定义该列是否可排序，但是根据什么 `key` 排序需要 在 `Cell` 设置一个 `dataKey`
-> 这里的排序是服务端排序，所以需要在 `<Table>` 的 `onSortColumn` 回调函数中处理逻辑，回调函数会返回 `sortColumn`, `sortType` 这两个值。
 
-<br>
-###  `<Cell>`
 
-| Name     | Type   | Default | Description                             |
-| -------- | ------ | ------- | --------------------------------------- |
-| dataKey  | string |         | 数据绑定的 `key` ，同时也是排序的 `key` |
-| rowData  | object |         | 行数据                                  |
-| rowIndex | number |         | 行号                                    |
+> `sortable` is used to define whether the column is sortable, but depending on what `key` sort needs to set a `dataKey` in `Cell`.
+> The sort here is the service-side sort, so you need to handle the logic in the ' Onsortcolumn ' callback function of `<Table>`, and the callback function returns `sortColumn`, `sortType` values.
 
+
+### `<Cell>`
+
+| Property | Type `(Default)` | Description                                  |
+| -------- | ---------------- | -------------------------------------------- |
+| dataKey  | string           | Data binding `key`, but also a sort of `key` |
+| rowData  | object           | Row data                                     |
+| rowIndex | number           | Row number                                   |
 
 
 [npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg?style=flat-square
