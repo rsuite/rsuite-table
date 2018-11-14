@@ -56,7 +56,8 @@ type Props = {
   locale: Object,
   style?: Object,
   sortColumn?: string,
-  sortType: SortType,
+  sortType?: SortType,
+  defaultSortType?: SortType,
 
   disabledScroll?: boolean,
 
@@ -113,7 +114,6 @@ class Table extends React.Component<Props, State> {
     headerHeight: 40,
     minHeight: 0,
     rowExpandedHeight: 100,
-    sortType: 'asc',
     hover: true,
     showHeader: true,
     rowKey: 'key',
@@ -233,7 +233,14 @@ class Table extends React.Component<Props, State> {
     }
 
     const { width: tableWidth } = this.state;
-    const { sortColumn, sortType, onSortColumn, rowHeight, showHeader } = this.props;
+    const {
+      sortColumn,
+      sortType,
+      defaultSortType,
+      onSortColumn,
+      rowHeight,
+      showHeader
+    } = this.props;
     const headerHeight = this.getTableHeaderHeight();
     const { totalFlexGrow, totalWidth } = getTotalByColumns(columns);
 
@@ -281,6 +288,7 @@ class Table extends React.Component<Props, State> {
             sortable: column.props.sortable,
             sortColumn,
             sortType,
+            defaultSortType,
             onSortColumn,
             flexGrow
           };
