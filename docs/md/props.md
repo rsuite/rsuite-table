@@ -19,7 +19,7 @@
 | onScroll         | function(scrollX:object, scrollY:object)  |         | 滚动条滚动时候的回调函数                                     |
 | onSortColumn     | function(dataKey:string, sortType:string) |         | 点击排序列的回调函数，返回 `sortColumn`, `sortType` 这两个值 |
 | renderTreeToggle | (icon:node,rowData:object)=> node         |         | 树形表格，在展开节点的回调函数                               |
-| rowClassName     | string ,(rowData:object)=>string          |         | 宽度                                                         |
+| rowClassName     | string ,(rowData:object)=>string          |         | 自定义行 className                                           |
 | rowHeight        | number                                    | 36      | 行高                                                         |
 | setRowHeight     | (rowData:object)=> number                 |         | 重新渲染行高                                                 |
 | sortColumn       | string                                    |         | 排序列名称                                                   |
