@@ -3,7 +3,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
-import onResize from 'element-resize-event';
+import bindElementResize, { unbind as unbindElementResize } from 'element-resize-event';
 
 import { addStyle, getWidth, getHeight, translateDOMPositionXY, WheelHandler } from 'dom-lib';
 
@@ -173,7 +173,7 @@ class Table extends React.Component<Props, State> {
     this.calculateTableWidth();
     this.calculateTableContextHeight();
     this.calculateRowMaxHeight();
-    onResize(this.table, _.debounce(this.calculateTableWidth, 400));
+    bindElementResize(this.table, _.debounce(this.calculateTableWidth, 400));
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -185,6 +185,12 @@ class Table extends React.Component<Props, State> {
     this.calculateTableContentWidth(prevProps);
     this.calculateRowMaxHeight();
     this.updatePosition();
+  }
+
+  componentWillUnmount() {
+    if (this.table) {
+      unbindElementResize(this.table);
+    }
   }
 
   getExpandedRowKeys() {
