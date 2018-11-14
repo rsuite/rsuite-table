@@ -77,7 +77,8 @@ type Props = {
   onTouchMove?: (event: SyntheticTouchEvent<*>) => void, // for tests
   bodyRef?: React.ElementRef<*>,
   loadAnimation?: boolean,
-  showHeader?: boolean
+  showHeader?: boolean,
+  rowClassName?: string | ((rowData: Object) => string)
 };
 
 type State = {
@@ -722,7 +723,15 @@ class Table extends React.Component<Props, State> {
   }
 
   renderRow(props: Object, cells: Array<any>, shouldRenderExpandedRow?: boolean, rowData?: Object) {
+    const { rowClassName } = this.props;
     const { shouldFixedColumn } = this.state;
+
+    if (_.isFunction(rowClassName)) {
+      props.className = rowClassName(rowData);
+    } else {
+      props.className = rowClassName;
+    }
+
     // IF there are fixed columns, add a fixed group
     if (shouldFixedColumn) {
       let fixedCells = cells.filter(cell => cell.props.fixed);
