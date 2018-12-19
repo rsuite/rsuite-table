@@ -37,7 +37,7 @@ type Props = {
   ) => void,
 
   renderTreeToggle?: (expandButton: React.Node, rowData?: Object) => React.Node,
-  renderCell?: (contentChildren: React.Node) => React.Node,
+  renderCell?: (contentChildren: any) => React.Node,
 
   wordWrap?: boolean,
   removed?: boolean
