@@ -1,3 +1,8 @@
+# 3.2.0
+
+- Support server side rendering
+- Refactored the logic of sorting
+
 # 3.1.7
 
 - Feature: Support `rowClassName` on Table

@@ -32,6 +32,11 @@ const columnHandledProps = [
   'colSpan'
 ];
 
+const SORT_TYPE = {
+  DESC: 'desc',
+  ASC: 'asc'
+};
+
 type SortType = 'desc' | 'asc';
 type Props = {
   width?: number,
@@ -71,14 +76,14 @@ type Props = {
   wordWrap?: boolean,
   onRowClick?: (rowData: Object) => void,
   onScroll?: (scrollX: number, scrollY: number) => void,
-  onSortColumn?: (dataKey: string, sortType: SortType) => void,
+  onSortColumn?: (dataKey: string, sortType?: SortType) => void,
   onExpandChange?: (expanded: boolean, rowData: Object) => void,
   onTouchStart?: (event: SyntheticTouchEvent<*>) => void, // for tests
   onTouchMove?: (event: SyntheticTouchEvent<*>) => void, // for tests
   bodyRef?: React.ElementRef<*>,
   loadAnimation?: boolean,
   showHeader?: boolean,
-  rowClassName?: string | ((rowData: Object) => string)
+  rowClassName?: string | ((rowData: ?Object) => string)
 };
 
 type State = {
@@ -90,7 +95,8 @@ type State = {
   contentWidth: number,
   tableRowsMaxHeight: Array<number>,
   isColumnResizing?: boolean,
-  expandedRowKeys: Array<string | number>
+  expandedRowKeys: Array<string | number>,
+  sortType?: SortType
 };
 
 function findRowKeys(rows, rowKey, expanded) {
@@ -110,6 +116,7 @@ class Table extends React.Component<Props, State> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table'),
     data: [],
+    defaultSortType: SORT_TYPE.DESC,
     height: 200,
     rowHeight: 46,
     headerHeight: 40,
@@ -133,7 +140,8 @@ class Table extends React.Component<Props, State> {
       renderRowExpanded,
       defaultExpandedRowKeys,
       children = [],
-      isTree
+      isTree,
+      defaultSortType
     } = props;
     const expandedRowKeys = defaultExpandAllRows
       ? findRowKeys(data, rowKey, _.isFunction(renderRowExpanded))
@@ -154,7 +162,8 @@ class Table extends React.Component<Props, State> {
       dataKey: 0,
       contentHeight: 0,
       contentWidth: 0,
-      tableRowsMaxHeight: []
+      tableRowsMaxHeight: [],
+      sortType: defaultSortType
     };
 
     this.scrollY = 0;
@@ -199,6 +208,11 @@ class Table extends React.Component<Props, State> {
     return _.isUndefined(expandedRowKeys) ? this.state.expandedRowKeys : expandedRowKeys;
   }
 
+  getSortType() {
+    const { sortType } = this.props;
+    return _.isUndefined(sortType) ? this.state.sortType : sortType;
+  }
+
   getScrollCellGroups() {
     return this.table.querySelectorAll(`.${this.addPrefix('cell-group-scroll')}`);
   }
@@ -225,6 +239,19 @@ class Table extends React.Component<Props, State> {
     return autoHeight ? Math.max(headerHeight + contentHeight, minHeight) : height;
   }
 
+  handleSortColumn = (dataKey: string) => {
+    const { onSortColumn, sortColumn } = this.props;
+    let sortType = this.getSortType();
+
+    if (sortColumn === dataKey) {
+      sortType = sortType === SORT_TYPE.ASC ? SORT_TYPE.DESC : SORT_TYPE.ASC;
+      this.setState({
+        sortType
+      });
+    }
+    onSortColumn && onSortColumn(dataKey, sortType);
+  };
+
   getCells() {
     let left = 0; // Cell left margin
     const headerCells = []; // Table header cell
@@ -240,14 +267,7 @@ class Table extends React.Component<Props, State> {
     }
 
     const { width: tableWidth } = this.state;
-    const {
-      sortColumn,
-      sortType,
-      defaultSortType,
-      onSortColumn,
-      rowHeight,
-      showHeader
-    } = this.props;
+    const { sortColumn, rowHeight, showHeader } = this.props;
     const headerHeight = this.getTableHeaderHeight();
     const { totalFlexGrow, totalWidth } = getTotalByColumns(columns);
 
@@ -293,10 +313,9 @@ class Table extends React.Component<Props, State> {
             dataKey: columnChildren[1].props.dataKey,
             isHeaderCell: true,
             sortable: column.props.sortable,
+            onSortColumn: this.handleSortColumn,
+            sortType: this.getSortType(),
             sortColumn,
-            sortType,
-            defaultSortType,
-            onSortColumn,
             flexGrow
           };
 
@@ -562,6 +581,7 @@ class Table extends React.Component<Props, State> {
      *
      * 满足 1 和 2 则更新横向滚动条位置
      */
+
     if (
       this.state.contentWidth !== contentWidth &&
       _.flatten(this.props.children).length !== _.flatten(prevProps.children).length
@@ -726,7 +746,7 @@ class Table extends React.Component<Props, State> {
     const { rowClassName } = this.props;
     const { shouldFixedColumn } = this.state;
 
-    if (_.isFunction(rowClassName)) {
+    if (typeof rowClassName === 'function') {
       props.className = rowClassName(rowData);
     } else {
       props.className = rowClassName;
@@ -902,7 +922,7 @@ class Table extends React.Component<Props, State> {
   }
 
   renderScrollbar() {
-    const { disabledScroll, loading } = this.props;
+    const { disabledScroll } = this.props;
     const headerHeight = this.getTableHeaderHeight();
     const { contentWidth, contentHeight } = this.state;
     const height = this.getTableHeight();
@@ -956,7 +976,6 @@ class Table extends React.Component<Props, State> {
       className,
       width = 0,
       style,
-      rowHeight,
       isTree,
       hover,
       bordered,

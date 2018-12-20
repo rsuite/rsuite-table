@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
-import _ from 'lodash';
 import { polyfill } from 'react-lifecycles-compat';
 
 import Cell from './Cell';
@@ -22,7 +21,6 @@ type Props = {
   index?: number,
   sortColumn?: string,
   sortType?: 'desc' | 'asc',
-  defaultSortType?: 'desc' | 'asc',
   sortable?: boolean,
   resizable?: boolean,
   onColumnResizeStart?: (columnWidth?: number, left?: number, fixed?: boolean) => void,
@@ -34,13 +32,12 @@ type Props = {
   ) => void,
   onResize?: (columnWidth?: number, dataKey?: string) => void,
   onColumnResizeMove?: (columnWidth?: number, columnLeft?: number, columnFixed?: boolean) => void,
-  onSortColumn?: (dataKey: string, sortType: string) => void,
+  onSortColumn?: (dataKey?: string) => void,
   flexGrow?: number,
   fixed?: boolean
 };
 
 type State = {
-  sortType: 'desc' | 'asc',
   initialEvent?: Object,
   columnWidth?: number,
   width?: number,
@@ -67,16 +64,10 @@ class HeaderCell extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      sortType: props.defaultSortType || 'asc',
       width: props.width,
       flexGrow: props.flexGrow,
       columnWidth: isNullOrUndefined(props.flexGrow) ? props.width : 0
     };
-  }
-
-  getSortType() {
-    const { sortType } = this.props;
-    return _.isUndefined(sortType) ? this.state.sortType : sortType;
   }
 
   handleColumnResizeStart = (event: any) => {
@@ -95,12 +86,8 @@ class HeaderCell extends React.Component<Props, State> {
 
   handleClick = () => {
     const { sortable, dataKey, onSortColumn } = this.props;
-    if (sortable) {
-      const sortType = this.getSortType() === 'asc' ? 'desc' : 'asc';
-      this.setState({
-        sortType
-      });
-      onSortColumn && onSortColumn(dataKey, sortType);
+    if (sortable && onSortColumn) {
+      onSortColumn(dataKey);
     }
   };
 
@@ -129,8 +116,7 @@ class HeaderCell extends React.Component<Props, State> {
   }
 
   renderSortColumn() {
-    const { sortable, sortColumn, dataKey } = this.props;
-    const sortType = this.getSortType();
+    const { sortable, sortColumn, sortType = '', dataKey } = this.props;
 
     if (sortable) {
       const iconClasses = classNames(this.addPrefix('icon-sort'), {
