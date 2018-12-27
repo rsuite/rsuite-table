@@ -134,13 +134,21 @@
     }
   }
   &-cell-group {
-    &-fixed {
+    &-fixed-left {
       position: absolute;
       z-index: 4;
       background: @body-background;
     }
-    &-shadow {
+    &-fixed-right {
+      position: absolute;
+      z-index: 4;
+      background: @body-background;
+    }
+    &-left-shadow {
       .box-shadow(3px, 0px, 5px, rgba(9, 9, 9, 0.08));
+    }
+    &-right-shadow {
+      .box-shadow(-3px, 0px, 5px, rgba(9, 9, 9, 0.08));
     }
   }
   &-mouse-area {

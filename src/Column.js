@@ -3,7 +3,7 @@
 type Props = {
   align?: 'left' | 'center' | 'right',
   width?: number,
-  fixed?: boolean,
+  fixed?: boolean | 'left' | 'right',
   resizable?: boolean,
   sortable?: boolean,
   flexGrow?: number,

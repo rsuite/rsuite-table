@@ -31,7 +31,7 @@ describe('CellGroup', () => {
   });
 
   it('Should be fixed', () => {
-    const instanceDom = getDOMNode(<CellGroup fixed />);
+    const instanceDom = getDOMNode(<CellGroup fixed="left" />);
 
     assert.ok(instanceDom.className.match(/\bfixed\b/));
   });

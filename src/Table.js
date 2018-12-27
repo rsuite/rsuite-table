@@ -37,6 +37,8 @@ const SORT_TYPE = {
   ASC: 'asc'
 };
 
+const SCROLLBAR_WIDHT = 10;
+
 type SortType = 'desc' | 'asc';
 type Props = {
   width?: number,
@@ -70,7 +72,7 @@ type Props = {
   loading?: boolean,
   className?: string,
   classPrefix?: string,
-  children?: React.ChildrenArray<*>,
+  children: React.ChildrenArray<*>,
   bordered?: boolean,
   cellBordered?: boolean,
   wordWrap?: boolean,
@@ -110,6 +112,15 @@ function findRowKeys(rows, rowKey, expanded) {
     }
   });
   return keys;
+}
+
+function resetLeftForCells(cells) {
+  let left = 0;
+  return cells.map(cell => {
+    const nextCell = React.cloneElement(cell, { left });
+    left += cell.props.width;
+    return nextCell;
+  });
 }
 
 class Table extends React.Component<Props, State> {
@@ -217,8 +228,12 @@ class Table extends React.Component<Props, State> {
     return this.table.querySelectorAll(`.${this.addPrefix('cell-group-scroll')}`);
   }
 
-  getFixedCellGroups() {
-    return this.table.querySelectorAll(`.${this.addPrefix('cell-group-fixed')}`);
+  getFixedLeftCellGroups() {
+    return this.table.querySelectorAll(`.${this.addPrefix('cell-group-fixed-left')}`);
+  }
+
+  getFixedRightCellGroups() {
+    return this.table.querySelectorAll(`.${this.addPrefix('cell-group-fixed-right')}`);
   }
 
   /**
@@ -478,7 +493,10 @@ class Table extends React.Component<Props, State> {
     const wheelGroupStyle = {};
     const wheelStyle = {};
     const scrollGroups = this.getScrollCellGroups();
-    const fixedGroups = this.getFixedCellGroups();
+    const fixedLeftGroups = this.getFixedLeftCellGroups();
+    const fixedRightGroups = this.getFixedRightCellGroups();
+
+    const { contentWidth, width } = this.state;
 
     translateDOMPositionXY(wheelGroupStyle, this.scrollX, 0);
     translateDOMPositionXY(wheelStyle, 0, this.scrollY);
@@ -490,12 +508,13 @@ class Table extends React.Component<Props, State> {
       addStyle(this.wheelWrapper, wheelStyle);
     }
 
-    const shadowClassName = this.addPrefix('cell-group-shadow');
-    const condition = this.scrollX < 0;
+    const leftShadowClassName = this.addPrefix('cell-group-left-shadow');
+    const rightShadowClassName = this.addPrefix('cell-group-right-shadow');
+    const showLeftShadow = this.scrollX < 0;
+    const showRightShadow = width - contentWidth - SCROLLBAR_WIDHT !== this.scrollX;
 
-    Array.from(fixedGroups).forEach(group => {
-      toggleClass(group, shadowClassName, condition);
-    });
+    toggleClass(fixedLeftGroups, leftShadowClassName, showLeftShadow);
+    toggleClass(fixedRightGroups, rightShadowClassName, showRightShadow);
   }
   shouldHandleWheelX = (delta: number) => {
     const { disabledScroll, loading } = this.props;
@@ -573,7 +592,7 @@ class Table extends React.Component<Props, State> {
 
     this.setState({ contentWidth });
     // 这里 -10 是为了让滚动条不挡住内容部分
-    this.minScrollX = -(contentWidth - this.state.width) - 10;
+    this.minScrollX = -(contentWidth - this.state.width) - SCROLLBAR_WIDHT;
 
     /**
      * 1.判断 Table 内容区域是否宽度有变化
@@ -744,7 +763,7 @@ class Table extends React.Component<Props, State> {
 
   renderRow(props: Object, cells: Array<any>, shouldRenderExpandedRow?: boolean, rowData?: Object) {
     const { rowClassName } = this.props;
-    const { shouldFixedColumn } = this.state;
+    const { shouldFixedColumn, width, contentWidth } = this.state;
 
     if (typeof rowClassName === 'function') {
       props.className = rowClassName(rowData);
@@ -753,25 +772,51 @@ class Table extends React.Component<Props, State> {
     }
 
     // IF there are fixed columns, add a fixed group
-    if (shouldFixedColumn) {
-      let fixedCells = cells.filter(cell => cell.props.fixed);
-      let otherCells = cells.filter(cell => !cell.props.fixed);
-      let fixedCellGroupWidth = 0;
+    if (shouldFixedColumn && contentWidth > width) {
+      let fixedLeftCells = [];
+      let fixedRightCells = [];
+      let scrollCells = [];
+      let fixedLeftCellGroupWidth = 0;
+      let fixedRightCellGroupWidth = 0;
 
-      for (let i = 0; i < fixedCells.length; i += 1) {
-        fixedCellGroupWidth += fixedCells[i].props.width;
-      }
+      cells.forEach(cell => {
+        const { fixed, width } = cell.props;
+        if (fixed === true || fixed === 'left') {
+          fixedLeftCells.push(cell);
+          fixedLeftCellGroupWidth += width;
+        } else if (fixed === 'right') {
+          fixedRightCells.push(cell);
+          fixedRightCellGroupWidth += width;
+        } else {
+          scrollCells.push(cell);
+        }
+      });
 
       return (
         <Row {...props}>
-          <CellGroup
-            fixed
-            height={props.isHeaderRow ? props.headerHeight : props.height}
-            width={fixedCellGroupWidth}
-          >
-            {colSpanCells(fixedCells)}
-          </CellGroup>
-          <CellGroup>{colSpanCells(otherCells)}</CellGroup>
+          {fixedLeftCellGroupWidth ? (
+            <CellGroup
+              fixed="left"
+              height={props.isHeaderRow ? props.headerHeight : props.height}
+              width={fixedLeftCellGroupWidth}
+            >
+              {colSpanCells(fixedLeftCells)}
+            </CellGroup>
+          ) : null}
+
+          <CellGroup>{colSpanCells(scrollCells)}</CellGroup>
+
+          {fixedRightCellGroupWidth ? (
+            <CellGroup
+              fixed="right"
+              style={{ left: width - fixedRightCellGroupWidth - SCROLLBAR_WIDHT }}
+              height={props.isHeaderRow ? props.headerHeight : props.height}
+              width={fixedRightCellGroupWidth}
+            >
+              {colSpanCells(resetLeftForCells(fixedRightCells))}
+            </CellGroup>
+          ) : null}
+
           {shouldRenderExpandedRow && this.renderRowExpanded(rowData)}
         </Row>
       );

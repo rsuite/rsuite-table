@@ -12,7 +12,6 @@ describe('HeaderCell', () => {
 
   it('Should call `onSortColumn` callback', done => {
     const doneOp = dataKey => {
-      console.log(dataKey);
       if (dataKey === 'name') {
         done();
       }
