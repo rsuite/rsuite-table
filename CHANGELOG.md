@@ -1,5 +1,7 @@
 # 3.3.0
 
+> December 29, 2018
+
 - Support fixed column to the right
 
 # 3.2.0
