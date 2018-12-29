@@ -84,7 +84,7 @@ const common = {
         loader: 'markdown-loader',
         options: {
           pedantic: true,
-          renderer: markdownRenderer
+          renderer: markdownRenderer()
         }
       }
       ]
