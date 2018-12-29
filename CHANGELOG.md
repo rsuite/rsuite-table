@@ -1,3 +1,7 @@
+# 3.3.0
+
+- Support fixed column to the right
+
 # 3.2.0
 
 - Support server side rendering

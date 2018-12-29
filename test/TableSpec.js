@@ -9,7 +9,7 @@ import HeaderCell from '../src/HeaderCell';
 
 describe('Table', () => {
   it('Should output a table', () => {
-    const instanceDom = getDOMNode(<Table />);
+    const instanceDom = getDOMNode(<Table>test</Table>);
     assert.include(instanceDom.className, 'rs-table');
   });
 
@@ -251,26 +251,6 @@ describe('Table', () => {
     );
 
     ReactTestUtils.Simulate.click(instanceDom.querySelector('.rs-table-cell-expand-icon'));
-  });
-
-  it('Should be fixed `Column`', () => {
-    const instanceDom = getDOMNode(
-      <Table>
-        <Column fixed>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
-        </Column>
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
-        </Column>
-      </Table>
-    );
-
-    assert.equal(
-      instanceDom.querySelectorAll('.rs-table-cell-group.rs-table-cell-group-fixed').length,
-      1
-    );
   });
 
   it('Should call `onTouchMove` callback', done => {

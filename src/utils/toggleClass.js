@@ -8,4 +8,16 @@ const toggleClass = (node: HTMLElement, className: string, condition: boolean) =
   }
 };
 
-export default toggleClass;
+export default (node: HTMLElement | Array<HTMLElement>, className: string, condition: boolean) => {
+  if (!node) {
+    return;
+  }
+
+  if (node.__proto__.hasOwnProperty('length')) {
+    Array.from(node).forEach(item => {
+      toggleClass(item, className, condition);
+    });
+    return;
+  }
+  toggleClass(node, className, condition);
+};

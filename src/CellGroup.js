@@ -7,7 +7,7 @@ import { translateDOMPositionXY } from 'dom-lib';
 import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 
 type Props = {
-  fixed?: boolean,
+  fixed?: 'left' | 'right',
   width?: number,
   height?: number,
   left?: number,
@@ -25,7 +25,10 @@ class CellGroup extends React.Component<Props> {
 
   render() {
     const { fixed, width, left, height, style, classPrefix, className, ...rest } = this.props;
-    const classes = classNames(classPrefix, className, this.addPrefix(fixed ? 'fixed' : 'scroll'));
+    const classes = classNames(classPrefix, className, {
+      [this.addPrefix(`fixed-${fixed || ''}`)]: fixed,
+      [this.addPrefix('scroll')]: !fixed
+    });
     const styles = {
       width,
       height,

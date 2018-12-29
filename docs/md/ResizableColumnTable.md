@@ -52,7 +52,7 @@ class ResizableColumnTable extends React.Component {
             <Cell dataKey="companyName" />
           </Column>
 
-          <Column width={200} resizable>
+          <Column width={200} resizable fixed="right">
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
@@ -70,14 +70,14 @@ ReactDOM.render(<ResizableColumnTable />);
 > 把鼠标移动到列分割线的时候，会显示出一个蓝色的移动手柄，点击不松开并左右拖动就可以调整列的宽度，要支持该功能，需要在 `Column` 设置一个 `resizable` 属性。
 
 ```html
-<Column width={50}  align="center"  fixed>
-    <HeaderCell>Id</HeaderCell>
-    <Cell dataKey="id" />
+<Column width="{50}" align="center" fixed>
+  <HeaderCell>Id</HeaderCell>
+  <Cell dataKey="id" />
 </Column>
 
-<Column width={130} fixed  sortable>
-    <HeaderCell>First Name</HeaderCell>
-    <Cell dataKey="firstName" />
+<Column width="{130}" fixed sortable>
+  <HeaderCell>First Name</HeaderCell>
+  <Cell dataKey="firstName" />
 </Column>
 
 ...

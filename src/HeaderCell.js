@@ -34,7 +34,7 @@ type Props = {
   onColumnResizeMove?: (columnWidth?: number, columnLeft?: number, columnFixed?: boolean) => void,
   onSortColumn?: (dataKey?: string) => void,
   flexGrow?: number,
-  fixed?: boolean
+  fixed?: boolean | 'left' | 'right'
 };
 
 type State = {
@@ -74,7 +74,7 @@ class HeaderCell extends React.Component<Props, State> {
     const { left, fixed, onColumnResizeStart } = this.props;
 
     this.setState({ initialEvent: event });
-    onColumnResizeStart && onColumnResizeStart(this.state.columnWidth, left, fixed);
+    onColumnResizeStart && onColumnResizeStart(this.state.columnWidth, left, !!fixed);
   };
 
   handleColumnResizeEnd = (columnWidth?: number, cursorDelta?: number) => {
@@ -105,7 +105,7 @@ class HeaderCell extends React.Component<Props, State> {
       <ColumnResizeHandler
         columnWidth={columnWidth}
         columnLeft={left}
-        columnFixed={fixed}
+        columnFixed={!!fixed}
         height={headerHeight ? headerHeight - 1 : undefined}
         initialEvent={initialEvent}
         onColumnResizeMove={onColumnResizeMove}
