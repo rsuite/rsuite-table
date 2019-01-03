@@ -1,4 +1,10 @@
-# 3.3.0
+# 3.3.1
+
+> January 3, 2019
+
+- Support fixed column to the right
+
+# 3.3.0 (deprecate)
 
 > December 29, 2018
 
