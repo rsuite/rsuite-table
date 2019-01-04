@@ -34,18 +34,6 @@ const NameCell = ({ rowData, dataKey, ...props }) => {
   );
 };
 
-const ImageCell = ({ rowData, dataKey, ...props }) => (
-  <Cell {...props}>
-    <img src={rowData[dataKey]} width="50" />
-  </Cell>
-);
-
-const EmailCell = ({ rowData, dataKey, ...props }) => (
-  <Cell {...props}>
-    <a href={`mailto:${rowData[dataKey]}`}>{rowData[dataKey]}</a>
-  </Cell>
-);
-
 const ActionCell = ({ rowData, dataKey, ...props }) => {
   function handleAction() {
     alert(`id:${rowData[dataKey]}`);
@@ -54,9 +42,7 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
 
   return (
     <Cell {...props}>
-      <a onClick={handleAction}> Edit </a>
-      |
-      <a onClick={handleAction}> Remove </a>
+      <a onClick={handleAction}> Edit </a>|<a onClick={handleAction}> Remove </a>
     </Cell>
   );
 };
@@ -95,12 +81,12 @@ class CustomColumnTable extends React.Component {
 
           <Column width={300}>
             <HeaderCell>Email</HeaderCell>
-            <EmailCell dataKey="email" />
+            <Cell>{rowData => <a href={`mailto:${rowData.email}`}>{rowData.email}</a>}</Cell>
           </Column>
 
           <Column width={200}>
             <HeaderCell>Action</HeaderCell>
-            <DateCell dataKey="date" />
+            <Cell>{rowData => rowData.date.toLocaleString()}</Cell>
           </Column>
 
           <Column width={200}>
@@ -133,30 +119,24 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 用的时候：
 
 ```html
-<Column width={200} >
-    <HeaderCell>Avartar</HeaderCell>
-    <ImageCell dataKey="avartar" />
-</Column>
-```
-
-比如，要格式化日期，就定义一个 `DateCell` 组件：
-
-```js
-const DateCell = ({ rowData, dataKey, ...props }) => (
-  <Cell {...props}>{rowData[dataKey].toLocaleString()}</Cell>
-);
-```
-
-用的时候：
-
-```html
-<Column width={200} >
-    <HeaderCell>Action</HeaderCell>
-    <DateCell dataKey="date" />
+<Column width="{200}">
+  <HeaderCell>Avartar</HeaderCell>
+  <ImageCell dataKey="avartar" />
 </Column>
 ```
 
 ---
+
+**把 Cell 的 children 定义为函数**
+
+除了自定义一个 Cell 以外，可以修改 Cell 的 children 进行自定义显示
+
+```html
+<Column width="{200}">
+  <HeaderCell>Date</HeaderCell>
+  <Cell>{rowData => rowData.date.toLocaleString()}</Cell>
+</Column>
+```
 
 **自定义行高**
 

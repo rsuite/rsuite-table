@@ -3,19 +3,6 @@
 <!--start-code-->
 
 ```js
-const ActionCell = ({ rowData, dataKey, ...props }) => {
-  function handleAction() {
-    alert(`id:${rowData[dataKey]}`);
-    console.log(rowData, dataKey);
-  }
-
-  return (
-    <Cell {...props}>
-      <a onClick={handleAction}> Edit </a>|<a onClick={handleAction}> Remove </a>
-    </Cell>
-  );
-};
-
 class FixedColumnTable extends React.Component {
   constructor(props) {
     super(props);
@@ -75,7 +62,19 @@ class FixedColumnTable extends React.Component {
 
           <Column width={200} fixed="right">
             <HeaderCell>Action</HeaderCell>
-            <ActionCell dataKey="id" />
+
+            <Cell>
+              {rowData => {
+                function handleAction() {
+                  alert(`id:${rowData.id}`);
+                }
+                return (
+                  <span>
+                    <a onClick={handleAction}> Edit </a> | <a onClick={handleAction}> Remove </a>
+                  </span>
+                );
+              }}
+            </Cell>
           </Column>
         </Table>
       </div>
