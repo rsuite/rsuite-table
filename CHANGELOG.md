@@ -1,3 +1,9 @@
+# 3.3.2
+
+> January 9, 2019
+
+- The `children` property support function for `<Cell>` in `<Table>`
+
 # 3.3.1
 
 > January 3, 2019
