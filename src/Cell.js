@@ -22,7 +22,7 @@ type Props = {
   firstColumn?: boolean,
   lastColumn?: boolean,
   hasChildren?: boolean,
-  children?: React.Node,
+  children?: React.Node | ((rowData?: Object) => React.Node),
 
   rowKey?: string | number,
   rowIndex?: number,
@@ -145,8 +145,12 @@ class Cell extends React.Component<Props> {
       ...style
     };
 
-    const contentChildren =
+    let contentChildren =
       isNullOrUndefined(children) && rowData ? _.get(rowData, dataKey) : children;
+
+    if (typeof children === 'function') {
+      contentChildren = children(rowData);
+    }
 
     const unhandled = getUnhandledProps(Cell, rest, [
       'index',

@@ -121,4 +121,11 @@ describe('Cell', () => {
     );
     assert.equal(instanceDom.style.fontSize, fontSize);
   });
+
+  it('Should render custom children', () => {
+    const instanceDom1 = getDOMNode(<Cell rowData={{ id: 1 }}>{rowData => rowData.id}</Cell>);
+    const instanceDom2 = getDOMNode(<Cell>1</Cell>);
+    assert.ok(instanceDom1.innerText, 1);
+    assert.ok(instanceDom2.innerText, 1);
+  });
 });
