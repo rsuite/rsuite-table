@@ -130,6 +130,9 @@ class Cell extends React.Component<Props> {
     const layerWidth = layer * LAYER_WIDTH;
     const nextWidth = !isHeaderCell && firstColumn ? width - layerWidth : width;
     const nextHeight = isHeaderCell ? headerHeight : height;
+    const depth = rowData ? rowData._depth || 0 : 0;
+
+    console.log(rowData);
 
     const styles = {
       width: nextWidth,
@@ -142,6 +145,7 @@ class Cell extends React.Component<Props> {
       width: nextWidth,
       height: nextHeight,
       textAlign: align,
+      paddingLeft: firstColumn ? depth * 20 : null,
       ...style
     };
 

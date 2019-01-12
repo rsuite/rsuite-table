@@ -17,6 +17,7 @@ import {
   getUnhandledProps,
   defaultClassPrefix,
   toggleClass,
+  flattenData,
   prefix
 } from './utils';
 
@@ -698,6 +699,7 @@ class Table extends React.Component<Props, State> {
   ) {
     const { onRowClick, renderTreeToggle, rowKey, wordWrap, isTree } = this.props;
     const hasChildren = isTree && rowData.children && Array.isArray(rowData.children);
+
     const nextRowKey =
       rowData[rowKey] ||
       `_${(Math.random() * 1e18)
@@ -733,7 +735,7 @@ class Table extends React.Component<Props, State> {
     const row = this.renderRow(rowProps, cells, shouldRenderExpandedRow, rowData);
 
     // insert children
-    if (hasChildren) {
+    if (false) {
       props.layer += 1;
 
       const expandedRowKeys = this.getExpandedRowKeys() || [];
@@ -882,18 +884,23 @@ class Table extends React.Component<Props, State> {
   }
 
   renderTableBody(bodyCells: Array<any>, rowWidth: number) {
-    const { rowHeight, rowExpandedHeight, data, isTree, setRowHeight } = this.props;
+    const { rowHeight, rowExpandedHeight, isTree, setRowHeight } = this.props;
     const headerHeight = this.getTableHeaderHeight();
     const { tableRowsMaxHeight } = this.state;
     const height = this.getTableHeight();
     const bodyStyles = {
-      top: isTree ? 0 : headerHeight,
+      top: headerHeight,
       height: height - headerHeight
     };
 
     let top = 0; // Row position
     let rows = null;
     let bodyHeight = 0;
+
+    const data = isTree ? flattenData(this.props.data) : this.props.data;
+
+    console.log(data);
+
     if (data && data.length > 0) {
       rows = data.map((rowData, index) => {
         let maxHeight = tableRowsMaxHeight[index];
@@ -921,7 +928,7 @@ class Table extends React.Component<Props, State> {
           rowHeight: nextRowHeight
         };
 
-        !isTree && (top += nextRowHeight);
+        top += nextRowHeight;
 
         return this.renderRowData(bodyCells, rowData, rowProps, shouldRenderExpandedRow);
       });
