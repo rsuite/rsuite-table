@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Popover, Whisper, Toggle, Grid, Button } from 'rsuite';
+import { Popover, Whisper, Toggle, Grid, Button, ButtonGroup } from 'rsuite';
 import { Markdown } from 'react-markdown-reader';
 import clone from 'lodash/clone';
 import Examples from './Examples';
@@ -9,6 +9,8 @@ import { Table, Column, Cell, HeaderCell } from '../src';
 import fakeData from './data/users';
 import fakeTreeData from './data/treeData';
 import fakeDataForColSpan from './data/usersForColSpan';
+import fakeLargeData from './data/fakeLargeData.json';
+import { createFakeRowObjectData } from './data/fakeObjectDataListStore';
 
 class App extends React.Component {
   render() {
@@ -18,19 +20,26 @@ class App extends React.Component {
         <Examples
           dependencies={{
             Button,
+            ButtonGroup,
             Popover,
             Whisper,
             Toggle,
             fakeData,
             fakeTreeData,
+            fakeLargeData,
             fakeDataForColSpan,
             Table,
             Column,
             Cell,
             HeaderCell,
-            clone
+            clone,
+            createFakeRowObjectData
           }}
           list={[
+            {
+              title: '长列表',
+              content: require('./md/LargeLists.md')
+            },
             {
               title: '锁定列',
               content: require('./md/FixedColumnTable.md')
@@ -86,6 +95,10 @@ class App extends React.Component {
             {
               title: '数据为空',
               content: require('./md/EmptyDataTable.md')
+            },
+            {
+              title: '动态加载数据',
+              content: require('./md/DynamicTable.md')
             }
           ]}
         />
