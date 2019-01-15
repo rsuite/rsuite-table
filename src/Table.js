@@ -4,13 +4,11 @@ import * as React from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
 import bindElementResize, { unbind as unbindElementResize } from 'element-resize-event';
-
 import { addStyle, getWidth, getHeight, translateDOMPositionXY, WheelHandler } from 'dom-lib';
 
 import Row from './Row';
 import CellGroup from './CellGroup';
 import Scrollbar from './Scrollbar';
-
 import {
   getTotalByColumns,
   colSpanCells,
@@ -52,23 +50,18 @@ type Props = {
   setRowHeight?: (rowData: Object) => number,
   rowKey: string | number,
   isTree?: boolean,
-
   defaultExpandAllRows?: boolean,
   defaultExpandedRowKeys?: Array<string | number>,
   expandedRowKeys?: Array<string | number>,
   renderTreeToggle?: (expandButton: React.Node, rowData: Object) => React.Node,
-
   renderRowExpanded?: (rowDate?: Object) => React.Node,
   rowExpandedHeight?: number,
-
   locale: Object,
   style?: Object,
   sortColumn?: string,
   sortType?: SortType,
   defaultSortType?: SortType,
-
   disabledScroll?: boolean,
-
   hover: boolean,
   loading?: boolean,
   className?: string,
@@ -86,7 +79,8 @@ type Props = {
   bodyRef?: React.ElementRef<*>,
   loadAnimation?: boolean,
   showHeader?: boolean,
-  rowClassName?: string | ((rowData: ?Object) => string)
+  rowClassName?: string | ((rowData: ?Object) => string),
+  vitrualized?: boolean
 };
 
 type State = {
@@ -99,7 +93,8 @@ type State = {
   tableRowsMaxHeight: Array<number>,
   isColumnResizing?: boolean,
   expandedRowKeys: Array<string | number>,
-  sortType?: SortType
+  sortType?: SortType,
+  scrollY: number
 };
 
 function findRowKeys(rows, rowKey, expanded) {
@@ -113,6 +108,33 @@ function findRowKeys(rows, rowKey, expanded) {
     }
   });
   return keys;
+}
+
+function findAllParents(rowData, rowKey) {
+  const parents = [];
+
+  if (!rowData) {
+    return parents;
+  }
+
+  function findParent(data) {
+    if (data) {
+      parents.push(data[rowKey]);
+      if (data._parent) {
+        findParent(data._parent);
+      }
+    }
+  }
+  findParent(rowData._parent);
+  return parents;
+}
+
+function shouldShowRowByExpanded(expandedRowKeys = [], parentKeys = []) {
+  const intersectionKeys = _.intersection(expandedRowKeys, parentKeys);
+  if (intersectionKeys.length === parentKeys.length) {
+    return true;
+  }
+  return false;
 }
 
 function resetLeftForCells(cells) {
@@ -134,8 +156,9 @@ class Table extends React.Component<Props, State> {
     headerHeight: 40,
     minHeight: 0,
     rowExpandedHeight: 100,
-    hover: true,
+    hover: false,
     showHeader: true,
+    vitrualized: true,
     rowKey: 'key',
     locale: {
       emptyMessage: 'No data found',
@@ -155,6 +178,7 @@ class Table extends React.Component<Props, State> {
       isTree,
       defaultSortType
     } = props;
+
     const expandedRowKeys = defaultExpandAllRows
       ? findRowKeys(data, rowKey, _.isFunction(renderRowExpanded))
       : defaultExpandedRowKeys || [];
@@ -175,7 +199,8 @@ class Table extends React.Component<Props, State> {
       contentHeight: 0,
       contentWidth: 0,
       tableRowsMaxHeight: [],
-      sortType: defaultSortType
+      sortType: defaultSortType,
+      scrollY: 0
     };
 
     this.scrollY = 0;
@@ -433,12 +458,17 @@ class Table extends React.Component<Props, State> {
     if (!this.table) {
       return;
     }
+
     const nextScrollX = this.scrollX - deltaX;
     const nextScrollY = this.scrollY - deltaY;
 
     this.scrollY = Math.min(0, nextScrollY < this.minScrollY ? this.minScrollY : nextScrollY);
     this.scrollX = Math.min(0, nextScrollX < this.minScrollX ? this.minScrollX : nextScrollX);
     this.updatePosition();
+
+    this.setState({
+      scrollY: this.scrollY
+    });
 
     onScroll && onScroll(this.scrollX, this.scrollY);
   };
@@ -538,6 +568,24 @@ class Table extends React.Component<Props, State> {
     return (delta >= 0 && this.scrollY > this.minScrollY) || (delta < 0 && this.scrollY < 0);
   };
 
+  shouldUpdateScrollY() {
+    const { renderRowExpanded, isTree } = this.props;
+    if (isTree || typeof renderRowExpanded === 'function') {
+      return false;
+    }
+    return true;
+  }
+
+  shouldRenderExpandedRow(rowData: Object) {
+    const { rowKey, renderRowExpanded, isTree } = this.props;
+    const expandedRowKeys = this.getExpandedRowKeys() || [];
+    return (
+      expandedRowKeys.some(key => key === rowData[rowKey]) &&
+      _.isFunction(renderRowExpanded) &&
+      !isTree
+    );
+  }
+
   tableRows = [];
   mounted = false;
   scrollY = 0;
@@ -571,6 +619,7 @@ class Table extends React.Component<Props, State> {
         });
         tableRowsMaxHeight.push(maxHeight);
       });
+
       this.setState({ tableRowsMaxHeight });
     }
   }
@@ -588,7 +637,7 @@ class Table extends React.Component<Props, State> {
 
   calculateTableContentWidth(prevProps: Props) {
     const table = this.table;
-    const row = table.querySelector(`.${this.addPrefix('row')}`);
+    const row = table.querySelector(`.${this.addPrefix('row')}:not(.vitrualized)`);
     const contentWidth = row ? getWidth(row) : 0;
 
     this.setState({ contentWidth });
@@ -606,8 +655,7 @@ class Table extends React.Component<Props, State> {
       this.state.contentWidth !== contentWidth &&
       _.flatten(this.props.children).length !== _.flatten(prevProps.children).length
     ) {
-      this.scrollX = 0;
-      this.scrollbarX && this.scrollbarX.resetScrollBarPosition();
+      this.scrollLeft(0);
     }
   }
 
@@ -632,24 +680,24 @@ class Table extends React.Component<Props, State> {
       this.minScrollY = -(contentHeight - height) - 10;
     }
 
-    /**
-     * 当 content height 更新后，更新纵向滚动条
-     */
-    if (this.state.contentHeight !== nextContentHeight) {
-      this.scrollY = 0;
-      this.scrollbarY && this.scrollbarY.resetScrollBarPosition();
+    if (nextContentHeight < height - headerHeight) {
+      this.scrollTop(0);
     }
   }
 
-  shouldRenderExpandedRow(rowData: Object) {
-    const { rowKey, renderRowExpanded, isTree } = this.props;
-    const expandedRowKeys = this.getExpandedRowKeys() || [];
-    return (
-      expandedRowKeys.some(key => key === rowData[rowKey]) &&
-      _.isFunction(renderRowExpanded) &&
-      !isTree
-    );
-  }
+  scrollTop = (top: number = 0) => {
+    this.scrollY = top;
+    this.scrollbarY && this.scrollbarY.resetScrollBarPosition(top);
+    this.setState({
+      scrollY: top
+    });
+  };
+
+  scrollLeft = (left: number = 0) => {
+    this.scrollX = left;
+    this.scrollbarX && this.scrollbarX.resetScrollBarPosition(left);
+    this.updatePosition();
+  };
 
   bindTableRowsRef = (index: number) => (ref: React.ElementRef<*>) => {
     if (ref) {
@@ -718,49 +766,24 @@ class Table extends React.Component<Props, State> {
       }
     };
 
+    const expandedRowKeys = this.getExpandedRowKeys() || [];
+    const expanded = expandedRowKeys.some(key => key === rowData[rowKey]);
     const cells = bodyCells.map(cell =>
       React.cloneElement(cell, {
         hasChildren,
-        layer: props.layer,
         height: props.rowHeight,
         rowIndex: props.index,
+        depth: props.depth,
         renderTreeToggle,
         onTreeToggle: this.handleTreeToggle,
         rowKey: nextRowKey,
         rowData,
-        wordWrap
+        wordWrap,
+        className: classNames({ [this.addPrefix('cell-expanded')]: expanded })
       })
     );
 
-    const row = this.renderRow(rowProps, cells, shouldRenderExpandedRow, rowData);
-
-    // insert children
-    if (false) {
-      props.layer += 1;
-
-      const expandedRowKeys = this.getExpandedRowKeys() || [];
-      const open = expandedRowKeys.some(key => key === rowData[rowKey]);
-
-      const childrenClasses = classNames(this.addPrefix('row-has-children'), {
-        [this.addPrefix('row-open')]: open
-      });
-
-      return (
-        <div className={childrenClasses} key={props.index} data-layer={props.layer}>
-          {row}
-          <div className={this.addPrefix('row-children')}>
-            {rowData.children.map((child, index) =>
-              this.renderRowData(bodyCells, child, {
-                ...props,
-                index
-              })
-            )}
-          </div>
-        </div>
-      );
-    }
-
-    return row;
+    return this.renderRow(rowProps, cells, shouldRenderExpandedRow, rowData);
   }
 
   renderRow(props: Object, cells: Array<any>, shouldRenderExpandedRow?: boolean, rowData?: Object) {
@@ -845,21 +868,17 @@ class Table extends React.Component<Props, State> {
         </div>
       );
     }
-
     return null;
   }
 
   renderMouseArea() {
     const headerHeight = this.getTableHeaderHeight();
     const styles = { height: this.getTableHeight() };
+    const spanStyles = { height: headerHeight - 1 };
 
     return (
       <div ref={this.bindMouseAreaRef} className={this.addPrefix('mouse-area')} style={styles}>
-        <span
-          style={{
-            height: headerHeight - 1
-          }}
-        />
+        <span style={spanStyles} />
       </div>
     );
   }
@@ -884,7 +903,15 @@ class Table extends React.Component<Props, State> {
   }
 
   renderTableBody(bodyCells: Array<any>, rowWidth: number) {
-    const { rowHeight, rowExpandedHeight, isTree, setRowHeight } = this.props;
+    const {
+      rowHeight,
+      rowExpandedHeight,
+      isTree,
+      setRowHeight,
+      rowKey,
+      wordWrap,
+      vitrualized
+    } = this.props;
     const headerHeight = this.getTableHeaderHeight();
     const { tableRowsMaxHeight } = this.state;
     const height = this.getTableHeight();
@@ -899,16 +926,31 @@ class Table extends React.Component<Props, State> {
 
     const data = isTree ? flattenData(this.props.data) : this.props.data;
 
-    console.log(data);
+    let topHideHeight = 0;
+    let bottomHideHeight = 0;
 
     if (data && data.length > 0) {
-      rows = data.map((rowData, index) => {
+      rows = [];
+      data.forEach((rowData, index) => {
         let maxHeight = tableRowsMaxHeight[index];
         let nextRowHeight = maxHeight ? maxHeight + CELL_PADDING_HEIGHT : rowHeight;
         let shouldRenderExpandedRow = this.shouldRenderExpandedRow(rowData);
+        let depth = 0;
 
         if (shouldRenderExpandedRow) {
           nextRowHeight += rowExpandedHeight;
+        }
+
+        if (isTree) {
+          const parents = findAllParents(rowData, rowKey);
+          const expandedRowKeys = this.getExpandedRowKeys();
+
+          depth = parents.length;
+
+          // 树节点如果被关闭，则不渲染
+          if (!shouldShowRowByExpanded(expandedRowKeys, parents)) {
+            return null;
+          }
         }
 
         /**
@@ -924,13 +966,26 @@ class Table extends React.Component<Props, State> {
           index,
           top,
           rowWidth,
-          layer: 0,
+          depth,
           rowHeight: nextRowHeight
         };
 
         top += nextRowHeight;
 
-        return this.renderRowData(bodyCells, rowData, rowProps, shouldRenderExpandedRow);
+        if (vitrualized && !wordWrap) {
+          const minTop = Math.abs(this.state.scrollY);
+          const maxTop = minTop + height + rowExpandedHeight;
+
+          if (top + nextRowHeight < minTop) {
+            topHideHeight += nextRowHeight;
+            return null;
+          } else if (top > maxTop) {
+            bottomHideHeight += nextRowHeight;
+            return null;
+          }
+        }
+
+        rows.push(this.renderRowData(bodyCells, rowData, rowProps, shouldRenderExpandedRow));
       });
     }
 
@@ -939,6 +994,8 @@ class Table extends React.Component<Props, State> {
       height: bodyHeight,
       minHeight: height
     };
+    const topRowStyles = { height: topHideHeight };
+    const bottomRowStyles = { height: bottomHideHeight };
 
     return (
       <div
@@ -954,7 +1011,9 @@ class Table extends React.Component<Props, State> {
           className={this.addPrefix('body-wheel-area')}
           ref={this.bindWheelWrapperRef}
         >
+          {topHideHeight ? <Row style={topRowStyles} className="vitrualized" /> : null}
           {rows}
+          {bottomHideHeight ? <Row style={bottomRowStyles} className="vitrualized" /> : null}
         </div>
 
         {this.renderInfo(rows === null)}
@@ -968,7 +1027,6 @@ class Table extends React.Component<Props, State> {
     if (!shouldShow) {
       return null;
     }
-
     const { locale } = this.props;
     return <div className={this.addPrefix('body-info')}>{locale.emptyMessage}</div>;
   }

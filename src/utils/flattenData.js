@@ -3,22 +3,17 @@ import _ from 'lodash';
 // @flow
 function flattenData(data: any[]) {
   const flattenItems = [];
-  let _depth = -1;
 
   function loop(data, _parent) {
     if (!_.isArray(data)) {
       return;
     }
 
-    _depth++;
-
     data.forEach(item => {
+      item._parent = _parent;
       flattenItems.push({
-        ...item,
-        _depth,
-        _parent
+        ...item
       });
-
       if (item.children) {
         loop(item.children, item);
       }
@@ -26,7 +21,6 @@ function flattenData(data: any[]) {
   }
 
   loop(data, null);
-
   return flattenItems;
 }
 
