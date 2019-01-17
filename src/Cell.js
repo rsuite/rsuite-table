@@ -43,7 +43,7 @@ type Props = {
   removed?: boolean
 };
 
-class Cell extends React.Component<Props> {
+class Cell extends React.PureComponent<Props> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-cell'),
     align: 'left',

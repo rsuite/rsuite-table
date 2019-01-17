@@ -16,7 +16,7 @@ type Props = {
   classPrefix?: string
 };
 
-class CellGroup extends React.Component<Props> {
+class CellGroup extends React.PureComponent<Props> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-cell-group')
   };

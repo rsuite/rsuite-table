@@ -16,7 +16,9 @@ import {
   defaultClassPrefix,
   toggleClass,
   flattenData,
-  prefix
+  prefix,
+  requestAnimationTimeout,
+  cancelAnimationTimeout
 } from './utils';
 
 const ReactChildren = React.Children;
@@ -94,19 +96,21 @@ type State = {
   isColumnResizing?: boolean,
   expandedRowKeys: Array<string | number>,
   sortType?: SortType,
-  scrollY: number
+  scrollY: number,
+  isScrolling?: boolean
 };
 
 function findRowKeys(rows, rowKey, expanded) {
   let keys = [];
-  rows.forEach(item => {
+  for (let i = 0; i < rows.length; i++) {
+    let item = rows[i];
     if (item.children) {
       keys.push(item[rowKey]);
       keys = [...keys, ...findRowKeys(item.children, rowKey)];
     } else if (expanded) {
       keys.push(item[rowKey]);
     }
-  });
+  }
   return keys;
 }
 
@@ -139,11 +143,23 @@ function shouldShowRowByExpanded(expandedRowKeys = [], parentKeys = []) {
 
 function resetLeftForCells(cells) {
   let left = 0;
-  return cells.map(cell => {
-    const nextCell = React.cloneElement(cell, { left });
+  const nextCells = [];
+
+  for (let i = 0; i < cells.length; i++) {
+    let cell = cells[i];
+    let nextCell = React.cloneElement(cell, { left });
     left += cell.props.width;
-    return nextCell;
-  });
+    nextCells.push(nextCell);
+  }
+
+  return nextCells;
+}
+
+function getRandomKey(index) {
+  return `_${(Math.random() * 1e18)
+    .toString(36)
+    .slice(0, 5)
+    .toUpperCase()}_${index}`;
 }
 
 class Table extends React.Component<Props, State> {
@@ -156,9 +172,9 @@ class Table extends React.Component<Props, State> {
     headerHeight: 40,
     minHeight: 0,
     rowExpandedHeight: 100,
-    hover: false,
+    hover: true,
     showHeader: true,
-    vitrualized: true,
+    vitrualized: false,
     rowKey: 'key',
     locale: {
       emptyMessage: 'No data found',
@@ -200,21 +216,30 @@ class Table extends React.Component<Props, State> {
       contentWidth: 0,
       tableRowsMaxHeight: [],
       sortType: defaultSortType,
-      scrollY: 0
+      scrollY: 0,
+      isScrolling: false
     };
 
     this.scrollY = 0;
     this.scrollX = 0;
     this.wheelHandler = new WheelHandler(
-      (deltaX, deltaY) => {
-        this.handleWheel(deltaX, deltaY);
-        this.scrollbarX.onWheelScroll(deltaX);
-        this.scrollbarY.onWheelScroll(deltaY);
-      },
+      this._listenWheel,
       this.shouldHandleWheelX,
-      this.shouldHandleWheelY
+      this.shouldHandleWheelY,
+      false
     );
   }
+
+  _listenWheel = (deltaX: number, deltaY: number) => {
+    this.handleWheel(deltaX, deltaY);
+    if (this.scrollbarX) {
+      this.scrollbarX.onWheelScroll(deltaX);
+    }
+
+    if (this.scrollbarY) {
+      this.scrollbarY.onWheelScroll(deltaY);
+    }
+  };
 
   componentDidMount() {
     this.calculateTableWidth();
@@ -235,6 +260,7 @@ class Table extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
+    this.wheelHandler = null;
     if (this.table) {
       unbindElementResize(this.table);
     }
@@ -293,18 +319,24 @@ class Table extends React.Component<Props, State> {
     onSortColumn && onSortColumn(dataKey, sortType);
   };
 
+  _cacheCells = null;
+
   getCells() {
+    if (this._cacheCells) {
+      return this._cacheCells;
+    }
     let left = 0; // Cell left margin
     const headerCells = []; // Table header cell
     const bodyCells = []; // Table body cell
     const columns = this.props.children;
 
     if (!columns) {
-      return {
+      this._cacheCells = {
         headerCells,
         bodyCells,
         allColumnsWidth: left
       };
+      return this._cacheCells;
     }
 
     const { width: tableWidth } = this.state;
@@ -383,11 +415,13 @@ class Table extends React.Component<Props, State> {
       }
     });
 
-    return {
+    this._cacheCells = {
       headerCells,
       bodyCells,
       allColumnsWidth: left
     };
+
+    return this._cacheCells;
   }
   handleColumnResizeEnd = (
     columnWidth: number,
@@ -395,6 +429,7 @@ class Table extends React.Component<Props, State> {
     dataKey: any,
     index: number
   ) => {
+    this._cacheCells = null;
     this.setState({
       isColumnResizing: false,
       [`${dataKey}_${index}_width`]: columnWidth
@@ -430,13 +465,15 @@ class Table extends React.Component<Props, State> {
 
     let open = false;
     const nextExpandedRowKeys = [];
-    expandedRowKeys.forEach(key => {
+
+    for (let i = 0; i < expandedRowKeys.length; i++) {
+      let key = expandedRowKeys[i];
       if (key === rowKey) {
         open = true;
       } else {
         nextExpandedRowKeys.push(key);
       }
-    });
+    }
 
     if (!open) {
       nextExpandedRowKeys.push(rowKey);
@@ -453,8 +490,11 @@ class Table extends React.Component<Props, State> {
   handleScrollY = (delta: number) => {
     this.handleWheel(0, delta);
   };
+
+  disableEventsTimeoutId = null;
+
   handleWheel = (deltaX: number, deltaY: number) => {
-    const { onScroll } = this.props;
+    const { onScroll, vitrualized } = this.props;
     if (!this.table) {
       return;
     }
@@ -466,11 +506,27 @@ class Table extends React.Component<Props, State> {
     this.scrollX = Math.min(0, nextScrollX < this.minScrollX ? this.minScrollX : nextScrollX);
     this.updatePosition();
 
-    this.setState({
-      scrollY: this.scrollY
-    });
-
     onScroll && onScroll(this.scrollX, this.scrollY);
+
+    if (vitrualized) {
+      this.setState({
+        isScrolling: true,
+        scrollY: this.scrollY
+      });
+
+      if (this.disableEventsTimeoutId) {
+        cancelAnimationTimeout(this.disableEventsTimeoutId);
+      }
+
+      this.disableEventsTimeoutId = requestAnimationTimeout(this.debounceScrollEndedCallback, 150);
+    }
+  };
+
+  debounceScrollEndedCallback = () => {
+    this.disableEventsTimeoutId = null;
+    this.setState({
+      isScrolling: false
+    });
   };
 
   // 处理移动端 Touch 事件,  Start 的时候初始化 x,y
@@ -532,9 +588,13 @@ class Table extends React.Component<Props, State> {
     translateDOMPositionXY(wheelGroupStyle, this.scrollX, 0);
     translateDOMPositionXY(wheelStyle, 0, this.scrollY);
 
-    Array.from(scrollGroups).forEach(group => {
+    const scrollArrayGroups = Array.from(scrollGroups);
+
+    for (let i = 0; i < scrollArrayGroups.length; i++) {
+      let group = scrollArrayGroups[i];
       addStyle(group, wheelGroupStyle);
-    });
+    }
+
     if (this.wheelWrapper) {
       addStyle(this.wheelWrapper, wheelStyle);
     }
@@ -579,10 +639,11 @@ class Table extends React.Component<Props, State> {
   shouldRenderExpandedRow(rowData: Object) {
     const { rowKey, renderRowExpanded, isTree } = this.props;
     const expandedRowKeys = this.getExpandedRowKeys() || [];
+
     return (
-      expandedRowKeys.some(key => key === rowData[rowKey]) &&
       _.isFunction(renderRowExpanded) &&
-      !isTree
+      !isTree &&
+      expandedRowKeys.some(key => key === rowData[rowKey])
     );
   }
 
@@ -610,15 +671,19 @@ class Table extends React.Component<Props, State> {
     const { wordWrap } = this.props;
     if (wordWrap) {
       const tableRowsMaxHeight = [];
-      this.tableRows.forEach(row => {
+
+      for (let i = 0; i < this.tableRows.length; i++) {
+        let row = this.tableRows[i];
         let cells = row.querySelectorAll(`.${this.addPrefix('cell-wrap')}`) || [];
         let maxHeight = 0;
-        Array.from(cells).forEach(cell => {
+        let cellArray = Array.from(cells);
+        for (let j = 0; j < cellArray.length; j++) {
+          let cell = cellArray[j];
           let h = getHeight(cell);
           maxHeight = Math.max(maxHeight, h);
-        });
+        }
         tableRowsMaxHeight.push(maxHeight);
-      });
+      }
 
       this.setState({ tableRowsMaxHeight });
     }
@@ -629,6 +694,7 @@ class Table extends React.Component<Props, State> {
     if (table) {
       this.scrollX = 0;
       this.scrollbarX && this.scrollbarX.resetScrollBarPosition();
+      this._cacheCells = null;
       this.setState({
         width: getWidth(table)
       });
@@ -656,6 +722,7 @@ class Table extends React.Component<Props, State> {
       _.flatten(this.props.children).length !== _.flatten(prevProps.children).length
     ) {
       this.scrollLeft(0);
+      this._cacheCells = null;
     }
   }
 
@@ -688,6 +755,7 @@ class Table extends React.Component<Props, State> {
   scrollTop = (top: number = 0) => {
     this.scrollY = top;
     this.scrollbarY && this.scrollbarY.resetScrollBarPosition(top);
+
     this.setState({
       scrollY: top
     });
@@ -739,49 +807,51 @@ class Table extends React.Component<Props, State> {
     this.scrollbarY = ref;
   };
 
+  bindRowClick = (rowData: Object) => {
+    const { onRowClick } = this.props;
+    return () => {
+      onRowClick && onRowClick(rowData);
+    };
+  };
+
   renderRowData(
     bodyCells: Array<any>,
     rowData: Object,
     props: Object,
     shouldRenderExpandedRow?: boolean
   ) {
-    const { onRowClick, renderTreeToggle, rowKey, wordWrap, isTree } = this.props;
+    const { renderTreeToggle, rowKey, wordWrap, isTree } = this.props;
     const hasChildren = isTree && rowData.children && Array.isArray(rowData.children);
-
-    const nextRowKey =
-      rowData[rowKey] ||
-      `_${(Math.random() * 1e18)
-        .toString(36)
-        .slice(0, 5)
-        .toUpperCase()}_${props.index}`;
-
+    const nextRowKey = rowData[rowKey] || getRandomKey(props.index);
     const rowProps = {
       rowRef: this.bindTableRowsRef(props.index),
+      onClick: this.bindRowClick(rowData),
       key: props.index,
       width: props.rowWidth,
       height: props.rowHeight,
-      top: props.top,
-      onClick: () => {
-        onRowClick && onRowClick(rowData);
-      }
+      top: props.top
     };
 
     const expandedRowKeys = this.getExpandedRowKeys() || [];
     const expanded = expandedRowKeys.some(key => key === rowData[rowKey]);
-    const cells = bodyCells.map(cell =>
-      React.cloneElement(cell, {
-        hasChildren,
-        height: props.rowHeight,
-        rowIndex: props.index,
-        depth: props.depth,
-        renderTreeToggle,
-        onTreeToggle: this.handleTreeToggle,
-        rowKey: nextRowKey,
-        rowData,
-        wordWrap,
-        className: classNames({ [this.addPrefix('cell-expanded')]: expanded })
-      })
-    );
+    const cells = [];
+    for (let i = 0; i < bodyCells.length; i++) {
+      let cell = bodyCells[i];
+      cells.push(
+        React.cloneElement(cell, {
+          hasChildren,
+          rowData,
+          wordWrap,
+          renderTreeToggle,
+          height: props.rowHeight,
+          rowIndex: props.index,
+          depth: props.depth,
+          onTreeToggle: this.handleTreeToggle,
+          rowKey: nextRowKey,
+          className: classNames({ [this.addPrefix('cell-expanded')]: expanded })
+        })
+      );
+    }
 
     return this.renderRow(rowProps, cells, shouldRenderExpandedRow, rowData);
   }
@@ -804,7 +874,8 @@ class Table extends React.Component<Props, State> {
       let fixedLeftCellGroupWidth = 0;
       let fixedRightCellGroupWidth = 0;
 
-      cells.forEach(cell => {
+      for (let i = 0; i < cells.length; i++) {
+        let cell = cells[i];
         const { fixed, width } = cell.props;
         if (fixed === true || fixed === 'left') {
           fixedLeftCells.push(cell);
@@ -815,7 +886,7 @@ class Table extends React.Component<Props, State> {
         } else {
           scrollCells.push(cell);
         }
-      });
+      }
 
       return (
         <Row {...props}>
@@ -901,6 +972,7 @@ class Table extends React.Component<Props, State> {
       </div>
     );
   }
+  _rows = [];
 
   renderTableBody(bodyCells: Array<any>, rowWidth: number) {
     const {
@@ -912,26 +984,29 @@ class Table extends React.Component<Props, State> {
       wordWrap,
       vitrualized
     } = this.props;
+
     const headerHeight = this.getTableHeaderHeight();
-    const { tableRowsMaxHeight } = this.state;
+    const { tableRowsMaxHeight, isScrolling } = this.state;
     const height = this.getTableHeight();
     const bodyStyles = {
       top: headerHeight,
       height: height - headerHeight
     };
+    let data = isTree ? flattenData(this.props.data) : this.props.data;
 
     let top = 0; // Row position
-    let rows = null;
     let bodyHeight = 0;
-
-    const data = isTree ? flattenData(this.props.data) : this.props.data;
-
     let topHideHeight = 0;
     let bottomHideHeight = 0;
 
-    if (data && data.length > 0) {
-      rows = [];
-      data.forEach((rowData, index) => {
+    this._rows = [];
+
+    if (data) {
+      const minTop = Math.abs(this.state.scrollY);
+      const maxTop = minTop + height + rowExpandedHeight;
+
+      for (let index = 0; index < data.length; index++) {
+        let rowData = data[index];
         let maxHeight = tableRowsMaxHeight[index];
         let nextRowHeight = maxHeight ? maxHeight + CELL_PADDING_HEIGHT : rowHeight;
         let shouldRenderExpandedRow = this.shouldRenderExpandedRow(rowData);
@@ -944,12 +1019,11 @@ class Table extends React.Component<Props, State> {
         if (isTree) {
           const parents = findAllParents(rowData, rowKey);
           const expandedRowKeys = this.getExpandedRowKeys();
-
           depth = parents.length;
 
           // 树节点如果被关闭，则不渲染
           if (!shouldShowRowByExpanded(expandedRowKeys, parents)) {
-            return null;
+            continue;
           }
         }
 
@@ -973,26 +1047,24 @@ class Table extends React.Component<Props, State> {
         top += nextRowHeight;
 
         if (vitrualized && !wordWrap) {
-          const minTop = Math.abs(this.state.scrollY);
-          const maxTop = minTop + height + rowExpandedHeight;
-
           if (top + nextRowHeight < minTop) {
             topHideHeight += nextRowHeight;
-            return null;
+            continue;
           } else if (top > maxTop) {
             bottomHideHeight += nextRowHeight;
-            return null;
+            continue;
           }
         }
 
-        rows.push(this.renderRowData(bodyCells, rowData, rowProps, shouldRenderExpandedRow));
-      });
+        this._rows.push(this.renderRowData(bodyCells, rowData, rowProps, shouldRenderExpandedRow));
+      }
     }
 
     const wheelStyles = {
       position: 'absolute',
       height: bodyHeight,
-      minHeight: height
+      minHeight: height,
+      pointerEvents: isScrolling ? 'none' : ''
     };
     const topRowStyles = { height: topHideHeight };
     const bottomRowStyles = { height: bottomHideHeight };
@@ -1012,19 +1084,19 @@ class Table extends React.Component<Props, State> {
           ref={this.bindWheelWrapperRef}
         >
           {topHideHeight ? <Row style={topRowStyles} className="vitrualized" /> : null}
-          {rows}
+          {this._rows}
           {bottomHideHeight ? <Row style={bottomRowStyles} className="vitrualized" /> : null}
         </div>
 
-        {this.renderInfo(rows === null)}
+        {this.renderInfo()}
         {this.renderScrollbar()}
         {this.renderLoading()}
       </div>
     );
   }
 
-  renderInfo(shouldShow: boolean) {
-    if (!shouldShow) {
+  renderInfo() {
+    if (this._rows.length) {
       return null;
     }
     const { locale } = this.props;
@@ -1033,8 +1105,9 @@ class Table extends React.Component<Props, State> {
 
   renderScrollbar() {
     const { disabledScroll } = this.props;
-    const headerHeight = this.getTableHeaderHeight();
     const { contentWidth, contentHeight } = this.state;
+
+    const headerHeight = this.getTableHeaderHeight();
     const height = this.getTableHeight();
 
     if (disabledScroll) {

@@ -44,7 +44,7 @@ type State = {
   flexGrow?: number
 };
 
-class HeaderCell extends React.Component<Props, State> {
+class HeaderCell extends React.PureComponent<Props, State> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-cell-header')
   };
