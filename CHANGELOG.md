@@ -1,3 +1,9 @@
+# 3.4.0
+
+> January 17, 2019
+
+- Support virtualized, effectively render large tabular data #55
+
 # 3.3.2
 
 > January 9, 2019
