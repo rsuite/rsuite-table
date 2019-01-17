@@ -110,7 +110,10 @@ class Scrollbar extends React.PureComponent<Props, State> {
 
   updateScrollBarPosition(delta: number, forceDelta?: number) {
     const { vertical, length, scrollLength } = this.props;
-    const max = scrollLength && length ? length - (length / scrollLength) * length : 0;
+    const max =
+      scrollLength && length
+        ? length - Math.max((length / scrollLength) * length, SCROLLBAR_MIN_WIDTH + 2)
+        : 0;
     const styles = {};
 
     if (_.isUndefined(forceDelta)) {
