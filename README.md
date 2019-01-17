@@ -100,8 +100,8 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | showHeader             | boolean `(true)`                        | Display header                                                                                |
 | sortColumn             | string                                  | Sort column name ˝                                                                            |
 | sortType               | enum: 'desc', 'asc'                     | Sort type (Controlled)                                                                        |
+| vitrualized            | boolean                                 | Effectively render large tabular data                                                      |
 | width                  | number                                  | Table width                                                                                   |
-
 
 ### `<Column>`
 

@@ -1,6 +1,6 @@
 const faker = require('faker');
 
-function createFakeRowObjectData(index) {
+export function createFakeRowObjectData(index) {
   return {
     id: index,
     avartar: faker.image.avatar(),
@@ -19,10 +19,10 @@ function createFakeRowObjectData(index) {
   };
 }
 
-module.exports = function fakeObjectDataListStore(size) {
+export default function fakeObjectDataListStore(size) {
   var dataList = [];
   for (var i = 0; i < size; i++) {
     dataList.push(createFakeRowObjectData(i + 1));
   }
   return dataList;
-};
+}

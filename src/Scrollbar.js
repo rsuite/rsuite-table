@@ -28,7 +28,7 @@ type State = {
   handlePressed: boolean
 };
 
-class Scrollbar extends React.Component<Props, State> {
+class Scrollbar extends React.PureComponent<Props, State> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-scrollbar'),
     scrollLength: 1,
@@ -79,6 +79,7 @@ class Scrollbar extends React.Component<Props, State> {
 
   hanldeMouseDown = (event: SyntheticMouseEvent<*>) => {
     const { onMouseDown } = this.props;
+
     this.mouseMoveTracker = this.getMouseMoveTracker();
     this.mouseMoveTracker.captureMouseMoves(event);
     this.setState({

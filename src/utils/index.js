@@ -4,3 +4,5 @@ export getUnhandledProps from './getUnhandledProps';
 export getTotalByColumns from './getTotalByColumns';
 export colSpanCells from './colSpanCells';
 export toggleClass from './toggleClass';
+export flattenData from './flattenData';
+export * from './requestAnimationTimeout';

@@ -17,7 +17,7 @@ type Props = {
   style?: Object
 };
 
-class Row extends React.Component<Props> {
+class Row extends React.PureComponent<Props> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-row'),
     height: 46,

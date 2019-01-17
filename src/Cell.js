@@ -27,7 +27,7 @@ type Props = {
   rowKey?: string | number,
   rowIndex?: number,
   rowData?: Object,
-  layer: number,
+  depth: number,
 
   onTreeToggle?: (
     rowKey?: string | number,
@@ -43,14 +43,14 @@ type Props = {
   removed?: boolean
 };
 
-class Cell extends React.Component<Props> {
+class Cell extends React.PureComponent<Props> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-cell'),
     align: 'left',
     headerHeight: 36,
+    depth: 0,
     height: 36,
     width: 0,
-    layer: 0,
     left: 0
   };
 
@@ -106,7 +106,6 @@ class Cell extends React.Component<Props> {
       lastColumn,
       isHeaderCell,
       headerHeight,
-      layer,
       align,
       children,
       rowData,
@@ -115,6 +114,7 @@ class Cell extends React.Component<Props> {
       removed,
       wordWrap,
       classPrefix,
+      depth,
       ...rest
     } = this.props;
 
@@ -127,21 +127,19 @@ class Cell extends React.Component<Props> {
       [this.addPrefix('last')]: lastColumn
     });
 
-    const layerWidth = layer * LAYER_WIDTH;
-    const nextWidth = !isHeaderCell && firstColumn ? width - layerWidth : width;
     const nextHeight = isHeaderCell ? headerHeight : height;
-
     const styles = {
-      width: nextWidth,
+      width,
       height: nextHeight,
-      zIndex: layer,
-      left: !isHeaderCell && firstColumn ? left + layerWidth : left
+      zIndex: depth,
+      left
     };
 
     const contentStyles: Object = {
-      width: nextWidth,
+      width,
       height: nextHeight,
       textAlign: align,
+      paddingLeft: firstColumn ? depth * LAYER_WIDTH + 10 : null,
       ...style
     };
 
