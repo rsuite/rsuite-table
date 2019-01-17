@@ -1,21 +1,16 @@
-### 大数据列表
+### 长表格
 
 <!--start-code-->
 
 ```js
 class LargeListsTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: fakeLargeData
-    };
-  }
   render() {
     return (
       <div>
         <Table
+          vitrualized
           height={400}
-          data={this.state.data}
+          data={fakeLargeData}
           onRowClick={data => {
             console.log(data);
           }}
@@ -25,7 +20,7 @@ class LargeListsTable extends React.Component {
             <Cell dataKey="id" />
           </Column>
 
-          <Column width={130} fixed>
+          <Column width={130}>
             <HeaderCell>First Name</HeaderCell>
             <Cell dataKey="firstName" />
           </Column>
@@ -45,36 +40,9 @@ class LargeListsTable extends React.Component {
             <Cell dataKey="street" />
           </Column>
 
-          <Column width={200}>
+          <Column minWidth={200} flexGrow={1}>
             <HeaderCell>Company Name</HeaderCell>
             <Cell dataKey="companyName" />
-          </Column>
-
-          <Column width={200}>
-            <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="email" />
-          </Column>
-
-          <Column width={200}>
-            <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="email" />
-          </Column>
-
-          <Column width={200} fixed="right">
-            <HeaderCell>Action</HeaderCell>
-
-            <Cell>
-              {rowData => {
-                function handleAction() {
-                  alert(`id:${rowData.id}`);
-                }
-                return (
-                  <span>
-                    <a onClick={handleAction}> Edit </a> | <a onClick={handleAction}> Remove </a>
-                  </span>
-                );
-              }}
-            </Cell>
           </Column>
         </Table>
       </div>
@@ -85,3 +53,5 @@ ReactDOM.render(<LargeListsTable />);
 ```
 
 <!--end-code-->
+
+> Table 支持大数据显示， 只需在 <Table> 上设置 `vitrualized` 属性。

@@ -37,7 +37,7 @@ class App extends React.Component {
           }}
           list={[
             {
-              title: '长列表',
+              title: '长表格',
               content: require('./md/LargeLists.md')
             },
             {
