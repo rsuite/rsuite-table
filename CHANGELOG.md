@@ -1,3 +1,9 @@
+# 3.4.1
+
+> January 17, 2019
+
+- Fix scrollbar position
+
 # 3.4.0
 
 > January 17, 2019
