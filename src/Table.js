@@ -228,6 +228,8 @@ class Table extends React.Component<Props, State> {
       this.shouldHandleWheelY,
       false
     );
+
+    this._cacheChildrenSize = _.flatten(children).length;
   }
 
   _listenWheel = (deltaX: number, deltaY: number) => {
@@ -249,6 +251,12 @@ class Table extends React.Component<Props, State> {
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
+    const _cacheChildrenSize = _.flatten(nextProps.children).length;
+    if (_cacheChildrenSize !== this._cacheChildrenSize) {
+      this._cacheChildrenSize = _cacheChildrenSize;
+      this._cacheCells = null;
+    }
+
     return !_.eq(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
@@ -711,18 +719,18 @@ class Table extends React.Component<Props, State> {
     this.minScrollX = -(contentWidth - this.state.width) - SCROLLBAR_WIDHT;
 
     /**
-     * 1.判断 Table 内容区域是否宽度有变化
-     * 2.判断 Table 列数是否发生变化
+     * 1.判断 Table 列数是否发生变化
+     * 2.判断 Table 内容区域是否宽度有变化
+     *
      *
      * 满足 1 和 2 则更新横向滚动条位置
      */
 
     if (
-      this.state.contentWidth !== contentWidth &&
-      _.flatten(this.props.children).length !== _.flatten(prevProps.children).length
+      _.flatten(this.props.children).length !== _.flatten(prevProps.children).length &&
+      this.state.contentWidth !== contentWidth
     ) {
       this.scrollLeft(0);
-      this._cacheCells = null;
     }
   }
 
