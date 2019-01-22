@@ -7,19 +7,35 @@ class DynamicTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      columns: []
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.handleRowClick = this.handleRowClick.bind(this);
+    this.handleColumnClick = this.handleColumnClick.bind(this);
     this.handleScrollTop = this.handleScrollTop.bind(this);
     this.handleScrollLeft = this.handleScrollLeft.bind(this);
   }
-  handleClick() {
+  handleRowClick() {
     const { data } = this.state;
     const rowData = createFakeRowObjectData(data.length + 1);
     data.push(rowData);
 
     this.setState({
       data
+    });
+  }
+  handleColumnClick() {
+    const { columns } = this.state;
+
+    columns.push(
+      <Column width={200} key={columns.length + 1}>
+        <HeaderCell>Email</HeaderCell>
+        <Cell dataKey="email" />
+      </Column>
+    );
+
+    this.setState({
+      columns
     });
   }
   handleScrollTop() {
@@ -32,7 +48,8 @@ class DynamicTable extends React.Component {
     return (
       <div>
         <ButtonGroup>
-          <Button onClick={this.handleClick}>添加数据</Button>
+          <Button onClick={this.handleRowClick}>添加行</Button>
+          <Button onClick={this.handleColumnClick}>添加列</Button>
           <Button onClick={this.handleScrollTop}>scrollTop</Button>
           <Button onClick={this.handleScrollLeft}>scrollLeft</Button>
         </ButtonGroup>
@@ -44,7 +61,6 @@ class DynamicTable extends React.Component {
             this.table = ref;
           }}
         >
-          Î
           <Column width={70} align="center" fixed>
             <HeaderCell>Id</HeaderCell>
             <Cell dataKey="id" />
@@ -77,22 +93,7 @@ class DynamicTable extends React.Component {
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
-          <Column width={200} fixed="right">
-            <HeaderCell>Action</HeaderCell>
-
-            <Cell>
-              {rowData => {
-                function handleAction() {
-                  alert(`id:${rowData.id}`);
-                }
-                return (
-                  <span>
-                    <a onClick={handleAction}> Edit </a> | <a onClick={handleAction}> Remove </a>
-                  </span>
-                );
-              }}
-            </Cell>
-          </Column>
+          {this.state.columns}
         </Table>
       </div>
     );
