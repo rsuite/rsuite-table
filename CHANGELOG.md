@@ -1,5 +1,11 @@
 # 3.4.1
 
+> January 22, 2019
+
+- Fix dynamic column not updated
+
+# 3.4.1
+
 > January 17, 2019
 
 - Fix scrollbar position
