@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Popover, Whisper, Toggle, Grid, Button, ButtonGroup } from 'rsuite';
+import { Popover, Whisper, Toggle, Grid, Button, ButtonGroup, Checkbox } from 'rsuite';
 import { Markdown } from 'react-markdown-reader';
 import clone from 'lodash/clone';
+import isFunction from 'lodash/isFunction';
+import get from 'lodash/get';
+import without from 'lodash/without';
 import Examples from './Examples';
 import './less/index.less';
 import { Table, Column, Cell, HeaderCell } from '../src';
@@ -19,6 +22,7 @@ class App extends React.Component {
         <h2>Examples</h2>
         <Examples
           dependencies={{
+            Checkbox,
             Button,
             ButtonGroup,
             Popover,
@@ -33,7 +37,10 @@ class App extends React.Component {
             Cell,
             HeaderCell,
             clone,
-            createFakeRowObjectData
+            createFakeRowObjectData,
+            isFunction,
+            get,
+            without
           }}
           list={[
             {

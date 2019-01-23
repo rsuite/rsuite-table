@@ -257,6 +257,10 @@ class Table extends React.Component<Props, State> {
       this._cacheCells = null;
     }
 
+    if (this.props.children !== nextProps.children) {
+      this._cacheCells = null;
+    }
+
     return !_.eq(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
