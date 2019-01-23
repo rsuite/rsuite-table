@@ -1,6 +1,6 @@
-# 3.4.1
+# 3.4.3
 
-> January 22, 2019
+> January 23, 2019
 
 - Fix dynamic column not updated
 
