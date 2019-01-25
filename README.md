@@ -17,6 +17,28 @@ A React table component,
 - Support for sorting.
 
 
+## Preview
+
+- Fixed Column
+
+![](https://user-images.githubusercontent.com/1203827/51730134-4b87c500-20b1-11e9-8140-d0c1ee79bb7b.png)
+
+- Custom Cell
+
+![](https://user-images.githubusercontent.com/1203827/51730187-7eca5400-20b1-11e9-827f-60a7532923c9.png)
+
+
+- Tree Table
+
+![](https://user-images.githubusercontent.com/1203827/51730250-bb964b00-20b1-11e9-82e3-2391fbb6266b.png)
+
+- Expandable
+
+![](https://user-images.githubusercontent.com/1203827/51730456-86d6c380-20b2-11e9-8331-462fda0eeaa0.png)
+
+
+[More Examples](https://rsuitejs.com/en/components/table)
+
 ## Install
 
 ```sh
@@ -100,7 +122,7 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | showHeader             | boolean `(true)`                        | Display header                                                                                |
 | sortColumn             | string                                  | Sort column name ˝                                                                            |
 | sortType               | enum: 'desc', 'asc'                     | Sort type (Controlled)                                                                        |
-| vitrualized            | boolean                                 | Effectively render large tabular data                                                      |
+| vitrualized            | boolean                                 | Effectively render large tabular data                                                         |
 | width                  | number                                  | Table width                                                                                   |
 
 ### `<Column>`
