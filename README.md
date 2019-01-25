@@ -10,11 +10,13 @@ A React table component,
 
 ## Features
 
+- Support virtualized.
 - Support fixed header, fixed column.
 - Support custom adjustment column width.
 - Support for custom cell content.
 - Support for displaying a tree form.
 - Support for sorting.
+- Support for expandable child nodes
 
 
 ## Preview
