@@ -8,7 +8,7 @@ class LargeListsTable extends React.Component {
     return (
       <div>
         <Table
-          vitrualized
+          virtualized
           height={400}
           data={fakeLargeData}
           onRowClick={data => {
@@ -54,4 +54,4 @@ ReactDOM.render(<LargeListsTable />);
 
 <!--end-code-->
 
-> Table 支持大数据显示， 只需在 <Table> 上设置 `vitrualized` 属性。
+> Table 支持大数据显示， 只需在 <Table> 上设置 `virtualized` 属性。

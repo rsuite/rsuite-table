@@ -82,7 +82,7 @@ type Props = {
   loadAnimation?: boolean,
   showHeader?: boolean,
   rowClassName?: string | ((rowData: ?Object) => string),
-  vitrualized?: boolean
+  virtualized?: boolean
 };
 
 type State = {
@@ -174,7 +174,7 @@ class Table extends React.Component<Props, State> {
     rowExpandedHeight: 100,
     hover: true,
     showHeader: true,
-    vitrualized: false,
+    virtualized: false,
     rowKey: 'key',
     locale: {
       emptyMessage: 'No data found',
@@ -506,7 +506,7 @@ class Table extends React.Component<Props, State> {
   disableEventsTimeoutId = null;
 
   handleWheel = (deltaX: number, deltaY: number) => {
-    const { onScroll, vitrualized } = this.props;
+    const { onScroll, virtualized } = this.props;
     if (!this.table) {
       return;
     }
@@ -520,7 +520,7 @@ class Table extends React.Component<Props, State> {
 
     onScroll && onScroll(this.scrollX, this.scrollY);
 
-    if (vitrualized) {
+    if (virtualized) {
       this.setState({
         isScrolling: true,
         scrollY: this.scrollY
@@ -715,7 +715,7 @@ class Table extends React.Component<Props, State> {
 
   calculateTableContentWidth(prevProps: Props) {
     const table = this.table;
-    const row = table.querySelector(`.${this.addPrefix('row')}:not(.vitrualized)`);
+    const row = table.querySelector(`.${this.addPrefix('row')}:not(.virtualized)`);
     const contentWidth = row ? getWidth(row) : 0;
 
     this.setState({ contentWidth });
@@ -994,7 +994,7 @@ class Table extends React.Component<Props, State> {
       setRowHeight,
       rowKey,
       wordWrap,
-      vitrualized
+      virtualized
     } = this.props;
 
     const headerHeight = this.getTableHeaderHeight();
@@ -1058,7 +1058,7 @@ class Table extends React.Component<Props, State> {
 
         top += nextRowHeight;
 
-        if (vitrualized && !wordWrap) {
+        if (virtualized && !wordWrap) {
           if (top + nextRowHeight < minTop) {
             topHideHeight += nextRowHeight;
             continue;
@@ -1095,9 +1095,9 @@ class Table extends React.Component<Props, State> {
           className={this.addPrefix('body-wheel-area')}
           ref={this.bindWheelWrapperRef}
         >
-          {topHideHeight ? <Row style={topRowStyles} className="vitrualized" /> : null}
+          {topHideHeight ? <Row style={topRowStyles} className="virtualized" /> : null}
           {this._rows}
-          {bottomHideHeight ? <Row style={bottomRowStyles} className="vitrualized" /> : null}
+          {bottomHideHeight ? <Row style={bottomRowStyles} className="virtualized" /> : null}
         </div>
 
         {this.renderInfo()}

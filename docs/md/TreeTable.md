@@ -17,7 +17,7 @@ class TreeTable extends React.Component {
         <Table
           isTree
           defaultExpandAllRows
-          vitrualized
+          virtualized
           minHeight={260}
           height={400}
           data={data}
