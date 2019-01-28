@@ -4,7 +4,15 @@ import * as React from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
 import bindElementResize, { unbind as unbindElementResize } from 'element-resize-event';
-import { addStyle, getWidth, getHeight, translateDOMPositionXY, WheelHandler } from 'dom-lib';
+import {
+  addStyle,
+  getWidth,
+  getHeight,
+  translateDOMPositionXY,
+  WheelHandler,
+  scrollLeft,
+  scrollTop
+} from 'dom-lib';
 
 import Row from './Row';
 import CellGroup from './CellGroup';
@@ -568,6 +576,23 @@ class Table extends React.Component<Props, State> {
     onTouchMove && onTouchMove(event);
   };
 
+  handleBodyScroll = (event: SyntheticTouchEvent<*>) => {
+    let left = scrollLeft(event.target);
+    let top = scrollTop(event.target);
+
+    if (top === 0 && left === 0) {
+      return;
+    }
+    /**
+     * 当用户在 Table 内使用 tab 键，触发了 onScroll 事件，这个时候应该更新滚动条位置
+     * Fix: https://github.com/rsuite/rsuite/issues/234
+     */
+    this._listenWheel(left, top);
+
+    scrollLeft(event.target, 0);
+    scrollTop(event.target, 0);
+  };
+
   updatePosition() {
     /**
      * 当存在锁定列情况处理
@@ -1089,6 +1114,7 @@ class Table extends React.Component<Props, State> {
         onTouchStart={this.handleTouchStart}
         onTouchMove={this.handleTouchMove}
         onWheel={this.wheelHandler.onWheel}
+        onScroll={this.handleBodyScroll}
       >
         <div
           style={wheelStyles}
