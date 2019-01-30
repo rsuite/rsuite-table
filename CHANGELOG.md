@@ -1,3 +1,10 @@
+# 3.4.7
+
+> January 30, 2019
+
+- Fixed a passively triggered onScroll event that caused the scrollbar to be misaligned
+- Cache data for Tree
+
 # 3.4.4
 
 - Fix typos
