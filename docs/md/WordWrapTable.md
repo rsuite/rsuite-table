@@ -1,4 +1,4 @@
-### 自动换行
+### Word wrap
 
 <!--start-code-->
 
@@ -89,5 +89,3 @@ ReactDOM.render(<WordWrapTable />);
 ```
 
 <!--end-code-->
-
-> 如果想让单元格自动换行，只需要设置 `wordWrap`

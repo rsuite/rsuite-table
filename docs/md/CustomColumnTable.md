@@ -1,4 +1,4 @@
-### 自定义单元格
+### Custom Cell
 
 <!--start-code-->
 
@@ -104,9 +104,9 @@ ReactDOM.render(<CustomColumnTable />);
 
 <!--end-code-->
 
-> 根据不同的业务场景，单元格中可以自己定义显示的内容，比如显示一张图片，比如你要添加一个几个按钮，或者显示一个文本框，都是可以自定义的，只需要把 `Cell` 组件重新自定义一下就行。
+Depending on your business scenario, you can define what you want to display in a cell, such as displaying a picture, like adding a few buttons, or displaying a text box that you can customize, and simply redefining the `Cell` component.
 
-比如，显示一个图片，定义一个 `ImageCell` 组件：
+For example, display a picture, define a `Imagecell` component:
 
 ```js
 const ImageCell = ({ rowData, dataKey, ...props }) => (
@@ -116,7 +116,7 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 );
 ```
 
-用的时候：
+Use:
 
 ```html
 <Column width="{200}">
@@ -125,11 +125,9 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 </Column>
 ```
 
----
+The `children` property support function on `<Cell>` can get `rowData` to return a new `children`.
 
-**把 Cell 的 children 定义为函数**
-
-除了自定义一个 Cell 以外，可以修改 Cell 的 children 进行自定义显示
+Use:
 
 ```html
 <Column width="{200}">
@@ -138,13 +136,15 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 </Column>
 ```
 
-**自定义行高**
+---
 
-如果在实际应用中需要根据数据内容来定义行高，可以使用以下方式
+**Custom row height**
+
+If you need to define row heights based on the content of your data in practical applications, you can use the following methods:
 
 ```html
 <Table
-    setRowHeight={(rowData) => {
+    onRerenderRowHeight={(rowData) => {
       if (rowData.firstName === 'Janis') {
         return 30;
       }

@@ -1,13 +1,11 @@
 import React from 'react';
-import { Row, Col, Nav, ButtonToolbar, Button } from 'rsuite';
+import { Row, Col, Nav } from 'rsuite';
 import CodeView from 'react-code-view';
 
 const CustomCodeView = ({ ...props }) => (
-  <Row>
-    <Col md={12}>
-      <CodeView {...props} />
-    </Col>
-  </Row>
+  <Col md={10}>
+    <CodeView {...props} />
+  </Col>
 );
 
 class Examples extends React.Component {
@@ -22,25 +20,27 @@ class Examples extends React.Component {
     const { index } = this.state;
     return (
       <div>
-        <ButtonToolbar size="xs">
-          {list.map((item, i) => {
-            return (
-              <Button
-                size="xs"
-                shape={index === i ? 'primary' : 'default'}
-                key={i}
-                onClick={() => {
-                  this.setState({ index: i });
-                }}
-              >
-                {item.title}
-              </Button>
-            );
-          })}
-        </ButtonToolbar>
-        <CustomCodeView key={index} dependencies={dependencies}>
-          {list[index].content}
-        </CustomCodeView>
+        <Row>
+          <Col md={2}>
+            <Nav>
+              {list.map((item, i) => {
+                return (
+                  <Nav.Item
+                    key={i}
+                    onClick={() => {
+                      this.setState({ index: i });
+                    }}
+                  >
+                    {item.title}
+                  </Nav.Item>
+                );
+              })}
+            </Nav>
+          </Col>
+          <CustomCodeView key={index} dependencies={dependencies}>
+            {list[index].content}
+          </CustomCodeView>
+        </Row>
       </div>
     );
   }

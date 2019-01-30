@@ -1,4 +1,4 @@
-### 长表格
+### Virtualized
 
 <!--start-code-->
 
@@ -53,5 +53,3 @@ ReactDOM.render(<LargeListsTable />);
 ```
 
 <!--end-code-->
-
-> Table 支持大数据显示， 只需在 <Table> 上设置 `virtualized` 属性。

@@ -1,4 +1,4 @@
-### Expanded
+### Expandable
 
 <!--start-code-->
 
@@ -78,7 +78,7 @@ class ExpandedTable extends React.Component {
           );
         }}
       >
-        <Column width={70} align="center" fixed>
+        <Column width={70} align="center">
           <HeaderCell>#</HeaderCell>
           <ExpandCell
             dataKey="id"
@@ -87,7 +87,7 @@ class ExpandedTable extends React.Component {
           />
         </Column>
 
-        <Column width={130} fixed>
+        <Column width={130}>
           <HeaderCell>First Name</HeaderCell>
           <Cell dataKey="firstName" />
         </Column>

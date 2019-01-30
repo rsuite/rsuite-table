@@ -105,7 +105,9 @@ type State = {
   expandedRowKeys: Array<string | number>,
   sortType?: SortType,
   scrollY: number,
-  isScrolling?: boolean
+  isScrolling?: boolean,
+  data: Array<Object>,
+  cacheData: Array<Object>
 };
 
 function findRowKeys(rows, rowKey, expanded) {
@@ -189,6 +191,17 @@ class Table extends React.Component<Props, State> {
       loading: 'Loading...'
     }
   };
+
+  static getDerivedStateFromProps(props: Props, state: State) {
+    if (props.data !== state.cacheData) {
+      return {
+        cacheData: props.data,
+        data: props.isTree ? flattenData(props.data) : props.data
+      };
+    }
+    return null;
+  }
+
   constructor(props: Props) {
     super(props);
     const {
@@ -217,6 +230,8 @@ class Table extends React.Component<Props, State> {
     this.state = {
       expandedRowKeys,
       shouldFixedColumn,
+      cacheData: data,
+      data: isTree ? flattenData(data) : data,
       width: width || 0,
       columnWidth: 0,
       dataKey: 0,
@@ -1023,13 +1038,12 @@ class Table extends React.Component<Props, State> {
     } = this.props;
 
     const headerHeight = this.getTableHeaderHeight();
-    const { tableRowsMaxHeight, isScrolling } = this.state;
+    const { tableRowsMaxHeight, isScrolling, data } = this.state;
     const height = this.getTableHeight();
     const bodyStyles = {
       top: headerHeight,
       height: height - headerHeight
     };
-    let data = isTree ? flattenData(this.props.data) : this.props.data;
 
     let top = 0; // Row position
     let bodyHeight = 0;

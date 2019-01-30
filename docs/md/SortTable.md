@@ -1,4 +1,4 @@
-### 排序
+### Sort
 
 <!--start-code-->
 
@@ -8,7 +8,6 @@ class SortTable extends React.Component {
     super(props);
     this.state = {
       sortColumn: 'id',
-      addColumn: false,
       data: fakeData
     };
     this.handleSortColumn = this.handleSortColumn.bind(this);
@@ -51,18 +50,6 @@ class SortTable extends React.Component {
       });
     }, 500);
   }
-  renderColumns() {
-    return [
-      <Column width={130} sortable key="words">
-        <HeaderCell>Words</HeaderCell>
-        <Cell dataKey="words" />
-      </Column>,
-      <Column width={130} sortable key="zipCode">
-        <HeaderCell>ZipCode</HeaderCell>
-        <Cell dataKey="zipCode" />
-      </Column>
-    ];
-  }
   render() {
     return (
       <div>
@@ -92,8 +79,6 @@ class SortTable extends React.Component {
             <Cell dataKey="lastName" />
           </Column>
 
-          {this.state.addColumn ? this.renderColumns() : null}
-
           <Column width={200} sortable>
             <HeaderCell>City</HeaderCell>
             <Cell dataKey="city" />
@@ -114,15 +99,6 @@ class SortTable extends React.Component {
             <Cell dataKey="email" />
           </Column>
         </Table>
-        <button
-          onClick={() => {
-            this.setState({
-              addColumn: true
-            });
-          }}
-        >
-          Add Column
-        </button>
       </div>
     );
   }
@@ -132,22 +108,3 @@ ReactDOM.render(<SortTable />);
 ```
 
 <!--end-code-->
-
-> 在需要排序的列 `<Column>` 设置一个 `sortable` 属性。
-> 同时在 `<Table>` 定义一个 `onSortColumn` 回调函数，点击列头排序图标的时候，会触发该方法，并返回 `sortColumn` 和 `sortType`。
-
-```html
-<Table onSortColumn={(sortColumn, sortType)=>{ console.log(sortColumn, sortType); }} >
-
-<Column width="{50}" sortable>
-  <HeaderCell>Id</HeaderCell>
-  <Cell dataKey="id" />
-</Column>
-
-<Column width="{130}" sortable>
-  <HeaderCell>First Name</HeaderCell>
-  <Cell dataKey="firstName" />
-</Column>
-
-...
-```
