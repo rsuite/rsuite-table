@@ -1,9 +1,8 @@
-### 可编辑的表格
+### Editable
 
 <!--start-code-->
+
 ```js
-
-
 export const EditCell = ({ rowData, dataKey, onChange, ...props }) => {
   return (
     <Cell {...props}>
@@ -11,11 +10,13 @@ export const EditCell = ({ rowData, dataKey, onChange, ...props }) => {
         <input
           className="input"
           defaultValue={rowData[dataKey]}
-          onChange={(event) => {
+          onChange={event => {
             onChange && onChange(rowData.id, dataKey, event.target.value);
           }}
         />
-      ) : rowData[dataKey]}
+      ) : (
+        rowData[dataKey]
+      )}
     </Cell>
   );
 };
@@ -73,23 +74,22 @@ class EditTable extends React.Component {
           }}
           renderTreeToggle={(icon, rowData) => {
             if (rowData.labelName === '手机') {
-              return (<i className="icon icon-spin icon-spinner" />);
+              return <i className="icon icon-spin icon-spinner" />;
             }
             return icon;
           }}
         >
-
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>First Name</HeaderCell>
             <EditCell dataKey="firstName" onChange={this.handleChange} />
           </Column>
 
-          <Column width={200} >
+          <Column width={200}>
             <HeaderCell>Last Name</HeaderCell>
             <EditCell dataKey="lastName" onChange={this.handleChange} />
           </Column>
 
-          <Column width={300} >
+          <Column width={300}>
             <HeaderCell>Email</HeaderCell>
             <EditCell dataKey="email" onChange={this.handleChange} />
           </Column>
@@ -98,7 +98,6 @@ class EditTable extends React.Component {
             <HeaderCell>Action</HeaderCell>
             <ActionCell dataKey="id" onClick={this.handleEditState} />
           </Column>
-
         </Table>
       </div>
     );
@@ -106,28 +105,6 @@ class EditTable extends React.Component {
 }
 
 ReactDOM.render(<EditTable />);
-
 ```
+
 <!--end-code-->
-
-
-
-> 可编辑的表格，只需要自定义一个 `Cell` 就行了
-
-```js
-export const EditCell = ({ rowData, dataKey, onChange, ...props }) => {
-  return (
-    <Cell {...props}>
-      {rowData.status === 'EDIT' ? (
-        <input
-          className="input"
-          defaultValue={rowData[dataKey]}
-          onChange={(event) => {
-            onChange && onChange(rowData.id, dataKey, event.target.value);
-          }}
-        />
-      ) : rowData[dataKey]}
-    </Cell>
-  );
-};
-```

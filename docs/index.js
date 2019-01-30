@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Popover, Whisper, Toggle, Grid, Button, ButtonGroup, Checkbox } from 'rsuite';
-import { Markdown } from 'react-markdown-reader';
 import clone from 'lodash/clone';
 import isFunction from 'lodash/isFunction';
 import get from 'lodash/get';
@@ -19,7 +18,14 @@ class App extends React.Component {
   render() {
     return (
       <Grid>
-        <h2>Examples</h2>
+        <h1>rsuite-table</h1>
+        <p>A React table component</p>
+        <p>
+          <a href="https://github.com/rsuite/rsuite-table">
+            https://github.com/rsuite/rsuite-table
+          </a>
+        </p>
+        <hr />
         <Examples
           dependencies={{
             Checkbox,
@@ -44,72 +50,71 @@ class App extends React.Component {
           }}
           list={[
             {
-              title: '长表格',
+              title: 'Virtualized',
               content: require('./md/LargeLists.md')
             },
             {
-              title: '锁定列',
+              title: 'Fixed Column',
               content: require('./md/FixedColumnTable.md')
             },
             {
-              title: '自动高度',
+              title: 'Automatic height',
               content: require('./md/AutoHeightTable.md')
             },
             {
-              title: '自动列宽',
+              title: 'Fluid',
               content: require('./md/FluidColumnTable.md')
             },
             {
-              title: '自定义调整列宽',
+              title: 'Resizable',
               content: require('./md/ResizableColumnTable.md')
             },
             {
-              title: '自动换行',
+              title: 'Word wrap',
               content: require('./md/WordWrapTable.md')
             },
             {
-              title: '自定义单元格',
+              title: 'Custom Cell',
               content: require('./md/CustomColumnTable.md')
             },
             {
-              title: '排序',
+              title: 'Sort',
               content: require('./md/SortTable.md')
             },
             {
-              title: '树',
+              title: 'Tree',
               content: require('./md/TreeTable.md')
             },
             {
-              title: '可展开',
+              title: 'Expandable',
               content: require('./md/Expanded.md')
             },
             {
-              title: '可编辑',
+              title: 'Editable',
               content: require('./md/EditTable.md')
             },
             {
-              title: '加载中',
+              title: 'Loading',
               content: require('./md/LoadingTable.md')
             },
             {
-              title: '合并列单元格',
+              title: 'Colspan Cell',
               content: require('./md/ColspanTable.md')
             },
             {
-              title: '隐藏表头',
+              title: 'Hidden header',
               content: require('./md/HideTableHeader.md')
             },
             {
-              title: '数据为空',
+              title: 'Empty',
               content: require('./md/EmptyDataTable.md')
             },
             {
-              title: '动态加载数据',
+              title: 'Dynamic',
               content: require('./md/DynamicTable.md')
             }
           ]}
         />
-        <Markdown>{require('../README.md')}</Markdown>
       </Grid>
     );
   }

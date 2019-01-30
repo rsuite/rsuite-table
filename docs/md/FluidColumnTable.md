@@ -1,8 +1,8 @@
-### 自动列宽
+### Fluid column
 
 <!--start-code-->
-```js
 
+```js
 class FluidColumnTable extends React.Component {
   constructor(props) {
     super(props);
@@ -22,13 +22,12 @@ class FluidColumnTable extends React.Component {
             console.log(sortColumn, sortType);
           }}
         >
-
-          <Column width={50} align="center" fixed >
+          <Column width={50} align="center" fixed>
             <HeaderCell>Id</HeaderCell>
             <Cell dataKey="id" />
           </Column>
 
-          <Column width={100} fixed >
+          <Column width={100} fixed>
             <HeaderCell>First Name</HeaderCell>
             <Cell dataKey="firstName" />
           </Column>
@@ -38,31 +37,34 @@ class FluidColumnTable extends React.Component {
             <Cell dataKey="lastName" />
           </Column>
 
-          <Column flexGrow={1} sortable >
-            <HeaderCell>City <code>flexGrow={1}</code></HeaderCell>
+          <Column flexGrow={1} sortable>
+            <HeaderCell>
+              City <code>flexGrow={1}</code>
+            </HeaderCell>
             <Cell dataKey="city" />
           </Column>
 
           <Column flexGrow={2} sortable>
-            <HeaderCell>Company Name <code>flexGrow={2}</code></HeaderCell>
+            <HeaderCell>
+              Company Name <code>flexGrow={2}</code>
+            </HeaderCell>
             <Cell dataKey="companyName" />
           </Column>
-
         </Table>
       </div>
     );
   }
-
 }
 
 ReactDOM.render(<FluidColumnTable />);
 ```
+
 <!--end-code-->
 
 
-> 如果需要把某列设置为自动宽度，需要配置 `flexGrow` 属性。 `flexGrow` 是 `number` 类型。会按照所有 `flexGrow` 总和比例撑满 `<Table>` 剩下的宽度。
+If you need to set a column to automatic width, you need to configure the `flexGrow` property. `flexGrow` is a `number` type. Will fill the `Table` remaining width according to the sum of all `flexGrow`.
 
-> 注意: 设置 `flexGrow` 以后，就不能设置 `width` 和 `resizable` 属性。 可以通过 `minWidth` 设置一个最小宽度
+Note: After setting `flexGrow`, you cannot set the `width` and `resizable` properties. You can set a minimum width by `minwidth`.
 
 ```html
 <Column flexGrow={1}>
