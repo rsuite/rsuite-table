@@ -1,3 +1,7 @@
+# 3.4.8
+
+- Fix IE 10 compatibility issues
+
 # 3.4.7
 
 > January 30, 2019

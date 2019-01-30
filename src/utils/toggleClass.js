@@ -13,7 +13,7 @@ export default (node: HTMLElement | Array<HTMLElement>, className: string, condi
     return;
   }
 
-  if (node.__proto__.hasOwnProperty('length')) {
+  if (Object.getPrototypeOf(node).hasOwnProperty('length')) {
     Array.from(node).forEach(item => {
       toggleClass(item, className, condition);
     });
