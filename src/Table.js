@@ -699,7 +699,7 @@ class Table extends React.Component<Props, State> {
     );
   }
 
-  tableRows = [];
+  tableRows = {};
   mounted = false;
   scrollY = 0;
   scrollX = 0;
@@ -723,18 +723,21 @@ class Table extends React.Component<Props, State> {
     const { wordWrap } = this.props;
     if (wordWrap) {
       const tableRowsMaxHeight = [];
+      const tableRows = Object.entries(this.tableRows);
 
-      for (let i = 0; i < this.tableRows.length; i++) {
-        let row = this.tableRows[i];
-        let cells = row.querySelectorAll(`.${this.addPrefix('cell-wrap')}`) || [];
-        let maxHeight = 0;
-        let cellArray = Array.from(cells);
-        for (let j = 0; j < cellArray.length; j++) {
-          let cell = cellArray[j];
-          let h = getHeight(cell);
-          maxHeight = Math.max(maxHeight, h);
+      for (let i = 0; i < tableRows.length; i++) {
+        let [, row] = tableRows[i];
+        if (row) {
+          let cells = row.querySelectorAll(`.${this.addPrefix('cell-wrap')}`) || [];
+          let maxHeight = 0;
+          let cellArray = Array.from(cells);
+          for (let j = 0; j < cellArray.length; j++) {
+            let cell = cellArray[j];
+            let h = getHeight(cell);
+            maxHeight = Math.max(maxHeight, h);
+          }
+          tableRowsMaxHeight.push(maxHeight);
         }
-        tableRowsMaxHeight.push(maxHeight);
       }
 
       this.setState({ tableRowsMaxHeight });
