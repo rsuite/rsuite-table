@@ -1,3 +1,7 @@
+# 3.4.9
+
+- Fixed an error that occurred when the tree table word wrap
+
 # 3.4.8
 
 - Fix IE 10 compatibility issues
