@@ -274,7 +274,7 @@ class Table extends React.Component<Props, State> {
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    const _cacheChildrenSize = _.flatten(nextProps.children).length;
+    const _cacheChildrenSize = _.flatten(nextProps.children || []).length;
     if (_cacheChildrenSize !== this._cacheChildrenSize) {
       this._cacheChildrenSize = _cacheChildrenSize;
       this._cacheCells = null;
@@ -336,8 +336,13 @@ class Table extends React.Component<Props, State> {
    */
   getTableHeight() {
     const { contentHeight } = this.state;
-    const { minHeight, height, autoHeight } = this.props;
+    const { minHeight, height, autoHeight, data } = this.props;
     const headerHeight = this.getTableHeaderHeight();
+
+    if (data.length === 0 && autoHeight) {
+      return height;
+    }
+
     return autoHeight ? Math.max(headerHeight + contentHeight, minHeight) : height;
   }
 
@@ -355,6 +360,7 @@ class Table extends React.Component<Props, State> {
   };
 
   _cacheCells = null;
+  _cacheChildrenSize = 0;
 
   getCells() {
     if (this._cacheCells) {
