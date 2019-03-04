@@ -62,33 +62,21 @@ class Cell extends React.PureComponent<Props> {
   };
   renderExpandIcon() {
     const { hasChildren, firstColumn, rowData, renderTreeToggle } = this.props;
-    const expandButton = (
-      <i
-        role="button"
-        tabIndex={-1}
-        className={this.addPrefix('expand-icon')}
-        onClick={event => {
-          event.stopPropagation();
-          this.handleExpandClick(event);
-        }}
-      />
-    );
+    const expandButton = <i className={this.addPrefix('expand-icon')} />;
 
     /**
      * 如果用子节点，同时是第一列,则创建一个 icon 用于展开节点
      */
     if (hasChildren && firstColumn) {
-      return renderTreeToggle ? (
+      return (
         <span
           role="button"
           tabIndex={-1}
           className={this.addPrefix('expand-wrapper')}
           onClick={this.handleExpandClick}
         >
-          {renderTreeToggle(expandButton, rowData)}
+          {renderTreeToggle ? renderTreeToggle(expandButton, rowData) : expandButton}
         </span>
-      ) : (
-        expandButton
       );
     }
 
