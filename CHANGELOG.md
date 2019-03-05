@@ -1,3 +1,8 @@
+# 3.4.10
+
+- Fixed icon style problem with Table Tree
+- Fixed invalid `autoHeight` property when table data is empty
+
 # 3.4.9
 
 - Fixed an error that occurred when the tree table word wrap
