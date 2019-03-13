@@ -126,6 +126,7 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | sortType               | enum: 'desc', 'asc'                     | Sort type (Controlled)                                                                        |
 | virtualized            | boolean                                 | Effectively render large tabular data                                                         |
 | width                  | number                                  | Table width                                                                                   |
+| locale                 | object: { emptyMessage: `('No data')`, loading: `('Loading...')` }| Messages for empty data and loading states
 
 ### `<Column>`
 
