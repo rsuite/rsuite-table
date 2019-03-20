@@ -1,3 +1,7 @@
+# 3.4.11
+
+- Fixed a scrollbar event invalid on the internal elements of the table
+
 # 3.4.10
 
 - Fixed icon style problem with Table Tree
