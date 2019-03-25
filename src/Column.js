@@ -2,6 +2,7 @@
 
 type Props = {
   align?: 'left' | 'center' | 'right',
+  verticalAlign?: 'top' | 'middle' | 'bottom',
   width?: number,
   fixed?: boolean | 'left' | 'right',
   resizable?: boolean,
