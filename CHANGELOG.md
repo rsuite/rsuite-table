@@ -1,3 +1,9 @@
+# 3.5.0
+
+- Support `renderEmpty` and `renderLoading` on `<Table>`
+- Support `verticalAlign` on `<Table.Column>`
+- Fix: Unable to preventDefault inside passive event listener due to target being treated as passive
+
 # 3.4.11
 
 - Fixed a scrollbar event invalid on the internal elements of the table
