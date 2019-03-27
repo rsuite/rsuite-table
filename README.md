@@ -108,6 +108,8 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | onSortColumn           | (dataKey:string, sortType:string)=>void                            | Click the callback function of the sort sequence to return the value `sortColumn`, `sortType` |
 | renderRowExpanded      | (rowDate?: Object) => React.Node                                   | Customize what you can do to expand a zone                                                    |
 | renderTreeToggle       | (icon:node,rowData:object)=> node                                  | Tree table, the callback function in the expanded node                                        |
+| renderEmpty            | (info: React.Node) => React.Node                                   | Customized data is empty display content                                                      |
+| renderLoading          | (loading: React.Node) => React.Node                                | Customize the display content in the data load                                                |
 | rowClassName           | string , (rowData:object)=>string                                  | Add an optional extra class name to row                                                       |
 | rowExpandedHeight      | number `(100)`                                                     | Set the height of an expandable area                                                          |
 | rowHeight              | number`(46)`                                                       | Row height                                                                                    |

@@ -92,7 +92,9 @@ type Props = {
   loadAnimation?: boolean,
   showHeader?: boolean,
   rowClassName?: string | ((rowData: ?Object) => string),
-  virtualized?: boolean
+  virtualized?: boolean,
+  renderEmpty?: (info: React.Node) => React.Node,
+  renderLoading?: (loading: React.Node) => React.Node
 };
 
 type State = {
@@ -1171,8 +1173,10 @@ class Table extends React.Component<Props, State> {
     if (this._rows.length) {
       return null;
     }
-    const { locale } = this.props;
-    return <div className={this.addPrefix('body-info')}>{locale.emptyMessage}</div>;
+    const { locale, renderEmpty } = this.props;
+    const emptyMessage = <div className={this.addPrefix('body-info')}>{locale.emptyMessage}</div>;
+
+    return renderEmpty ? renderEmpty(emptyMessage) : emptyMessage;
   }
 
   renderScrollbar() {
@@ -1209,13 +1213,13 @@ class Table extends React.Component<Props, State> {
    *  show loading
    */
   renderLoading() {
-    const { locale, loading, loadAnimation } = this.props;
+    const { locale, loading, loadAnimation, renderLoading } = this.props;
 
     if (!loadAnimation && !loading) {
       return null;
     }
 
-    return (
+    const loadingElement = (
       <div className={this.addPrefix('loader-wrapper')}>
         <div className={this.addPrefix('loader')}>
           <i className={this.addPrefix('loader-icon')} />
@@ -1223,6 +1227,8 @@ class Table extends React.Component<Props, State> {
         </div>
       </div>
     );
+
+    return renderLoading ? renderLoading(loadingElement) : loadingElement;
   }
 
   render() {

@@ -61,6 +61,40 @@ describe('Table', () => {
     assert.ok(instanceDom.querySelectorAll('.rs-table-loader').length);
   });
 
+  it('Should render custom loading', () => {
+    const instanceDom = getDOMNode(
+      <Table
+        loading
+        renderLoading={() => {
+          return <p className="my-loading">loading</p>;
+        }}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+    assert.equal(instanceDom.querySelector('.my-loading').innerText, 'loading');
+  });
+
+  it('Should render custom empty info', () => {
+    const instanceDom = getDOMNode(
+      <Table
+        data={[]}
+        renderEmpty={() => {
+          return <p className="my-info">empty</p>;
+        }}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+    assert.equal(instanceDom.querySelector('.my-info').innerText, 'empty');
+  });
+
   it('Should be bordered', () => {
     const instanceDom = getDOMNode(
       <Table bordered>
