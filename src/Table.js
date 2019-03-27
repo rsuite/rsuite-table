@@ -11,7 +11,8 @@ import {
   translateDOMPositionXY,
   WheelHandler,
   scrollLeft,
-  scrollTop
+  scrollTop,
+  on
 } from 'dom-lib';
 
 import Row from './Row';
@@ -272,6 +273,7 @@ class Table extends React.Component<Props, State> {
     this.calculateTableContextHeight();
     this.calculateRowMaxHeight();
     bindElementResize(this.table, _.debounce(this.calculateTableWidth, 400));
+    this.wheelListener = on(this.tableBody, 'wheel', this.wheelHandler.onWheel, { passive: false });
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -299,6 +301,9 @@ class Table extends React.Component<Props, State> {
     this.wheelHandler = null;
     if (this.table) {
       unbindElementResize(this.table);
+    }
+    if (this.wheelListener) {
+      this.wheelListener.off();
     }
   }
 
@@ -728,6 +733,7 @@ class Table extends React.Component<Props, State> {
   headerWrapper: any;
   tableBody: any;
   wheelWrapper: any;
+  wheelListener: any;
 
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 
@@ -1142,7 +1148,6 @@ class Table extends React.Component<Props, State> {
         style={bodyStyles}
         onTouchStart={this.handleTouchStart}
         onTouchMove={this.handleTouchMove}
-        onWheel={this.wheelHandler.onWheel}
         onScroll={this.handleBodyScroll}
       >
         <div
