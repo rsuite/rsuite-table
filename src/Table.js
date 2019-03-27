@@ -733,6 +733,7 @@ class Table extends React.Component<Props, State> {
   headerWrapper: any;
   tableBody: any;
   wheelWrapper: any;
+  wheelListener: any;
 
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 
