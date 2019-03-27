@@ -33,6 +33,7 @@ const ReactChildren = React.Children;
 const CELL_PADDING_HEIGHT = 26;
 const columnHandledProps = [
   'align',
+  'verticalAlign',
   'width',
   'fixed',
   'resizable',

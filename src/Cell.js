@@ -8,6 +8,7 @@ import { isNullOrUndefined, defaultClassPrefix, getUnhandledProps, prefix } from
 
 type Props = {
   align?: 'left' | 'center' | 'right',
+  verticalAlign?: 'top' | 'middle' | 'bottom',
   className?: string,
   classPrefix?: string,
   dataKey?: string,
@@ -103,6 +104,7 @@ class Cell extends React.PureComponent<Props> {
       wordWrap,
       classPrefix,
       depth,
+      verticalAlign,
       ...rest
     } = this.props;
 
@@ -130,6 +132,11 @@ class Cell extends React.PureComponent<Props> {
       paddingLeft: firstColumn ? depth * LAYER_WIDTH + 10 : null,
       ...style
     };
+
+    if (verticalAlign) {
+      contentStyles.display = 'table-cell';
+      contentStyles.verticalAlign = verticalAlign;
+    }
 
     let contentChildren =
       isNullOrUndefined(children) && rowData ? _.get(rowData, dataKey) : children;

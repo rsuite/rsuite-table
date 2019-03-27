@@ -17,8 +17,16 @@ describe('Cell', () => {
 
   it('Should The text be `right` aligned', () => {
     const instanceDom = getDOMNode(<Cell align="right" />).querySelector('.rs-table-cell-content');
-
     assert.equal(instanceDom.style.textAlign, 'right');
+  });
+
+  it('Should The text be `middle` aligned', () => {
+    const instanceDom = getDOMNode(<Cell verticalAlign="middle" />).querySelector(
+      '.rs-table-cell-content'
+    );
+
+    assert.equal(instanceDom.style.display, 'table-cell');
+    assert.equal(instanceDom.style.verticalAlign, 'middle');
   });
 
   it('Should have a children is `abc`', () => {
