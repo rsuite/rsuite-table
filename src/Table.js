@@ -699,14 +699,6 @@ class Table extends React.Component<Props, State> {
     return (delta >= 0 && this.scrollY > this.minScrollY) || (delta < 0 && this.scrollY < 0);
   };
 
-  shouldUpdateScrollY() {
-    const { renderRowExpanded, isTree } = this.props;
-    if (isTree || typeof renderRowExpanded === 'function') {
-      return false;
-    }
-    return true;
-  }
-
   shouldRenderExpandedRow(rowData: Object) {
     const { rowKey, renderRowExpanded, isTree } = this.props;
     const expandedRowKeys = this.getExpandedRowKeys() || [];
@@ -828,11 +820,13 @@ class Table extends React.Component<Props, State> {
     }
 
     // 如果 scrollTop 的值大于可以滚动的范围 ，则重置 Y 坐标滚动条
-    if (Math.abs(this.scrollY) > contentHeight - height) {
+    // 当 Table 为 virtualized 时， wheel 事件触发每次都会进入该逻辑， 避免在滚动到底部后滚动条重置, +10
+    if (Math.abs(this.scrollY) > contentHeight - height + 10) {
       this.scrollTop(0);
     }
   }
 
+  // public method
   scrollTop = (top: number = 0) => {
     this.scrollY = -top;
     this.scrollbarY && this.scrollbarY.resetScrollBarPosition(top);
@@ -842,6 +836,7 @@ class Table extends React.Component<Props, State> {
     });
   };
 
+  // public method
   scrollLeft = (left: number = 0) => {
     this.scrollX = -left;
     this.scrollbarX && this.scrollbarX.resetScrollBarPosition(left);
