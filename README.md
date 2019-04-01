@@ -91,6 +91,7 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | ---------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
 | autoHeight             | boolean                                                            | Automatic height                                                                              |
 | bordered               | boolean                                                            | Show border                                                                                   |
+| bodyRef                | React.ElementRef                                                   | A ref attached to the table body element                                                      |
 | cellBordered           | boolean                                                            | Show cell border                                                                              |
 | data \*                | Array&lt;Object&gt;                                                | Table data                                                                                    |
 | defaultExpandAllRows   | boolean                                                            | Expand all nodes By default                                                                   |
@@ -147,6 +148,11 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | dataKey  | string           | Data binding `key`, but also a sort of `key` |
 | rowData  | object           | Row data                                     |
 | rowIndex | number           | Row number                                   |
+
+## Methods
+
+- scrollTop(top:number = 0)
+- scrollLeft(left:number = 0)
 
 [npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/rsuite-table
