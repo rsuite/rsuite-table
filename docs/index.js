@@ -12,7 +12,7 @@ import fakeData from './data/users';
 import fakeTreeData from './data/treeData';
 import fakeDataForColSpan from './data/usersForColSpan';
 import fakeLargeData from './data/fakeLargeData.json';
-import { createFakeRowObjectData } from './data/fakeObjectDataListStore';
+import fakeObjectDataListStore, { createFakeRowObjectData } from './data/fakeObjectDataListStore';
 
 class App extends React.Component {
   render() {
@@ -44,6 +44,7 @@ class App extends React.Component {
             HeaderCell,
             clone,
             createFakeRowObjectData,
+            fakeObjectDataListStore,
             isFunction,
             get,
             without

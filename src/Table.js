@@ -822,22 +822,28 @@ class Table extends React.Component<Props, State> {
       this.minScrollY = -(contentHeight - height) - 10;
     }
 
-    if (nextContentHeight < height - headerHeight) {
+    // 如果内容区域的高度小于表格的高度，则重置 Y 坐标滚动条
+    if (contentHeight < height) {
+      this.scrollTop(0);
+    }
+
+    // 如果 scrollTop 的值大于可以滚动的范围 ，则重置 Y 坐标滚动条
+    if (Math.abs(this.scrollY) > contentHeight - height) {
       this.scrollTop(0);
     }
   }
 
   scrollTop = (top: number = 0) => {
-    this.scrollY = top;
+    this.scrollY = -top;
     this.scrollbarY && this.scrollbarY.resetScrollBarPosition(top);
 
     this.setState({
-      scrollY: top
+      scrollY: -top
     });
   };
 
   scrollLeft = (left: number = 0) => {
-    this.scrollX = left;
+    this.scrollX = -left;
     this.scrollbarX && this.scrollbarX.resetScrollBarPosition(left);
     this.updatePosition();
   };
