@@ -1,3 +1,7 @@
+# 3.5.2
+
+- Fixed a scrollbar being reset in the case of `virtualized`
+
 # 3.5.1
 
 - Fixed scrollbar position not updated after data update
