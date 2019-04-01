@@ -1,3 +1,7 @@
+# 3.5.1
+
+- Fixed scrollbar position not updated after data update
+
 # 3.5.0
 
 - Support `renderEmpty` and `renderLoading` on `<Table>`
