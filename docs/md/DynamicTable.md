@@ -35,7 +35,7 @@ class DynamicTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      data: fakeObjectDataListStore(2),
       columns: [],
       checkValues: [],
       paddingLeft: 0,
@@ -47,6 +47,7 @@ class DynamicTable extends React.Component {
     this.handleScrollLeft = this.handleScrollLeft.bind(this);
     this.handleCheckCellChange = this.handleCheckCellChange.bind(this);
     this.handleResizeWidth = this.handleResizeWidth.bind(this);
+    this.handleClearData = this.handleClearData.bind(this);
   }
   handleRowClick() {
     const { data } = this.state;
@@ -70,6 +71,10 @@ class DynamicTable extends React.Component {
     this.setState({
       columns
     });
+  }
+
+  handleClearData() {
+    this.setState({ data: [] });
   }
   handleScrollTop() {
     this.table.scrollTop(0);
@@ -109,6 +114,7 @@ class DynamicTable extends React.Component {
           <Button onClick={this.handleScrollTop}>Scroll Top</Button>
           <Button onClick={this.handleScrollLeft}>Scroll Left</Button>
           <Button onClick={this.handleResizeWidth}>Update Width</Button>
+          <Button onClick={this.handleClearData}>Clear Data</Button>
         </ButtonGroup>
         <hr />
         <Table
