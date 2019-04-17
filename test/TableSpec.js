@@ -287,52 +287,6 @@ describe('Table', () => {
     ReactTestUtils.Simulate.click(instanceDom.querySelector('.rs-table-cell-expand-icon'));
   });
 
-  it('Should call `onTouchMove` callback', done => {
-    const instance = getInstance(
-      <Table
-        isTree
-        onTouchMove={() => {
-          done();
-        }}
-        data={[
-          {
-            id: 1,
-            name: 'a'
-          }
-        ]}
-      >
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell dataKey="id" />
-        </Column>
-      </Table>
-    );
-    ReactTestUtils.Simulate.touchMove(instance.tableBody);
-  });
-
-  it('Should call `onTouchStart` callback', done => {
-    const instance = getInstance(
-      <Table
-        isTree
-        onTouchStart={() => {
-          done();
-        }}
-        data={[
-          {
-            id: 1,
-            name: 'a'
-          }
-        ]}
-      >
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell dataKey="id" />
-        </Column>
-      </Table>
-    );
-    ReactTestUtils.Simulate.touchStart(instance.tableBody);
-  });
-
   it('Should get the body DOM', () => {
     const data = [
       {

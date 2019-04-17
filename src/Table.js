@@ -275,7 +275,12 @@ class Table extends React.Component<Props, State> {
     this.calculateTableContextHeight();
     this.calculateRowMaxHeight();
     bindElementResize(this.table, _.debounce(this.calculateTableWidth, 400));
-    this.wheelListener = on(this.tableBody, 'wheel', this.wheelHandler.onWheel, { passive: false });
+
+    const options = { passive: false };
+
+    this.wheelListener = on(this.tableBody, 'wheel', this.wheelHandler.onWheel, options);
+    this.touchStartListener = on(this.tableBody, 'touchstart', this.handleTouchStart, options);
+    this.touchMoveListener = on(this.tableBody, 'touchmove', this.handleTouchMove, options);
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -306,6 +311,14 @@ class Table extends React.Component<Props, State> {
     }
     if (this.wheelListener) {
       this.wheelListener.off();
+    }
+
+    if (this.touchStartListener) {
+      this.touchStartListener.off();
+    }
+
+    if (this.touchMoveListener) {
+      this.touchMoveListener.off();
     }
   }
 
@@ -728,6 +741,8 @@ class Table extends React.Component<Props, State> {
   tableBody: any;
   wheelWrapper: any;
   wheelListener: any;
+  touchStartListener: any;
+  touchMoveListener: any;
 
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 
@@ -1149,8 +1164,6 @@ class Table extends React.Component<Props, State> {
         ref={this.bindBodyRef}
         className={this.addPrefix('body-row-wrapper')}
         style={bodyStyles}
-        onTouchStart={this.handleTouchStart}
-        onTouchMove={this.handleTouchMove}
         onScroll={this.handleBodyScroll}
       >
         <div
