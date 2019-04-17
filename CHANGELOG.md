@@ -1,3 +1,7 @@
+# 3.5.3
+
+- Fix: Unable to preventDefault inside passive event listener due to target being treated as passive
+
 # 3.5.2
 
 - Fixed a scrollbar being reset in the case of `virtualized`
