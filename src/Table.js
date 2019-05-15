@@ -274,7 +274,10 @@ class Table extends React.Component<Props, State> {
     this.calculateTableWidth();
     this.calculateTableContextHeight();
     this.calculateRowMaxHeight();
-    bindElementResize(this.table, _.debounce(this.calculateTableWidth, 400));
+    bindElementResize(this.table, _.debounce(this.calculateTableWidth, 400, {
+      'leading': true,
+      'trailing': false
+    }));
 
     const options = { passive: false };
 
