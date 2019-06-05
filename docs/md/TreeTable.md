@@ -16,11 +16,11 @@ class TreeTable extends React.Component {
       <div>
         <Table
           isTree
-          defaultExpandAllRows
           virtualized
           minHeight={260}
           height={400}
           data={data}
+          defaultExpandedRowKeys={[0]}
           onExpandChange={(isOpen, rowData) => {
             console.log(isOpen, rowData);
           }}

@@ -1,6 +1,6 @@
 export default [
   {
-    id: 1,
+    id: 0,
     avartar: 'https://s3.amazonaws.com/uifaces/faces/twitter/justinrob/128.jpg',
     city: 'New Amieshire',
     email: 'Leora13@yahoo.com',

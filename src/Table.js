@@ -913,7 +913,9 @@ class Table extends React.Component<Props, State> {
   ) {
     const { renderTreeToggle, rowKey, wordWrap, isTree } = this.props;
     const hasChildren = isTree && rowData.children && Array.isArray(rowData.children);
-    const nextRowKey = rowData[rowKey] || getRandomKey(props.index);
+    const nextRowKey =
+      typeof rowData[rowKey] !== 'undefined' ? rowData[rowKey] : getRandomKey(props.index);
+
     const rowProps = {
       rowRef: this.bindTableRowsRef(props.index),
       onClick: this.bindRowClick(rowData),
@@ -926,6 +928,7 @@ class Table extends React.Component<Props, State> {
     const expandedRowKeys = this.getExpandedRowKeys() || [];
     const expanded = expandedRowKeys.some(key => key === rowData[rowKey]);
     const cells = [];
+
     for (let i = 0; i < bodyCells.length; i++) {
       let cell = bodyCells[i];
       cells.push(
