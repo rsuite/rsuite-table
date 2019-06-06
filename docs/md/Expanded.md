@@ -22,7 +22,7 @@ class ExpandedTable extends React.Component {
     super(props);
     this.state = {
       data: fakeData,
-      expandedRowKeys: []
+      expandedRowKeys: [0]
     };
     this.handleExpanded = this.handleExpanded.bind(this);
   }

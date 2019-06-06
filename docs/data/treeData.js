@@ -1,6 +1,6 @@
 export default [
   {
-    key: '1',
+    key: 0,
     labelName: '汽车',
     status: 'ENABLED',
     children: [
