@@ -1,3 +1,7 @@
+# 3.5.4
+
+- Fix `expandedRowKeys` is invalid when rowKey is 0
+
 # 3.5.3
 
 - Fix: Unable to preventDefault inside passive event listener due to target being treated as passive
