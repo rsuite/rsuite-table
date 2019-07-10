@@ -100,6 +100,7 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | expandedRowKeys        | Array&lt;string&gt;                                                | Specify the default expanded row by `rowkey` (Controlled)                                     |
 | headerHeight           | number`(40)`                                                       | Table Header Height                                                                           |
 | height                 | number`(200)`                                                      | Table height                                                                                  |
+| hover                  | boolean `(true)`                                                   | The row of the table has a mouseover effect                                                   |
 | isTree                 | boolean                                                            | Show as Tree table                                                                            |
 | loading                | boolean                                                            | Show loading                                                                                  |
 | minHeight              | number `(0)`                                                       | Minimum height                                                                                |
