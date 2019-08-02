@@ -98,6 +98,7 @@ class Cell extends React.PureComponent<Props> {
       align,
       children,
       rowData,
+      rowIndex,
       dataKey,
       renderCell,
       removed,
