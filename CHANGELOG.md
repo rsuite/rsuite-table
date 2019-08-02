@@ -1,3 +1,9 @@
+# 3.5.5
+
+- Fix `expandedRowKeys` not controlled (#90)
+- Support event parameter in `onRowClick` (#89)
+- Custom function parameters in `<Cell>` support `rowIndex` (#88)
+
 # 3.5.4
 
 - Fix `expandedRowKeys` is invalid when rowKey is 0
