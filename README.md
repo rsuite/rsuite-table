@@ -109,7 +109,7 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | loading                | boolean                                                            | Show loading                                                                                  |
 | minHeight              | number `(0)`                                                       | Minimum height                                                                                |
 | onExpandChange         | (expanded:boolean,rowData:object)=>void                            | Tree table, the callback function in the expanded node                                        |
-| onRowClick             | (rowData:object)=>void                                             | Click the callback function after the row and return to `rowDate`                             |
+| onRowClick             | (rowData:object, event: SyntheticEvent)=>void                      | Click the callback function after the row and return to `rowDate`                             |
 | onScroll               | (scrollX:object, scrollY:object)=>void                             | Callback function for scroll bar scrolling                                                    |
 | onSortColumn           | (dataKey:string, sortType:string)=>void                            | Click the callback function of the sort sequence to return the value `sortColumn`, `sortType` |
 | renderRowExpanded      | (rowDate?: Object) => React.Node                                   | Customize what you can do to expand a zone                                                    |
