@@ -523,7 +523,7 @@ class Table extends React.Component<Props, State> {
 
   handleTreeToggle = (rowKey: any, rowIndex: number, rowData: any) => {
     const { onExpandChange } = this.props;
-    const { expandedRowKeys } = this.state;
+    const expandedRowKeys = this.getExpandedRowKeys();
 
     let open = false;
     const nextExpandedRowKeys = [];
