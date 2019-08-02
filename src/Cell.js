@@ -142,7 +142,7 @@ class Cell extends React.PureComponent<Props> {
       isNullOrUndefined(children) && rowData ? _.get(rowData, dataKey) : children;
 
     if (typeof children === 'function') {
-      contentChildren = children(rowData);
+      contentChildren = children(rowData, rowIndex);
     }
 
     const unhandled = getUnhandledProps(Cell, rest, [
