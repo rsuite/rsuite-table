@@ -82,7 +82,7 @@ type Props = {
   bordered?: boolean,
   cellBordered?: boolean,
   wordWrap?: boolean,
-  onRowClick?: (rowData: Object) => void,
+  onRowClick?: (rowData: Object, event: SyntheticEvent<any>) => void,
   onScroll?: (scrollX: number, scrollY: number) => void,
   onSortColumn?: (dataKey: string, sortType?: SortType) => void,
   onExpandChange?: (expanded: boolean, rowData: Object) => void,
@@ -900,8 +900,8 @@ class Table extends React.Component<Props, State> {
 
   bindRowClick = (rowData: Object) => {
     const { onRowClick } = this.props;
-    return () => {
-      onRowClick && onRowClick(rowData);
+    return (event: SyntheticEvent<*>) => {
+      onRowClick && onRowClick(rowData, event);
     };
   };
 
