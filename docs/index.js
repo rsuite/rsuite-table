@@ -113,6 +113,11 @@ class App extends React.Component {
             {
               title: 'Dynamic',
               content: require('./md/DynamicTable.md')
+            },
+
+            {
+              title: 'Scroll loading data',
+              content: require('./md/DynamicDataTable.md')
             }
           ]}
         />
