@@ -298,7 +298,7 @@ class Table extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    this.calculateTableContextHeight();
+    this.calculateTableContextHeight(prevProps);
     this.calculateTableContentWidth(prevProps);
     this.calculateRowMaxHeight();
     this.updatePosition();
@@ -655,6 +655,7 @@ class Table extends React.Component<Props, State> {
       this.wheelWrapper && addStyle(this.wheelWrapper, wheelStyle);
       this.headerWrapper && addStyle(this.headerWrapper, headerStyle);
     }
+
     if (this.tableHeader) {
       toggleClass(this.tableHeader, this.addPrefix('cell-group-shadow'), this.scrollY < 0);
     }
@@ -808,7 +809,7 @@ class Table extends React.Component<Props, State> {
     }
   }
 
-  calculateTableContextHeight() {
+  calculateTableContextHeight(prevProps: Props) {
     const table = this.table;
     const rows = table.querySelectorAll(`.${this.addPrefix('row')}`) || [];
     const { height, autoHeight, rowHeight } = this.props;
@@ -823,6 +824,12 @@ class Table extends React.Component<Props, State> {
     this.setState({
       contentHeight: nextContentHeight
     });
+
+    // 如果 data 更新，则更新滚动条位置
+    if (prevProps && prevProps.data !== this.props.data) {
+      const top = (Math.abs(this.scrollY) / nextContentHeight) * (height - headerHeight);
+      this.scrollbarY.resetScrollBarPosition(top);
+    }
 
     if (!autoHeight) {
       // 这里 -10 是为了让滚动条不挡住内容部分
