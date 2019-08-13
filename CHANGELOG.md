@@ -1,3 +1,7 @@
+# 3.5.6
+
+- Fixed an issue where the scrollbar position was not updated after the data was updated
+
 # 3.5.5
 
 - Fix `expandedRowKeys` not controlled (#90)
