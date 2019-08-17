@@ -50,8 +50,8 @@ describe('Scrollbar', () => {
 
     ReactTestUtils.Simulate.mouseDown(instance.handle);
     ReactTestUtils.Simulate.mouseMove(document.body);
-    instance.hanldeDragMove(10, 10);
-    instance.hanldeDragEnd();
+    instance.handleDragMove(10, 10);
+    instance.handleDragEnd();
   });
 
   it('Should call `onScroll` callback by click', done => {
@@ -75,8 +75,8 @@ describe('Scrollbar', () => {
   it('Should not call `onScroll` callback', () => {
     const scroll = sinon.spy();
     const instance = getInstance(<Scrollbar onScroll={scroll} />);
-    instance.hanldeDragMove(10, 10);
-    instance.hanldeDragEnd();
+    instance.handleDragMove(10, 10);
+    instance.handleDragEnd();
     expect(scroll.callCount).to.equal(0);
   });
 
