@@ -21,9 +21,20 @@ function colSpanCells(cells) {
       for (let j = 0; j < colSpan; j += 1) {
         let nextCell = cells[i + j];
         if (nextCell) {
-          let { rowData, dataKey, children, width: colSpanWidth, isHeaderCell } = nextCell.props;
+          const {
+            rowData,
+            rowIndex,
+            dataKey,
+            children,
+            width: colSpanWidth,
+            isHeaderCell
+          } = nextCell.props;
+          const cellText = _.isFunction(children)
+            ? children(rowData, rowIndex)
+            : _.get(rowData, dataKey);
+
           if (
-            (rowData && isNullOrUndefined(_.get(rowData, dataKey))) ||
+            (rowData && isNullOrUndefined(cellText)) ||
             (isHeaderCell && isNullOrUndefined(children))
           ) {
             nextWidth += colSpanWidth;
