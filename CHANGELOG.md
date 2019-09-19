@@ -1,3 +1,9 @@
+# 3.5.7
+
+- Fixed component not re-rendered after `sortType` update.
+- Fix the position of the scroll bar when the height of the table changes
+- Fix validation of merged cells for custom children
+
 # 3.5.6
 
 - Fixed an issue where the scrollbar position was not updated after the data was updated
