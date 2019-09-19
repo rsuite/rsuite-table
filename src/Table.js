@@ -29,6 +29,7 @@ import {
   requestAnimationTimeout,
   cancelAnimationTimeout
 } from './utils';
+import { SCROLLBAR_MIN_WIDTH } from './constants';
 
 const ReactChildren = React.Children;
 const CELL_PADDING_HEIGHT = 26;
@@ -774,12 +775,18 @@ class Table extends React.Component<Props, State> {
 
   calculateTableWidth = () => {
     const table = this.table;
+    const { width } = this.state;
     if (table) {
-      this.scrollX = 0;
-      this.scrollbarX && this.scrollbarX.resetScrollBarPosition();
+      const nextWidth = getWidth(table);
+
+      if (width !== nextWidth) {
+        this.scrollX = 0;
+        this.scrollbarX && this.scrollbarX.resetScrollBarPosition();
+      }
+
       this._cacheCells = null;
       this.setState({
-        width: getWidth(table)
+        width: nextWidth
       });
     }
   };
@@ -825,10 +832,17 @@ class Table extends React.Component<Props, State> {
       contentHeight: nextContentHeight
     });
 
-    // 如果 data 更新，则更新滚动条位置
-    if (prevProps && prevProps.data !== this.props.data) {
-      const top = (Math.abs(this.scrollY) / nextContentHeight) * (height - headerHeight);
-      this.scrollbarY.resetScrollBarPosition(top);
+    if (
+      prevProps &&
+      // 当 data 更新，或者表格高度更新，则更新滚动条
+      (prevProps.height !== height || prevProps.data !== this.props.data) &&
+      this.scrollY !== 0
+    ) {
+      const ratio =
+        (Math.abs(this.scrollY) + prevProps.height - headerHeight) / (nextContentHeight + 10);
+
+      this.scrollTop(ratio * nextContentHeight + 10);
+      this.updatePosition();
     }
 
     if (!autoHeight) {
@@ -843,18 +857,33 @@ class Table extends React.Component<Props, State> {
 
     // 如果 scrollTop 的值大于可以滚动的范围 ，则重置 Y 坐标滚动条
     // 当 Table 为 virtualized 时， wheel 事件触发每次都会进入该逻辑， 避免在滚动到底部后滚动条重置, +10
-    if (Math.abs(this.scrollY) > contentHeight - height + 10) {
+    if (Math.abs(this.scrollY) + height - headerHeight > nextContentHeight + 10) {
       this.scrollTop(0);
     }
   }
 
   // public method
   scrollTop = (top: number = 0) => {
-    this.scrollY = -top;
-    this.scrollbarY && this.scrollbarY.resetScrollBarPosition(top);
+    const { height, headerHeight } = this.props;
+    const { contentHeight } = this.state;
+    const scrollY = top === 0 ? 0 : top - (height - headerHeight);
+
+    this.scrollY = -scrollY;
+    if (this.scrollbarY) {
+      let y = 0;
+      if (top !== 0) {
+        // 滚动条的高度
+        const scrollbarHeight = Math.max(
+          ((height - headerHeight) / (contentHeight + 10)) * (height - headerHeight),
+          SCROLLBAR_MIN_WIDTH
+        );
+        y = (top / (contentHeight + 10)) * (height - headerHeight) - scrollbarHeight;
+      }
+      this.scrollbarY.resetScrollBarPosition(y);
+    }
 
     this.setState({
-      scrollY: -top
+      scrollY: -scrollY
     });
   };
 
