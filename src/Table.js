@@ -290,7 +290,11 @@ class Table extends React.Component<Props, State> {
       this._cacheCells = null;
     }
 
-    if (this.props.children !== nextProps.children) {
+    if (
+      this.props.children !== nextProps.children ||
+      this.props.sortColumn !== nextProps.sortColumn ||
+      this.props.sortType !== nextProps.sortType
+    ) {
       this._cacheCells = null;
     }
 
