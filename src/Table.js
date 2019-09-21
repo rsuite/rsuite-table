@@ -870,7 +870,7 @@ class Table extends React.Component<Props, State> {
   scrollTop = (top: number = 0) => {
     const { height, headerHeight } = this.props;
     const { contentHeight } = this.state;
-    const scrollY = top === 0 ? 0 : top - (height - headerHeight);
+    const scrollY = Math.max(0, top - (height - headerHeight));
 
     this.scrollY = -scrollY;
     if (this.scrollbarY) {
@@ -881,7 +881,7 @@ class Table extends React.Component<Props, State> {
           ((height - headerHeight) / (contentHeight + 10)) * (height - headerHeight),
           SCROLLBAR_MIN_WIDTH
         );
-        y = (top / (contentHeight + 10)) * (height - headerHeight) - scrollbarHeight;
+        y = Math.max(0, (top / (contentHeight + 10)) * (height - headerHeight) - scrollbarHeight);
       }
       this.scrollbarY.resetScrollBarPosition(y);
     }
