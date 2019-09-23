@@ -395,9 +395,9 @@ class Table extends React.Component<Props, State> {
     let left = 0; // Cell left margin
     const headerCells = []; // Table header cell
     const bodyCells = []; // Table body cell
-    const columns = this.props.children;
+    const children = this.props.children;
 
-    if (!columns) {
+    if (!children) {
       this._cacheCells = {
         headerCells,
         bodyCells,
@@ -406,6 +406,7 @@ class Table extends React.Component<Props, State> {
       return this._cacheCells;
     }
 
+    const columns = _.isArray(children) ? children.filter(col => col) : children;
     const { width: tableWidth } = this.state;
     const { sortColumn, rowHeight, showHeader } = this.props;
     const headerHeight = this.getTableHeaderHeight();
