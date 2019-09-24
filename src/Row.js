@@ -2,8 +2,7 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
-import { translateDOMPositionXY } from 'dom-lib';
-import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
+import { defaultClassPrefix, getUnhandledProps, prefix, translateDOMPositionXY } from './utils';
 
 type Props = {
   width?: number,
@@ -14,7 +13,8 @@ type Props = {
   rowRef?: React.ElementRef<*>,
   className?: string,
   classPrefix?: string,
-  style?: Object
+  style?: Object,
+  updatePosition: (style: Object, x: number, y: number) => void
 };
 
 class Row extends React.PureComponent<Props> {
@@ -22,7 +22,8 @@ class Row extends React.PureComponent<Props> {
     classPrefix: defaultClassPrefix('table-row'),
     height: 46,
     headerHeight: 40,
-    isHeaderRow: false
+    isHeaderRow: false,
+    updatePosition: translateDOMPositionXY
   };
   render() {
     const {
@@ -35,6 +36,7 @@ class Row extends React.PureComponent<Props> {
       headerHeight,
       rowRef,
       classPrefix,
+      updatePosition,
       ...rest
     } = this.props;
 
@@ -48,7 +50,8 @@ class Row extends React.PureComponent<Props> {
       height: isHeaderRow ? headerHeight : height,
       ...style
     };
-    translateDOMPositionXY(styles, 0, top);
+
+    updatePosition(styles, 0, top);
 
     const unhandled = getUnhandledProps(Row, rest);
 

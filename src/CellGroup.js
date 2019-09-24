@@ -2,9 +2,7 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
-import { translateDOMPositionXY } from 'dom-lib';
-
-import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
+import { defaultClassPrefix, getUnhandledProps, prefix, translateDOMPositionXY } from './utils';
 
 type Props = {
   fixed?: 'left' | 'right',
@@ -13,18 +11,30 @@ type Props = {
   left?: number,
   style?: Object,
   className?: string,
-  classPrefix?: string
+  classPrefix?: string,
+  updatePosition: (style: Object, x: number, y: number) => void
 };
 
 class CellGroup extends React.PureComponent<Props> {
   static defaultProps = {
-    classPrefix: defaultClassPrefix('table-cell-group')
+    classPrefix: defaultClassPrefix('table-cell-group'),
+    updatePosition: translateDOMPositionXY
   };
 
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 
   render() {
-    const { fixed, width, left, height, style, classPrefix, className, ...rest } = this.props;
+    const {
+      fixed,
+      width,
+      left,
+      height,
+      style,
+      classPrefix,
+      className,
+      updatePosition,
+      ...rest
+    } = this.props;
     const classes = classNames(classPrefix, className, {
       [this.addPrefix(`fixed-${fixed || ''}`)]: fixed,
       [this.addPrefix('scroll')]: !fixed
@@ -36,7 +46,7 @@ class CellGroup extends React.PureComponent<Props> {
     };
     const unhandled = getUnhandledProps(CellGroup, rest);
 
-    translateDOMPositionXY(styles, left, 0);
+    updatePosition(styles, left, 0);
 
     return <div {...unhandled} className={classes} style={styles} />;
   }
