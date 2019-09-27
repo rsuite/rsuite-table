@@ -1,3 +1,8 @@
+# 3.5.8
+
+- Fixed a rendering error when the column in the table was null #99
+- Fixed a problem with scrolling white screen after changing height #97
+
 # 3.5.7
 
 - Fixed component not re-rendered after `sortType` update.
