@@ -834,11 +834,7 @@ class Table extends React.Component<Props, State> {
       (prevProps.height !== height || prevProps.data !== this.props.data) &&
       this.scrollY !== 0
     ) {
-      const ratio =
-        (Math.abs(this.scrollY) + prevProps.height - headerHeight) /
-        (nextContentHeight + SCROLLBAR_WIDTH);
-
-      this.scrollTop(ratio * nextContentHeight + SCROLLBAR_WIDTH);
+      this.scrollTop(Math.abs(this.scrollY) + prevProps.height - headerHeight);
       this.updatePosition();
     }
 
