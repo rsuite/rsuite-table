@@ -1,3 +1,7 @@
+# 3.5.9
+
+- Fixed scroll position after data update #100
+
 # 3.5.8
 
 - Fixed a rendering error when the column in the table was null #99
