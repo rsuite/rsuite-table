@@ -1,3 +1,7 @@
+# 3.6.0
+
+- Added support for RTL #101
+
 # 3.5.9
 
 - Fixed scroll position after data update #100
