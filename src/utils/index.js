@@ -6,4 +6,5 @@ export colSpanCells from './colSpanCells';
 export toggleClass from './toggleClass';
 export flattenData from './flattenData';
 export translateDOMPositionXY from './translateDOMPositionXY';
+export isRTL from './isRTL';
 export * from './requestAnimationTimeout';

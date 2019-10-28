@@ -19,7 +19,8 @@ import {
   flattenData,
   prefix,
   requestAnimationTimeout,
-  cancelAnimationTimeout
+  cancelAnimationTimeout,
+  isRTL
 } from './utils';
 import { SCROLLBAR_MIN_WIDTH, SCROLLBAR_WIDTH, CELL_PADDING_HEIGHT } from './constants';
 
@@ -1027,6 +1028,7 @@ class Table extends React.Component<Props, State> {
               height={props.isHeaderRow ? props.headerHeight : props.height}
               width={fixedLeftCellGroupWidth}
               updatePosition={this.translateDOMPositionXY}
+              style={isRTL() ? { right: width - fixedLeftCellGroupWidth } : null}
             >
               {colSpanCells(fixedLeftCells)}
             </CellGroup>
@@ -1039,7 +1041,11 @@ class Table extends React.Component<Props, State> {
           {fixedRightCellGroupWidth ? (
             <CellGroup
               fixed="right"
-              style={{ left: width - fixedRightCellGroupWidth - SCROLLBAR_WIDTH }}
+              style={
+                isRTL()
+                  ? { right: 0 }
+                  : { left: width - fixedRightCellGroupWidth - _constants.SCROLLBAR_WIDTH }
+              }
               height={props.isHeaderRow ? props.headerHeight : props.height}
               width={fixedRightCellGroupWidth}
               updatePosition={this.translateDOMPositionXY}
