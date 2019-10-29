@@ -1,3 +1,7 @@
+# 3.6.1
+
+- Fix \_constants is not defined #103
+
 # 3.6.0
 
 - Added support for RTL #101
