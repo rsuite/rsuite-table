@@ -63,6 +63,10 @@ class App extends React.Component {
               content: require('./md/AutoHeightTable.md')
             },
             {
+              title: 'Affix Header',
+              content: require('./md/AffixTable.md')
+            },
+            {
               title: 'Fluid',
               content: require('./md/FluidColumnTable.md')
             },

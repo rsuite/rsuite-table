@@ -52,6 +52,15 @@
     z-index: 2;
     position: relative;
   }
+
+  &-affix-header {
+    z-index: 3;
+    visibility: hidden;
+    &.fixed {
+      visibility: visible;
+    }
+  }
+
   &-body-row-wrapper {
     position: relative;
     overflow: hidden;
