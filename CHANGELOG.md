@@ -1,3 +1,7 @@
+# 3.7.0
+
+- Support for `affixHeader` on `<Table>`
+
 # 3.6.1
 
 - Fix \_constants is not defined #103
