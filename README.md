@@ -93,9 +93,10 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 
 | Property               | Type `(Default)`                                                   | Description                                                                                   |
 | ---------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| affixHeader            | boolean,number                                                     | Affix the table header to the specified location on the page                                  |
 | autoHeight             | boolean                                                            | Automatic height                                                                              |
-| bordered               | boolean                                                            | Show border                                                                                   |
 | bodyRef                | React.ElementRef                                                   | A ref attached to the table body element                                                      |
+| bordered               | boolean                                                            | Show border                                                                                   |
 | cellBordered           | boolean                                                            | Show cell border                                                                              |
 | data \*                | Array&lt;Object&gt;                                                | Table data                                                                                    |
 | defaultExpandAllRows   | boolean                                                            | Expand all nodes By default                                                                   |
@@ -107,15 +108,16 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | hover                  | boolean `(true)`                                                   | The row of the table has a mouseover effect                                                   |
 | isTree                 | boolean                                                            | Show as Tree table                                                                            |
 | loading                | boolean                                                            | Show loading                                                                                  |
+| locale                 | object: { emptyMessage: `('No data')`, loading: `('Loading...')` } | Messages for empty data and loading states                                                    |
 | minHeight              | number `(0)`                                                       | Minimum height                                                                                |
 | onExpandChange         | (expanded:boolean,rowData:object)=>void                            | Tree table, the callback function in the expanded node                                        |
 | onRowClick             | (rowData:object, event: SyntheticEvent)=>void                      | Click the callback function after the row and return to `rowDate`                             |
 | onScroll               | (scrollX:object, scrollY:object)=>void                             | Callback function for scroll bar scrolling                                                    |
 | onSortColumn           | (dataKey:string, sortType:string)=>void                            | Click the callback function of the sort sequence to return the value `sortColumn`, `sortType` |
-| renderRowExpanded      | (rowDate?: Object) => React.Node                                   | Customize what you can do to expand a zone                                                    |
-| renderTreeToggle       | (icon:node,rowData:object)=> node                                  | Tree table, the callback function in the expanded node                                        |
 | renderEmpty            | (info: React.Node) => React.Node                                   | Customized data is empty display content                                                      |
 | renderLoading          | (loading: React.Node) => React.Node                                | Customize the display content in the data load                                                |
+| renderRowExpanded      | (rowDate?: Object) => React.Node                                   | Customize what you can do to expand a zone                                                    |
+| renderTreeToggle       | (icon:node,rowData:object)=> node                                  | Tree table, the callback function in the expanded node                                        |
 | rowClassName           | string , (rowData:object)=>string                                  | Add an optional extra class name to row                                                       |
 | rowExpandedHeight      | number `(100)`                                                     | Set the height of an expandable area                                                          |
 | rowHeight              | number`(46)`                                                       | Row height                                                                                    |
@@ -126,7 +128,6 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | sortType               | enum: 'desc', 'asc'                                                | Sort type (Controlled)                                                                        |
 | virtualized            | boolean                                                            | Effectively render large tabular data                                                         |
 | width                  | number                                                             | Table width                                                                                   |
-| locale                 | object: { emptyMessage: `('No data')`, loading: `('Loading...')` } | Messages for empty data and loading states                                                    |
 
 ### `<Column>`
 
@@ -140,8 +141,8 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | onResize      | (columnWidth?: number, dataKey?: string) => void | Callback after column width change                                                                          |
 | resizable     | boolean                                          | Customizable Resize Column width                                                                            |
 | sortable      | boolean                                          | Sortable                                                                                                    |
-| width         | number                                           | Column width                                                                                                |
 | verticalAlign | enum: 'top', 'middle', 'bottom'                  | Vertical alignment                                                                                          |
+| width         | number                                           | Column width                                                                                                |
 
 > `sortable` is used to define whether the column is sortable, but depending on what `key` sort needs to set a `dataKey` in `Cell`.
 > The sort here is the service-side sort, so you need to handle the logic in the ' Onsortcolumn ' callback function of `<Table>`, and the callback function returns `sortColumn`, `sortType` values.

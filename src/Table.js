@@ -4,12 +4,22 @@ import * as React from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
 import bindElementResize, { unbind as unbindElementResize } from 'element-resize-event';
-import { addStyle, getWidth, getHeight, WheelHandler, scrollLeft, scrollTop, on } from 'dom-lib';
 import { getTranslateDOMPositionXY } from 'dom-lib/lib/transition/translateDOMPositionXY';
+import {
+  addStyle,
+  getWidth,
+  getHeight,
+  WheelHandler,
+  scrollLeft,
+  scrollTop,
+  on,
+  getOffset
+} from 'dom-lib';
 
 import Row from './Row';
 import CellGroup from './CellGroup';
 import Scrollbar from './Scrollbar';
+import { SCROLLBAR_MIN_WIDTH, SCROLLBAR_WIDTH, CELL_PADDING_HEIGHT } from './constants';
 import {
   getTotalByColumns,
   colSpanCells,
@@ -20,9 +30,13 @@ import {
   prefix,
   requestAnimationTimeout,
   cancelAnimationTimeout,
-  isRTL
+  isRTL,
+  findRowKeys,
+  findAllParents,
+  shouldShowRowByExpanded,
+  resetLeftForCells,
+  getRandomKey
 } from './utils';
-import { SCROLLBAR_MIN_WIDTH, SCROLLBAR_WIDTH, CELL_PADDING_HEIGHT } from './constants';
 
 const columnHandledProps = [
   'align',
@@ -85,7 +99,15 @@ type Props = {
   virtualized?: boolean,
   renderEmpty?: (info: React.Node) => React.Node,
   renderLoading?: (loading: React.Node) => React.Node,
-  translate3d?: boolean
+  translate3d?: boolean,
+  affixHeader?: boolean | number
+};
+
+type Offset = {
+  top?: number,
+  left?: number,
+  width?: number,
+  height?: number
 };
 
 type State = {
@@ -102,70 +124,10 @@ type State = {
   scrollY: number,
   isScrolling?: boolean,
   data: Array<Object>,
-  cacheData: Array<Object>
+  cacheData: Array<Object>,
+  fixedHeader: boolean,
+  affixHeaderOffset: Offset
 };
-
-function findRowKeys(rows, rowKey, expanded) {
-  let keys = [];
-  for (let i = 0; i < rows.length; i++) {
-    let item = rows[i];
-    if (item.children) {
-      keys.push(item[rowKey]);
-      keys = [...keys, ...findRowKeys(item.children, rowKey)];
-    } else if (expanded) {
-      keys.push(item[rowKey]);
-    }
-  }
-  return keys;
-}
-
-function findAllParents(rowData, rowKey) {
-  const parents = [];
-
-  if (!rowData) {
-    return parents;
-  }
-
-  function findParent(data) {
-    if (data) {
-      parents.push(data[rowKey]);
-      if (data._parent) {
-        findParent(data._parent);
-      }
-    }
-  }
-  findParent(rowData._parent);
-  return parents;
-}
-
-function shouldShowRowByExpanded(expandedRowKeys = [], parentKeys = []) {
-  const intersectionKeys = _.intersection(expandedRowKeys, parentKeys);
-  if (intersectionKeys.length === parentKeys.length) {
-    return true;
-  }
-  return false;
-}
-
-function resetLeftForCells(cells) {
-  let left = 0;
-  const nextCells = [];
-
-  for (let i = 0; i < cells.length; i++) {
-    let cell = cells[i];
-    let nextCell = React.cloneElement(cell, { left });
-    left += cell.props.width;
-    nextCells.push(nextCell);
-  }
-
-  return nextCells;
-}
-
-function getRandomKey(index) {
-  return `_${(Math.random() * 1e18)
-    .toString(36)
-    .slice(0, 5)
-    .toUpperCase()}_${index}`;
-}
 
 class Table extends React.Component<Props, State> {
   static defaultProps = {
@@ -236,7 +198,8 @@ class Table extends React.Component<Props, State> {
       tableRowsMaxHeight: [],
       sortType: defaultSortType,
       scrollY: 0,
-      isScrolling: false
+      isScrolling: false,
+      fixedHeader: false
     };
 
     this.scrollY = 0;
@@ -269,6 +232,7 @@ class Table extends React.Component<Props, State> {
     this.calculateTableWidth();
     this.calculateTableContextHeight();
     this.calculateRowMaxHeight();
+    this.setAffixHeaderOffset();
     bindElementResize(this.table, _.debounce(this.calculateTableWidth, 400));
 
     const options = { passive: false };
@@ -276,6 +240,11 @@ class Table extends React.Component<Props, State> {
     this.wheelListener = on(this.tableBody, 'wheel', this.wheelHandler.onWheel, options);
     this.touchStartListener = on(this.tableBody, 'touchstart', this.handleTouchStart, options);
     this.touchMoveListener = on(this.tableBody, 'touchmove', this.handleTouchMove, options);
+
+    const { affixHeader } = this.props;
+    if (affixHeader === 0 || affixHeader) {
+      this.scrollListener = on(window, 'scroll', this.updateAffixHeaderStatus);
+    }
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
@@ -318,6 +287,10 @@ class Table extends React.Component<Props, State> {
 
     if (this.touchMoveListener) {
       this.touchMoveListener.off();
+    }
+
+    if (this.scrollListener) {
+      this.scrollListener.off();
     }
   }
   getExpandedRowKeys() {
@@ -364,6 +337,26 @@ class Table extends React.Component<Props, State> {
 
     return autoHeight ? Math.max(headerHeight + contentHeight, minHeight) : height;
   }
+
+  setAffixHeaderOffset = () => {
+    const { affixHeader } = this.props;
+    if (affixHeader === 0 || affixHeader) {
+      this.setState(() => {
+        return { affixHeaderOffset: getOffset(this.headerWrapper) };
+      });
+    }
+  };
+
+  updateAffixHeaderStatus = () => {
+    const { affixHeader } = this.props;
+    const top = typeof affixHeader === 'number' ? affixHeader : 0;
+    const { affixHeaderOffset } = this.state;
+    const scrollY = window.scrollY || window.pageYOffset;
+    const fixedHeader = scrollY - (affixHeaderOffset.top - top) >= 0;
+    if (this.affixHeaderWrapper) {
+      toggleClass(this.affixHeaderWrapper, 'fixed', fixedHeader);
+    }
+  };
 
   handleSortColumn = (dataKey: string) => {
     const { onSortColumn, sortColumn } = this.props;
@@ -786,6 +779,7 @@ class Table extends React.Component<Props, State> {
         width: nextWidth
       });
     }
+    this.setAffixHeaderOffset();
   };
 
   calculateTableContentWidth(prevProps: Props) {
@@ -910,6 +904,10 @@ class Table extends React.Component<Props, State> {
 
   bindHeaderWrapperRef = (ref: React.ElementRef<*>) => {
     this.headerWrapper = ref;
+  };
+
+  bindAffixHeaderRef = (ref: React.ElementRef<*>) => {
+    this.affixHeaderWrapper = ref;
   };
 
   bindTableRef = (ref: React.ElementRef<*>) => {
@@ -1096,7 +1094,9 @@ class Table extends React.Component<Props, State> {
   }
 
   renderTableHeader(headerCells: Array<any>, rowWidth: number) {
-    const { rowHeight } = this.props;
+    const { rowHeight, affixHeader } = this.props;
+    const { width: tableWidth } = this.state;
+    const top = typeof affixHeader === 'number' ? affixHeader : 0;
     const headerHeight = this.getTableHeaderHeight();
     const rowProps = {
       rowRef: this.bindTableHeaderRef,
@@ -1107,10 +1107,32 @@ class Table extends React.Component<Props, State> {
       top: 0
     };
 
-    return (
-      <div className={this.addPrefix('header-row-wrapper')} ref={this.bindHeaderWrapperRef}>
+    const fixedStyle = {
+      position: 'fixed',
+      overflow: 'hidden',
+      height: this.getTableHeaderHeight(),
+      width: tableWidth,
+      top
+    };
+
+    // Affix header
+    const header = (
+      <div
+        className={classNames(this.addPrefix('affix-header'))}
+        style={fixedStyle}
+        ref={this.bindAffixHeaderRef}
+      >
         {this.renderRow(rowProps, headerCells)}
       </div>
+    );
+
+    return (
+      <React.Fragment>
+        {(affixHeader === 0 || affixHeader) && header}
+        <div className={this.addPrefix('header-row-wrapper')} ref={this.bindHeaderWrapperRef}>
+          {this.renderRow(rowProps, headerCells)}
+        </div>
+      </React.Fragment>
     );
   }
   _rows = [];
