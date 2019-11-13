@@ -148,6 +148,12 @@ class Scrollbar extends React.PureComponent<Props, State> {
     if (!this.mouseMoveTracker || !this.mouseMoveTracker.isDragging()) {
       return;
     }
+
+    if (event.buttons === 0 || _.get(window, 'event.buttons') === 0) {
+      this.releaseMouseMoves();
+      return;
+    }
+
     this.handleScroll(vertical ? deltaY : deltaX, event);
   };
 
