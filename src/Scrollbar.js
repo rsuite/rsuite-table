@@ -149,7 +149,7 @@ class Scrollbar extends React.PureComponent<Props, State> {
       return;
     }
 
-    if (event.buttons === 0 || _.get(window, 'event.buttons') === 0) {
+    if (_.get(event, 'buttons') === 0 || _.get(window, 'event.buttons') === 0) {
       this.releaseMouseMoves();
       return;
     }
