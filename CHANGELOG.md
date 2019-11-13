@@ -1,3 +1,7 @@
+# 3.7.1
+
+- Fix move scrollbar issues #106
+
 # 3.7.0
 
 - Support for `affixHeader` on `<Table>`
