@@ -4,7 +4,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
 import { LAYER_WIDTH } from './constants';
-import { isNullOrUndefined, defaultClassPrefix, getUnhandledProps, prefix } from './utils';
+import { isNullOrUndefined, defaultClassPrefix, getUnhandledProps, prefix, isRTL } from './utils';
 
 type Props = {
   align?: 'left' | 'center' | 'right',
@@ -47,7 +47,6 @@ type Props = {
 class Cell extends React.PureComponent<Props> {
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-cell'),
-    align: 'left',
     headerHeight: 36,
     depth: 0,
     height: 36,
@@ -123,14 +122,14 @@ class Cell extends React.PureComponent<Props> {
       width,
       height: nextHeight,
       zIndex: depth,
-      left
+      [isRTL() ? 'right' : 'left']: left
     };
 
     const contentStyles: Object = {
       width,
       height: nextHeight,
       textAlign: align,
-      paddingLeft: firstColumn ? depth * LAYER_WIDTH + 10 : null,
+      [isRTL() ? 'paddingRight' : 'paddingLeft']: firstColumn ? depth * LAYER_WIDTH + 10 : null,
       ...style
     };
 

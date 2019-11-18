@@ -392,7 +392,12 @@ class Table extends React.Component<Props, State> {
       return this._cacheCells;
     }
 
-    const columns = _.isArray(children) ? children.filter(col => col) : children;
+    let columns = children;
+
+    if (_.isArray(children)) {
+      columns = children.filter(col => col);
+    }
+
     const { width: tableWidth } = this.state;
     const { sortColumn, rowHeight, showHeader } = this.props;
     const headerHeight = this.getTableHeaderHeight();
@@ -549,11 +554,13 @@ class Table extends React.Component<Props, State> {
 
   handleWheel = (deltaX: number, deltaY: number) => {
     const { onScroll, virtualized } = this.props;
+    const { contentWidth, width } = this.state;
+
     if (!this.table) {
       return;
     }
 
-    const nextScrollX = this.scrollX - deltaX;
+    const nextScrollX = contentWidth <= width ? 0 : this.scrollX - deltaX;
     const nextScrollY = this.scrollY - deltaY;
 
     this.scrollY = Math.min(0, nextScrollY < this.minScrollY ? this.minScrollY : nextScrollY);
@@ -685,16 +692,12 @@ class Table extends React.Component<Props, State> {
   }
   shouldHandleWheelX = (delta: number) => {
     const { disabledScroll, loading } = this.props;
-    const { contentWidth, width } = this.state;
+
     if (delta === 0 || disabledScroll || loading) {
       return false;
     }
 
-    if (width && contentWidth <= width) {
-      return false;
-    }
-
-    return (delta >= 0 && this.scrollX > this.minScrollX) || (delta < 0 && this.scrollX < 0);
+    return true;
   };
   shouldHandleWheelY = (delta: number) => {
     const { disabledScroll, loading } = this.props;
@@ -996,6 +999,14 @@ class Table extends React.Component<Props, State> {
       props.className = rowClassName;
     }
 
+    const rowStyles = {};
+    let rowRight = 0;
+
+    if (isRTL() && contentWidth > width) {
+      rowRight = width - contentWidth;
+      rowStyles.right = rowRight;
+    }
+
     // IF there are fixed columns, add a fixed group
     if (shouldFixedColumn && contentWidth > width) {
       let fixedLeftCells = [];
@@ -1007,10 +1018,19 @@ class Table extends React.Component<Props, State> {
       for (let i = 0; i < cells.length; i++) {
         let cell = cells[i];
         const { fixed, width } = cell.props;
-        if (fixed === true || fixed === 'left') {
+
+        let isFixedStart = fixed === 'left' || fixed === true;
+        let isFixedEnd = fixed === 'right';
+
+        if (isRTL()) {
+          isFixedStart = fixed === 'right';
+          isFixedEnd = fixed === 'left' || fixed === true;
+        }
+
+        if (isFixedStart) {
           fixedLeftCells.push(cell);
           fixedLeftCellGroupWidth += width;
-        } else if (fixed === 'right') {
+        } else if (isFixedEnd) {
           fixedRightCells.push(cell);
           fixedRightCellGroupWidth += width;
         } else {
@@ -1019,16 +1039,16 @@ class Table extends React.Component<Props, State> {
       }
 
       return (
-        <Row {...props}>
+        <Row {...props} style={rowStyles}>
           {fixedLeftCellGroupWidth ? (
             <CellGroup
               fixed="left"
               height={props.isHeaderRow ? props.headerHeight : props.height}
               width={fixedLeftCellGroupWidth}
               updatePosition={this.translateDOMPositionXY}
-              style={isRTL() ? { right: width - fixedLeftCellGroupWidth } : null}
+              style={isRTL() ? { right: width - fixedLeftCellGroupWidth - rowRight } : null}
             >
-              {colSpanCells(fixedLeftCells)}
+              {colSpanCells(resetLeftForCells(fixedLeftCells))}
             </CellGroup>
           ) : null}
 
@@ -1041,7 +1061,7 @@ class Table extends React.Component<Props, State> {
               fixed="right"
               style={
                 isRTL()
-                  ? { right: 0 }
+                  ? { right: 0 - rowRight }
                   : { left: width - fixedRightCellGroupWidth - SCROLLBAR_WIDTH }
               }
               height={props.isHeaderRow ? props.headerHeight : props.height}
@@ -1058,7 +1078,7 @@ class Table extends React.Component<Props, State> {
     }
 
     return (
-      <Row {...props}>
+      <Row {...props} style={rowStyles}>
         <CellGroup updatePosition={this.translateDOMPositionXY}>{colSpanCells(cells)}</CellGroup>
         {shouldRenderExpandedRow && this.renderRowExpanded(rowData)}
       </Row>
