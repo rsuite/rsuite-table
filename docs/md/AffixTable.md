@@ -72,6 +72,9 @@ class AutoHeightTable extends React.Component {
             <Cell dataKey="email" />
           </Column>
         </Table>
+        <div style={{ height: 2000 }}>
+          <hr />
+        </div>
       </div>
     );
   }
