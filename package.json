@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "rm -rf lib && babel src --out-dir lib && cp -R src/less lib",
+    "build-css": "gulp build",
     "dev": "NODE_ENV=development webpack-dev-server  --inline --progress --colors --port 3100 --host 0.0.0.0 ",
     "docs": "rm -rf assets &&  NODE_ENV=production webpack",
     "publish-docs": "node docs/gh-pages.js",
@@ -20,7 +21,8 @@
   "files": [
     "CHANGELOG.md",
     "lib",
-    "src"
+    "src",
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -38,6 +40,7 @@
     "react-dom": "^0.14.9 || >=15.3.0"
   },
   "devDependencies": {
+    "autoprefixer": "^9.7.3",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.1.2",
@@ -57,6 +60,7 @@
     "coveralls": "^3.0.2",
     "cross-env": "^5.0.5",
     "css-loader": "^0.23.1",
+    "cssnano": "^4.1.10",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-15": "^1.0.3",
     "es6-promise": "^4.1.1",
@@ -75,6 +79,11 @@
     "file-loader": "^0.10.1",
     "flow-bin": "^0.67.1",
     "gh-pages": "^0.12.0",
+    "gulp": "^4.0.2",
+    "gulp-less": "^4.0.0",
+    "gulp-postcss": "^7.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^2.6.4",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.28.0",
     "karma": "^3.1.4",
