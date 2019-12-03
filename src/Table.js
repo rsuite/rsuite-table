@@ -594,13 +594,17 @@ class Table extends React.Component<Props, State> {
 
   // 处理移动端 Touch 事件, Move 的时候初始化，更新 scroll
   handleTouchMove = (event: SyntheticTouchEvent<*>) => {
-    event.stopPropagation();
-    event.preventDefault();
-
     const { onTouchMove, autoHeight } = this.props;
     const { pageX: nextPageX, pageY: nextPageY } = event.touches ? event.touches[0] : {};
     const deltaX = this.touchX - nextPageX;
     const deltaY = autoHeight ? 0 : this.touchY - nextPageY;
+
+    if (!this.shouldHandleWheelY(deltaY) && !this.shouldHandleWheelX(deltaX)) {
+      return;
+    }
+
+    event.preventDefault();
+
     this.handleWheel(deltaX, deltaY);
     this.scrollbarX.onWheelScroll(deltaX);
     this.scrollbarY.onWheelScroll(deltaY);
