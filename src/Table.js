@@ -604,13 +604,17 @@ class Table extends React.Component<Props, State> {
 
   // 处理移动端 Touch 事件, Move 的时候初始化，更新 scroll
   handleTouchMove = (event: SyntheticTouchEvent<*>) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    const { onTouchMove } = this.props;
+    const { onTouchMove, autoHeight } = this.props;
     const { pageX: nextPageX, pageY: nextPageY } = event.touches ? event.touches[0] : {};
     const deltaX = this.touchX - nextPageX;
-    const deltaY = this.touchY - nextPageY;
+    const deltaY = autoHeight ? 0 : this.touchY - nextPageY;
+
+    if (!this.shouldHandleWheelY(deltaY) && !this.shouldHandleWheelX(deltaX)) {
+      return;
+    }
+
+    event.preventDefault();
+
     this.handleWheel(deltaX, deltaY);
     this.scrollbarX.onWheelScroll(deltaX);
     this.scrollbarY.onWheelScroll(deltaY);
@@ -622,7 +626,7 @@ class Table extends React.Component<Props, State> {
 
   /**
    * 当用户在 Table 内使用 tab 键，触发了 onScroll 事件，这个时候应该更新滚动条位置
-   * Fix: https://github.com/rsuite/rsuite/issues/234
+   * https://github.com/rsuite/rsuite/issues/234
    */
   handleBodyScroll = (event: SyntheticTouchEvent<*>) => {
     if (event.target !== this.tableBody) {
