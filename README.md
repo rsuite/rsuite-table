@@ -15,6 +15,7 @@ A React table component,
 - Support for displaying a tree form.
 - Support for sorting.
 - Support for expandable child nodes
+- Support for RTL
 
 ## Preview
 

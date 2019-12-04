@@ -1,3 +1,10 @@
+# 3.8.0
+
+- Added support for css import #118
+- Fixed the `affixHeader` feature, which does not hide the table header when the scrolling range is outside the Table body #109
+- Added support for RTL #101
+- Fix #114 #116
+
 # 3.7.1
 
 - Fix move scrollbar issues #106
