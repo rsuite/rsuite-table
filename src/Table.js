@@ -350,9 +350,12 @@ class Table extends React.Component<Props, State> {
   updateAffixHeaderStatus = () => {
     const { affixHeader } = this.props;
     const top = typeof affixHeader === 'number' ? affixHeader : 0;
-    const { affixHeaderOffset } = this.state;
+    const { affixHeaderOffset, contentHeight } = this.state;
     const scrollY = window.scrollY || window.pageYOffset;
-    const fixedHeader = scrollY - (affixHeaderOffset.top - top) >= 0;
+    const fixedHeader =
+      scrollY - (affixHeaderOffset.top - top) >= 0 &&
+      scrollY < affixHeaderOffset.top - top + contentHeight;
+
     if (this.affixHeaderWrapper) {
       toggleClass(this.affixHeaderWrapper, 'fixed', fixedHeader);
     }
