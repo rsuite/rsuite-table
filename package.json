@@ -4,7 +4,7 @@
   "description": "A React table component",
   "main": "lib/index.js",
   "scripts": {
-    "build": "rm -rf lib && babel src --out-dir lib && cp -R src/less lib",
+    "build": "rm -rf lib && babel src --out-dir lib && cp -R src/less lib && npm run build-css",
     "build-css": "gulp build",
     "dev": "NODE_ENV=development webpack-dev-server  --inline --progress --colors --port 3100 --host 0.0.0.0 ",
     "docs": "rm -rf assets &&  NODE_ENV=production webpack",
