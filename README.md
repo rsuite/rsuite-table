@@ -46,7 +46,7 @@ npm i rsuite-table --save
 
 ```js
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import 'rsuite-table/lib/less/index.less';
+import 'rsuite-table/lib/less/index.less'; // or 'rsuite-table/dist/css/rsuite-table.css'
 
 const dataList = [
   { id: 1, name: 'a', email: 'a@email.com', avartar: '...' },
