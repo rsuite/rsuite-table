@@ -11,5 +11,4 @@ export findRowKeys from './findRowKeys';
 export findAllParents from './findAllParents';
 export shouldShowRowByExpanded from './shouldShowRowByExpanded';
 export resetLeftForCells from './resetLeftForCells';
-export getRandomKey from './getRandomKey';
 export * from './requestAnimationTimeout';
