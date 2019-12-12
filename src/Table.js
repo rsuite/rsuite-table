@@ -34,8 +34,7 @@ import {
   findRowKeys,
   findAllParents,
   shouldShowRowByExpanded,
-  resetLeftForCells,
-  getRandomKey
+  resetLeftForCells
 } from './utils';
 
 const columnHandledProps = [
@@ -957,8 +956,7 @@ class Table extends React.Component<Props, State> {
   ) {
     const { renderTreeToggle, rowKey, wordWrap, isTree } = this.props;
     const hasChildren = isTree && rowData.children && Array.isArray(rowData.children);
-    const nextRowKey =
-      typeof rowData[rowKey] !== 'undefined' ? rowData[rowKey] : getRandomKey(props.index);
+    const nextRowKey = typeof rowData[rowKey] !== 'undefined' ? rowData[rowKey] : props.index;
 
     const rowProps = {
       rowRef: this.bindTableRowsRef(props.index),
@@ -1162,12 +1160,13 @@ class Table extends React.Component<Props, State> {
       </React.Fragment>
     );
   }
-  _rows = [];
+  _visibleRows = [];
 
   renderTableBody(bodyCells: Array<any>, rowWidth: number) {
     const {
       rowHeight,
       rowExpandedHeight,
+      renderRowExpanded,
       isTree,
       setRowHeight,
       rowKey,
@@ -1178,80 +1177,113 @@ class Table extends React.Component<Props, State> {
     const headerHeight = this.getTableHeaderHeight();
     const { tableRowsMaxHeight, isScrolling, data } = this.state;
     const height = this.getTableHeight();
+    const bodyHeight = height - headerHeight;
     const bodyStyles = {
       top: headerHeight,
-      height: height - headerHeight
+      height: bodyHeight
     };
 
-    let top = 0; // Row position
-    let bodyHeight = 0;
+    let contentHeight = 0;
     let topHideHeight = 0;
     let bottomHideHeight = 0;
 
-    this._rows = [];
+    this._visibleRows = [];
 
     if (data) {
-      const minTop = Math.abs(this.state.scrollY);
+      let top = 0; // Row position
+      const minTop = Math.abs(this.scrollY);
       const maxTop = minTop + height + rowExpandedHeight;
+      const isUncertainHeight = !!(renderRowExpanded || setRowHeight || isTree);
 
-      for (let index = 0; index < data.length; index++) {
-        let rowData = data[index];
-        let maxHeight = tableRowsMaxHeight[index];
-        let nextRowHeight = maxHeight ? maxHeight + CELL_PADDING_HEIGHT : rowHeight;
-        let shouldRenderExpandedRow = this.shouldRenderExpandedRow(rowData);
-        let depth = 0;
+      /**
+      如果开启了 virtualized  同时 Table 中的的行高是可变的，
+      则需要循环遍历 data, 获取每一行的高度。
+      */
+      if ((isUncertainHeight && virtualized) || !virtualized) {
+        for (let index = 0; index < data.length; index++) {
+          let rowData = data[index];
+          let maxHeight = tableRowsMaxHeight[index];
+          let nextRowHeight = maxHeight ? maxHeight + CELL_PADDING_HEIGHT : rowHeight;
+          let shouldRenderExpandedRow = this.shouldRenderExpandedRow(rowData);
+          let depth = 0;
 
-        if (shouldRenderExpandedRow) {
-          nextRowHeight += rowExpandedHeight;
-        }
-
-        if (isTree) {
-          const parents = findAllParents(rowData, rowKey);
-          const expandedRowKeys = this.getExpandedRowKeys();
-          depth = parents.length;
-
-          // 树节点如果被关闭，则不渲染
-          if (!shouldShowRowByExpanded(expandedRowKeys, parents)) {
-            continue;
+          if (shouldRenderExpandedRow) {
+            nextRowHeight += rowExpandedHeight;
           }
-        }
 
+          if (isTree) {
+            const parents = findAllParents(rowData, rowKey);
+            const expandedRowKeys = this.getExpandedRowKeys();
+            depth = parents.length;
+
+            // 树节点如果被关闭，则不渲染
+            if (!shouldShowRowByExpanded(expandedRowKeys, parents)) {
+              continue;
+            }
+          }
+
+          /**
+           * 自定义行高
+           */
+          if (setRowHeight) {
+            nextRowHeight = setRowHeight(rowData) || rowHeight;
+          }
+
+          contentHeight += nextRowHeight;
+
+          let rowProps = {
+            index,
+            top,
+            rowWidth,
+            depth,
+            rowHeight: nextRowHeight
+          };
+
+          top += nextRowHeight;
+
+          if (virtualized && !wordWrap) {
+            if (top + nextRowHeight < minTop) {
+              topHideHeight += nextRowHeight;
+              continue;
+            } else if (top > maxTop) {
+              bottomHideHeight += nextRowHeight;
+              continue;
+            }
+          }
+
+          this._visibleRows.push(
+            this.renderRowData(bodyCells, rowData, rowProps, shouldRenderExpandedRow)
+          );
+        }
+      } else {
         /**
-         * 自定义行高
-         */
-        if (setRowHeight) {
-          nextRowHeight = setRowHeight(rowData) || rowHeight;
+        如果 Table 的行高是固定的，则直接通过行高与行数进行计算，
+        减少遍历所有 data 带来的性能消耗
+        */
+
+        const startIndex = Math.max(Math.floor(minTop / rowHeight), 0);
+        const endIndex = Math.min(startIndex + Math.ceil(bodyHeight / rowHeight), data.length);
+
+        contentHeight = data.length * rowHeight;
+        topHideHeight = startIndex * rowHeight;
+        bottomHideHeight = (data.length - endIndex) * rowHeight;
+
+        for (let index = startIndex; index < endIndex; index++) {
+          let rowData = data[index];
+          let rowProps = {
+            index,
+            top: index * rowHeight,
+            rowWidth,
+            rowHeight
+          };
+          this._visibleRows.push(this.renderRowData(bodyCells, rowData, rowProps, false));
         }
-
-        bodyHeight += nextRowHeight;
-
-        let rowProps = {
-          index,
-          top,
-          rowWidth,
-          depth,
-          rowHeight: nextRowHeight
-        };
-
-        top += nextRowHeight;
-
-        if (virtualized && !wordWrap) {
-          if (top + nextRowHeight < minTop) {
-            topHideHeight += nextRowHeight;
-            continue;
-          } else if (top > maxTop) {
-            bottomHideHeight += nextRowHeight;
-            continue;
-          }
-        }
-
-        this._rows.push(this.renderRowData(bodyCells, rowData, rowProps, shouldRenderExpandedRow));
       }
     }
 
     const wheelStyles = {
       position: 'absolute',
-      height: bodyHeight,
+      height: contentHeight,
       minHeight: height,
       pointerEvents: isScrolling ? 'none' : ''
     };
@@ -1277,7 +1309,7 @@ class Table extends React.Component<Props, State> {
               updatePosition={this.translateDOMPositionXY}
             />
           ) : null}
-          {this._rows}
+          {this._visibleRows}
           {bottomHideHeight ? (
             <Row
               style={bottomRowStyles}
@@ -1295,7 +1327,7 @@ class Table extends React.Component<Props, State> {
   }
 
   renderInfo() {
-    if (this._rows.length) {
+    if (this._visibleRows.length) {
       return null;
     }
     const { locale, renderEmpty } = this.props;
