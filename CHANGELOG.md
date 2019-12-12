@@ -1,5 +1,9 @@
 # 3.8.0
 
+- Improve the performance of virtualized table #120
+
+# 3.8.0
+
 - Added support for css import #118
 - Fixed the `affixHeader` feature, which does not hide the table header when the scrolling range is outside the Table body #109
 - Added support for RTL #101
