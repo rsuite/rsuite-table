@@ -211,6 +211,7 @@ class Table extends React.Component<Props, State> {
     );
 
     this._cacheChildrenSize = _.flatten(children).length;
+
     this.translateDOMPositionXY = getTranslateDOMPositionXY({
       enable3DTransform: props.translate3d
     });
@@ -232,6 +233,7 @@ class Table extends React.Component<Props, State> {
     this.calculateTableContextHeight();
     this.calculateRowMaxHeight();
     this.setAffixHeaderOffset();
+    this.initPosition();
     bindElementResize(this.table, _.debounce(this.calculateTableWidth, 400));
 
     const options = { passive: false };
@@ -505,18 +507,24 @@ class Table extends React.Component<Props, State> {
     this.setState({
       isColumnResizing: true
     });
-    const mouseAreaLeft = width + left;
-    const x = fixed ? mouseAreaLeft : mouseAreaLeft + (this.scrollX || 0);
-    const styles = { display: 'block' };
-    this.translateDOMPositionXY(styles, x, 0);
-    addStyle(this.mouseArea, styles);
+    this.handleColumnResizeMove(width, left, fixed);
   };
 
   handleColumnResizeMove = (width: number, left: number, fixed: boolean) => {
-    const mouseAreaLeft = width + left;
-    const x = fixed ? mouseAreaLeft : mouseAreaLeft + (this.scrollX || 0);
-    const styles = {};
-    this.translateDOMPositionXY(styles, x, 0);
+    let mouseAreaLeft = width + left;
+    let x = mouseAreaLeft;
+    let dir = 'left';
+
+    if (isRTL()) {
+      mouseAreaLeft += this.minScrollX + SCROLLBAR_WIDTH;
+      dir = 'right';
+      if (!fixed) {
+        x = mouseAreaLeft - (this.scrollX || 0);
+      }
+    }
+
+    const styles = { display: 'block', [dir]: `${x}px` };
+
     addStyle(this.mouseArea, styles);
   };
 
@@ -644,6 +652,18 @@ class Table extends React.Component<Props, State> {
     scrollLeft(event.target, 0);
     scrollTop(event.target, 0);
   };
+
+  initPosition() {
+    if (isRTL()) {
+      setTimeout(() => {
+        const { contentWidth, width } = this.state;
+
+        this.scrollX = width - contentWidth - SCROLLBAR_WIDTH;
+        this.updatePosition();
+        this.scrollbarX && this.scrollbarX.resetScrollBarPosition(-this.scrollX);
+      }, 0);
+    }
+  }
 
   updatePosition() {
     /**
