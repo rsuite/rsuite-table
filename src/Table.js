@@ -1087,7 +1087,7 @@ class Table extends React.Component<Props, State> {
               fixed="right"
               style={
                 isRTL()
-                  ? { right: 0 - rowRight }
+                  ? { right: 0 - rowRight - SCROLLBAR_WIDTH }
                   : { left: width - fixedRightCellGroupWidth - SCROLLBAR_WIDTH }
               }
               height={props.isHeaderRow ? props.headerHeight : props.height}
