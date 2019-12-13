@@ -1,4 +1,8 @@
-# 3.8.0
+# 3.8.2
+
+- Fix RTL related bugs #121
+
+# 3.8.1
 
 - Improve the performance of virtualized table #120
 
