@@ -518,9 +518,10 @@ class Table extends React.Component<Props, State> {
     if (isRTL()) {
       mouseAreaLeft += this.minScrollX + SCROLLBAR_WIDTH;
       dir = 'right';
-      if (!fixed) {
-        x = mouseAreaLeft - (this.scrollX || 0);
-      }
+    }
+
+    if (!fixed) {
+      x = mouseAreaLeft + (isRTL() ? -this.scrollX : this.scrollX);
     }
 
     const styles = { display: 'block', [dir]: `${x}px` };

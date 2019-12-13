@@ -17,7 +17,7 @@ type Props = {
   initialEvent?: Object,
   columnWidth?: number,
   columnLeft?: number,
-  columnFixed?: boolean,
+  columnFixed?: boolean | 'left' | 'right',
   className?: string,
   classPrefix?: string,
   style?: Object,
@@ -125,7 +125,7 @@ class ColumnResizeHandler extends React.Component<Props> {
       ...rest
     } = this.props;
 
-    if (isRTL() && columnFixed) {
+    if (columnFixed === 'right') {
       return null;
     }
 

@@ -105,7 +105,7 @@ class HeaderCell extends React.PureComponent<Props, State> {
       <ColumnResizeHandler
         columnWidth={columnWidth}
         columnLeft={left}
-        columnFixed={!!fixed}
+        columnFixed={fixed}
         height={headerHeight ? headerHeight - 1 : undefined}
         initialEvent={initialEvent}
         onColumnResizeMove={onColumnResizeMove}
