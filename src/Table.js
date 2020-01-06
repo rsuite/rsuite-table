@@ -1348,10 +1348,10 @@ class Table extends React.Component<Props, State> {
   }
 
   renderInfo() {
-    if (this._visibleRows.length) {
+    const { locale, renderEmpty, loading } = this.props;
+    if (this._visibleRows.length || loading) {
       return null;
     }
-    const { locale, renderEmpty } = this.props;
     const emptyMessage = <div className={this.addPrefix('body-info')}>{locale.emptyMessage}</div>;
 
     return renderEmpty ? renderEmpty(emptyMessage) : emptyMessage;
