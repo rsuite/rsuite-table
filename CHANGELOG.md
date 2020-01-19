@@ -1,3 +1,7 @@
+# 3.8.3
+
+- `<Table>` The "empty" status is not displayed by default when loading
+
 # 3.8.2
 
 - Fix RTL related bugs #121
