@@ -19,7 +19,7 @@ import {
 import Row from './Row';
 import CellGroup from './CellGroup';
 import Scrollbar from './Scrollbar';
-import { SCROLLBAR_MIN_WIDTH, SCROLLBAR_WIDTH, CELL_PADDING_HEIGHT } from './constants';
+import { SCROLLBAR_WIDTH, CELL_PADDING_HEIGHT } from './constants';
 import {
   getTotalByColumns,
   colSpanCells,
