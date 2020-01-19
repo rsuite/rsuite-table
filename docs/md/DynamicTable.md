@@ -77,7 +77,7 @@ class DynamicTable extends React.Component {
     this.setState({ data: [] });
   }
   handleScrollTop() {
-    this.table.scrollTop(0);
+    this.table.scrollTop(100);
   }
   handleScrollLeft() {
     this.table.scrollLeft(0);

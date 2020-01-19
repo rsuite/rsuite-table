@@ -859,7 +859,7 @@ class Table extends React.Component<Props, State> {
       (prevProps.height !== height || prevProps.data !== this.props.data) &&
       this.scrollY !== 0
     ) {
-      this.scrollTop(Math.abs(this.scrollY) + prevProps.height - headerHeight);
+      this.scrollTop(Math.abs(this.scrollY));
       this.updatePosition();
     }
 
@@ -876,7 +876,7 @@ class Table extends React.Component<Props, State> {
     // 如果 scrollTop 的值大于可以滚动的范围 ，则重置 Y 坐标滚动条
     // 当 Table 为 virtualized 时， wheel 事件触发每次都会进入该逻辑， 避免在滚动到底部后滚动条重置, +SCROLLBAR_WIDTH
     if (Math.abs(this.scrollY) + height - headerHeight > nextContentHeight + SCROLLBAR_WIDTH) {
-      this.scrollTop(nextContentHeight + SCROLLBAR_WIDTH);
+      this.scrollTop(this.scrollY);
     }
   }
 
@@ -885,30 +885,9 @@ class Table extends React.Component<Props, State> {
    * top 值是表格理论滚动位置的一个值，通过 top 计算出 scrollY 坐标值与滚动条位置的值
    */
   scrollTop = (top: number = 0) => {
-    const { height, headerHeight } = this.props;
-    const { contentHeight } = this.state;
-    const scrollY = Math.max(0, top - (height - headerHeight));
-
-    this.scrollY = -scrollY;
-    if (this.scrollbarY) {
-      let y = 0;
-      if (top !== 0) {
-        // 滚动条的高度
-        const scrollbarHeight = Math.max(
-          ((height - headerHeight) / (contentHeight + SCROLLBAR_WIDTH)) * (height - headerHeight),
-          SCROLLBAR_MIN_WIDTH
-        );
-        y = Math.max(
-          0,
-          (top / (contentHeight + SCROLLBAR_WIDTH)) * (height - headerHeight) - scrollbarHeight
-        );
-      }
-      this.scrollbarY.resetScrollBarPosition(y);
-    }
-
-    this.setState({
-      scrollY: -scrollY
-    });
+    this.scrollY = -top;
+    this.scrollbarY && this.scrollbarY.resetScrollBarPosition(top);
+    this.updatePosition();
   };
 
   // public method
