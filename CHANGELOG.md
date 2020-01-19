@@ -1,3 +1,7 @@
+# 3.8.4
+
+- Fixed an issue where `scrollTop` would not work
+
 # 3.8.3
 
 - `<Table>` The "empty" status is not displayed by default when loading
