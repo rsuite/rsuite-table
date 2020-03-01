@@ -50,8 +50,6 @@ class Row extends React.PureComponent<RowProps> {
       ...style
     };
 
-    console.log(styles);
-
     updatePosition?.(styles, 0, top);
 
     const unhandled = getUnhandledProps(Row, rest);

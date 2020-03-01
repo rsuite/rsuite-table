@@ -1046,8 +1046,6 @@ class Table extends React.Component<TableProps, TableState> {
         }
       }
 
-      console.log(props);
-
       return (
         <Row {...props} style={rowStyles}>
           {fixedLeftCellGroupWidth ? (
