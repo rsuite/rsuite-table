@@ -1,7 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { polyfill } from 'react-lifecycles-compat';
 import ColumnResizeHandler from './ColumnResizeHandler';
 import { isNullOrUndefined, getUnhandledProps, defaultClassPrefix, prefix } from './utils';
 import Cell, { propTypes } from './Cell';
@@ -152,7 +151,5 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
     );
   }
 }
-
-polyfill(HeaderCell);
 
 export default HeaderCell;
