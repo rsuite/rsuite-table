@@ -1,12 +1,16 @@
 const webpackConfig = {
+  mode: 'development',
   output: {
     pathinfo: true
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js']
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        use: ['babel-loader'],
+        test: [/\.tsx?$/, /\.jsx?$/],
+        use: ['babel-loader?babelrc'],
         exclude: /node_modules/
       }
     ]
@@ -16,9 +20,18 @@ const webpackConfig = {
 
 module.exports = config => {
   const { env } = process;
+  const { M, F } = env;
+  let testFile = 'test/index.js';
+
+  if (M) {
+    testFile = `test/${M}Spec.js`;
+  } else if (F) {
+    testFile = F;
+  }
+
   config.set({
     basePath: '',
-    files: ['test/index.js'],
+    files: [testFile],
     frameworks: ['mocha', 'sinon-chai'],
     colors: true,
     reporters: ['mocha', 'coverage'],

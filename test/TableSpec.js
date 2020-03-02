@@ -251,7 +251,6 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-
     ReactTestUtils.Simulate.wheel(instanceDom.querySelector('.rs-table-body-row-wrapper'));
   });
 

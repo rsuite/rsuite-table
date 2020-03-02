@@ -18,7 +18,7 @@ describe('HeaderCell', () => {
     };
 
     const instanceDom = getDOMNode(
-      <HeaderCell onSortColumn={doneOp} sortable dataKey="name">
+      <HeaderCell width={100} onSortColumn={doneOp} sortable dataKey="name">
         test
       </HeaderCell>
     );

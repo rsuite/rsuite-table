@@ -39,6 +39,7 @@ jspm_packages
 
 dist
 lib
+es
 .vscode/
 assets
 yarn.lock

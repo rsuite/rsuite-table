@@ -22,7 +22,8 @@ describe('Scrollbar', () => {
     const scrollLength = 1000;
     const length = 100;
     const instance = getInstance(<Scrollbar scrollLength={scrollLength} length={length} />);
-    assert.ok(instance.handle.style.width, `${scrollLength / length}%`);
+
+    assert.ok(instance.handleRef.current.style.width, `${scrollLength / length}%`);
   });
 
   it('Should call onMouseDown callback', done => {
@@ -30,7 +31,7 @@ describe('Scrollbar', () => {
       done();
     };
     const instance = getInstance(<Scrollbar onMouseDown={doneOp} />);
-    ReactTestUtils.Simulate.mouseDown(instance.handle);
+    ReactTestUtils.Simulate.mouseDown(instance.handleRef.current);
   });
 
   it('Should have a custom style', () => {
@@ -48,7 +49,7 @@ describe('Scrollbar', () => {
       />
     );
 
-    ReactTestUtils.Simulate.mouseDown(instance.handle);
+    ReactTestUtils.Simulate.mouseDown(instance.handleRef.current);
     ReactTestUtils.Simulate.mouseMove(document.body);
     instance.handleDragMove(10, 10);
     instance.handleDragEnd();
@@ -62,13 +63,13 @@ describe('Scrollbar', () => {
         }}
       />
     );
-    ReactTestUtils.Simulate.click(instance.bar);
+    ReactTestUtils.Simulate.click(instance.barRef.current);
   });
 
   it('Should not call `onScroll` callback by click', () => {
     const scroll = sinon.spy();
     const instance = getInstance(<Scrollbar onScroll={scroll} />);
-    ReactTestUtils.Simulate.click(instance.handle);
+    ReactTestUtils.Simulate.click(instance.handleRef.current);
     expect(scroll.callCount).to.equal(0);
   });
 
@@ -87,5 +88,4 @@ describe('Scrollbar', () => {
       findDOMNode(instance).innerHTML.match(/translate3d\(\d+px,\s*(\d+)px,\s*(\d+)px\)/i)[0]
     ).be.equal('translate3d(10px, 0px, 0px)');
   });
-
 });
