@@ -208,6 +208,42 @@ describe('Table', () => {
     assert.equal(instanceDom.style.height, `${500}px`);
   });
 
+  it('Should render custom tree columns', () => {
+    const instance = getDOMNode(
+      <Table
+        isTree
+        defaultExpandAllRows
+        data={[
+          {
+            id: 1,
+            name: 'a',
+            children: [
+              {
+                id: 2,
+                name: 'b'
+              }
+            ]
+          }
+        ]}
+      >
+        <Column>
+          <HeaderCell>a</HeaderCell>
+          <Cell>a</Cell>
+        </Column>
+        <Column treeCol>
+          <HeaderCell>b</HeaderCell>
+          <Cell>b</Cell>
+        </Column>
+      </Table>
+    );
+
+    assert.equal(
+      instance.querySelector('.rs-table-body-row-wrapper .rs-table-cell-expand-wrapper').parentNode
+        .innerText,
+      'b'
+    );
+  });
+
   it('Should call `rowHeight` callback', done => {
     const doneOp = () => {
       done();

@@ -36,6 +36,7 @@ export interface CellProps extends StandardProps {
   renderCell?: (contentChildren: any) => React.ReactNode;
   wordWrap?: boolean;
   removed?: boolean;
+  treeCol?: boolean;
 }
 
 declare const Cell: React.ComponentType<CellProps>;

@@ -146,6 +146,7 @@ const App = () => (
 | sortable      | boolean                                          | Sortable                                                                                                    |
 | verticalAlign | enum: 'top', 'middle', 'bottom'                  | Vertical alignment                                                                                          |
 | width         | number                                           | Column width                                                                                                |
+| treeCol       | boolean                                          | A column of a tree.                                                                                         |
 
 > `sortable` is used to define whether the column is sortable, but depending on what `key` sort needs to set a `dataKey` in `Cell`.
 > The sort here is the service-side sort, so you need to handle the logic in the ' Onsortcolumn ' callback function of `<Table>`, and the callback function returns `sortColumn`, `sortType` values.
