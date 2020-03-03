@@ -382,44 +382,11 @@ class Table extends React.Component<TableProps, TableState> {
     return autoHeight ? Math.max(headerHeight + contentHeight, minHeight) : height;
   }
 
-  setAffixHeaderOffset = () => {
-    const { affixHeader } = this.props;
-    if (affixHeader === 0 || affixHeader) {
-      this.setState(() => {
-        return { affixHeaderOffset: getOffset(this.headerWrapperRef.current) };
-      });
-    }
-  };
-
-  updateAffixHeaderStatus = () => {
-    const { affixHeader } = this.props;
-    const top = typeof affixHeader === 'number' ? affixHeader : 0;
-    const { affixHeaderOffset, contentHeight } = this.state;
-    const scrollY = window.scrollY || window.pageYOffset;
-    const fixedHeader =
-      scrollY - (affixHeaderOffset.top - top) >= 0 &&
-      scrollY < affixHeaderOffset.top - top + contentHeight;
-
-    if (this.affixHeaderWrapperRef.current) {
-      toggleClass(this.affixHeaderWrapperRef.current, 'fixed', fixedHeader);
-    }
-  };
-
-  handleSortColumn = (dataKey: string) => {
-    let sortType = this.getSortType();
-
-    if (this.props.sortColumn === dataKey) {
-      sortType =
-        sortType === SORT_TYPE.ASC ? (SORT_TYPE.DESC as SortType) : (SORT_TYPE.ASC as SortType);
-      this.setState({ sortType });
-    }
-    this.props.onSortColumn?.(dataKey, sortType);
-  };
-
-  getCells() {
+  getCellDescriptor() {
     if (this._cacheCells) {
       return this._cacheCells;
     }
+    let hasCustomTreeCol = false;
     let left = 0; // Cell left margin
     const headerCells = []; // Table header cell
     const bodyCells = []; // Table body cell
@@ -429,6 +396,7 @@ class Table extends React.Component<TableProps, TableState> {
       this._cacheCells = {
         headerCells,
         bodyCells,
+        hasCustomTreeCol,
         allColumnsWidth: left
       };
       return this._cacheCells;
@@ -446,7 +414,11 @@ class Table extends React.Component<TableProps, TableState> {
     React.Children.forEach(columns, (column, index) => {
       if (React.isValidElement(column)) {
         const columnChildren = column.props.children;
-        const { width, resizable, flexGrow, minWidth, onResize } = column.props;
+        const { width, resizable, flexGrow, minWidth, onResize, treeCol } = column.props;
+
+        if (treeCol) {
+          hasCustomTreeCol = true;
+        }
 
         if (resizable && flexGrow) {
           console.warn(
@@ -469,7 +441,7 @@ class Table extends React.Component<TableProps, TableState> {
         }
 
         const cellProps = {
-          ...pick(column.props, ['align', 'verticalAlign']),
+          ...pick(column.props, ['align', 'verticalAlign', 'treeCol']),
           left,
           index,
           headerHeight,
@@ -514,14 +486,48 @@ class Table extends React.Component<TableProps, TableState> {
       }
     });
 
-    this._cacheCells = {
+    return (this._cacheCells = {
       headerCells,
       bodyCells,
-      allColumnsWidth: left
-    };
-
-    return this._cacheCells;
+      allColumnsWidth: left,
+      hasCustomTreeCol
+    });
   }
+
+  setAffixHeaderOffset = () => {
+    const { affixHeader } = this.props;
+    if (affixHeader === 0 || affixHeader) {
+      this.setState(() => {
+        return { affixHeaderOffset: getOffset(this.headerWrapperRef.current) };
+      });
+    }
+  };
+
+  updateAffixHeaderStatus = () => {
+    const { affixHeader } = this.props;
+    const top = typeof affixHeader === 'number' ? affixHeader : 0;
+    const { affixHeaderOffset, contentHeight } = this.state;
+    const scrollY = window.scrollY || window.pageYOffset;
+    const fixedHeader =
+      scrollY - (affixHeaderOffset.top - top) >= 0 &&
+      scrollY < affixHeaderOffset.top - top + contentHeight;
+
+    if (this.affixHeaderWrapperRef.current) {
+      toggleClass(this.affixHeaderWrapperRef.current, 'fixed', fixedHeader);
+    }
+  };
+
+  handleSortColumn = (dataKey: string) => {
+    let sortType = this.getSortType();
+
+    if (this.props.sortColumn === dataKey) {
+      sortType =
+        sortType === SORT_TYPE.ASC ? (SORT_TYPE.DESC as SortType) : (SORT_TYPE.ASC as SortType);
+      this.setState({ sortType });
+    }
+    this.props.onSortColumn?.(dataKey, sortType);
+  };
+
   handleColumnResizeEnd = (
     columnWidth: number,
     _cursorDelta: number,
@@ -1357,7 +1363,7 @@ class Table extends React.Component<TableProps, TableState> {
     } = this.props;
 
     const { isColumnResizing } = this.state;
-    const { headerCells, bodyCells, allColumnsWidth } = this.getCells();
+    const { headerCells, bodyCells, allColumnsWidth, hasCustomTreeCol } = this.getCellDescriptor();
     const rowWidth = allColumnsWidth > width ? allColumnsWidth : width;
     const clesses = classNames(classPrefix, className, {
       [this.addPrefix('word-wrap')]: wordWrap,
@@ -1379,7 +1385,11 @@ class Table extends React.Component<TableProps, TableState> {
 
     return (
       <TableContext.Provider
-        value={{ translateDOMPositionXY: this.translateDOMPositionXY, rtl: this.isRTL() }}
+        value={{
+          translateDOMPositionXY: this.translateDOMPositionXY,
+          rtl: this.isRTL(),
+          hasCustomTreeCol
+        }}
       >
         <div {...unhandled} className={clesses} style={styles} ref={this.tableRef}>
           {showHeader && this.renderTableHeader(headerCells, rowWidth)}

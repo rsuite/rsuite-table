@@ -8,6 +8,7 @@ export interface ColumnProps {
   flexGrow?: number;
   minWidth?: number;
   colSpan?: number;
+  treeCol?: boolean;
   onResize?: (columnWidth?: number, dataKey?: string) => void;
 }
 

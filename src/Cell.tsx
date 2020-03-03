@@ -30,7 +30,8 @@ export const propTypes = {
   renderTreeToggle: PropTypes.func,
   renderCell: PropTypes.func,
   wordWrap: PropTypes.bool,
-  removed: PropTypes.bool
+  removed: PropTypes.bool,
+  treeCol: PropTypes.bool
 };
 
 class Cell extends React.PureComponent<CellProps> {
@@ -46,6 +47,20 @@ class Cell extends React.PureComponent<CellProps> {
   };
 
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
+  isTreeCol() {
+    const { treeCol, firstColumn } = this.props;
+    const { hasCustomTreeCol } = this.context;
+
+    if (treeCol) {
+      return true;
+    }
+
+    if (!hasCustomTreeCol && firstColumn) {
+      return true;
+    }
+
+    return false;
+  }
   getHeight() {
     const { height, rowData } = this.props;
     return typeof height === 'function' ? height(rowData) : height;
@@ -55,14 +70,11 @@ class Cell extends React.PureComponent<CellProps> {
     const { rowKey, rowIndex, rowData } = this.props;
     this.props.onTreeToggle?.(rowKey, rowIndex, rowData, event);
   };
-  renderExpandIcon() {
-    const { hasChildren, firstColumn, rowData, renderTreeToggle } = this.props;
+  renderTreeNodeExpandIcon() {
+    const { rowData, renderTreeToggle, hasChildren } = this.props;
     const expandButton = <i className={this.addPrefix('expand-icon')} />;
 
-    /**
-     * 如果用子节点，同时是第一列,则创建一个 icon 用于展开节点
-     */
-    if (hasChildren && firstColumn) {
+    if (this.isTreeCol() && hasChildren) {
       return (
         <span
           role="button"
@@ -124,7 +136,7 @@ class Cell extends React.PureComponent<CellProps> {
       width,
       height: nextHeight,
       textAlign: align,
-      [rtl ? 'paddingRight' : 'paddingLeft']: firstColumn ? depth * LAYER_WIDTH + 10 : null,
+      [rtl ? 'paddingRight' : 'paddingLeft']: this.isTreeCol() ? depth * LAYER_WIDTH + 10 : null,
       ...style
     };
 
@@ -144,12 +156,12 @@ class Cell extends React.PureComponent<CellProps> {
     const cell = renderCell ? renderCell(cellContent) : cellContent;
     const content = wordWrap ? (
       <div className={this.addPrefix('wrap')}>
-        {this.renderExpandIcon()}
+        {this.renderTreeNodeExpandIcon()}
         {cell}
       </div>
     ) : (
       <React.Fragment>
-        {this.renderExpandIcon()}
+        {this.renderTreeNodeExpandIcon()}
         {cell}
       </React.Fragment>
     );
