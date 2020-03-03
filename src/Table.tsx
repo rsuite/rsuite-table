@@ -24,6 +24,7 @@ import {
 import Row from './Row';
 import CellGroup from './CellGroup';
 import Scrollbar from './Scrollbar';
+import TableContext from './TableContext';
 import { SCROLLBAR_WIDTH, CELL_PADDING_HEIGHT } from './constants';
 import {
   getTotalByColumns,
@@ -50,17 +51,6 @@ interface TableRowProps extends RowProps {
   key?: string | number;
   depth?: number;
 }
-
-const columnHandledProps = [
-  'align',
-  'verticalAlign',
-  'width',
-  'fixed',
-  'resizable',
-  'flexGrow',
-  'minWidth',
-  'colSpan'
-];
 
 const SORT_TYPE = {
   DESC: 'desc',
@@ -101,9 +91,8 @@ class Table extends React.Component<TableProps, TableState> {
     height: PropTypes.number,
     autoHeight: PropTypes.bool,
     minHeight: PropTypes.number,
-    rowHeight: PropTypes.number,
+    rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
     headerHeight: PropTypes.number,
-    setRowHeight: PropTypes.func,
     rowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     isTree: PropTypes.bool,
     defaultExpandAllRows: PropTypes.bool,
@@ -142,7 +131,8 @@ class Table extends React.Component<TableProps, TableState> {
     renderEmpty: PropTypes.func,
     renderLoading: PropTypes.func,
     translate3d: PropTypes.bool,
-    affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number])
+    affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+    rtl: PropTypes.bool
   };
   static defaultProps = {
     classPrefix: defaultClassPrefix('table'),
@@ -155,7 +145,6 @@ class Table extends React.Component<TableProps, TableState> {
     rowExpandedHeight: 100,
     hover: true,
     showHeader: true,
-    virtualized: false,
     rowKey: 'key',
     translate3d: true,
     locale: {
@@ -189,6 +178,7 @@ class Table extends React.Component<TableProps, TableState> {
 
   tableRows: { [key: string]: HTMLElement } = {};
   mounted = false;
+  disableEventsTimeoutId = null;
   scrollY = 0;
   scrollX = 0;
   wheelHandler: any;
@@ -252,13 +242,13 @@ class Table extends React.Component<TableProps, TableState> {
     this.scrollY = 0;
     this.scrollX = 0;
     this.wheelHandler = new WheelHandler(
-      this._listenWheel,
+      this.listenWheel,
       this.shouldHandleWheelX,
       this.shouldHandleWheelY,
       false
     );
 
-    this._cacheChildrenSize = flatten(children as Array<any>).length;
+    this._cacheChildrenSize = flatten(children as any[]).length;
 
     this.translateDOMPositionXY = getTranslateDOMPositionXY({
       enable3DTransform: props.translate3d
@@ -273,7 +263,7 @@ class Table extends React.Component<TableProps, TableState> {
     this.wheelWrapperRef = React.createRef();
   }
 
-  _listenWheel = (deltaX: number, deltaY: number) => {
+  listenWheel = (deltaX: number, deltaY: number) => {
     this.handleWheel(deltaX, deltaY);
     this.scrollbarXRef.current?.onWheelScroll?.(deltaX);
     this.scrollbarYRef.current?.onWheelScroll?.(deltaY);
@@ -304,7 +294,7 @@ class Table extends React.Component<TableProps, TableState> {
   }
 
   shouldComponentUpdate(nextProps: TableProps, nextState: TableState) {
-    const _cacheChildrenSize = flatten((nextProps.children as Array<any>) || []).length;
+    const _cacheChildrenSize = flatten((nextProps.children as any[]) || []).length;
 
     if (_cacheChildrenSize !== this._cacheChildrenSize) {
       this._cacheChildrenSize = _cacheChildrenSize;
@@ -334,21 +324,10 @@ class Table extends React.Component<TableProps, TableState> {
     if (this.tableRef.current) {
       unbindElementResize(this.tableRef.current);
     }
-    if (this.wheelListener) {
-      this.wheelListener.off();
-    }
-
-    if (this.touchStartListener) {
-      this.touchStartListener.off();
-    }
-
-    if (this.touchMoveListener) {
-      this.touchMoveListener.off();
-    }
-
-    if (this.scrollListener) {
-      this.scrollListener.off();
-    }
+    this.wheelListener?.off();
+    this.touchStartListener?.off();
+    this.touchMoveListener?.off();
+    this.scrollListener?.off();
   }
   getExpandedRowKeys() {
     const { expandedRowKeys } = this.props;
@@ -370,6 +349,14 @@ class Table extends React.Component<TableProps, TableState> {
 
   getFixedRightCellGroups() {
     return this.tableRef.current?.querySelectorAll(`.${this.addPrefix('cell-group-fixed-right')}`);
+  }
+  isRTL() {
+    return this.props.rtl || isRTL();
+  }
+
+  getRowHeight(rowData = {}) {
+    const { rowHeight } = this.props;
+    return typeof rowHeight === 'function' ? rowHeight(rowData) : rowHeight;
   }
 
   /**
@@ -453,8 +440,8 @@ class Table extends React.Component<TableProps, TableState> {
 
     const { width: tableWidth } = this.state;
     const { sortColumn, rowHeight, showHeader } = this.props;
-    const headerHeight = this.getTableHeaderHeight();
     const { totalFlexGrow, totalWidth } = getTotalByColumns(columns);
+    const headerHeight = this.getTableHeaderHeight();
 
     React.Children.forEach(columns, (column, index) => {
       if (React.isValidElement(column)) {
@@ -482,7 +469,7 @@ class Table extends React.Component<TableProps, TableState> {
         }
 
         const cellProps = {
-          ...pick(column.props, columnHandledProps),
+          ...pick(column.props, ['align', 'verticalAlign']),
           left,
           index,
           headerHeight,
@@ -564,22 +551,19 @@ class Table extends React.Component<TableProps, TableState> {
     let x = mouseAreaLeft;
     let dir = 'left';
 
-    if (isRTL()) {
+    if (this.isRTL()) {
       mouseAreaLeft += this.minScrollX + SCROLLBAR_WIDTH;
       dir = 'right';
     }
 
     if (!fixed) {
-      x = mouseAreaLeft + (isRTL() ? -this.scrollX : this.scrollX);
+      x = mouseAreaLeft + (this.isRTL() ? -this.scrollX : this.scrollX);
     }
 
-    const styles = { display: 'block', [dir]: `${x}px` };
-
-    addStyle(this.mouseAreaRef.current, styles);
+    addStyle(this.mouseAreaRef.current, { display: 'block', [dir]: `${x}px` });
   };
 
   handleTreeToggle = (rowKey: any, _rowIndex: number, rowData: any) => {
-    const { onExpandChange } = this.props;
     const expandedRowKeys = this.getExpandedRowKeys();
 
     let open = false;
@@ -597,10 +581,8 @@ class Table extends React.Component<TableProps, TableState> {
     if (!open) {
       nextExpandedRowKeys.push(rowKey);
     }
-    this.setState({
-      expandedRowKeys: nextExpandedRowKeys
-    });
-    onExpandChange && onExpandChange(!open, rowData);
+    this.setState({ expandedRowKeys: nextExpandedRowKeys });
+    this.props.onExpandChange?.(!open, rowData);
   };
 
   handleScrollX = (delta: number) => {
@@ -609,8 +591,6 @@ class Table extends React.Component<TableProps, TableState> {
   handleScrollY = (delta: number) => {
     this.handleWheel(0, delta);
   };
-
-  disableEventsTimeoutId = null;
 
   handleWheel = (deltaX: number, deltaY: number) => {
     const { onScroll, virtualized } = this.props;
@@ -627,7 +607,7 @@ class Table extends React.Component<TableProps, TableState> {
     this.scrollX = Math.min(0, nextScrollX < this.minScrollX ? this.minScrollX : nextScrollX);
     this.updatePosition();
 
-    onScroll && onScroll(this.scrollX, this.scrollY);
+    onScroll?.(this.scrollX, this.scrollY);
 
     if (virtualized) {
       this.setState({
@@ -703,20 +683,20 @@ class Table extends React.Component<TableProps, TableState> {
       return;
     }
 
-    this._listenWheel(left, top);
+    this.listenWheel(left, top);
 
     scrollLeft(event.target, 0);
     scrollTop(event.target, 0);
   };
 
   initPosition() {
-    if (isRTL()) {
+    if (this.isRTL()) {
       setTimeout(() => {
         const { contentWidth, width } = this.state;
 
         this.scrollX = width - contentWidth - SCROLLBAR_WIDTH;
         this.updatePosition();
-        this.scrollbarX && this.scrollbarX.resetScrollBarPosition(-this.scrollX);
+        this.scrollbarX?.resetScrollBarPosition?.(-this.scrollX);
       }, 0);
     }
   }
@@ -835,18 +815,16 @@ class Table extends React.Component<TableProps, TableState> {
   calculateTableWidth = () => {
     const table = this.tableRef?.current;
     const { width } = this.state;
+
     if (table) {
       const nextWidth = getWidth(table);
-
       if (width !== nextWidth) {
         this.scrollX = 0;
-        this.scrollbarX && this.scrollbarX.resetScrollBarPosition();
+        this.scrollbarX?.resetScrollBarPosition();
       }
 
       this._cacheCells = null;
-      this.setState({
-        width: nextWidth
-      });
+      this.setState({ width: nextWidth });
     }
     this.setAffixHeaderOffset();
   };
@@ -864,13 +842,12 @@ class Table extends React.Component<TableProps, TableState> {
      * 1.判断 Table 列数是否发生变化
      * 2.判断 Table 内容区域是否宽度有变化
      *
-     *
      * 满足 1 和 2 则更新横向滚动条位置
      */
 
     if (
-      flatten(this.props.children as Array<any>).length !==
-        flatten(prevProps.children as Array<any>).length &&
+      flatten(this.props.children as any[]).length !==
+        flatten(prevProps.children as any[]).length &&
       this.state.contentWidth !== contentWidth
     ) {
       this.scrollLeft(0);
@@ -889,9 +866,7 @@ class Table extends React.Component<TableProps, TableState> {
       : 0;
 
     const nextContentHeight = contentHeight - headerHeight;
-    this.setState({
-      contentHeight: nextContentHeight
-    });
+    this.setState({ contentHeight: nextContentHeight });
 
     if (
       prevProps &&
@@ -990,16 +965,9 @@ class Table extends React.Component<TableProps, TableState> {
     return this.renderRow(rowProps, cells, shouldRenderExpandedRow, rowData);
   }
 
-  renderRow(
-    props: TableRowProps,
-    cells: Array<any>,
-    shouldRenderExpandedRow?: boolean,
-    rowData?: any
-  ) {
+  renderRow(props: TableRowProps, cells: any[], shouldRenderExpandedRow?: boolean, rowData?: any) {
     const { rowClassName } = this.props;
     const { shouldFixedColumn, width, contentWidth } = this.state;
-
-    props.updatePosition = this.translateDOMPositionXY;
 
     if (typeof rowClassName === 'function') {
       props.className = rowClassName(rowData);
@@ -1010,7 +978,7 @@ class Table extends React.Component<TableProps, TableState> {
     const rowStyles: React.CSSProperties = {};
     let rowRight = 0;
 
-    if (isRTL() && contentWidth > width) {
+    if (this.isRTL() && contentWidth > width) {
       rowRight = width - contentWidth;
       rowStyles.right = rowRight;
     }
@@ -1030,7 +998,7 @@ class Table extends React.Component<TableProps, TableState> {
         let isFixedStart = fixed === 'left' || fixed === true;
         let isFixedEnd = fixed === 'right';
 
-        if (isRTL()) {
+        if (this.isRTL()) {
           isFixedStart = fixed === 'right';
           isFixedEnd = fixed === 'left' || fixed === true;
         }
@@ -1053,28 +1021,24 @@ class Table extends React.Component<TableProps, TableState> {
               fixed="left"
               height={props.isHeaderRow ? props.headerHeight : props.height}
               width={fixedLeftCellGroupWidth}
-              updatePosition={this.translateDOMPositionXY}
-              style={isRTL() ? { right: width - fixedLeftCellGroupWidth - rowRight } : null}
+              style={this.isRTL() ? { right: width - fixedLeftCellGroupWidth - rowRight } : null}
             >
               {colSpanCells(resetLeftForCells(fixedLeftCells))}
             </CellGroup>
           ) : null}
 
-          <CellGroup updatePosition={this.translateDOMPositionXY}>
-            {colSpanCells(scrollCells)}
-          </CellGroup>
+          <CellGroup>{colSpanCells(scrollCells)}</CellGroup>
 
           {fixedRightCellGroupWidth ? (
             <CellGroup
               fixed="right"
               style={
-                isRTL()
+                this.isRTL()
                   ? { right: 0 - rowRight - SCROLLBAR_WIDTH }
                   : { left: width - fixedRightCellGroupWidth - SCROLLBAR_WIDTH }
               }
               height={props.isHeaderRow ? props.headerHeight : props.height}
               width={fixedRightCellGroupWidth}
-              updatePosition={this.translateDOMPositionXY}
             >
               {colSpanCells(resetLeftForCells(fixedRightCells))}
             </CellGroup>
@@ -1087,7 +1051,7 @@ class Table extends React.Component<TableProps, TableState> {
 
     return (
       <Row {...props} style={rowStyles}>
-        <CellGroup updatePosition={this.translateDOMPositionXY}>{colSpanCells(cells)}</CellGroup>
+        <CellGroup>{colSpanCells(cells)}</CellGroup>
         {shouldRenderExpandedRow && this.renderRowExpanded(rowData)}
       </Row>
     );
@@ -1095,9 +1059,7 @@ class Table extends React.Component<TableProps, TableState> {
 
   renderRowExpanded(rowData?: object) {
     const { renderRowExpanded, rowExpandedHeight } = this.props;
-    const styles = {
-      height: rowExpandedHeight
-    };
+    const styles = { height: rowExpandedHeight };
 
     if (typeof renderRowExpanded === 'function') {
       return (
@@ -1121,15 +1083,15 @@ class Table extends React.Component<TableProps, TableState> {
     );
   }
 
-  renderTableHeader(headerCells: Array<any>, rowWidth: number) {
-    const { rowHeight, affixHeader } = this.props;
+  renderTableHeader(headerCells: any[], rowWidth: number) {
+    const { affixHeader } = this.props;
     const { width: tableWidth } = this.state;
     const top = typeof affixHeader === 'number' ? affixHeader : 0;
     const headerHeight = this.getTableHeaderHeight();
     const rowProps: TableRowProps = {
       rowRef: this.tableHeaderRef,
       width: rowWidth,
-      height: rowHeight,
+      height: this.getRowHeight(),
       headerHeight,
       isHeaderRow: true,
       top: 0
@@ -1164,16 +1126,15 @@ class Table extends React.Component<TableProps, TableState> {
     );
   }
 
-  renderTableBody(bodyCells: Array<any>, rowWidth: number) {
+  renderTableBody(bodyCells: any[], rowWidth: number) {
     const {
-      rowHeight,
       rowExpandedHeight,
       renderRowExpanded,
       isTree,
-      setRowHeight,
       rowKey,
       wordWrap,
-      virtualized
+      virtualized,
+      rowHeight
     } = this.props;
 
     const headerHeight = this.getTableHeaderHeight();
@@ -1195,7 +1156,8 @@ class Table extends React.Component<TableProps, TableState> {
       let top = 0; // Row position
       const minTop = Math.abs(this.scrollY);
       const maxTop = minTop + height + rowExpandedHeight;
-      const isUncertainHeight = !!(renderRowExpanded || setRowHeight || isTree);
+      const isCustomRowHeight = typeof rowHeight === 'function';
+      const isUncertainHeight = !!(renderRowExpanded || isCustomRowHeight || isTree);
 
       /**
       如果开启了 virtualized  同时 Table 中的的行高是可变的，
@@ -1207,11 +1169,16 @@ class Table extends React.Component<TableProps, TableState> {
           const maxHeight = tableRowsMaxHeight[index];
           const shouldRenderExpandedRow = this.shouldRenderExpandedRow(rowData);
 
-          let nextRowHeight = maxHeight ? maxHeight + CELL_PADDING_HEIGHT : rowHeight;
+          let nextRowHeight = 0;
           let depth = 0;
 
-          if (shouldRenderExpandedRow) {
-            nextRowHeight += rowExpandedHeight;
+          if (typeof rowHeight === 'function') {
+            nextRowHeight = rowHeight(rowData);
+          } else {
+            nextRowHeight = maxHeight ? maxHeight + CELL_PADDING_HEIGHT : rowHeight;
+            if (shouldRenderExpandedRow) {
+              nextRowHeight += rowExpandedHeight;
+            }
           }
 
           if (isTree) {
@@ -1223,13 +1190,6 @@ class Table extends React.Component<TableProps, TableState> {
             if (!shouldShowRowByExpanded(expandedRowKeys, parents)) {
               continue;
             }
-          }
-
-          /**
-           * 自定义行高
-           */
-          if (setRowHeight) {
-            nextRowHeight = setRowHeight(rowData) || rowHeight;
           }
 
           contentHeight += nextRowHeight;
@@ -1263,21 +1223,21 @@ class Table extends React.Component<TableProps, TableState> {
         如果 Table 的行高是固定的，则直接通过行高与行数进行计算，
         减少遍历所有 data 带来的性能消耗
         */
+        const nextRowHeight = this.getRowHeight();
+        const startIndex = Math.max(Math.floor(minTop / nextRowHeight), 0);
+        const endIndex = Math.min(startIndex + Math.ceil(bodyHeight / nextRowHeight), data.length);
 
-        const startIndex = Math.max(Math.floor(minTop / rowHeight), 0);
-        const endIndex = Math.min(startIndex + Math.ceil(bodyHeight / rowHeight), data.length);
-
-        contentHeight = data.length * rowHeight;
-        topHideHeight = startIndex * rowHeight;
-        bottomHideHeight = (data.length - endIndex) * rowHeight;
+        contentHeight = data.length * nextRowHeight;
+        topHideHeight = startIndex * nextRowHeight;
+        bottomHideHeight = (data.length - endIndex) * nextRowHeight;
 
         for (let index = startIndex; index < endIndex; index++) {
           const rowData = data[index];
           const rowProps = {
             key: index,
-            top: index * rowHeight,
+            top: index * nextRowHeight,
             width: rowWidth,
-            height: rowHeight
+            height: nextRowHeight
           };
           this._visibleRows.push(this.renderRowData(bodyCells, rowData, rowProps, false));
         }
@@ -1305,21 +1265,9 @@ class Table extends React.Component<TableProps, TableState> {
           className={this.addPrefix('body-wheel-area')}
           ref={this.wheelWrapperRef}
         >
-          {topHideHeight ? (
-            <Row
-              style={topRowStyles}
-              className="virtualized"
-              updatePosition={this.translateDOMPositionXY}
-            />
-          ) : null}
+          {topHideHeight ? <Row style={topRowStyles} className="virtualized" /> : null}
           {this._visibleRows}
-          {bottomHideHeight ? (
-            <Row
-              style={bottomRowStyles}
-              className="virtualized"
-              updatePosition={this.translateDOMPositionXY}
-            />
-          ) : null}
+          {bottomHideHeight ? <Row style={bottomRowStyles} className="virtualized" /> : null}
         </div>
 
         {this.renderInfo()}
@@ -1430,11 +1378,15 @@ class Table extends React.Component<TableProps, TableState> {
     const unhandled = getUnhandledProps(Table, rest);
 
     return (
-      <div {...unhandled} className={clesses} style={styles} ref={this.tableRef}>
-        {showHeader && this.renderTableHeader(headerCells, rowWidth)}
-        {children && this.renderTableBody(bodyCells, rowWidth)}
-        {showHeader && this.renderMouseArea()}
-      </div>
+      <TableContext.Provider
+        value={{ translateDOMPositionXY: this.translateDOMPositionXY, rtl: this.isRTL() }}
+      >
+        <div {...unhandled} className={clesses} style={styles} ref={this.tableRef}>
+          {showHeader && this.renderTableHeader(headerCells, rowWidth)}
+          {children && this.renderTableBody(bodyCells, rowWidth)}
+          {showHeader && this.renderMouseArea()}
+        </div>
+      </TableContext.Provider>
     );
   }
 }

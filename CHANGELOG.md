@@ -1,3 +1,8 @@
+# next
+
+- **Chore**: Migrate from Flow to Typescript
+- **Breaking**: Remove the `setRowHeight` property,`rowHeight` supports function values.
+
 # 3.8.4
 
 - Fixed an issue where `scrollTop` would not work

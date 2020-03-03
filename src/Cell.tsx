@@ -2,8 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { LAYER_WIDTH } from './constants';
-import omit from 'lodash/omit';
-import { isNullOrUndefined, defaultClassPrefix, getUnhandledProps, prefix, isRTL } from './utils';
+import { isNullOrUndefined, defaultClassPrefix, getUnhandledProps, prefix } from './utils';
+import TableContext from './TableContext';
 import { CellProps } from './Cell.d';
 
 export const propTypes = {
@@ -14,7 +14,7 @@ export const propTypes = {
   dataKey: PropTypes.string,
   isHeaderCell: PropTypes.bool,
   width: PropTypes.number,
-  height: PropTypes.number,
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   left: PropTypes.number,
   headerHeight: PropTypes.number,
   style: PropTypes.object,
@@ -34,6 +34,7 @@ export const propTypes = {
 };
 
 class Cell extends React.PureComponent<CellProps> {
+  static contextType = TableContext;
   static propTypes = propTypes;
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-cell'),
@@ -45,10 +46,14 @@ class Cell extends React.PureComponent<CellProps> {
   };
 
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
+  getHeight() {
+    const { height, rowData } = this.props;
+    return typeof height === 'function' ? height(rowData) : height;
+  }
 
   handleExpandClick = (event: React.MouseEvent) => {
-    const { onTreeToggle, rowKey, rowIndex, rowData } = this.props;
-    onTreeToggle && onTreeToggle(rowKey, rowIndex, rowData, event);
+    const { rowKey, rowIndex, rowData } = this.props;
+    this.props.onTreeToggle?.(rowKey, rowIndex, rowData, event);
   };
   renderExpandIcon() {
     const { hasChildren, firstColumn, rowData, renderTreeToggle } = this.props;
@@ -77,7 +82,6 @@ class Cell extends React.PureComponent<CellProps> {
     const {
       width,
       left,
-      height,
       style,
       className,
       firstColumn,
@@ -106,20 +110,21 @@ class Cell extends React.PureComponent<CellProps> {
       [this.addPrefix('first')]: firstColumn,
       [this.addPrefix('last')]: lastColumn
     });
+    const { rtl } = this.context;
 
-    const nextHeight = isHeaderCell ? headerHeight : height;
+    const nextHeight = isHeaderCell ? headerHeight : this.getHeight();
     const styles = {
       width,
       height: nextHeight,
       zIndex: depth,
-      [isRTL() ? 'right' : 'left']: left
+      [rtl ? 'right' : 'left']: left
     };
 
     const contentStyles: React.CSSProperties = {
       width,
       height: nextHeight,
       textAlign: align,
-      [isRTL() ? 'paddingRight' : 'paddingLeft']: firstColumn ? depth * LAYER_WIDTH + 10 : null,
+      [rtl ? 'paddingRight' : 'paddingLeft']: firstColumn ? depth * LAYER_WIDTH + 10 : null,
       ...style
     };
 
@@ -128,46 +133,32 @@ class Cell extends React.PureComponent<CellProps> {
       contentStyles.verticalAlign = verticalAlign;
     }
 
-    let contentChildren = isNullOrUndefined(children) && rowData ? rowData[dataKey] : children;
+    let cellContent = isNullOrUndefined(children) && rowData ? rowData[dataKey] : children;
 
     if (typeof children === 'function') {
       const getChildren = children as Function;
-      contentChildren = getChildren(rowData, rowIndex);
+      cellContent = getChildren(rowData, rowIndex);
     }
 
-    const unhandled = getUnhandledProps(
-      Cell,
-      omit(rest, [
-        'index',
-        'fixed',
-        'resizable',
-        'flexGrow',
-        'minWidth',
-        'sortColumn',
-        'sortType',
-        'onSortColumn',
-        'onColumnResizeEnd',
-        'onColumnResizeStart',
-        'onColumnResizeMove',
-        'colSpan'
-      ])
+    const unhandledProps = getUnhandledProps(Cell, rest);
+    const cell = renderCell ? renderCell(cellContent) : cellContent;
+    const content = wordWrap ? (
+      <div className={this.addPrefix('wrap')}>
+        {this.renderExpandIcon()}
+        {cell}
+      </div>
+    ) : (
+      <React.Fragment>
+        {this.renderExpandIcon()}
+        {cell}
+      </React.Fragment>
     );
 
     return (
-      <div {...unhandled} className={classes} style={styles}>
-        {wordWrap ? (
-          <div className={this.addPrefix('content')} style={contentStyles}>
-            <div className={this.addPrefix('wrap')}>
-              {this.renderExpandIcon()}
-              {renderCell ? renderCell(contentChildren) : contentChildren}
-            </div>
-          </div>
-        ) : (
-          <div className={this.addPrefix('content')} style={contentStyles}>
-            {this.renderExpandIcon()}
-            {renderCell ? renderCell(contentChildren) : contentChildren}
-          </div>
-        )}
+      <div {...unhandledProps} className={classes} style={styles}>
+        <div className={this.addPrefix('content')} style={contentStyles}>
+          {content}
+        </div>
       </div>
     );
   }

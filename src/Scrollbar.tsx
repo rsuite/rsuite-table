@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { DOMMouseMoveTracker, addStyle, getOffset } from 'dom-lib';
 import { SCROLLBAR_MIN_WIDTH } from './constants';
-import { defaultClassPrefix, getUnhandledProps, prefix, translateDOMPositionXY } from './utils';
+import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
+import TableContext from './TableContext';
 import { ScrollbarProps } from './Scrollbar.d';
 
 type Offset = {
@@ -19,6 +20,7 @@ type State = {
 };
 
 class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
+  static contextType = TableContext;
   static propTypes = {
     vertical: PropTypes.bool,
     length: PropTypes.number,
@@ -26,12 +28,10 @@ class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
     className: PropTypes.string,
     classPrefix: PropTypes.string,
     onScroll: PropTypes.func,
-    onMouseDown: PropTypes.func,
-    updatePosition: PropTypes.func
+    onMouseDown: PropTypes.func
   };
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-scrollbar'),
-    updatePosition: translateDOMPositionXY,
     scrollLength: 1,
     length: 1
   };
@@ -86,14 +86,12 @@ class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
   }
 
   handleMouseDown = (event: React.MouseEvent) => {
-    const { onMouseDown } = this.props;
-
     this.mouseMoveTracker = this.getMouseMoveTracker();
     this.mouseMoveTracker.captureMouseMoves(event);
     this.setState({
       handlePressed: true
     });
-    onMouseDown && onMouseDown(event);
+    this.props.onMouseDown?.(event);
   };
 
   handleDragEnd = () => {
@@ -117,7 +115,8 @@ class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
   }
 
   updateScrollBarPosition(delta: number, forceDelta?: number) {
-    const { vertical, length, scrollLength, updatePosition } = this.props;
+    const { vertical, length, scrollLength } = this.props;
+    const { translateDOMPositionXY } = this.context;
     const max =
       scrollLength && length
         ? length - Math.max((length / scrollLength) * length, SCROLLBAR_MIN_WIDTH + 2)
@@ -133,9 +132,9 @@ class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
     }
 
     if (vertical) {
-      updatePosition(styles, 0, this.scrollOffset);
+      translateDOMPositionXY?.(styles, 0, this.scrollOffset);
     } else {
-      updatePosition(styles, this.scrollOffset, 0);
+      translateDOMPositionXY?.(styles, this.scrollOffset, 0);
     }
 
     addStyle(this.handleRef.current, styles);

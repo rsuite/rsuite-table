@@ -61,12 +61,12 @@ class CustomColumnTable extends React.Component {
         <Table
           height={400}
           data={data}
-          rowHeight={64}
           headerHeight={50}
-          setRowHeight={rowData => {
+          rowHeight={rowData => {
             if (rowData.firstName === 'Janis') {
               return 30;
             }
+            return 64;
           }}
         >
           <Column width={160} sortable>

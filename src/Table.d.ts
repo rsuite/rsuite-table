@@ -7,14 +7,13 @@ export interface TableProps extends StandardProps {
   height: number;
   autoHeight?: boolean;
   minHeight: number;
-  rowHeight: number;
+  rowHeight: number | ((rowData: object) => number);
   headerHeight: number;
-  setRowHeight?: (rowData: object) => number;
   rowKey: string | number;
   isTree?: boolean;
   defaultExpandAllRows?: boolean;
-  defaultExpandedRowKeys?: Array<string | number>;
-  expandedRowKeys?: Array<string | number>;
+  defaultExpandedRowKeys?: string[] | number[];
+  expandedRowKeys?: string[] | number[];
   renderTreeToggle?: (expandButton: React.ReactNode, rowData: object) => React.ReactNode;
   renderRowExpanded?: (rowDate?: object) => React.ReactNode;
   rowExpandedHeight?: number;
@@ -38,7 +37,7 @@ export interface TableProps extends StandardProps {
   onExpandChange?: (expanded: boolean, rowData: object) => void;
   onTouchStart?: (event: React.TouchEvent) => void; // for tests
   onTouchMove?: (event: React.TouchEvent) => void; // for tests
-  bodyRef?: (ref: any) => void;
+  bodyRef?: (ref: HTMLElement) => void;
   loadAnimation?: boolean;
   showHeader?: boolean;
   rowClassName?: string | ((rowData: object) => string);
@@ -47,4 +46,5 @@ export interface TableProps extends StandardProps {
   renderLoading?: (loading: React.ReactNode) => React.ReactNode;
   translate3d?: boolean;
   affixHeader?: boolean | number;
+  rtl?: boolean;
 }

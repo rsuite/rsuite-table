@@ -1,6 +1,6 @@
 # rsuite-table
 
-A React table component,
+A React table component.
 
 [![npm][npm-badge]][npm]
 
@@ -45,7 +45,7 @@ npm i rsuite-table --save
 
 ### Usage
 
-```js
+```tsx
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import 'rsuite-table/lib/less/index.less'; // or 'rsuite-table/dist/css/rsuite-table.css'
 
@@ -55,37 +55,39 @@ const dataList = [
   { id: 3, name: 'c', email: 'c@email.com', avartar: '...' }
 ];
 
-const ImageCell = ({ rowData, dataKey, ...props }) => (
-  <Cell {...props}>
+const ImageCell = ({ rowData, dataKey, ...rest }) => (
+  <Cell {...rest}>
     <img src={rowData[dataKey]} width="50" />
   </Cell>
 );
 
-<Table data={dataList}>
-  <Column width={100} sort fixed resizable>
-    <HeaderCell>ID</HeaderCell>
-    <Cell dataKey="id" />
-  </Column>
+const App = () => (
+  <Table data={dataList}>
+    <Column width={100} sort fixed resizable>
+      <HeaderCell>ID</HeaderCell>
+      <Cell dataKey="id" />
+    </Column>
 
-  <Column width={100} sort resizable>
-    <HeaderCell>Name</HeaderCell>
-    <Cell dataKey="name" />
-  </Column>
+    <Column width={100} sort resizable>
+      <HeaderCell>Name</HeaderCell>
+      <Cell dataKey="name" />
+    </Column>
 
-  <Column width={100} sort resizable>
-    <HeaderCell>Email</HeaderCell>
-    <Cell>
-      {(rowData, rowIndex) => {
-        return <a href={`mailto:${rowData.email}`}>{rowData.email}</a>;
-      }}
-    </Cell>
-  </Column>
+    <Column width={100} sort resizable>
+      <HeaderCell>Email</HeaderCell>
+      <Cell>
+        {(rowData, rowIndex) => {
+          return <a href={`mailto:${rowData.email}`}>{rowData.email}</a>;
+        }}
+      </Cell>
+    </Column>
 
-  <Column width={100} resizable>
-    <HeaderCell>Avartar</HeaderCell>
-    <ImageCell dataKey="avartar" />
-  </Column>
-</Table>;
+    <Column width={100} resizable>
+      <HeaderCell>Avartar</HeaderCell>
+      <ImageCell dataKey="avartar" />
+    </Column>
+  </Table>
+);
 ```
 
 ## API
@@ -96,14 +98,14 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | ---------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
 | affixHeader            | boolean,number                                                     | Affix the table header to the specified location on the page                                  |
 | autoHeight             | boolean                                                            | Automatic height                                                                              |
-| bodyRef                | React.ElementRef                                                   | A ref attached to the table body element                                                      |
+| bodyRef                | (ref: HTMLElement) => void                                         | A ref attached to the table body element                                                      |
 | bordered               | boolean                                                            | Show border                                                                                   |
 | cellBordered           | boolean                                                            | Show cell border                                                                              |
-| data \*                | Array&lt;Object&gt;                                                | Table data                                                                                    |
+| data \*                | object[]                                                           | Table data                                                                                    |
 | defaultExpandAllRows   | boolean                                                            | Expand all nodes By default                                                                   |
-| defaultExpandedRowKeys | Array&lt;string&gt;                                                | Specify the default expanded row by `rowkey`                                                  |
+| defaultExpandedRowKeys | string[]                                                           | Specify the default expanded row by `rowkey`                                                  |
 | defaultSortType        | enum: 'desc', 'asc'                                                | Sort type                                                                                     |
-| expandedRowKeys        | Array&lt;string&gt;                                                | Specify the default expanded row by `rowkey` (Controlled)                                     |
+| expandedRowKeys        | string[]                                                           | Specify the default expanded row by `rowkey` (Controlled)                                     |
 | headerHeight           | number`(40)`                                                       | Table Header Height                                                                           |
 | height                 | number`(200)`                                                      | Table height                                                                                  |
 | hover                  | boolean `(true)`                                                   | The row of the table has a mouseover effect                                                   |
@@ -115,15 +117,15 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 | onRowClick             | (rowData:object, event: SyntheticEvent)=>void                      | Click the callback function after the row and return to `rowDate`                             |
 | onScroll               | (scrollX:object, scrollY:object)=>void                             | Callback function for scroll bar scrolling                                                    |
 | onSortColumn           | (dataKey:string, sortType:string)=>void                            | Click the callback function of the sort sequence to return the value `sortColumn`, `sortType` |
-| renderEmpty            | (info: React.Node) => React.Node                                   | Customized data is empty display content                                                      |
-| renderLoading          | (loading: React.Node) => React.Node                                | Customize the display content in the data load                                                |
-| renderRowExpanded      | (rowDate?: Object) => React.Node                                   | Customize what you can do to expand a zone                                                    |
+| renderEmpty            | (info: React.ReactNode) => React.ReactNode                         | Customized data is empty display content                                                      |
+| renderLoading          | (loading: React.ReactNode) => React.ReactNode                      | Customize the display content in the data load                                                |
+| renderRowExpanded      | (rowDate?: Object) => React.ReactNode                              | Customize what you can do to expand a zone                                                    |
 | renderTreeToggle       | (icon:node,rowData:object)=> node                                  | Tree table, the callback function in the expanded node                                        |
 | rowClassName           | string , (rowData:object)=>string                                  | Add an optional extra class name to row                                                       |
 | rowExpandedHeight      | number `(100)`                                                     | Set the height of an expandable area                                                          |
-| rowHeight              | number`(46)`                                                       | Row height                                                                                    |
+| rowHeight              | number`(46)`, (rowData: object) => number                          | Row height                                                                                    |
 | rowKey                 | string `('key')`                                                   | Each row corresponds to the unique `key` in `data`                                            |
-| setRowHeight           | (rowData:object)=> number                                          | Custom Settings Row Height                                                                    |
+| rtl                    | boolean                                                            | Right to left                                                                                 |
 | showHeader             | boolean `(true)`                                                   | Display header                                                                                |
 | sortColumn             | string                                                             | Sort column name ˝                                                                            |
 | sortType               | enum: 'desc', 'asc'                                                | Sort type (Controlled)                                                                        |
@@ -160,7 +162,7 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 
 - 1.Associate the fields in the data with `dataKey`.
 
-```html
+```tsx
 <Column width="{100}" align="center">
   <HeaderCell>Name</HeaderCell>
   <Cell dataKey="name" />
@@ -169,7 +171,7 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
 
 - 2.Customize a `<Cell>`.
 
-```js
+```tsx
 const NameCell = ({ rowData, ...props }) => (
   <Cell {...props}>
     <a href={`mailto:${rowData.email}`}>{rowData.name}<a>
@@ -184,7 +186,7 @@ const NameCell = ({ rowData, ...props }) => (
 
 - 3.Customize functions directly within the `<Cell>`.
 
-```js
+```tsx
 <Column width={100} align="center">
   <HeaderCell>Name</HeaderCell>
   <Cell>

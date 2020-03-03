@@ -208,13 +208,14 @@ describe('Table', () => {
     assert.equal(instanceDom.style.height, `${500}px`);
   });
 
-  it('Should call `setRowHeight` callback', done => {
+  it('Should call `rowHeight` callback', done => {
     const doneOp = () => {
       done();
+      return 20;
     };
     getDOMNode(
       <Table
-        setRowHeight={doneOp}
+        rowHeight={doneOp}
         data={[
           {
             id: 1,
