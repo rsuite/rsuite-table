@@ -963,7 +963,7 @@ class Table extends React.Component<TableProps, TableState> {
           depth: props.depth,
           onTreeToggle: this.handleTreeToggle,
           rowKey: nextRowKey,
-          className: classNames({ [this.addPrefix('cell-expanded')]: expanded })
+          expanded
         })
       );
     }

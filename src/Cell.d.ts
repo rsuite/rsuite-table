@@ -32,11 +32,16 @@ export interface CellProps extends StandardProps {
     event?: React.MouseEvent
   ) => void;
 
-  renderTreeToggle?: (expandButton: React.ReactNode, rowData?: RowDataType) => React.ReactNode;
+  renderTreeToggle?: (
+    expandButton: React.ReactNode,
+    rowData?: RowDataType,
+    expanded?: boolean
+  ) => React.ReactNode;
   renderCell?: (contentChildren: any) => React.ReactNode;
   wordWrap?: boolean;
   removed?: boolean;
   treeCol?: boolean;
+  expanded?: boolean;
 }
 
 declare const Cell: React.ComponentType<CellProps>;

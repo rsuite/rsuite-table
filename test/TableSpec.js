@@ -244,6 +244,52 @@ describe('Table', () => {
     );
   });
 
+  it('Should render custom tree toggle', () => {
+    const instance = getDOMNode(
+      <Table
+        isTree
+        expandedRowKeys={[1]}
+        rowKey="id"
+        renderTreeToggle={(expandButton, rowData, expanded) => {
+          if (expanded) {
+            return <div className="toggle-open">{rowData.name}</div>;
+          }
+          return <div className="toggle-close">{rowData.name}</div>;
+        }}
+        data={[
+          {
+            id: 1,
+            name: 'a',
+            children: [
+              {
+                id: 2,
+                name: 'b',
+                children: [
+                  {
+                    id: 3,
+                    name: 'c'
+                  }
+                ]
+              }
+            ]
+          }
+        ]}
+      >
+        <Column>
+          <HeaderCell>a</HeaderCell>
+          <Cell>a</Cell>
+        </Column>
+        <Column treeCol>
+          <HeaderCell>b</HeaderCell>
+          <Cell>b</Cell>
+        </Column>
+      </Table>
+    );
+
+    assert.equal(instance.querySelector('.toggle-open').innerText, 'a');
+    assert.equal(instance.querySelector('.toggle-close').innerText, 'b');
+  });
+
   it('Should call `rowHeight` callback', done => {
     const doneOp = () => {
       done();

@@ -1,5 +1,6 @@
 # next
 
+- **Feature**: Added `expanded` parameter in `renderTreeToggle`.
 - **Feature**: Added support `treeCol` on `<Column>`.
 - **Chore**: Migrate from Flow to Typescript.
 - **Breaking**: Remove the `setRowHeight` property,`rowHeight` supports function values.

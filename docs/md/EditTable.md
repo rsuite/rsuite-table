@@ -69,10 +69,10 @@ class EditTable extends React.Component {
         <Table
           height={400}
           data={data}
-          onExpandChange={(isOpen, rowData) => {
-            console.log(isOpen, rowData);
+          onExpandChange={(expanded, rowData) => {
+            console.log(expanded, rowData);
           }}
-          renderTreeToggle={(icon, rowData) => {
+          renderTreeToggle={(icon, rowData, expanded) => {
             if (rowData.labelName === '手机') {
               return <i className="icon icon-spin icon-spinner" />;
             }
