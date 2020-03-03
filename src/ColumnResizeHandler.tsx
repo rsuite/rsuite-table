@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import clamp from 'lodash/clamp';
 import { DOMMouseMoveTracker } from 'dom-lib';
-import { defaultClassPrefix, getUnhandledProps, isRTL } from './utils';
+import { defaultClassPrefix, getUnhandledProps } from './utils';
+import TableContext from './TableContext';
 import { ColumnResizeHandlerProps } from './ColumnResizeHandler.d';
 
 class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
+  static contextType = TableContext;
   static propTypes = {
     height: PropTypes.number,
     initialEvent: PropTypes.object,
@@ -58,13 +60,10 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
     }
 
     const { onColumnResizeMove, columnWidth, columnLeft, columnFixed } = this.props;
+    const { rtl } = this.context;
     this.cursorDelta += deltaX;
 
-    this.columnWidth = clamp(
-      columnWidth + (isRTL() ? -this.cursorDelta : this.cursorDelta),
-      20,
-      20000
-    );
+    this.columnWidth = clamp(columnWidth + (rtl ? -this.cursorDelta : this.cursorDelta), 20, 20000);
     onColumnResizeMove && onColumnResizeMove(this.columnWidth, columnLeft, columnFixed);
   };
   onColumnResizeEnd = () => {
@@ -120,9 +119,9 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
     if (columnFixed === 'right') {
       return null;
     }
-
+    const { rtl } = this.context;
     const styles = {
-      [isRTL() ? 'right' : 'left']: this.columnWidth + columnLeft - 2,
+      [rtl ? 'right' : 'left']: this.columnWidth + columnLeft - 2,
       height,
       ...style
     };

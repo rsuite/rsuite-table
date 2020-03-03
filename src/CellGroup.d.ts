@@ -6,7 +6,6 @@ export interface CellGroupProps {
   style?: React.CSSProperties;
   className?: string;
   classPrefix?: string;
-  updatePosition?: (style: React.CSSProperties, x: number, y: number) => void;
 }
 
 declare const CellGroup: React.ComponentType<CellGroupProps>;

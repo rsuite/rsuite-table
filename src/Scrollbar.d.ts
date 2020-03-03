@@ -8,7 +8,6 @@ export interface ScrollbarProps {
   classPrefix?: string;
   onScroll?: (delta: number, event: React.MouseEvent) => void;
   onMouseDown?: (event: React.MouseEvent) => void;
-  updatePosition: (style: React.CSSProperties, x: number, y: number) => void;
 }
 
 declare const Scrollbar: React.ComponentType<ScrollbarProps>;

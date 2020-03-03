@@ -56,16 +56,15 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
 
   handleColumnResizeStart = (event: React.MouseEvent) => {
     const { left, fixed, onColumnResizeStart } = this.props;
-
     this.setState({ initialEvent: event });
-    onColumnResizeStart && onColumnResizeStart(this.state.columnWidth, left, !!fixed);
+    onColumnResizeStart?.(this.state.columnWidth, left, !!fixed);
   };
 
   handleColumnResizeEnd = (columnWidth?: number, cursorDelta?: number) => {
     const { dataKey, index, onColumnResizeEnd, onResize } = this.props;
     this.setState({ columnWidth });
-    onColumnResizeEnd && onColumnResizeEnd(columnWidth, cursorDelta, dataKey, index);
-    onResize && onResize(columnWidth, dataKey);
+    onColumnResizeEnd?.(columnWidth, cursorDelta, dataKey, index);
+    onResize?.(columnWidth, dataKey);
   };
 
   handleClick = () => {
@@ -126,15 +125,16 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
       classPrefix,
       ...rest
     } = this.props;
+
     const classes = classNames(classPrefix, className, {
       [this.addPrefix('sortable')]: sortable
     });
-    const unhandled = getUnhandledProps(HeaderCell, rest);
+    const unhandledProps = getUnhandledProps(HeaderCell, rest);
 
     return (
       <div className={classes}>
         <Cell
-          {...unhandled}
+          {...unhandledProps}
           width={width}
           dataKey={dataKey}
           left={left}

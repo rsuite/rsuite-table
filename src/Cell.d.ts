@@ -10,7 +10,7 @@ export interface CellProps extends StandardProps {
   isHeaderCell?: boolean;
 
   width: number;
-  height?: number;
+  height?: number | ((rowData: object) => number);
   left?: number;
   headerHeight?: number;
 

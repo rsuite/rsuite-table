@@ -1,7 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { defaultClassPrefix, getUnhandledProps, prefix, translateDOMPositionXY } from './utils';
+import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
+import TableContext from './TableContext';
 import { RowProps } from './Row.d';
 
 class Row extends React.PureComponent<RowProps> {
@@ -14,15 +15,12 @@ class Row extends React.PureComponent<RowProps> {
     rowRef: PropTypes.func,
     className: PropTypes.string,
     classPrefix: PropTypes.string,
-    style: PropTypes.object,
-    updatePosition: PropTypes.func
+    style: PropTypes.object
   };
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-row'),
     height: 46,
-    headerHeight: 40,
-    isHeaderRow: false,
-    updatePosition: translateDOMPositionXY
+    headerHeight: 40
   };
   render() {
     const {
@@ -35,7 +33,6 @@ class Row extends React.PureComponent<RowProps> {
       headerHeight,
       rowRef,
       classPrefix,
-      updatePosition,
       ...rest
     } = this.props;
 
@@ -50,11 +47,16 @@ class Row extends React.PureComponent<RowProps> {
       ...style
     };
 
-    updatePosition?.(styles, 0, top);
+    const unhandledProps = getUnhandledProps(Row, rest);
 
-    const unhandled = getUnhandledProps(Row, rest);
-
-    return <div {...unhandled} ref={rowRef} className={classes} style={styles} />;
+    return (
+      <TableContext.Consumer>
+        {({ translateDOMPositionXY }) => {
+          translateDOMPositionXY?.(styles, 0, top);
+          return <div {...unhandledProps} ref={rowRef} className={classes} style={styles} />;
+        }}
+      </TableContext.Consumer>
+    );
   }
 }
 
