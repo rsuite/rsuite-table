@@ -87,7 +87,7 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
     const client = {
       clientX: event.clientX,
       clientY: event.clientY,
-      preventDefault: () => undefined
+      preventDefault: Function()
     };
 
     onColumnResizeStart && onColumnResizeStart(client);
