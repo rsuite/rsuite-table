@@ -6,7 +6,7 @@ import flatten from 'lodash/flatten';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import eq from 'lodash/eq';
-import pick from 'lodash/pick';
+import omit from 'lodash/omit';
 import merge from 'lodash/merge';
 import bindElementResize, { unbind as unbindElementResize } from 'element-resize-event';
 import { getTranslateDOMPositionXY } from 'dom-lib/lib/transition/translateDOMPositionXY';
@@ -441,7 +441,7 @@ class Table extends React.Component<TableProps, TableState> {
         }
 
         const cellProps = {
-          ...pick(column.props, ['align', 'verticalAlign', 'treeCol']),
+          ...omit(column.props, ['children']),
           left,
           index,
           headerHeight,
