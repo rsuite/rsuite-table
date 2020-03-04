@@ -1,6 +1,6 @@
 {
   "name": "rsuite-table",
-  "version": "3.9.0",
+  "version": "3.9.1",
   "description": "A React table component",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -18,7 +18,8 @@
     "lint": "npm run lint:ts",
     "test": "npm run lint && cross-env NODE_ENV=test karma start --single-run",
     "clean": "rm -rf node_modules/gh-pages/.cache",
-    "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls"
+    "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls",
+    "prepublish": "npm run test && npm run build"
   },
   "author": "simonguo.2009@gmail.com",
   "license": "MIT",
