@@ -1,4 +1,4 @@
-# next
+# 3.9.0
 
 - **Feature**: Added `expanded` parameter in `renderTreeToggle`.
 - **Feature**: Added support `treeCol` on `<Column>`.
