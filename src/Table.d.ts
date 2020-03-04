@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StandardProps, SortType } from './common';
+import { StandardProps, SortType, RowDataType } from './common';
 
 export interface TableProps extends StandardProps {
   width?: number;
@@ -14,7 +14,11 @@ export interface TableProps extends StandardProps {
   defaultExpandAllRows?: boolean;
   defaultExpandedRowKeys?: string[] | number[];
   expandedRowKeys?: string[] | number[];
-  renderTreeToggle?: (expandButton: React.ReactNode, rowData: object) => React.ReactNode;
+  renderTreeToggle?: (
+    expandButton: React.ReactNode,
+    rowData?: RowDataType,
+    expanded?: boolean
+  ) => React.ReactNode;
   renderRowExpanded?: (rowDate?: object) => React.ReactNode;
   rowExpandedHeight?: number;
   locale: any;

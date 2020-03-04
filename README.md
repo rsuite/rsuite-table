@@ -120,7 +120,7 @@ const App = () => (
 | renderEmpty            | (info: React.ReactNode) => React.ReactNode                         | Customized data is empty display content                                                      |
 | renderLoading          | (loading: React.ReactNode) => React.ReactNode                      | Customize the display content in the data load                                                |
 | renderRowExpanded      | (rowDate?: Object) => React.ReactNode                              | Customize what you can do to expand a zone                                                    |
-| renderTreeToggle       | (icon:node,rowData:object)=> node                                  | Tree table, the callback function in the expanded node                                        |
+| renderTreeToggle       | (icon:node,rowData:object,expanded:boolean)=> node                 | Tree table, the callback function in the expanded node                                        |
 | rowClassName           | string , (rowData:object)=>string                                  | Add an optional extra class name to row                                                       |
 | rowExpandedHeight      | number `(100)`                                                     | Set the height of an expandable area                                                          |
 | rowHeight              | number`(46)`, (rowData: object) => number                          | Row height                                                                                    |

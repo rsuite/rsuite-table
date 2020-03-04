@@ -31,7 +31,8 @@ export const propTypes = {
   renderCell: PropTypes.func,
   wordWrap: PropTypes.bool,
   removed: PropTypes.bool,
-  treeCol: PropTypes.bool
+  treeCol: PropTypes.bool,
+  expanded: PropTypes.bool
 };
 
 class Cell extends React.PureComponent<CellProps> {
@@ -71,7 +72,7 @@ class Cell extends React.PureComponent<CellProps> {
     this.props.onTreeToggle?.(rowKey, rowIndex, rowData, event);
   };
   renderTreeNodeExpandIcon() {
-    const { rowData, renderTreeToggle, hasChildren } = this.props;
+    const { rowData, renderTreeToggle, hasChildren, expanded } = this.props;
     const expandButton = <i className={this.addPrefix('expand-icon')} />;
 
     if (this.isTreeCol() && hasChildren) {
@@ -82,7 +83,7 @@ class Cell extends React.PureComponent<CellProps> {
           className={this.addPrefix('expand-wrapper')}
           onClick={this.handleExpandClick}
         >
-          {renderTreeToggle ? renderTreeToggle(expandButton, rowData) : expandButton}
+          {renderTreeToggle ? renderTreeToggle(expandButton, rowData, expanded) : expandButton}
         </span>
       );
     }
@@ -111,6 +112,7 @@ class Cell extends React.PureComponent<CellProps> {
       classPrefix,
       depth,
       verticalAlign,
+      expanded,
       ...rest
     } = this.props;
 
@@ -119,6 +121,7 @@ class Cell extends React.PureComponent<CellProps> {
     }
 
     const classes = classNames(classPrefix, className, {
+      [this.addPrefix('expanded')]: expanded && this.isTreeCol(),
       [this.addPrefix('first')]: firstColumn,
       [this.addPrefix('last')]: lastColumn
     });
