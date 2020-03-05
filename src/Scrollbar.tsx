@@ -87,18 +87,14 @@ class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
 
   handleMouseDown = (event: React.MouseEvent) => {
     this.mouseMoveTracker = this.getMouseMoveTracker();
-    this.mouseMoveTracker.captureMouseMoves(event);
-    this.setState({
-      handlePressed: true
-    });
+    this.mouseMoveTracker?.captureMouseMoves(event);
+    this.setState({ handlePressed: true });
     this.props.onMouseDown?.(event);
   };
 
   handleDragEnd = () => {
     this.releaseMouseMoves();
-    this.setState({
-      handlePressed: false
-    });
+    this.setState({ handlePressed: false });
   };
 
   handleScroll(delta: number, event: React.MouseEvent) {
@@ -141,10 +137,8 @@ class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
   }
 
   releaseMouseMoves() {
-    if (this.mouseMoveTracker) {
-      this.mouseMoveTracker.releaseMouseMoves();
-      this.mouseMoveTracker = null;
-    }
+    this.mouseMoveTracker?.releaseMouseMoves?.();
+    this.mouseMoveTracker = null;
   }
 
   handleDragMove = (deltaX: number, deltaY: number, event: React.MouseEvent) => {
