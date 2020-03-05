@@ -80,7 +80,7 @@ class DynamicTable extends React.Component {
     this.table.scrollTop(100);
   }
   handleScrollLeft() {
-    this.table.scrollLeft(0);
+    this.table.scrollLeft(100);
   }
 
   handleCheckCellChange(value) {

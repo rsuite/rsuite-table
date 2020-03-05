@@ -182,8 +182,6 @@ class Table extends React.Component<TableProps, TableState> {
   scrollY = 0;
   scrollX = 0;
   wheelHandler: any;
-  scrollbarX: any;
-  scrollbarY: any;
   minScrollY: any;
   minScrollX: any;
   mouseArea: any;
@@ -702,7 +700,7 @@ class Table extends React.Component<TableProps, TableState> {
 
         this.scrollX = width - contentWidth - SCROLLBAR_WIDTH;
         this.updatePosition();
-        this.scrollbarX?.resetScrollBarPosition?.(-this.scrollX);
+        this.scrollbarXRef?.current?.resetScrollBarPosition?.(-this.scrollX);
       }, 0);
     }
   }
@@ -826,7 +824,7 @@ class Table extends React.Component<TableProps, TableState> {
       const nextWidth = getWidth(table);
       if (width !== nextWidth) {
         this.scrollX = 0;
-        this.scrollbarX?.resetScrollBarPosition();
+        this.scrollbarXRef?.current?.resetScrollBarPosition();
       }
 
       this._cacheCells = null;
@@ -901,20 +899,35 @@ class Table extends React.Component<TableProps, TableState> {
     }
   }
 
+  scrollTopToScrollValue(value) {
+    if (this.props.autoHeight) {
+      return 0;
+    }
+    const { contentHeight } = this.state;
+    const headerHeight = this.getTableHeaderHeight();
+    const height = this.getTableHeight();
+    return (value / contentHeight) * (height - headerHeight);
+  }
+
+  scrollLeftToScrollValue(value) {
+    const { contentWidth, width } = this.state;
+    return (value / contentWidth) * width;
+  }
+
   /**
    * public method
    * top 值是表格理论滚动位置的一个值，通过 top 计算出 scrollY 坐标值与滚动条位置的值
    */
   scrollTop = (top = 0) => {
     this.scrollY = -top;
-    this.scrollbarYRef?.current?.resetScrollBarPosition?.(top);
+    this.scrollbarYRef?.current?.resetScrollBarPosition?.(this.scrollTopToScrollValue(top));
     this.updatePosition();
   };
 
   // public method
   scrollLeft = (left = 0) => {
     this.scrollX = -left;
-    this.scrollbarXRef?.current?.resetScrollBarPosition?.(left);
+    this.scrollbarXRef?.current?.resetScrollBarPosition?.(this.scrollLeftToScrollValue(left));
     this.updatePosition();
   };
 
