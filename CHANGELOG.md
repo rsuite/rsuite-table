@@ -1,3 +1,9 @@
+# 3.9.2
+
+- **Bugfix**: Fixed incorrect scroll bar position when manually triggering the scroll method
+- **Bugfix**: Fixed table cannot adjust column width.
+- **Bugfix**: Fixed misalignment of table header text.
+
 # 3.9.0
 
 - **Feature**: Added `expanded` parameter in `renderTreeToggle`.
