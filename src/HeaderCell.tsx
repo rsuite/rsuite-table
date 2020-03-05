@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ColumnResizeHandler from './ColumnResizeHandler';
 import { isNullOrUndefined, getUnhandledProps, defaultClassPrefix, prefix } from './utils';
-import Cell, { propTypes } from './Cell';
+import Cell from './Cell';
 import { HeaderCellProps } from './HeaderCell.d';
 
 interface HeaderCelltate {
@@ -15,7 +15,6 @@ interface HeaderCelltate {
 
 class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
   static propTypes = {
-    ...propTypes,
     index: PropTypes.number,
     sortColumn: PropTypes.string,
     sortType: PropTypes.oneOf(['desc', 'asc']),

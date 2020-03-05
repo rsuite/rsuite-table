@@ -69,12 +69,16 @@ class CustomColumnTable extends React.Component {
             return 64;
           }}
         >
-          <Column width={160} sortable>
+          <Column width={80} align="center">
+            <HeaderCell>Id</HeaderCell>
+            <NameCell dataKey="id" />
+          </Column>
+          <Column width={160}>
             <HeaderCell>First Name</HeaderCell>
             <NameCell dataKey="firstName" />
           </Column>
 
-          <Column width={160} sortable>
+          <Column width={160}>
             <HeaderCell>Last Name</HeaderCell>
             <Cell dataKey="lastName" />
           </Column>
@@ -84,8 +88,8 @@ class CustomColumnTable extends React.Component {
             <Cell>{rowData => <a href={`mailto:${rowData.email}`}>{rowData.email}</a>}</Cell>
           </Column>
 
-          <Column width={200}>
-            <HeaderCell>Action</HeaderCell>
+          <Column width={250} align="right">
+            <HeaderCell>Date</HeaderCell>
             <Cell>{rowData => rowData.date.toLocaleString()}</Cell>
           </Column>
 

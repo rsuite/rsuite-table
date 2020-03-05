@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { LAYER_WIDTH } from './constants';
 import { isNullOrUndefined, defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 import TableContext from './TableContext';
+import Column from './Column';
 import { CellProps } from './Cell.d';
 
 export const propTypes = {
@@ -155,7 +156,7 @@ class Cell extends React.PureComponent<CellProps> {
       cellContent = getChildren(rowData, rowIndex);
     }
 
-    const unhandledProps = getUnhandledProps(Cell, rest);
+    const unhandledProps = getUnhandledProps(Cell, getUnhandledProps(Column, rest));
     const cell = renderCell ? renderCell(cellContent) : cellContent;
     const content = wordWrap ? (
       <div className={this.addPrefix('wrap')}>
