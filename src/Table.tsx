@@ -660,7 +660,7 @@ class Table extends React.Component<TableProps, TableState> {
         return;
       }
 
-      event.preventDefault();
+      event.preventDefault?.();
 
       this.handleWheel(deltaX, deltaY);
       this.scrollbarXRef.current?.onWheelScroll?.(deltaX);
