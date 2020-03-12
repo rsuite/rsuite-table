@@ -1,6 +1,10 @@
+# 3.9.3
+
+- **Bugfix**: Fixed the problem that the `resizable` property of the columns of the table would not work.
+
 # 3.9.2
 
-- **Bugfix**: Fixed incorrect scroll bar position when manually triggering the scroll method
+- **Bugfix**: Fixed incorrect scroll bar position when manually triggering the scroll method.
 - **Bugfix**: Fixed table cannot adjust column width.
 - **Bugfix**: Fixed misalignment of table header text.
 
