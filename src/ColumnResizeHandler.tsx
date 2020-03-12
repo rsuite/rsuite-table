@@ -11,7 +11,6 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
   static contextType = TableContext;
   static propTypes = {
     height: PropTypes.number,
-    initialEvent: PropTypes.object,
     columnWidth: PropTypes.number,
     columnLeft: PropTypes.number,
     columnFixed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right'])]),
@@ -32,15 +31,6 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
   }
 
   shouldComponentUpdate(nextProps: ColumnResizeHandlerProps) {
-    if (
-      nextProps.initialEvent &&
-      this.isKeyDown &&
-      this.mouseMoveTracker &&
-      !this.mouseMoveTracker.isDragging()
-    ) {
-      this.mouseMoveTracker.captureMouseMoves(nextProps.initialEvent);
-    }
-
     if (nextProps.columnWidth !== this.props.columnWidth) {
       this.columnWidth = nextProps.columnWidth;
     }
@@ -74,6 +64,7 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
   };
   onColumnResizeMouseDown = (event: React.MouseEvent) => {
     this.mouseMoveTracker = this.getMouseMoveTracker();
+    this.mouseMoveTracker.captureMouseMoves(event);
     this.isKeyDown = true;
     this.cursorDelta = 0;
 

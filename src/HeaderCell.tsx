@@ -7,7 +7,6 @@ import Cell from './Cell';
 import { HeaderCellProps } from './HeaderCell.d';
 
 interface HeaderCelltate {
-  initialEvent?: object;
   columnWidth?: number;
   width?: number;
   flexGrow?: number;
@@ -53,9 +52,9 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
     };
   }
 
-  handleColumnResizeStart = (event: React.MouseEvent) => {
+  handleColumnResizeStart = () => {
     const { left, fixed, onColumnResizeStart } = this.props;
-    this.setState({ initialEvent: event });
+
     onColumnResizeStart?.(this.state.columnWidth, left, !!fixed);
   };
 
@@ -76,7 +75,7 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
 
   renderResizeSpanner() {
     const { resizable, left, onColumnResizeMove, fixed, headerHeight } = this.props;
-    const { columnWidth, initialEvent } = this.state;
+    const { columnWidth } = this.state;
 
     if (!resizable) {
       return null;
@@ -88,7 +87,6 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
         columnLeft={left}
         columnFixed={fixed}
         height={headerHeight ? headerHeight - 1 : undefined}
-        initialEvent={initialEvent}
         onColumnResizeMove={onColumnResizeMove}
         onColumnResizeStart={this.handleColumnResizeStart}
         onColumnResizeEnd={this.handleColumnResizeEnd}
