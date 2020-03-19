@@ -1,3 +1,7 @@
+# 3.9.4
+
+- **Bugfix**: Fixed the problem that the scroll bar is not reset when the data is updated.
+
 # 3.9.3
 
 - **Bugfix**: Fixed the problem that the `resizable` property of the columns of the table would not work.
