@@ -294,17 +294,31 @@ class Table extends React.Component<TableProps, TableState> {
   shouldComponentUpdate(nextProps: TableProps, nextState: TableState) {
     const _cacheChildrenSize = flatten((nextProps.children as any[]) || []).length;
 
+    /**
+     * 单元格列的信息在初始化后会被缓存，在某些属性被更新以后，需要清除缓存。
+     */
     if (_cacheChildrenSize !== this._cacheChildrenSize) {
       this._cacheChildrenSize = _cacheChildrenSize;
       this._cacheCells = null;
-    }
-
-    if (
+    } else if (
       this.props.children !== nextProps.children ||
       this.props.sortColumn !== nextProps.sortColumn ||
       this.props.sortType !== nextProps.sortType
     ) {
       this._cacheCells = null;
+    }
+
+    /**
+     * 逻辑1：当列表中的数据超过一屏，同时滚动条的位置不在第一屏，这个时候如果数据 data 会导致滚动条的位置错误。
+     * 处理的方式就是重置 scrollY 值为 0 （这种应用场景通常在，表格数据作为文件夹目录一样可以使用，可以点进去）
+     * 逻辑2：如果当前表格是一个 TreeTable 或者可以展开子面板，即使 data 有更新，都保留当前滚动条位置，不重置。
+     */
+    if (
+      nextProps.data !== this.props.data &&
+      !nextProps.isTree &&
+      typeof nextProps.renderRowExpanded === 'undefined'
+    ) {
+      this.scrollY = 0;
     }
 
     return !eq(this.props, nextProps) || !isEqual(this.state, nextState);
