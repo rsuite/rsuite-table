@@ -1,4 +1,4 @@
-# 3.9.4
+# 3.9.5
 
 - **Bugfix**: Fixed the problem that the scroll bar is not reset when the data is updated.
 
