@@ -318,7 +318,7 @@ class Table extends React.Component<TableProps, TableState> {
       !nextProps.isTree &&
       typeof nextProps.renderRowExpanded === 'undefined'
     ) {
-      this.scrollY = 0;
+      this.scrollTop(0);
     }
 
     return !eq(this.props, nextProps) || !isEqual(this.state, nextState);
