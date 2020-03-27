@@ -50,5 +50,6 @@ export interface TableProps extends StandardProps {
   renderLoading?: (loading: React.ReactNode) => React.ReactNode;
   translate3d?: boolean;
   affixHeader?: boolean | number;
+  affixHorizontalScrollbar?: boolean | number;
   rtl?: boolean;
 }

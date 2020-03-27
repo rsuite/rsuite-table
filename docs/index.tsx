@@ -47,7 +47,6 @@ function App() {
           without
         }}
         list={[
-          
           {
             title: 'Virtualized',
             content: require('./md/LargeLists.md')
@@ -60,9 +59,15 @@ function App() {
             title: 'Automatic height',
             content: require('./md/AutoHeightTable.md')
           },
+
           {
             title: 'Affix Header',
             content: require('./md/AffixTable.md')
+          },
+
+          {
+            title: 'Affix Horizontal Scrollbar',
+            content: require('./md/AffixHorizontalScrollbar.md')
           },
           {
             title: 'Fluid',
