@@ -12,6 +12,7 @@ import bindElementResize, { unbind as unbindElementResize } from 'element-resize
 import { getTranslateDOMPositionXY } from 'dom-lib/lib/transition/translateDOMPositionXY';
 import {
   addStyle,
+  removeStyle,
   getWidth,
   getHeight,
   WheelHandler,
@@ -32,11 +33,13 @@ import {
   getUnhandledProps,
   defaultClassPrefix,
   toggleClass,
+  toggle,
   flattenData,
   prefix,
   requestAnimationTimeout,
   cancelAnimationTimeout,
   isRTL,
+  isNumberOrTrue,
   findRowKeys,
   findAllParents,
   shouldShowRowByExpanded,
@@ -46,6 +49,8 @@ import {
 import { TableProps } from './Table.d';
 import { RowProps } from './Row.d';
 import { SortType } from './common.d';
+
+const toggleStyle = toggle(addStyle, removeStyle);
 
 interface TableRowProps extends RowProps {
   key?: string | number;
@@ -65,7 +70,8 @@ type Offset = {
 };
 
 interface TableState {
-  affixHeaderOffset?: Offset;
+  headerOffset?: Offset;
+  tableOffset?: Offset;
   width: number;
   columnWidth: number;
   dataKey: number;
@@ -132,6 +138,7 @@ class Table extends React.Component<TableProps, TableState> {
     renderLoading: PropTypes.func,
     translate3d: PropTypes.bool,
     affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+    affixHorizontalScrollbar: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
     rtl: PropTypes.bool
   };
   static defaultProps = {
@@ -271,7 +278,7 @@ class Table extends React.Component<TableProps, TableState> {
     this.calculateTableWidth();
     this.calculateTableContextHeight();
     this.calculateRowMaxHeight();
-    this.setAffixHeaderOffset();
+    this.setOffsetByAffix();
     this.initPosition();
     bindElementResize(this.tableRef.current, debounce(this.calculateTableWidth, 400));
 
@@ -283,9 +290,9 @@ class Table extends React.Component<TableProps, TableState> {
       this.touchMoveListener = on(tableBody, 'touchmove', this.handleTouchMove, options);
     }
 
-    const { affixHeader } = this.props;
-    if (affixHeader === 0 || affixHeader) {
-      this.scrollListener = on(window, 'scroll', this.updateAffixHeaderStatus);
+    const { affixHeader, affixHorizontalScrollbar } = this.props;
+    if (isNumberOrTrue(affixHeader) || isNumberOrTrue(affixHorizontalScrollbar)) {
+      this.scrollListener = on(window, 'scroll', this.handleWindowScroll);
     }
 
     this.props?.bodyRef?.(this.wheelWrapperRef.current);
@@ -506,23 +513,59 @@ class Table extends React.Component<TableProps, TableState> {
     });
   }
 
-  setAffixHeaderOffset = () => {
-    const { affixHeader } = this.props;
-    if (affixHeader === 0 || affixHeader) {
-      this.setState(() => {
-        return { affixHeaderOffset: getOffset(this.headerWrapperRef.current) };
-      });
+  setOffsetByAffix = () => {
+    const { affixHeader, affixHorizontalScrollbar } = this.props;
+    const headerNode = this.headerWrapperRef?.current;
+    if (isNumberOrTrue(affixHeader) && headerNode) {
+      this.setState(() => ({ headerOffset: getOffset(headerNode) }));
+    }
+
+    const tableNode = this.tableRef?.current;
+    if (isNumberOrTrue(affixHorizontalScrollbar) && tableNode) {
+      this.setState(() => ({ tableOffset: getOffset(tableNode) }));
     }
   };
 
-  updateAffixHeaderStatus = () => {
+  handleWindowScroll = () => {
+    const { affixHeader, affixHorizontalScrollbar } = this.props;
+    if (isNumberOrTrue(affixHeader)) {
+      this.affixTableHeader();
+    }
+    if (isNumberOrTrue(affixHorizontalScrollbar)) {
+      this.affixHorizontalScrollbar();
+    }
+  };
+
+  affixHorizontalScrollbar = () => {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const windowHeight = getHeight(window);
+    const height = this.getTableHeight();
+
+    const { tableOffset } = this.state;
+    const { headerHeight, affixHorizontalScrollbar } = this.props;
+    const bottom = typeof affixHorizontalScrollbar === 'number' ? affixHorizontalScrollbar : 0;
+
+    const fixedScrollbar =
+      scrollY + windowHeight < height + (tableOffset.top + bottom) &&
+      scrollY + windowHeight - headerHeight > tableOffset.top + bottom;
+
+    const bar = this.scrollbarXRef?.current?.barRef?.current;
+
+    if (bar) {
+      toggleClass(bar, 'fixed', fixedScrollbar);
+      if (bottom) {
+        toggleStyle(bar, ['bottom', `${bottom}px`])(fixedScrollbar);
+      }
+    }
+  };
+
+  affixTableHeader = () => {
     const { affixHeader } = this.props;
     const top = typeof affixHeader === 'number' ? affixHeader : 0;
-    const { affixHeaderOffset, contentHeight } = this.state;
+    const { headerOffset, contentHeight } = this.state;
     const scrollY = window.scrollY || window.pageYOffset;
     const fixedHeader =
-      scrollY - (affixHeaderOffset.top - top) >= 0 &&
-      scrollY < affixHeaderOffset.top - top + contentHeight;
+      scrollY - (headerOffset.top - top) >= 0 && scrollY < headerOffset.top - top + contentHeight;
 
     if (this.affixHeaderWrapperRef.current) {
       toggleClass(this.affixHeaderWrapperRef.current, 'fixed', fixedHeader);
@@ -844,7 +887,7 @@ class Table extends React.Component<TableProps, TableState> {
       this._cacheCells = null;
       this.setState({ width: nextWidth });
     }
-    this.setAffixHeaderOffset();
+    this.setOffsetByAffix();
   };
 
   calculateTableContentWidth(prevProps: TableProps) {
@@ -1322,7 +1365,7 @@ class Table extends React.Component<TableProps, TableState> {
 
   renderScrollbar() {
     const { disabledScroll } = this.props;
-    const { contentWidth, contentHeight } = this.state;
+    const { contentWidth, contentHeight, width } = this.state;
 
     const headerHeight = this.getTableHeaderHeight();
     const height = this.getTableHeight();
@@ -1334,6 +1377,7 @@ class Table extends React.Component<TableProps, TableState> {
     return (
       <div>
         <Scrollbar
+          style={{ width }}
           length={this.state.width}
           onScroll={this.handleScrollX}
           scrollLength={contentWidth}
