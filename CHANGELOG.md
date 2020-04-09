@@ -1,3 +1,7 @@
+# 3.10.0
+
+- **Feature**: Support affixHorizontalScrollbar on Table
+
 # 3.9.5
 
 - **Bugfix**: Fixed the problem that the scroll bar is not reset when the data is updated.
