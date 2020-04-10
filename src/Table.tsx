@@ -12,7 +12,6 @@ import bindElementResize, { unbind as unbindElementResize } from 'element-resize
 import { getTranslateDOMPositionXY } from 'dom-lib/lib/transition/translateDOMPositionXY';
 import {
   addStyle,
-  removeStyle,
   getWidth,
   getHeight,
   WheelHandler,
@@ -33,7 +32,6 @@ import {
   getUnhandledProps,
   defaultClassPrefix,
   toggleClass,
-  toggle,
   flattenData,
   prefix,
   requestAnimationTimeout,
@@ -49,8 +47,6 @@ import {
 import { TableProps } from './Table.d';
 import { RowProps } from './Row.d';
 import { SortType } from './common.d';
-
-const toggleStyle = toggle(addStyle, removeStyle);
 
 interface TableRowProps extends RowProps {
   key?: string | number;
@@ -87,6 +83,7 @@ interface TableState {
   data: object[];
   cacheData: object[];
   fixedHeader: boolean;
+  fixedHorizontalScrollbar?: boolean;
   [key: string]: any;
 }
 
@@ -541,7 +538,7 @@ class Table extends React.Component<TableProps, TableState> {
     const windowHeight = getHeight(window);
     const height = this.getTableHeight();
 
-    const { tableOffset } = this.state;
+    const { tableOffset, fixedHorizontalScrollbar } = this.state;
     const { headerHeight, affixHorizontalScrollbar } = this.props;
     const bottom = typeof affixHorizontalScrollbar === 'number' ? affixHorizontalScrollbar : 0;
 
@@ -552,9 +549,8 @@ class Table extends React.Component<TableProps, TableState> {
     const bar = this.scrollbarXRef?.current?.barRef?.current;
 
     if (bar) {
-      toggleClass(bar, 'fixed', fixedScrollbar);
-      if (bottom) {
-        toggleStyle(bar, ['bottom', `${bottom}px`])(fixedScrollbar);
+      if (fixedHorizontalScrollbar !== fixedScrollbar) {
+        this.setState({ fixedHorizontalScrollbar: fixedScrollbar });
       }
     }
   };
@@ -1364,8 +1360,9 @@ class Table extends React.Component<TableProps, TableState> {
   }
 
   renderScrollbar() {
-    const { disabledScroll } = this.props;
-    const { contentWidth, contentHeight, width } = this.state;
+    const { disabledScroll, affixHorizontalScrollbar } = this.props;
+    const { contentWidth, contentHeight, width, fixedHorizontalScrollbar } = this.state;
+    const bottom = typeof affixHorizontalScrollbar === 'number' ? affixHorizontalScrollbar : 0;
 
     const headerHeight = this.getTableHeaderHeight();
     const height = this.getTableHeight();
@@ -1377,7 +1374,8 @@ class Table extends React.Component<TableProps, TableState> {
     return (
       <div>
         <Scrollbar
-          style={{ width }}
+          className={classNames({ fixed: fixedHorizontalScrollbar })}
+          style={{ width, bottom: fixedHorizontalScrollbar ? bottom : undefined }}
           length={this.state.width}
           onScroll={this.handleScrollX}
           scrollLength={contentWidth}
