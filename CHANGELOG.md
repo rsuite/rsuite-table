@@ -1,3 +1,7 @@
+# 3.10.1
+
+- **Bugfix**: Fix the problem that the position will be reset after clicking the scroll bar
+
 # 3.10.0
 
 - **Feature**: Support affixHorizontalScrollbar on Table
