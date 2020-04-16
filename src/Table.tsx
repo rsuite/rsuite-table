@@ -136,7 +136,8 @@ class Table extends React.Component<TableProps, TableState> {
     translate3d: PropTypes.bool,
     affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
     affixHorizontalScrollbar: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-    rtl: PropTypes.bool
+    rtl: PropTypes.bool,
+    onDataUpdated: PropTypes.func
   };
   static defaultProps = {
     classPrefix: defaultClassPrefix('table'),
@@ -312,19 +313,6 @@ class Table extends React.Component<TableProps, TableState> {
       this._cacheCells = null;
     }
 
-    /**
-     * 逻辑1：当列表中的数据超过一屏，同时滚动条的位置不在第一屏，这个时候如果数据 data 会导致滚动条的位置错误。
-     * 处理的方式就是重置 scrollY 值为 0 （这种应用场景通常在，表格数据作为文件夹目录一样可以使用，可以点进去）
-     * 逻辑2：如果当前表格是一个 TreeTable 或者可以展开子面板，即使 data 有更新，都保留当前滚动条位置，不重置。
-     */
-    if (
-      nextProps.data !== this.props.data &&
-      !nextProps.isTree &&
-      typeof nextProps.renderRowExpanded === 'undefined'
-    ) {
-      this.scrollTop(0);
-    }
-
     return !eq(this.props, nextProps) || !isEqual(this.state, nextState);
   }
 
@@ -332,7 +320,11 @@ class Table extends React.Component<TableProps, TableState> {
     this.calculateTableContextHeight(prevProps);
     this.calculateTableContentWidth(prevProps);
     this.calculateRowMaxHeight();
-    this.updatePosition();
+    if (prevProps.data !== this.props.data) {
+      this.props.onDataUpdated?.(this.props.data, this.scrollTo);
+    } else {
+      this.updatePosition();
+    }
   }
 
   componentWillUnmount() {
@@ -952,36 +944,57 @@ class Table extends React.Component<TableProps, TableState> {
     }
   }
 
-  scrollTopToScrollValue(value) {
+  getControlledScrollTopValue(value) {
     if (this.props.autoHeight) {
-      return 0;
+      return [0, 0];
     }
     const { contentHeight } = this.state;
     const headerHeight = this.getTableHeaderHeight();
     const height = this.getTableHeight();
-    return (value / contentHeight) * (height - headerHeight);
+
+    // 滚动值的最大范围判断
+    value = Math.min(value, Math.max(0, contentHeight - (height - headerHeight)));
+
+    // value 值是表格理论滚动位置的一个值，通过 value 计算出 scrollY 坐标值与滚动条位置的值
+    return [-value, (value / contentHeight) * (height - headerHeight)];
   }
 
-  scrollLeftToScrollValue(value) {
+  getControlledScrollLeftValue(value) {
     const { contentWidth, width } = this.state;
-    return (value / contentWidth) * width;
+
+    // 滚动值的最大范围判断
+    value = Math.min(value, Math.max(0, contentWidth - width));
+
+    return [-value, (value / contentWidth) * width];
   }
 
   /**
    * public method
-   * top 值是表格理论滚动位置的一个值，通过 top 计算出 scrollY 坐标值与滚动条位置的值
    */
   scrollTop = (top = 0) => {
-    this.scrollY = -top;
-    this.scrollbarYRef?.current?.resetScrollBarPosition?.(this.scrollTopToScrollValue(top));
+    const [scrollY, handleScrollY] = this.getControlledScrollTopValue(top);
+
+    this.scrollY = scrollY;
+    this.scrollbarYRef?.current?.resetScrollBarPosition?.(handleScrollY);
     this.updatePosition();
   };
 
   // public method
   scrollLeft = (left = 0) => {
-    this.scrollX = -left;
-    this.scrollbarXRef?.current?.resetScrollBarPosition?.(this.scrollLeftToScrollValue(left));
+    const [scrollX, handleScrollX] = this.getControlledScrollLeftValue(left);
+    this.scrollX = scrollX;
+    this.scrollbarXRef?.current?.resetScrollBarPosition?.(handleScrollX);
     this.updatePosition();
+  };
+
+  scrollTo = (coord: { x: number; y: number }) => {
+    const { x, y } = coord || {};
+    if (typeof x === 'number') {
+      this.scrollLeft(x);
+    }
+    if (typeof y === 'number') {
+      this.scrollTop(y);
+    }
   };
 
   bindTableRowsRef = (index: number | string) => (ref: HTMLElement) => {
