@@ -8,7 +8,7 @@ export interface Client {
 
 export interface ColumnResizeHandlerProps {
   height?: number;
-  columnWidth?: number;
+  defaultColumnWidth?: number;
   columnLeft?: number;
   columnFixed?: FixedType;
   className?: string;

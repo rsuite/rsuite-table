@@ -83,7 +83,8 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
 
     return (
       <ColumnResizeHandler
-        columnWidth={columnWidth}
+        defaultColumnWidth={columnWidth}
+        key={columnWidth}
         columnLeft={left}
         columnFixed={fixed}
         height={headerHeight ? headerHeight - 1 : undefined}
