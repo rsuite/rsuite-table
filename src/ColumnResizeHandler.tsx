@@ -11,7 +11,7 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
   static contextType = TableContext;
   static propTypes = {
     height: PropTypes.number,
-    columnWidth: PropTypes.number,
+    defaultColumnWidth: PropTypes.number,
     columnLeft: PropTypes.number,
     columnFixed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right'])]),
     className: PropTypes.string,
@@ -25,16 +25,14 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
     classPrefix: defaultClassPrefix('table-column-resize-spanner')
   };
 
+  columnWidth = 0;
+  cursorDelta = 0;
+  mouseMoveTracker;
+  isKeyDown: boolean;
+
   constructor(props) {
     super(props);
-    this.columnWidth = props.columnWidth || 0;
-  }
-
-  shouldComponentUpdate(nextProps: ColumnResizeHandlerProps) {
-    if (nextProps.columnWidth !== this.props.columnWidth) {
-      this.columnWidth = nextProps.columnWidth;
-    }
-    return true;
+    this.columnWidth = props.defaultColumnWidth || 0;
   }
 
   componentWillUnmount() {
@@ -49,11 +47,15 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
       return;
     }
 
-    const { onColumnResizeMove, columnWidth, columnLeft, columnFixed } = this.props;
+    const { onColumnResizeMove, defaultColumnWidth, columnLeft, columnFixed } = this.props;
     const { rtl } = this.context;
     this.cursorDelta += deltaX;
 
-    this.columnWidth = clamp(columnWidth + (rtl ? -this.cursorDelta : this.cursorDelta), 20, 20000);
+    this.columnWidth = clamp(
+      defaultColumnWidth + (rtl ? -this.cursorDelta : this.cursorDelta),
+      20,
+      20000
+    );
     onColumnResizeMove?.(this.columnWidth, columnLeft, columnFixed);
   };
   onColumnResizeEnd = () => {
@@ -83,11 +85,6 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
       new DOMMouseMoveTracker(this.onMove, this.onColumnResizeEnd, document.body)
     );
   }
-
-  columnWidth = 0;
-  cursorDelta = 0;
-  mouseMoveTracker: any;
-  isKeyDown: boolean;
 
   render() {
     const {
