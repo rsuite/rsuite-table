@@ -181,7 +181,7 @@ class Table extends React.Component<TableProps, TableState> {
   tableHeaderRef: React.RefObject<any>;
   wheelWrapperRef: React.RefObject<any>;
 
-  tableRows: { [key: string]: HTMLElement } = {};
+  tableRows: { [key: string]: [HTMLElement, any] } = {};
   mounted = false;
   disableEventsTimeoutId = null;
   scrollY = 0;
@@ -836,17 +836,17 @@ class Table extends React.Component<TableProps, TableState> {
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 
   calculateRowMaxHeight() {
-    const { wordWrap } = this.props;
+    const { wordWrap, rowHeight } = this.props;
     if (wordWrap) {
       const tableRowsMaxHeight = [];
-      const tableRows = Object.entries(this.tableRows);
+      const tableRows = Object.values(this.tableRows);
 
       for (let i = 0; i < tableRows.length; i++) {
-        const [, row] = tableRows[i];
+        const [row, rowData] = tableRows[i];
         if (row) {
           const cells = row.querySelectorAll(`.${this.addPrefix('cell-wrap')}`) || [];
           const cellArray = Array.from(cells);
-          let maxHeight = 0;
+          let maxHeight = typeof rowHeight === 'function' ? rowHeight(rowData) : rowHeight;
 
           for (let j = 0; j < cellArray.length; j++) {
             const cell = cellArray[j];
@@ -997,9 +997,9 @@ class Table extends React.Component<TableProps, TableState> {
     }
   };
 
-  bindTableRowsRef = (index: number | string) => (ref: HTMLElement) => {
+  bindTableRowsRef = (index: number | string, rowData: any) => (ref: HTMLElement) => {
     if (ref) {
-      this.tableRows[index] = ref;
+      this.tableRows[index] = [ref, rowData];
     }
   };
 
@@ -1021,7 +1021,7 @@ class Table extends React.Component<TableProps, TableState> {
 
     const rowProps: TableRowProps = {
       ...props,
-      rowRef: this.bindTableRowsRef(props.key),
+      rowRef: this.bindTableRowsRef(props.key, rowData),
       onClick: this.bindRowClick(rowData)
     };
 
