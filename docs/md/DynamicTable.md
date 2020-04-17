@@ -52,10 +52,10 @@ class DynamicTable extends React.Component {
   handleRowClick() {
     const { data } = this.state;
     const rowData = createFakeRowObjectData(data.length + 1);
-    data.push(rowData);
+    //data.push(rowData);
 
     this.setState({
-      data
+      data: [...data, rowData]
     });
   }
   handleColumnClick() {
@@ -122,6 +122,9 @@ class DynamicTable extends React.Component {
           data={this.state.data}
           ref={ref => {
             this.table = ref;
+          }}
+          onDataUpdated={(_nextData, scrollTo) => {
+            scrollTo({ y: 100, x: 100 });
           }}
         >
           <Column key="checkColumn" width={56} fixed>
