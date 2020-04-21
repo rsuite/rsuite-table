@@ -1,3 +1,9 @@
+# 3.11.0
+
+- **Bugfix**: Fix `resizable` to be compatible with `affixHeader`
+- **Feature**: Support `onDataUpdated` on `<Table>`
+- **Improve**: Improved `wordWrap` property for compatibility with `rowHeight`.
+
 # 3.10.1
 
 - **Bugfix**: Fix the problem that the position will be reset after clicking the scroll bar
