@@ -770,9 +770,8 @@ class Table extends React.Component<TableProps, TableState> {
       wheelElement && addStyle(wheelElement, wheelStyle);
       headerElement && addStyle(headerElement, headerStyle);
 
-      if (affixHeaderElement) {
-        const cellGroupElement = affixHeaderElement.childNodes?.[0];
-        addStyle(cellGroupElement, headerStyle);
+      if (affixHeaderElement?.hasChildNodes?.()) {
+        addStyle(affixHeaderElement.firstChild, headerStyle);
       }
     }
 
