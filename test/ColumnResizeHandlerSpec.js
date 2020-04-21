@@ -23,7 +23,7 @@ describe('ColumnResizeHandler', () => {
     const columnWidth = 100;
     const columnLeft = 100;
     const instanceDom = getDOMNode(
-      <ColumnResizeHandler columnWidth={columnWidth} columnLeft={columnLeft} />
+      <ColumnResizeHandler defaultColumnWidth={columnWidth} columnLeft={columnLeft} />
     );
 
     assert.equal(instanceDom.style.left, `${columnWidth + columnLeft + handlerLeft}px`);
