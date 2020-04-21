@@ -264,6 +264,7 @@ class Table extends React.Component<TableProps, TableState> {
     this.mouseAreaRef = React.createRef();
     this.headerWrapperRef = React.createRef();
     this.wheelWrapperRef = React.createRef();
+    this.tableHeaderRef = React.createRef();
   }
 
   listenWheel = (deltaX: number, deltaY: number) => {

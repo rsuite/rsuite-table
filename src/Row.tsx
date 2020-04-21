@@ -12,7 +12,7 @@ class Row extends React.PureComponent<RowProps> {
     headerHeight: PropTypes.number,
     top: PropTypes.number,
     isHeaderRow: PropTypes.bool,
-    rowRef: PropTypes.func,
+    rowRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     className: PropTypes.string,
     classPrefix: PropTypes.string,
     style: PropTypes.object
