@@ -1,3 +1,7 @@
+# 3.11.1
+
+- **Bugfix**: Fix the situation where the `affixHeader` cannot be applied to non-fixed columns.
+
 # 3.11.0
 
 - **Bugfix**: Fix `resizable` to be compatible with `affixHeader`
