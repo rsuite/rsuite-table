@@ -1,3 +1,7 @@
+# 3.11.2
+
+- **Bugfix**: Fix the problem that the table header has no shadow.
+
 # 3.11.1
 
 - **Bugfix**: Fix the situation where the `affixHeader` cannot be applied to non-fixed columns.
