@@ -22,12 +22,12 @@ class AutoHeightTable extends React.Component {
             console.log(data);
           }}
         >
-          <Column width={70} align="center" fixed resizable>
+          <Column width={70} align="center" resizable>
             <HeaderCell>Id</HeaderCell>
             <Cell dataKey="id" />
           </Column>
 
-          <Column width={130} fixed resizable>
+          <Column width={130} resizable>
             <HeaderCell>First Name</HeaderCell>
             <Cell dataKey="firstName" />
           </Column>

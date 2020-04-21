@@ -762,8 +762,18 @@ class Table extends React.Component<TableProps, TableState> {
 
       this.translateDOMPositionXY(wheelStyle, this.scrollX, this.scrollY);
       this.translateDOMPositionXY(headerStyle, this.scrollX, 0);
-      this.wheelWrapperRef?.current && addStyle(this.wheelWrapperRef.current, wheelStyle);
-      this.headerWrapperRef?.current && addStyle(this.headerWrapperRef.current, headerStyle);
+
+      const wheelElement = this.wheelWrapperRef?.current;
+      const headerElement = this.headerWrapperRef?.current;
+      const affixHeaderElement = this.affixHeaderWrapperRef?.current;
+
+      wheelElement && addStyle(wheelElement, wheelStyle);
+      headerElement && addStyle(headerElement, headerStyle);
+
+      if (affixHeaderElement) {
+        const cellGroupElement = affixHeaderElement.childNodes?.[0];
+        addStyle(cellGroupElement, headerStyle);
+      }
     }
 
     if (this.tableHeaderRef?.current) {

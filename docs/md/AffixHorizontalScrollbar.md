@@ -22,7 +22,7 @@ class AffixHorizontalScrollbarTable extends React.Component {
           height={400}
           autoHeight
           affixHeader
-          affixHorizontalScrollbar={10}
+          affixHorizontalScrollbar
           data={this.state.data}
           onRowClick={data => {
             console.log(data);
