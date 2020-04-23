@@ -391,6 +391,20 @@ class Table extends React.Component<TableProps, TableState> {
     return autoHeight ? Math.max(headerHeight + contentHeight, minHeight) : height;
   }
 
+  /**
+   * 获取 columns ReactElement 数组
+   * - 处理 children 中存在 <Column> 数组的情况
+   * - 过滤 children 中的空项
+   */
+  getTableColumns(): React.ReactNodeArray {
+    const { children } = this.props;
+    if (!Array.isArray(children)) {
+      return children as React.ReactNodeArray;
+    }
+
+    return flatten(children).filter(col => col);
+  }
+
   getCellDescriptor() {
     if (this._cacheCells) {
       return this._cacheCells;
@@ -411,9 +425,7 @@ class Table extends React.Component<TableProps, TableState> {
       return this._cacheCells;
     }
 
-    const columns = Array.isArray(children)
-      ? children.filter(col => col)
-      : (children as React.ReactNodeArray);
+    const columns = this.getTableColumns();
 
     const { width: tableWidth } = this.state;
     const { sortColumn, rowHeight, showHeader } = this.props;
