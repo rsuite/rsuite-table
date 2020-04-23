@@ -1,3 +1,7 @@
+# 3.11.3
+
+- **Bugfix**: Improved to `children` compatible with complex structures.
+
 # 3.11.2
 
 - **Bugfix**: Fix the problem that the table header has no shadow.
