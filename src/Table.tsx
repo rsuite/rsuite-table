@@ -863,23 +863,24 @@ class Table extends React.Component<TableProps, TableState> {
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 
   calculateRowMaxHeight() {
-    const { wordWrap, rowHeight } = this.props;
+    const { wordWrap } = this.props;
     if (wordWrap) {
       const tableRowsMaxHeight = [];
       const tableRows = Object.values(this.tableRows);
 
       for (let i = 0; i < tableRows.length; i++) {
-        const [row, rowData] = tableRows[i];
+        const [row] = tableRows[i];
         if (row) {
           const cells = row.querySelectorAll(`.${this.addPrefix('cell-wrap')}`) || [];
           const cellArray = Array.from(cells);
-          let maxHeight = typeof rowHeight === 'function' ? rowHeight(rowData) : rowHeight;
+          let maxHeight = 0;
 
           for (let j = 0; j < cellArray.length; j++) {
             const cell = cellArray[j];
             const h = getHeight(cell);
             maxHeight = Math.max(maxHeight, h);
           }
+
           tableRowsMaxHeight.push(maxHeight);
         }
       }
@@ -1287,7 +1288,9 @@ class Table extends React.Component<TableProps, TableState> {
           if (typeof rowHeight === 'function') {
             nextRowHeight = rowHeight(rowData);
           } else {
-            nextRowHeight = maxHeight ? maxHeight + CELL_PADDING_HEIGHT : rowHeight;
+            nextRowHeight = maxHeight
+              ? Math.max(maxHeight + CELL_PADDING_HEIGHT, rowHeight)
+              : rowHeight;
             if (shouldRenderExpandedRow) {
               nextRowHeight += rowExpandedHeight;
             }

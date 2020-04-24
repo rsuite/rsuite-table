@@ -46,27 +46,27 @@ class WordWrapTable extends React.Component {
             <Cell dataKey="street" />
           </Column>
 
-          <Column width={200}>
+          <Column width={300}>
             <HeaderCell>Company Name</HeaderCell>
             <Cell dataKey="companyName" />
           </Column>
 
-          <Column width={200}>
+          <Column width={300}>
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
 
-          <Column width={200}>
+          <Column width={300}>
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
 
-          <Column width={200}>
+          <Column width={300}>
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
 
-          <Column width={200}>
+          <Column width={300}>
             <HeaderCell>Email</HeaderCell>
             <Cell dataKey="email" />
           </Column>
