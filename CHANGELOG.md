@@ -1,3 +1,7 @@
+# 3.12.0
+
+- **Feature**: Support `shouldUpdateScroll` on `<Table>`
+
 # 3.11.3
 
 - **Bugfix**: Improved to `children` compatible with complex structures.
