@@ -53,4 +53,5 @@ export interface TableProps extends StandardProps {
   affixHorizontalScrollbar?: boolean | number;
   rtl?: boolean;
   onDataUpdated?: (nextData: object[], scrollTo: (coord: { x: number; y: number }) => void) => void;
+  shouldUpdateScroll?: boolean;
 }

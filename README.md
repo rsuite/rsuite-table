@@ -128,6 +128,7 @@ const App = () => (
 | rowHeight                | number`(46)`, (rowData: object) => number                                         | Row height                                                                                    |
 | rowKey                   | string `('key')`                                                                  | Each row corresponds to the unique `key` in `data`                                            |
 | rtl                      | boolean                                                                           | Right to left                                                                                 |
+| shouldUpdateScroll       | boolean`(true)`                                                                   | Whether to update the scroll bar after data update                                            |
 | showHeader               | boolean `(true)`                                                                  | Display header                                                                                |
 | sortColumn               | string                                                                            | Sort column name ˝                                                                            |
 | sortType                 | enum: 'desc', 'asc'                                                               | Sort type (Controlled)                                                                        |

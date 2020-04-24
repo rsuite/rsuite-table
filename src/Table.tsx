@@ -137,7 +137,8 @@ class Table extends React.Component<TableProps, TableState> {
     affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
     affixHorizontalScrollbar: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
     rtl: PropTypes.bool,
-    onDataUpdated: PropTypes.func
+    onDataUpdated: PropTypes.func,
+    shouldUpdateScroll: PropTypes.bool
   };
   static defaultProps = {
     classPrefix: defaultClassPrefix('table'),
@@ -152,6 +153,7 @@ class Table extends React.Component<TableProps, TableState> {
     showHeader: true,
     rowKey: 'key',
     translate3d: true,
+    shouldUpdateScroll: true,
     locale: {
       emptyMessage: 'No data found',
       loading: 'Loading...'
@@ -323,6 +325,9 @@ class Table extends React.Component<TableProps, TableState> {
     this.calculateRowMaxHeight();
     if (prevProps.data !== this.props.data) {
       this.props.onDataUpdated?.(this.props.data, this.scrollTo);
+      if (this.props.shouldUpdateScroll) {
+        this.scrollTo({ x: 0, y: 0 });
+      }
     } else {
       this.updatePosition();
     }
