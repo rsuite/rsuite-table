@@ -48,6 +48,7 @@ class DynamicTable extends React.Component {
     this.handleCheckCellChange = this.handleCheckCellChange.bind(this);
     this.handleResizeWidth = this.handleResizeWidth.bind(this);
     this.handleClearData = this.handleClearData.bind(this);
+    this.handleResetData = this.handleResetData.bind(this);
   }
   handleRowClick() {
     const { data } = this.state;
@@ -68,13 +69,14 @@ class DynamicTable extends React.Component {
       </Column>
     );
 
-    this.setState({
-      columns
-    });
+    this.setState({ columns });
   }
 
   handleClearData() {
     this.setState({ data: [] });
+  }
+  handleResetData() {
+    this.setState({ data: fakeObjectDataListStore(10) });
   }
   handleScrollTop() {
     this.table.scrollTop(100);
@@ -92,9 +94,7 @@ class DynamicTable extends React.Component {
     } else {
       checkValues.push(value);
     }
-    this.setState({
-      checkValues
-    });
+    this.setState({ checkValues });
   }
 
   handleResizeWidth() {
@@ -114,6 +114,7 @@ class DynamicTable extends React.Component {
           <Button onClick={this.handleScrollTop}>Scroll Top</Button>
           <Button onClick={this.handleScrollLeft}>Scroll Left</Button>
           <Button onClick={this.handleResizeWidth}>Update Width</Button>
+          <Button onClick={this.handleResetData}>Reset Data</Button>
           <Button onClick={this.handleClearData}>Clear Data</Button>
         </ButtonGroup>
         <hr />
@@ -123,9 +124,7 @@ class DynamicTable extends React.Component {
           ref={ref => {
             this.table = ref;
           }}
-          onDataUpdated={(_nextData, scrollTo) => {
-            scrollTo({ y: 100, x: 100 });
-          }}
+          shouldUpdateScroll={false}
         >
           <Column key="checkColumn" width={56} fixed>
             <HeaderCell className="checkbox-cell">#</HeaderCell>

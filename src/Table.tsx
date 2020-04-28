@@ -28,7 +28,7 @@ import TableContext from './TableContext';
 import { SCROLLBAR_WIDTH, CELL_PADDING_HEIGHT } from './constants';
 import {
   getTotalByColumns,
-  colSpanCells,
+  mergeCells,
   getUnhandledProps,
   defaultClassPrefix,
   toggleClass,
@@ -47,6 +47,7 @@ import {
 import { TableProps } from './Table.d';
 import { RowProps } from './Row.d';
 import { SortType } from './common.d';
+import ColumnGroup from './ColumnGroup';
 
 interface TableRowProps extends RowProps {
   key?: string | number;
@@ -403,11 +404,42 @@ class Table extends React.Component<TableProps, TableState> {
    */
   getTableColumns(): React.ReactNodeArray {
     const { children } = this.props;
+
     if (!Array.isArray(children)) {
       return children as React.ReactNodeArray;
     }
 
-    return flatten(children).filter(col => col);
+    const flattenColumns = children.map((column: React.ReactElement) => {
+      if (column?.type === ColumnGroup) {
+        const { header, children: childColumns, align, fixed, verticalAlign } = column?.props;
+        return childColumns.map((childColumn, index) => {
+          // 把 ColumnGroup 设置的属性覆盖到 Column
+          const groupCellProps: any = {
+            align,
+            fixed,
+            verticalAlign
+          };
+
+          /**
+           * 为分组中的第一列设置属性:
+           * groupCount: 分组子项个数
+           * groupHeader: 分组标题
+           * resizable: 设置为不可自定义列宽
+           */
+          if (index === 0) {
+            groupCellProps.groupCount = childColumns.length;
+            groupCellProps.groupHeader = header;
+            groupCellProps.resizable = false;
+          }
+
+          return React.cloneElement(childColumn, groupCellProps);
+        });
+      }
+      return column;
+    });
+
+    // 把 Columns 中的数组，展平为一维数组，计算 lastColumn 与 firstColumn。
+    return flatten(flattenColumns).filter(col => col);
   }
 
   getCellDescriptor() {
@@ -499,10 +531,7 @@ class Table extends React.Component<TableProps, TableState> {
           }
 
           headerCells.push(
-            React.cloneElement(columnChildren[0], {
-              ...cellProps,
-              ...headerCellProps
-            })
+            React.cloneElement(columnChildren[0], { ...cellProps, ...headerCellProps })
           );
         }
 
@@ -549,19 +578,19 @@ class Table extends React.Component<TableProps, TableState> {
     const height = this.getTableHeight();
 
     const { tableOffset, fixedHorizontalScrollbar } = this.state;
-    const { headerHeight, affixHorizontalScrollbar } = this.props;
+    const { affixHorizontalScrollbar } = this.props;
+    const headerHeight = this.getTableHeaderHeight();
     const bottom = typeof affixHorizontalScrollbar === 'number' ? affixHorizontalScrollbar : 0;
 
     const fixedScrollbar =
       scrollY + windowHeight < height + (tableOffset.top + bottom) &&
       scrollY + windowHeight - headerHeight > tableOffset.top + bottom;
 
-    const bar = this.scrollbarXRef?.current?.barRef?.current;
-
-    if (bar) {
-      if (fixedHorizontalScrollbar !== fixedScrollbar) {
-        this.setState({ fixedHorizontalScrollbar: fixedScrollbar });
-      }
+    if (
+      this.scrollbarXRef?.current?.barRef?.current &&
+      fixedHorizontalScrollbar !== fixedScrollbar
+    ) {
+      this.setState({ fixedHorizontalScrollbar: fixedScrollbar });
     }
   };
 
@@ -596,20 +625,15 @@ class Table extends React.Component<TableProps, TableState> {
     index: number
   ) => {
     this._cacheCells = null;
-    this.setState({
-      isColumnResizing: false,
-      [`${dataKey}_${index}_width`]: columnWidth
-    });
 
-    addStyle(this.mouseAreaRef.current, {
-      display: 'none'
-    });
+    console.log(index);
+    this.setState({ isColumnResizing: false, [`${dataKey}_${index}_width`]: columnWidth });
+
+    addStyle(this.mouseAreaRef.current, { display: 'none' });
   };
 
   handleColumnResizeStart = (width: number, left: number, fixed: boolean) => {
-    this.setState({
-      isColumnResizing: true
-    });
+    this.setState({ isColumnResizing: true });
     this.handleColumnResizeMove(width, left, fixed);
   };
 
@@ -1136,11 +1160,11 @@ class Table extends React.Component<TableProps, TableState> {
               width={fixedLeftCellGroupWidth}
               style={this.isRTL() ? { right: width - fixedLeftCellGroupWidth - rowRight } : null}
             >
-              {colSpanCells(resetLeftForCells(fixedLeftCells))}
+              {mergeCells(resetLeftForCells(fixedLeftCells))}
             </CellGroup>
           ) : null}
 
-          <CellGroup>{colSpanCells(scrollCells)}</CellGroup>
+          <CellGroup>{mergeCells(scrollCells)}</CellGroup>
 
           {fixedRightCellGroupWidth ? (
             <CellGroup
@@ -1153,7 +1177,7 @@ class Table extends React.Component<TableProps, TableState> {
               height={props.isHeaderRow ? props.headerHeight : props.height}
               width={fixedRightCellGroupWidth}
             >
-              {colSpanCells(resetLeftForCells(fixedRightCells))}
+              {mergeCells(resetLeftForCells(fixedRightCells))}
             </CellGroup>
           ) : null}
 
@@ -1164,7 +1188,7 @@ class Table extends React.Component<TableProps, TableState> {
 
     return (
       <Row {...props} style={rowStyles}>
-        <CellGroup>{colSpanCells(cells)}</CellGroup>
+        <CellGroup>{mergeCells(cells)}</CellGroup>
         {shouldRenderExpandedRow && this.renderRowExpanded(rowData)}
       </Row>
     );

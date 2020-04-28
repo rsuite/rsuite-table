@@ -33,7 +33,9 @@ export const propTypes = {
   wordWrap: PropTypes.bool,
   removed: PropTypes.bool,
   treeCol: PropTypes.bool,
-  expanded: PropTypes.bool
+  expanded: PropTypes.bool,
+  groupHeader: PropTypes.node,
+  groupCount: PropTypes.number
 };
 
 class Cell extends React.PureComponent<CellProps> {
