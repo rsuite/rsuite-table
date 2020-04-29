@@ -7,14 +7,8 @@ import { defaultClassPrefix, prefix } from './utils';
 const classPrefix = defaultClassPrefix('table-column-group');
 const addPrefix = (name: string) => prefix(classPrefix)(name);
 
-function ColumnGroup({
-  header,
-  className,
-  children,
-  headerHeight = 80,
-  verticalAlign,
-  width
-}: ColumnGroupProps) {
+const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HTMLDivElement>) => {
+  const { header, className, children, headerHeight = 80, verticalAlign, width, ...rest } = props;
   const height = headerHeight / 2;
   const styles: React.CSSProperties = {
     height,
@@ -23,7 +17,7 @@ function ColumnGroup({
   const contentStyles = { ...styles, verticalAlign };
 
   return (
-    <div className={classNames(classPrefix, className)}>
+    <div ref={ref} className={classNames(classPrefix, className)} {...rest}>
       <div className={addPrefix('header')} style={styles}>
         <div className={addPrefix('header-content')} style={contentStyles}>
           {header}
@@ -47,12 +41,12 @@ function ColumnGroup({
       })}
     </div>
   );
-}
+});
+
+ColumnGroup.displayName = 'ColumnGroup';
 
 ColumnGroup.propTypes = {
   header: PropTypes.node,
-  align: PropTypes.oneOf(['left', 'center', 'right']),
-  fixed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right'])]),
   verticalAlign: PropTypes.oneOf(['top', 'middle', 'bottom'])
 };
 
