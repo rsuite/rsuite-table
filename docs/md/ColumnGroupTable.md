@@ -16,7 +16,7 @@ class FixedColumnTable extends React.Component {
         <Table
           bordered
           height={400}
-          headerHeight={120}
+          headerHeight={80}
           data={this.state.data}
           onRowClick={data => {
             console.log(data);
