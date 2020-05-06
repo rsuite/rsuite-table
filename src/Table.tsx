@@ -121,6 +121,7 @@ class Table extends React.Component<TableProps, TableState> {
     cellBordered: PropTypes.bool,
     wordWrap: PropTypes.bool,
     onRowClick: PropTypes.func,
+    onRowContextMenu: PropTypes.func,
     onScroll: PropTypes.func,
     onSortColumn: PropTypes.func,
     onExpandChange: PropTypes.func,
@@ -1037,6 +1038,12 @@ class Table extends React.Component<TableProps, TableState> {
     };
   };
 
+  bindRowContextMenu = (rowData: object) => {
+    return (event: React.MouseEvent) => {
+      this.props.onRowContextMenu?.(rowData, event);
+    };
+  };
+
   renderRowData(
     bodyCells: any[],
     rowData: any,
@@ -1050,7 +1057,8 @@ class Table extends React.Component<TableProps, TableState> {
     const rowProps: TableRowProps = {
       ...props,
       rowRef: this.bindTableRowsRef(props.key, rowData),
-      onClick: this.bindRowClick(rowData)
+      onClick: this.bindRowClick(rowData),
+      onContextMenu: this.bindRowContextMenu(rowData)
     };
 
     const expandedRowKeys = this.getExpandedRowKeys() || [];
