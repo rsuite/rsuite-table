@@ -1,3 +1,9 @@
+# 3.13.0
+
+- **Feature**: Add an optional onRowContextMenu property
+- **Feature**: Add ColumnGroup
+- **Bugfix**: Fix rsuite#1044
+
 # 3.12.0
 
 - **Feature**: Support `shouldUpdateScroll` on `<Table>`
