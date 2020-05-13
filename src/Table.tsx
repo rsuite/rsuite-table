@@ -1030,6 +1030,15 @@ class Table extends React.Component<TableProps, TableState> {
     this.scrollY = scrollY;
     this.scrollbarYRef?.current?.resetScrollBarPosition?.(handleScrollY);
     this.updatePosition();
+
+    /**
+     * 当开启 virtualized，调用 scrollTop 后会出现白屏现象，
+     * 原因是直接操作 DOM 的坐标，但是组件没有重新渲染，需要调用 forceUpdate 重新进入 render。
+     * Fix: rsuite#1044
+     */
+    if (this.props.virtualized) {
+      this.forceUpdate();
+    }
   };
 
   // public method
