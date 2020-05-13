@@ -8,6 +8,7 @@ export function createFakeRowObjectData(index) {
     email: faker.internet.email(),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
+    suffix: faker.name.suffix(),
     street: faker.address.streetName(),
     zipCode: faker.address.zipCode(),
     date: faker.date.past(),
