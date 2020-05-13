@@ -117,6 +117,7 @@ const App = () => (
 | onDataUpdated            | (nextData: object[], scrollTo: (coord: { x: number; y: number }) => void) => void | Callback after table data update.                                                             |
 | onExpandChange           | (expanded:boolean,rowData:object)=>void                                           | Tree table, the callback function in the expanded node                                        |
 | onRowClick               | (rowData:object, event: SyntheticEvent)=>void                                     | Click the callback function after the row and return to `rowDate`                             |
+| onRowContextMenu         | (rowData:object, event: SyntheticEvent)=>void                                     | Invoke the callback function on contextMenu and pass the `rowData`                            |
 | onScroll                 | (scrollX:object, scrollY:object)=>void                                            | Callback function for scroll bar scrolling                                                    |
 | onSortColumn             | (dataKey:string, sortType:string)=>void                                           | Click the callback function of the sort sequence to return the value `sortColumn`, `sortType` |
 | renderEmpty              | (info: React.ReactNode) => React.ReactNode                                        | Customized data is empty display content                                                      |
