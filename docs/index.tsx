@@ -13,6 +13,8 @@ import fakeTreeData from './data/treeData';
 import fakeDataForColSpan from './data/usersForColSpan';
 import fakeLargeData from './data/fakeLargeData.json';
 import fakeObjectDataListStore, { createFakeRowObjectData } from './data/fakeObjectDataListStore';
+import { useDrag, useDrop, DndProvider } from 'react-dnd';
+import Backend from 'react-dnd-html5-backend';
 
 function App() {
   return (
@@ -45,7 +47,11 @@ function App() {
           fakeObjectDataListStore,
           isFunction,
           get,
-          without
+          without,
+          useDrag,
+          useDrop,
+          Backend,
+          DndProvider
         }}
         list={[
           {
@@ -129,10 +135,14 @@ function App() {
             title: 'Dynamic',
             content: require('./md/DynamicTable.md')
           },
-
           {
             title: 'Scroll loading data',
             content: require('./md/DynamicDataTable.md')
+          },
+
+          {
+            title: 'Draggable Example',
+            content: require('./md/DraggableTable.md')
           }
         ]}
       />
