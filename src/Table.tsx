@@ -968,7 +968,10 @@ class Table extends React.Component<TableProps, TableState> {
       : 0;
 
     const nextContentHeight = contentHeight - headerHeight;
-    this.setState({ contentHeight: nextContentHeight });
+
+    if (nextContentHeight !== this.state.contentHeight) {
+      this.setState({ contentHeight: nextContentHeight });
+    }
 
     if (
       prevProps &&
@@ -1036,7 +1039,7 @@ class Table extends React.Component<TableProps, TableState> {
      * 原因是直接操作 DOM 的坐标，但是组件没有重新渲染，需要调用 forceUpdate 重新进入 render。
      * Fix: rsuite#1044
      */
-    if (this.props.virtualized) {
+    if (this.props.virtualized && this.state.contentHeight > this.props.height) {
       this.forceUpdate();
     }
   };
