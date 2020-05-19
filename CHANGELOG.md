@@ -1,3 +1,7 @@
+# 3.13.1
+
+- **Bugfix**: Fixed an issue that exceeded the maximum update depth
+
 # 3.13.0
 
 - **Feature**: Add an optional onRowContextMenu property
