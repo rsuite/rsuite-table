@@ -210,6 +210,7 @@ const NameCell = ({ rowData, ...props }) => (
   </Cell>
 </Column>
 ```
+(For nested data read this: https://github.com/rsuite/rsuite-table/issues/158)
 
 ## Methods
 
