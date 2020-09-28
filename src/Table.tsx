@@ -321,17 +321,33 @@ class Table extends React.Component<TableProps, TableState> {
     return !eq(this.props, nextProps) || !isEqual(this.state, nextState);
   }
 
-  componentDidUpdate(prevProps: TableProps) {
-    this.calculateTableContextHeight(prevProps);
-    this.calculateTableContentWidth(prevProps);
-    this.calculateRowMaxHeight();
-    if (prevProps.data !== this.props.data) {
+  componentDidUpdate(prevProps: TableProps, prevState: TableState) {
+    const { rowHeight, data, height, children } = prevProps;
+
+    if (data !== this.props.data) {
+      this.calculateRowMaxHeight();
       this.props.onDataUpdated?.(this.props.data, this.scrollTo);
-      if (this.props.shouldUpdateScroll) {
+
+      const maxHeight =
+        this.props.data.length * (typeof rowHeight === 'function' ? rowHeight(null) : rowHeight);
+      // 当开启允许更新滚动条，或者滚动条位置大于表格的最大高度，则初始滚动条位置
+      if (this.props.shouldUpdateScroll || Math.abs(this.scrollY) > maxHeight) {
         this.scrollTo({ x: 0, y: 0 });
       }
     } else {
       this.updatePosition();
+    }
+
+    if (
+      data !== this.props.data ||
+      height !== this.props.height ||
+      prevState.contentHeight !== this.state.contentHeight
+    ) {
+      this.calculateTableContextHeight(prevProps);
+    }
+
+    if (children !== this.props.children) {
+      this.calculateTableContentWidth(prevProps);
     }
   }
 
@@ -626,8 +642,6 @@ class Table extends React.Component<TableProps, TableState> {
     index: number
   ) => {
     this._cacheCells = null;
-
-    console.log(index);
     this.setState({ isColumnResizing: false, [`${dataKey}_${index}_width`]: columnWidth });
 
     addStyle(this.mouseAreaRef.current, { display: 'none' });
