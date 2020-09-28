@@ -143,6 +143,10 @@ function App() {
           {
             title: 'Draggable Example',
             content: require('./md/DraggableTable.md')
+          },
+          {
+            title: 'Update Data',
+            content: require('./md/UpdateData.md')
           }
         ]}
       />
