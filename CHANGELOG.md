@@ -1,3 +1,7 @@
+# 3.13.2
+
+- **Bugfix**: Fix that after turning on virtualization and turning off shouldUpdateScroll, there will be a React error with page stack overflow. #163 #164
+
 # 3.13.1
 
 - **Bugfix**: Fixed an issue that exceeded the maximum update depth
