@@ -2,10 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { ColumnGroupProps } from './ColumnGroup.d';
-import { defaultClassPrefix, prefix } from './utils';
-
-const classPrefix = defaultClassPrefix('table-column-group');
-const addPrefix = (name: string) => prefix(classPrefix)(name);
+import { defaultClassPrefix, prefix } from './utils/prefix';
 
 const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HTMLDivElement>) => {
   const { header, className, children, headerHeight = 80, verticalAlign, width, ...rest } = props;
@@ -15,6 +12,9 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
     width
   };
   const contentStyles = { ...styles, verticalAlign };
+
+  const classPrefix = React.useMemo(() => defaultClassPrefix('table-column-group'), []);
+  const addPrefix = React.useCallback((name: string) => prefix(classPrefix)(name), []);
 
   return (
     <div ref={ref} className={classNames(classPrefix, className)} {...rest}>
