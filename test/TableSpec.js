@@ -1,11 +1,25 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
+import { getStyle } from 'dom-lib';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import Cell from '../src/Cell';
 
 import { getDOMNode, getInstance } from './TestWrapper';
 import HeaderCell from '../src/HeaderCell';
+
+let container;
+
+beforeEach(() => {
+  container = document.createElement('div');
+  document.body.appendChild(container);
+});
+
+afterEach(() => {
+  document.body.removeChild(container);
+  container = null;
+});
 
 describe('Table', () => {
   it('Should output a table', () => {
@@ -482,5 +496,74 @@ describe('Table', () => {
     );
     assert.equal(instanceDom.querySelectorAll('.rs-table-row.custom-row').length, 1);
     assert.equal(instanceDom.querySelectorAll('.rs-table-row.default-row').length, 2);
+  });
+
+  it('Should be fixed column', () => {
+    ReactTestUtils.act(() => {
+      ReactDOM.render(
+        <div style={{ width: 300 }} id="my-table">
+          <Table
+            showHeader={false}
+            data={[
+              {
+                id: 1,
+                name: 'a'
+              }
+            ]}
+          >
+            <Column width={200} fixed>
+              <HeaderCell>11</HeaderCell>
+              <Cell>12</Cell>
+            </Column>
+            <Column width={200}>
+              <HeaderCell>11</HeaderCell>
+              <Cell>12</Cell>
+            </Column>
+          </Table>
+        </div>,
+        container
+      );
+    });
+
+    const table = document.getElementById('my-table');
+
+    assert.equal(table.querySelectorAll('.rs-table-cell-group').length, 2);
+    assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
+  });
+
+  it('Should be fixed column for array column', () => {
+    const columns = [
+      <Column width={200} fixed key={1}>
+        <HeaderCell>11</HeaderCell>
+        <Cell>12</Cell>
+      </Column>,
+      <Column width={200} key={2}>
+        <HeaderCell>11</HeaderCell>
+        <Cell>12</Cell>
+      </Column>
+    ];
+    ReactTestUtils.act(() => {
+      ReactDOM.render(
+        <div style={{ width: 300 }} id="my-table2">
+          <Table
+            showHeader={false}
+            data={[
+              {
+                id: 1,
+                name: 'a'
+              }
+            ]}
+          >
+            {columns}
+          </Table>
+        </div>,
+        container
+      );
+    });
+
+    const table = document.getElementById('my-table2');
+
+    assert.equal(table.querySelectorAll('.rs-table-cell-group').length, 2);
+    assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
   });
 });
