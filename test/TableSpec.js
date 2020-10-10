@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
-import { getStyle } from 'dom-lib';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import Cell from '../src/Cell';
