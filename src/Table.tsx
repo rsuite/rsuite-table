@@ -222,7 +222,7 @@ class Table extends React.Component<TableProps, TableState> {
       ? findRowKeys(data, rowKey, isFunction(renderRowExpanded))
       : defaultExpandedRowKeys || [];
 
-    const shouldFixedColumn = Array.from(children as Iterable<any>).some(
+    const shouldFixedColumn = Array.from(flatten(children as any) as Iterable<any>).some(
       (child: any) => child && child.props && child.props.fixed
     );
 
@@ -322,7 +322,7 @@ class Table extends React.Component<TableProps, TableState> {
   }
 
   componentDidUpdate(prevProps: TableProps, prevState: TableState) {
-    const { rowHeight, data, height, children } = prevProps;
+    const { rowHeight, data, height } = prevProps;
 
     if (data !== this.props.data) {
       this.calculateRowMaxHeight();
@@ -346,9 +346,7 @@ class Table extends React.Component<TableProps, TableState> {
       this.calculateTableContextHeight(prevProps);
     }
 
-    if (children !== this.props.children) {
-      this.calculateTableContentWidth(prevProps);
-    }
+    this.calculateTableContentWidth(prevProps);
   }
 
   componentWillUnmount() {
