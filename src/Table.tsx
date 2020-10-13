@@ -339,9 +339,15 @@ class Table extends React.Component<TableProps, TableState> {
     }
 
     if (
+      // 当 Table 的 data 发生变化，需要重新计算高度
       data !== this.props.data ||
+      // 当 Table 的 height 属性发生变化，需要重新计算 Table 高度
       height !== this.props.height ||
-      prevState.contentHeight !== this.state.contentHeight
+      // 当 Table 内容区的高度发生变化需要重新计算
+      prevState.contentHeight !== this.state.contentHeight ||
+      // 当 expandedRowKeys 发生变化，需要重新计算 Table 高度，如果重算会导致滚动条不显示。
+      prevState.expandedRowKeys !== this.state.expandedRowKeys ||
+      prevProps.expandedRowKeys !== this.props.expandedRowKeys
     ) {
       this.calculateTableContextHeight(prevProps);
     }
@@ -516,7 +522,6 @@ class Table extends React.Component<TableProps, TableState> {
         const cellProps = {
           ...omit(column.props, ['children']),
           left,
-          index,
           headerHeight,
           key: index,
           width: nextWidth,
@@ -1137,11 +1142,11 @@ class Table extends React.Component<TableProps, TableState> {
   renderRow(props: TableRowProps, cells: any[], shouldRenderExpandedRow?: boolean, rowData?: any) {
     const { rowClassName } = this.props;
     const { shouldFixedColumn, width, contentWidth } = this.state;
-
+    const { depth, ...restRowProps } = props;
     if (typeof rowClassName === 'function') {
-      props.className = rowClassName(rowData);
+      restRowProps.className = rowClassName(rowData);
     } else {
-      props.className = rowClassName;
+      restRowProps.className = rowClassName;
     }
 
     const rowStyles: React.CSSProperties = {};
@@ -1184,7 +1189,7 @@ class Table extends React.Component<TableProps, TableState> {
       }
 
       return (
-        <Row {...props} style={rowStyles}>
+        <Row {...restRowProps} data-depth={depth} style={rowStyles}>
           {fixedLeftCellGroupWidth ? (
             <CellGroup
               fixed="left"
@@ -1219,7 +1224,7 @@ class Table extends React.Component<TableProps, TableState> {
     }
 
     return (
-      <Row {...props} style={rowStyles}>
+      <Row {...restRowProps} data-depth={depth} style={rowStyles}>
         <CellGroup>{mergeCells(cells)}</CellGroup>
         {shouldRenderExpandedRow && this.renderRowExpanded(rowData)}
       </Row>
@@ -1357,7 +1362,7 @@ class Table extends React.Component<TableProps, TableState> {
             const expandedRowKeys = this.getExpandedRowKeys();
             depth = parents.length;
 
-            // 树节点如果被关闭，则不渲染
+            //  如果是 Tree Table,  判断当前的行是否展开/折叠，如果是折叠则不显示该行。
             if (!shouldShowRowByExpanded(expandedRowKeys, parents)) {
               continue;
             }

@@ -565,4 +565,72 @@ describe('Table', () => {
     assert.equal(table.querySelectorAll('.rs-table-cell-group').length, 2);
     assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
   });
+
+  it('Should show a vertical scroll bar when the tree is expanded', () => {
+    const data = [
+      {
+        name: '1',
+        children: [
+          {
+            name: '1-1'
+          },
+          {
+            name: '1-2'
+          },
+          {
+            name: '1-3'
+          },
+          {
+            name: '1-4'
+          },
+          {
+            name: '1-5'
+          },
+          {
+            name: '1-6'
+          },
+          {
+            name: '1-7'
+          },
+          {
+            name: '1-8'
+          },
+          {
+            name: '1-9'
+          }
+        ]
+      }
+    ];
+    const App = () => {
+      return (
+        <div>
+          <Table id="tree-table" isTree data={data} showHeader={false} rowKey="name">
+            <Column>
+              <HeaderCell>name</HeaderCell>
+              <Cell dataKey="name" />
+            </Column>
+          </Table>
+        </div>
+      );
+    };
+    App.displayName = 'App';
+    ReactTestUtils.act(() => {
+      ReactDOM.render(<App />, container);
+    });
+
+    const table = document.getElementById('tree-table');
+    const expand = table.querySelector('.rs-table-cell-expand-icon');
+
+    // Tree 在展开前，显示 1 行，同时没有垂直滚动条。
+    assert.equal(table.querySelectorAll('.rs-table-row').length, 1);
+    assert.ok(table.querySelector('.rs-table-scrollbar-vertical.rs-table-scrollbar-hide'));
+
+    ReactTestUtils.act(() => {
+      ReactTestUtils.Simulate.click(expand);
+    });
+
+    // Tree 在展开后，显示 10 行，同时显示垂直滚动条。
+    assert.equal(table.querySelectorAll('.rs-table-row').length, 10);
+    assert.ok(!table.querySelector('.rs-table-scrollbar-vertical.rs-table-scrollbar-hide'));
+  });
 });
