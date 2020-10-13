@@ -535,6 +535,8 @@ class Table extends React.Component<TableProps, TableState> {
 
         if (showHeader && headerHeight) {
           const headerCellProps = {
+            // index 用于拖拽列宽时候（Resizable column），定义的序号
+            index,
             dataKey: columnChildren[1].props.dataKey,
             isHeaderCell: true,
             sortable: column.props.sortable,
