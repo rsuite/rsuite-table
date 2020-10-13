@@ -6,6 +6,7 @@ export interface ScrollbarProps {
   scrollLength: number;
   className?: string;
   classPrefix?: string;
+  tableId?: string;
   onScroll?: (delta: number, event: React.MouseEvent) => void;
   onMouseDown?: (event: React.MouseEvent) => void;
   [key: string]: any;

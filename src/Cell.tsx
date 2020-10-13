@@ -173,7 +173,12 @@ class Cell extends React.PureComponent<CellProps> {
     );
 
     return (
-      <div {...unhandledProps} className={classes} style={styles}>
+      <div
+        role={isHeaderCell ? 'columnheader' : 'gridcell'}
+        {...unhandledProps}
+        className={classes}
+        style={styles}
+      >
         <div className={this.addPrefix('content')} style={contentStyles}>
           {content}
         </div>

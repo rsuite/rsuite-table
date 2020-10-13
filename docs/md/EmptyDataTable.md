@@ -7,7 +7,13 @@ class EmptyDataTable extends React.Component {
   render() {
     return (
       <div>
-        <Table height={400} data={[]}>
+        <Table
+          height={400}
+          data={[]}
+          renderEmpty={() => {
+            return <div className="rs-table-body-info">No data found / 数据为空 </div>;
+          }}
+        >
           <Column width={70} align="center" fixed>
             <HeaderCell>Id</HeaderCell>
             <Cell dataKey="id" />

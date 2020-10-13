@@ -22,6 +22,7 @@ type State = {
 class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
   static contextType = TableContext;
   static propTypes = {
+    tableId: PropTypes.string,
     vertical: PropTypes.bool,
     length: PropTypes.number,
     scrollLength: PropTypes.number,
@@ -177,7 +178,7 @@ class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
   };
 
   render() {
-    const { vertical, length, scrollLength, classPrefix, className, ...rest } = this.props;
+    const { vertical, length, scrollLength, classPrefix, className, tableId, ...rest } = this.props;
     const { handlePressed } = this.state;
     const addPrefix = prefix(classPrefix);
     const classes = classNames(classPrefix, className, {
@@ -186,20 +187,26 @@ class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
       [addPrefix('hide')]: scrollLength <= length,
       [addPrefix('pressed')]: handlePressed
     });
-
+    const width = (length / scrollLength) * 100;
     const styles: React.CSSProperties = {
-      [vertical ? 'height' : 'width']: `${(length / scrollLength) * 100}%`,
+      [vertical ? 'height' : 'width']: `${width}%`,
       [vertical ? 'minHeight' : 'minWidth']: SCROLLBAR_MIN_WIDTH
     };
     const unhandled = getUnhandledProps(Scrollbar, rest);
+    const valuenow = (this.scrollOffset / length) * 100 + width;
 
     return (
       <div
+        role="scrollbar"
+        aria-controls={tableId}
+        aria-valuemax="100"
+        aria-valuemin="0"
+        aria-valuenow={valuenow}
+        aria-orientation={vertical ? 'vertical' : 'horizontal'}
         {...unhandled}
         ref={this.barRef}
         className={classes}
         onClick={this.handleClick}
-        role="toolbar"
       >
         <div
           ref={this.handleRef}
