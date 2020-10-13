@@ -85,6 +85,7 @@ interface TableState {
   cacheData: object[];
   fixedHeader: boolean;
   fixedHorizontalScrollbar?: boolean;
+  isTree?: boolean;
   [key: string]: any;
 }
 
@@ -163,9 +164,10 @@ class Table extends React.Component<TableProps, TableState> {
   };
 
   static getDerivedStateFromProps(props: TableProps, state: TableState) {
-    if (props.data !== state.cacheData) {
+    if (props.data !== state.cacheData || props.isTree !== state.isTree) {
       return {
         cacheData: props.data,
+        isTree: props.isTree,
         data: props.isTree ? flattenData(props.data) : props.data
       };
     }
@@ -230,6 +232,7 @@ class Table extends React.Component<TableProps, TableState> {
       throw new Error('The `rowKey` is required when set isTree');
     }
     this.state = {
+      isTree,
       expandedRowKeys,
       shouldFixedColumn,
       cacheData: data,

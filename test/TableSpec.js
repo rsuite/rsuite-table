@@ -530,6 +530,9 @@ describe('Table', () => {
     assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
   });
 
+  /**
+   * https://github.com/rsuite/rsuite/issues/1307
+   */
   it('Should be fixed column for array column', () => {
     const columns = [
       <Column width={200} fixed key={1}>
@@ -564,6 +567,69 @@ describe('Table', () => {
 
     assert.equal(table.querySelectorAll('.rs-table-cell-group').length, 2);
     assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
+  });
+
+  /**
+   * https://github.com/rsuite/rsuite/issues/1257
+   */
+  it('Should change data, after the isTree property is changed', () => {
+    const data = [
+      {
+        rowKey: 'a',
+        name: 'tets',
+        num: 1999,
+        children: [
+          {
+            name: 'test-1',
+            num: 1000
+          },
+          {
+            name: 'test-2',
+            num: 999
+          }
+        ]
+      }
+    ];
+    const App = React.forwardRef((props, ref) => {
+      const [tree, setTree] = React.useState(true);
+      React.useImperativeHandle(ref, () => ({
+        setTree
+      }));
+      return (
+        <div>
+          <Table
+            id="my-table3"
+            isTree={tree}
+            data={data}
+            showHeader={false}
+            rowKey="rowKey"
+            defaultExpandAllRows
+          >
+            <Column>
+              <HeaderCell>name</HeaderCell>
+              <Cell dataKey="name" />
+            </Column>
+            <Column>
+              <HeaderCell>num</HeaderCell>
+              <Cell dataKey="num" />
+            </Column>
+          </Table>
+        </div>
+      );
+    });
+    App.displayName = 'App';
+    const ref = React.createRef();
+    ReactTestUtils.act(() => {
+      ReactDOM.render(<App ref={ref} />, container);
+    });
+
+    const table = document.getElementById('my-table3');
+    assert.equal(table.querySelectorAll('.rs-table-row').length, 3);
+    ReactTestUtils.act(() => {
+      ref.current.setTree(false);
+    });
+
+    assert.equal(table.querySelectorAll('.rs-table-row').length, 1);
   });
 
   it('Should show a vertical scroll bar when the tree is expanded', () => {
