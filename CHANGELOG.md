@@ -1,3 +1,11 @@
+# 3.14.0
+
+- **Improve**: Add accessibility properties.
+- **Bugfix**: Fix not working with `gatsbyjs`.
+- **Bugfix**: Fixed invalid custom column width when dragging the column.
+- **Bugfix**: Fix the problem that the vertical scroll bar is not displayed after the Tree is expanded.
+- **Bugfix**: Fix the problem that the data is not updated after the isTree property is changed.
+
 # 3.13.2
 
 - **Bugfix**: Fix that after turning on virtualization and turning off shouldUpdateScroll, there will be a React error with page stack overflow. #163 #164
