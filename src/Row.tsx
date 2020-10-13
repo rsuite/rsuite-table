@@ -33,6 +33,7 @@ class Row extends React.PureComponent<RowProps> {
       headerHeight,
       rowRef,
       classPrefix,
+      children,
       ...rest
     } = this.props;
 
@@ -54,7 +55,9 @@ class Row extends React.PureComponent<RowProps> {
         {({ translateDOMPositionXY }) => {
           translateDOMPositionXY?.(styles, 0, top);
           return (
-            <div role="row" {...unhandledProps} ref={rowRef} className={classes} style={styles} />
+            <div role="row" {...unhandledProps} ref={rowRef} className={classes} style={styles}>
+              {children}
+            </div>
           );
         }}
       </TableContext.Consumer>

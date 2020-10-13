@@ -63,17 +63,17 @@ const ImageCell = ({ rowData, dataKey, ...rest }) => (
 
 const App = () => (
   <Table data={dataList}>
-    <Column width={100} sort fixed resizable>
+    <Column width={100} sortable fixed resizable>
       <HeaderCell>ID</HeaderCell>
       <Cell dataKey="id" />
     </Column>
 
-    <Column width={100} sort resizable>
+    <Column width={100} sortable resizable>
       <HeaderCell>Name</HeaderCell>
       <Cell dataKey="name" />
     </Column>
 
-    <Column width={100} sort resizable>
+    <Column width={100} sortable resizable>
       <HeaderCell>Email</HeaderCell>
       <Cell>
         {(rowData, rowIndex) => {
@@ -210,6 +210,7 @@ const NameCell = ({ rowData, ...props }) => (
   </Cell>
 </Column>
 ```
+
 (For nested data read this: https://github.com/rsuite/rsuite-table/issues/158)
 
 ## Methods
