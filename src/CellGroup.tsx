@@ -22,7 +22,17 @@ class CellGroup extends React.PureComponent<CellGroupProps> {
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
 
   render() {
-    const { fixed, width, left, height, style, classPrefix, className, ...rest } = this.props;
+    const {
+      fixed,
+      width,
+      left,
+      height,
+      style,
+      classPrefix,
+      className,
+      children,
+      ...rest
+    } = this.props;
     const classes = classNames(classPrefix, className, {
       [this.addPrefix(`fixed-${fixed || ''}`)]: fixed,
       [this.addPrefix('scroll')]: !fixed
@@ -38,7 +48,11 @@ class CellGroup extends React.PureComponent<CellGroupProps> {
       <TableContext.Consumer>
         {({ translateDOMPositionXY }) => {
           translateDOMPositionXY?.(styles, left, 0);
-          return <div {...unhandledProps} className={classes} style={styles} />;
+          return (
+            <div {...unhandledProps} className={classes} style={styles}>
+              {children}
+            </div>
+          );
         }}
       </TableContext.Consumer>
     );
