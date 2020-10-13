@@ -69,6 +69,7 @@ class EditTable extends React.Component {
         <Table
           height={400}
           data={data}
+          shouldUpdateScroll={false}
           onExpandChange={(expanded, rowData) => {
             console.log(expanded, rowData);
           }}

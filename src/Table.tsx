@@ -91,37 +91,49 @@ interface TableState {
 
 class Table extends React.Component<TableProps, TableState> {
   static propTypes = {
-    width: PropTypes.number,
-    data: PropTypes.arrayOf(PropTypes.object),
-    height: PropTypes.number,
     autoHeight: PropTypes.bool,
-    minHeight: PropTypes.number,
-    rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-    headerHeight: PropTypes.number,
-    rowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    isTree: PropTypes.bool,
+    affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+    affixHorizontalScrollbar: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+    bordered: PropTypes.bool,
+    bodyRef: PropTypes.func,
+    className: PropTypes.string,
+    classPrefix: PropTypes.string,
+    children: PropTypes.any,
+    cellBordered: PropTypes.bool,
+    data: PropTypes.arrayOf(PropTypes.object),
     defaultExpandAllRows: PropTypes.bool,
     defaultExpandedRowKeys: PropTypes.arrayOf(
       PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     ),
+    defaultSortType: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+    disabledScroll: PropTypes.bool,
     expandedRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+    hover: PropTypes.bool,
+    height: PropTypes.number,
+    headerHeight: PropTypes.number,
+    locale: PropTypes.object,
+    loading: PropTypes.bool,
+    loadAnimation: PropTypes.bool,
+    minHeight: PropTypes.number,
+    rowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
     renderTreeToggle: PropTypes.func,
     renderRowExpanded: PropTypes.func,
     rowExpandedHeight: PropTypes.number,
-    locale: PropTypes.object,
+    renderEmpty: PropTypes.func,
+    renderLoading: PropTypes.func,
+    rowClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    rtl: PropTypes.bool,
     style: PropTypes.object,
     sortColumn: PropTypes.string,
     sortType: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-    defaultSortType: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-    disabledScroll: PropTypes.bool,
-    hover: PropTypes.bool,
-    loading: PropTypes.bool,
-    className: PropTypes.string,
-    classPrefix: PropTypes.string,
-    children: PropTypes.any,
-    bordered: PropTypes.bool,
-    cellBordered: PropTypes.bool,
+    showHeader: PropTypes.bool,
+    shouldUpdateScroll: PropTypes.bool,
+    translate3d: PropTypes.bool,
     wordWrap: PropTypes.bool,
+    width: PropTypes.number,
+    virtualized: PropTypes.bool,
+    isTree: PropTypes.bool,
     onRowClick: PropTypes.func,
     onRowContextMenu: PropTypes.func,
     onScroll: PropTypes.func,
@@ -129,19 +141,7 @@ class Table extends React.Component<TableProps, TableState> {
     onExpandChange: PropTypes.func,
     onTouchStart: PropTypes.func,
     onTouchMove: PropTypes.func,
-    bodyRef: PropTypes.func,
-    loadAnimation: PropTypes.bool,
-    showHeader: PropTypes.bool,
-    rowClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-    virtualized: PropTypes.bool,
-    renderEmpty: PropTypes.func,
-    renderLoading: PropTypes.func,
-    translate3d: PropTypes.bool,
-    affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-    affixHorizontalScrollbar: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-    rtl: PropTypes.bool,
-    onDataUpdated: PropTypes.func,
-    shouldUpdateScroll: PropTypes.bool
+    onDataUpdated: PropTypes.func
   };
   static defaultProps = {
     classPrefix: defaultClassPrefix('table'),
@@ -1467,7 +1467,7 @@ class Table extends React.Component<TableProps, TableState> {
   }
 
   renderScrollbar() {
-    const { disabledScroll, affixHorizontalScrollbar } = this.props;
+    const { disabledScroll, affixHorizontalScrollbar, id } = this.props;
     const { contentWidth, contentHeight, width, fixedHorizontalScrollbar } = this.state;
     const bottom = typeof affixHorizontalScrollbar === 'number' ? affixHorizontalScrollbar : 0;
 
@@ -1481,6 +1481,7 @@ class Table extends React.Component<TableProps, TableState> {
     return (
       <div>
         <Scrollbar
+          tableId={id}
           className={classNames({ fixed: fixedHorizontalScrollbar })}
           style={{ width, bottom: fixedHorizontalScrollbar ? bottom : undefined }}
           length={this.state.width}
@@ -1490,6 +1491,7 @@ class Table extends React.Component<TableProps, TableState> {
         />
         <Scrollbar
           vertical
+          tableId={id}
           length={height - headerHeight}
           scrollLength={contentHeight}
           onScroll={this.handleScrollY}
@@ -1567,7 +1569,7 @@ class Table extends React.Component<TableProps, TableState> {
           hasCustomTreeCol
         }}
       >
-        <div {...unhandled} className={clesses} style={styles} ref={this.tableRef}>
+        <div role="grid" {...unhandled} className={clesses} style={styles} ref={this.tableRef}>
           {showHeader && this.renderTableHeader(headerCells, rowWidth)}
           {children && this.renderTableBody(bodyCells, rowWidth)}
           {showHeader && this.renderMouseArea()}
