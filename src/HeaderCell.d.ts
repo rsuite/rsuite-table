@@ -18,6 +18,7 @@ export interface HeaderCellProps extends CellProps {
   onSortColumn?: (dataKey?: string) => void;
   flexGrow?: number;
   fixed?: boolean | 'left' | 'right';
+  children: React.ReactNode;
 }
 
 declare const HeaderCell: React.ComponentType<HeaderCellProps>;

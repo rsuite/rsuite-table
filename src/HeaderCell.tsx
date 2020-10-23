@@ -25,7 +25,8 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
     onColumnResizeMove: PropTypes.func,
     onSortColumn: PropTypes.func,
     flexGrow: PropTypes.number,
-    fixed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right'])])
+    fixed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right'])]),
+    children: PropTypes.node
   };
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-cell-header')
