@@ -1568,6 +1568,7 @@ class Table extends React.Component<TableProps, TableState> {
         value={{
           translateDOMPositionXY: this.translateDOMPositionXY,
           rtl: this.isRTL(),
+          isTree,
           hasCustomTreeCol
         }}
       >

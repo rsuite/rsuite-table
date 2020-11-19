@@ -53,13 +53,13 @@ class Cell extends React.PureComponent<CellProps> {
   addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
   isTreeCol() {
     const { treeCol, firstColumn } = this.props;
-    const { hasCustomTreeCol } = this.context;
+    const { hasCustomTreeCol, isTree } = this.context;
 
     if (treeCol) {
       return true;
     }
 
-    if (!hasCustomTreeCol && firstColumn) {
+    if (!hasCustomTreeCol && firstColumn && isTree) {
       return true;
     }
 
