@@ -524,6 +524,7 @@ class Table extends React.Component<TableProps, TableState> {
 
         const cellProps = {
           ...omit(column.props, ['children']),
+          'aria-colindex': index + 1,
           left,
           headerHeight,
           key: index,
@@ -1114,6 +1115,7 @@ class Table extends React.Component<TableProps, TableState> {
 
     const rowProps: TableRowProps = {
       ...props,
+      'aria-rowindex': (props.key as number) + 2,
       rowRef: this.bindTableRowsRef(props.key, rowData),
       onClick: this.bindRowClick(rowData),
       onContextMenu: this.bindRowContextMenu(rowData)
@@ -1268,6 +1270,7 @@ class Table extends React.Component<TableProps, TableState> {
     const top = typeof affixHeader === 'number' ? affixHeader : 0;
     const headerHeight = this.getTableHeaderHeight();
     const rowProps: TableRowProps = {
+      'aria-rowindex': 1,
       rowRef: this.tableHeaderRef,
       width: rowWidth,
       height: this.getRowHeight(),
@@ -1298,7 +1301,11 @@ class Table extends React.Component<TableProps, TableState> {
     return (
       <React.Fragment>
         {(affixHeader === 0 || affixHeader) && header}
-        <div className={this.addPrefix('header-row-wrapper')} ref={this.headerWrapperRef}>
+        <div
+          role="rowgroup"
+          className={this.addPrefix('header-row-wrapper')}
+          ref={this.headerWrapperRef}
+        >
           {this.renderRow(rowProps, headerCells)}
         </div>
       </React.Fragment>
@@ -1437,6 +1444,7 @@ class Table extends React.Component<TableProps, TableState> {
     return (
       <div
         ref={this.tableBodyRef}
+        role="rowgroup"
         className={this.addPrefix('body-row-wrapper')}
         style={bodyStyles}
         onScroll={this.handleBodyScroll}
@@ -1529,6 +1537,7 @@ class Table extends React.Component<TableProps, TableState> {
     const {
       children,
       className,
+      data,
       width = 0,
       style,
       isTree,
@@ -1571,7 +1580,17 @@ class Table extends React.Component<TableProps, TableState> {
           hasCustomTreeCol
         }}
       >
-        <div role="grid" {...unhandled} className={clesses} style={styles} ref={this.tableRef}>
+        <div
+          role={isTree ? 'treegrid' : 'grid'}
+          // The aria-rowcount is specified on the element with the table.
+          // Its value is an integer equal to the total number of rows available, including header rows.
+          aria-rowcount={data.length + 1}
+          aria-colcount={this._cacheChildrenSize}
+          {...unhandled}
+          className={clesses}
+          style={styles}
+          ref={this.tableRef}
+        >
           {showHeader && this.renderTableHeader(headerCells, rowWidth)}
           {children && this.renderTableBody(bodyCells, rowWidth)}
           {showHeader && this.renderMouseArea()}

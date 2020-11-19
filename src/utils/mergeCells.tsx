@@ -95,7 +95,12 @@ function mergeCells(cells) {
         }
       }
 
-      nextCells.push(cloneCell(cells[i], { width: nextWidth }));
+      nextCells.push(
+        cloneCell(cells[i], {
+          width: nextWidth,
+          'aria-colspan': colSpan && nextWidth > width ? colSpan : undefined
+        })
+      );
       continue;
     }
     nextCells.push(cells[i]);
