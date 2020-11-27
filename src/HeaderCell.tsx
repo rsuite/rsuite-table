@@ -122,6 +122,8 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
       left,
       sortable,
       classPrefix,
+      sortColumn,
+      sortType,
       ...rest
     } = this.props;
 
@@ -130,9 +132,21 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
     });
     const unhandledProps = getUnhandledProps(HeaderCell, rest);
 
+    let ariaSort;
+
+    if (sortColumn === dataKey) {
+      ariaSort = 'other';
+      if (sortType === 'asc') {
+        ariaSort = 'ascending';
+      } else if (sortType === 'desc') {
+        ariaSort = 'descending';
+      }
+    }
+
     return (
       <div className={classes}>
         <Cell
+          aria-sort={ariaSort}
           {...unhandledProps}
           width={width}
           dataKey={dataKey}
