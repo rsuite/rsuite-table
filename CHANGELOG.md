@@ -1,3 +1,9 @@
+# 3.14.1
+
+- **Improve**: Use ARIA to improve accessibility
+- **Bugfix**: Fix Cell rendering redundant padding when it is not a tree column
+- **Bugfix**: fix(HeaderCell): missing children prop type
+
 # 3.14.0
 
 - **Improve**: Add accessibility properties.
