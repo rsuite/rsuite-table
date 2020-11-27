@@ -1,10 +1,19 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Sort from '@rsuite/icons/Sort';
+import SortUp from '@rsuite/icons/SortUp';
+import SortDown from '@rsuite/icons/SortDown';
+
 import ColumnResizeHandler from './ColumnResizeHandler';
 import { isNullOrUndefined, getUnhandledProps, defaultClassPrefix, prefix } from './utils';
 import Cell from './Cell';
 import { HeaderCellProps } from './HeaderCell.d';
+
+const SORTED_MAP = {
+  desc: SortDown,
+  asc: SortUp
+};
 
 interface HeaderCelltate {
   columnWidth?: number;
@@ -100,12 +109,13 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
     const { sortable, sortColumn, sortType = '', dataKey } = this.props;
 
     if (sortable) {
+      const SortIcon = sortColumn === dataKey ? SORTED_MAP[sortType] : Sort;
       const iconClasses = classNames(this.addPrefix('icon-sort'), {
         [this.addPrefix(`icon-sort-${sortType}`)]: sortColumn === dataKey
       });
       return (
         <span className={this.addPrefix('sort-wrapper')}>
-          <i className={iconClasses} />
+          <SortIcon className={iconClasses} />
         </span>
       );
     }

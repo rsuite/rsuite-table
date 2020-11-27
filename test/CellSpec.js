@@ -96,6 +96,17 @@ describe('Cell', () => {
     assert.ok(instanceDom.querySelector('.rs-table-cell-expand-icon'));
   });
 
+  it('Should have a expanded icon', () => {
+    const instanceDom = getDOMNode(
+      <div>
+        <TableContext.Provider value={{ isTree: true }}>
+          <Cell hasChildren firstColumn expanded />
+        </TableContext.Provider>
+      </div>
+    );
+    assert.ok(instanceDom.querySelector('[aria-label="arrow-down"]'));
+  });
+
   it('Should be 60 the left', () => {
     const layer = 2;
     const instanceDom = getDOMNode(<Cell layer={layer} firstColumn />);
