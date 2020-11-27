@@ -3,6 +3,7 @@ import ReactTestUtils from 'react-dom/test-utils';
 
 import { getDOMNode } from './TestWrapper';
 import Cell from '../src/Cell';
+import TableContext from '../src/TableContext';
 import { LAYER_WIDTH } from '../src/constants';
 
 describe('Cell', () => {
@@ -85,7 +86,15 @@ describe('Cell', () => {
   });
 
   it('Should have a expand icon', () => {
-    const instanceDom = getDOMNode(<Cell hasChildren firstColumn />);
+    const instanceDom = getDOMNode(
+      <div>
+        <TableContext.Provider value={{ isTree: true }}>
+          <Cell hasChildren firstColumn />
+        </TableContext.Provider>
+      </div>
+    );
+
+    console.log(instanceDom);
     assert.ok(instanceDom.querySelector('.rs-table-cell-expand-icon'));
   });
 
@@ -104,14 +113,18 @@ describe('Cell', () => {
     };
 
     const instanceDom = getDOMNode(
-      <Cell
-        hasChildren
-        firstColumn
-        onTreeToggle={doneOp}
-        rowData={{ name: 'a' }}
-        rowIndex={1}
-        rowKey="name"
-      />
+      <div>
+        <TableContext.Provider value={{ isTree: true }}>
+          <Cell
+            hasChildren
+            firstColumn
+            onTreeToggle={doneOp}
+            rowData={{ name: 'a' }}
+            rowIndex={1}
+            rowKey="name"
+          />
+        </TableContext.Provider>
+      </div>
     );
 
     ReactTestUtils.Simulate.click(instanceDom.querySelector('.rs-table-cell-expand-icon'));
