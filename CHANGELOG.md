@@ -1,3 +1,7 @@
+# 3.14.2
+
+- **Bugfix**: Fix the table height problem caused by affixHeader
+
 # 3.14.1
 
 - **Improve**: Use ARIA to improve accessibility
