@@ -982,7 +982,7 @@ class Table extends React.Component<TableProps, TableState> {
   calculateTableContextHeight(prevProps?: TableProps) {
     const table = this.tableRef.current;
     const rows = table.querySelectorAll(`.${this.addPrefix('row')}`) || [];
-    const { height, autoHeight, rowHeight } = this.props;
+    const { height, autoHeight, rowHeight, affixHeader } = this.props;
     const headerHeight = this.getTableHeaderHeight();
     const contentHeight = rows.length
       ? Array.from(rows)
@@ -990,7 +990,8 @@ class Table extends React.Component<TableProps, TableState> {
           .reduce((x, y) => x + y)
       : 0;
 
-    const nextContentHeight = contentHeight - headerHeight;
+    // 当设置 affixHeader 属性后要减掉两个 header 的高度
+    const nextContentHeight = contentHeight - (affixHeader ? headerHeight * 2 : headerHeight);
 
     if (nextContentHeight !== this.state.contentHeight) {
       this.setState({ contentHeight: nextContentHeight });
