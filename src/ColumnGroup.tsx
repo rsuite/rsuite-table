@@ -5,15 +5,24 @@ import { ColumnGroupProps } from './ColumnGroup.d';
 import { defaultClassPrefix, prefix } from './utils/prefix';
 
 const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HTMLDivElement>) => {
-  const { header, className, children, headerHeight = 80, verticalAlign, width, ...rest } = props;
+  const {
+    header,
+    className,
+    children,
+    classPrefix,
+    headerHeight = 80,
+    verticalAlign,
+    width,
+    ...rest
+  } = props;
+
   const height = headerHeight / 2;
   const styles: React.CSSProperties = {
     height,
     width
   };
-  const contentStyles = { ...styles, verticalAlign };
 
-  const classPrefix = React.useMemo(() => defaultClassPrefix('table-column-group'), []);
+  const contentStyles = { ...styles, verticalAlign };
   const addPrefix = React.useCallback((name: string) => prefix(classPrefix)(name), []);
 
   return (
@@ -44,9 +53,13 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
 });
 
 ColumnGroup.displayName = 'ColumnGroup';
+ColumnGroup.defaultProps = {
+  classPrefix: defaultClassPrefix('table-column-group')
+};
 
 ColumnGroup.propTypes = {
   header: PropTypes.node,
+  classPrefix: PropTypes.string,
   verticalAlign: PropTypes.oneOf(['top', 'middle', 'bottom'])
 };
 
