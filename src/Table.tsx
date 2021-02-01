@@ -1116,6 +1116,7 @@ class Table extends React.Component<TableProps, TableState> {
 
     const rowProps: TableRowProps = {
       ...props,
+      key: nextRowKey,
       'aria-rowindex': (props.key as number) + 2,
       rowRef: this.bindTableRowsRef(props.key, rowData),
       onClick: this.bindRowClick(rowData),
