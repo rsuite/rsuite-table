@@ -49,6 +49,12 @@ module.exports = config => {
       ChromeCi: {
         base: 'Chrome',
         flags: ['--no-sandbox']
+      },
+      FirefoxAutoAllowGUM: {
+        base: 'Firefox',
+        prefs: {
+          'media.navigator.permission.disabled': true
+        }
       }
     },
     coverageReporter: {
