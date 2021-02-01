@@ -10,6 +10,6 @@ export interface ColumnGroupProps {
   classPrefix?: string;
 }
 
-declare const Column: React.ComponentType<ColumnGroupProps>;
+declare const ColumnGroup: React.ComponentType<ColumnGroupProps>;
 
-export default Column;
+export default ColumnGroup;

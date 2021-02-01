@@ -61,3 +61,7 @@ export interface TableProps extends StandardProps {
   onTouchMove?: (event: React.TouchEvent) => void; // for tests
   onDataUpdated?: (nextData: object[], scrollTo: (coord: { x: number; y: number }) => void) => void;
 }
+
+declare const Table: React.ComponentType<TableProps>;
+
+export default Table;
