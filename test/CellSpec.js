@@ -93,8 +93,6 @@ describe('Cell', () => {
         </TableContext.Provider>
       </div>
     );
-
-    console.log(instanceDom);
     assert.ok(instanceDom.querySelector('.rs-table-cell-expand-icon'));
   });
 
