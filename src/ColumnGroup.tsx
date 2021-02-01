@@ -10,7 +10,7 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
     className,
     children,
     classPrefix,
-    headerHeight = 80,
+    headerHeight,
     verticalAlign,
     width,
     ...rest
@@ -54,6 +54,7 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
 
 ColumnGroup.displayName = 'ColumnGroup';
 ColumnGroup.defaultProps = {
+  headerHeight: 80,
   classPrefix: defaultClassPrefix('table-column-group')
 };
 
