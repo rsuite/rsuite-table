@@ -1,6 +1,13 @@
+# 3.14.3
+
+- **Bugfix**: Fix the type definition error of typescript (#195)
+- **Bugfix**: Fixed ColumnGroup does not support `classPrefix` (#193)
+- **Bugfix**: Fixed Row missing custom rowKey (#191)
+- **Bugfix**: Fixed the unhandled scroll bar width when the Cell is fixed on the right (#189)
+
 # 3.14.2
 
-- **Bugfix**: Fix the table height problem caused by affixHeader
+- **Bugfix**: Fix the table height problem caused by affixHeader (#185)
 
 # 3.14.1
 
