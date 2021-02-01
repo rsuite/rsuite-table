@@ -1216,13 +1216,13 @@ class Table extends React.Component<TableProps, TableState> {
               fixed="right"
               style={
                 this.isRTL()
-                  ? { right: 0 - rowRight - SCROLLBAR_WIDTH }
+                  ? { right: 0 - rowRight }
                   : { left: width - fixedRightCellGroupWidth - SCROLLBAR_WIDTH }
               }
               height={props.isHeaderRow ? props.headerHeight : props.height}
-              width={fixedRightCellGroupWidth}
+              width={fixedRightCellGroupWidth + SCROLLBAR_WIDTH}
             >
-              {mergeCells(resetLeftForCells(fixedRightCells))}
+              {mergeCells(resetLeftForCells(fixedRightCells, SCROLLBAR_WIDTH))}
             </CellGroup>
           ) : null}
 
