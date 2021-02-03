@@ -55,4 +55,16 @@ describe('ColumnGroup', () => {
       'middle'
     );
   });
+
+  it('Should have a custom className prefix', () => {
+    const instance = getDOMNode(
+      <ColumnGroup classPrefix="my">
+        <div>a</div>
+        <div>a</div>
+      </ColumnGroup>
+    );
+
+    assert.equal(instance.className, 'my');
+    assert.ok(instance.querySelector('.my-header'));
+  });
 });

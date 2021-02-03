@@ -7,8 +7,9 @@ export interface ColumnGroupProps {
   children?: React.ReactNode;
   className?: string;
   headerHeight?: number;
+  classPrefix?: string;
 }
 
-declare const Column: React.ComponentType<ColumnGroupProps>;
+declare const ColumnGroup: React.ComponentType<ColumnGroupProps>;
 
-export default Column;
+export default ColumnGroup;
