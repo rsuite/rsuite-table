@@ -2,6 +2,7 @@ import { CellProps } from './Cell.d';
 
 export interface HeaderCellProps extends CellProps {
   index?: number;
+  minWidth?: number;
   sortColumn?: string;
   sortType?: 'desc' | 'asc';
   sortable?: boolean;

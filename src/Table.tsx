@@ -540,6 +540,7 @@ class Table extends React.Component<TableProps, TableState> {
             index,
             dataKey: columnChildren[1].props.dataKey,
             isHeaderCell: true,
+            minWidth: column.props.minWidth,
             sortable: column.props.sortable,
             onSortColumn: this.handleSortColumn,
             sortType: this.getSortType(),
