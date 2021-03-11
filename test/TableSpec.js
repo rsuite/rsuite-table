@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import Table from '../src/Table';
 import Column from '../src/Column';
+import ColumnGroup from '../src/ColumnGroup';
 import Cell from '../src/Cell';
 
 import { getDOMNode, getInstance } from './TestWrapper';
@@ -698,5 +699,45 @@ describe('Table', () => {
     // Tree 在展开后，显示 10 行，同时显示垂直滚动条。
     assert.equal(table.querySelectorAll('.rs-table-row').length, 10);
     assert.ok(!table.querySelector('.rs-table-scrollbar-vertical.rs-table-scrollbar-hide'));
+  });
+
+  it('Should render 2 ColumnGroup', () => {
+    ReactTestUtils.act(() => {
+      const columnData = [
+        {
+          name: 'test 1',
+          id: 1
+        },
+        {
+          name: 'test 2',
+          id: 2
+        }
+      ];
+      ReactDOM.render(
+        <div style={{ width: 300 }} id="my-table">
+          <Table data={[]}>
+            {columnData.map((item, index) => {
+              return (
+                <ColumnGroup key={index} header={item.name} fixed>
+                  <Column width={130}>
+                    <HeaderCell>First Name</HeaderCell>
+                    <Cell dataKey="firstName" />
+                  </Column>
+
+                  <Column width={130}>
+                    <HeaderCell>Last Name</HeaderCell>
+                    <Cell dataKey="lastName" />
+                  </Column>
+                </ColumnGroup>
+              );
+            })}
+          </Table>
+        </div>,
+        container
+      );
+    });
+
+    const table = document.getElementById('my-table');
+    assert.equal(table.querySelectorAll('.rs-table-column-group').length, 2);
   });
 });
