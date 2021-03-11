@@ -7,6 +7,19 @@ const DateCell = ({ rowData, dataKey, ...props }) => (
   <Cell {...props}>{rowData[dataKey].toLocaleString()}</Cell>
 );
 
+const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
+  <Cell {...props} style={{ padding: 0 }}>
+    <div style={{ lineHeight: '46px' }}>
+      <input
+        type="checkbox"
+        value={rowData[dataKey]}
+        onChange={onChange}
+        checked={checkedKeys.some(item => item === rowData[dataKey])}
+      />
+    </div>
+  </Cell>
+);
+
 const NameCell = ({ rowData, dataKey, ...props }) => {
   const speaker = (
     <Popover title="Description">
@@ -47,63 +60,66 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
   );
 };
 
-class CustomColumnTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: fakeData
-    };
-  }
-  render() {
-    const { data } = this.state;
-    return (
-      <div>
-        <Table
-          height={400}
-          data={data}
-          headerHeight={50}
-          rowHeight={rowData => {
-            if (rowData.firstName === 'Janis') {
-              return 30;
-            }
-            return 64;
-          }}
-        >
-          <Column width={80} align="center">
-            <HeaderCell>Id</HeaderCell>
-            <NameCell dataKey="id" />
-          </Column>
-          <Column width={160}>
-            <HeaderCell>First Name</HeaderCell>
-            <NameCell dataKey="firstName" />
-          </Column>
+const data = [...fakeData, ...fakeData, ...fakeData, ...fakeData, ...fakeData];
+const App = () => {
+  const [checkedKeys, setCheckedKeys] = React.useState([]);
 
-          <Column width={160}>
-            <HeaderCell>Last Name</HeaderCell>
-            <Cell dataKey="lastName" />
-          </Column>
+  const handleCheckAll = event => {
+    const checked = event.target.checked;
+    const keys = checked ? data.map(item => item.id) : [];
+    setCheckedKeys(keys);
+  };
+  const handleCheck = event => {
+    const checked = event.target.checked;
+    const value = +event.target.value;
+    const keys = checked ? [...checkedKeys, value] : checkedKeys.filter(item => item !== value);
 
-          <Column width={300}>
-            <HeaderCell>Email</HeaderCell>
-            <Cell>{rowData => <a href={`mailto:${rowData.email}`}>{rowData.email}</a>}</Cell>
-          </Column>
+    setCheckedKeys(keys);
+  };
 
-          <Column width={250} align="right">
-            <HeaderCell>Date</HeaderCell>
-            <Cell>{rowData => rowData.date.toLocaleString()}</Cell>
-          </Column>
+  return (
+    <Table height={400} data={data} headerHeight={50} virtualized>
+      <Column width={50} align="center">
+        <HeaderCell style={{ padding: 0 }}>
+          <div style={{ lineHeight: '40px' }}>
+            <input type="checkbox" onChange={handleCheckAll} />
+          </div>
+        </HeaderCell>
+        <CheckCell dataKey="id" checkedKeys={checkedKeys} onChange={handleCheck} />
+      </Column>
+      <Column width={80} align="center">
+        <HeaderCell>Id</HeaderCell>
+        <NameCell dataKey="id" />
+      </Column>
+      <Column width={160}>
+        <HeaderCell>First Name</HeaderCell>
+        <NameCell dataKey="firstName" />
+      </Column>
 
-          <Column width={200}>
-            <HeaderCell>Action</HeaderCell>
-            <ActionCell dataKey="id" />
-          </Column>
-        </Table>
-      </div>
-    );
-  }
-}
+      <Column width={160}>
+        <HeaderCell>Last Name</HeaderCell>
+        <Cell dataKey="lastName" />
+      </Column>
 
-ReactDOM.render(<CustomColumnTable />);
+      <Column width={300}>
+        <HeaderCell>Email</HeaderCell>
+        <Cell>{rowData => <a href={`mailto:${rowData.email}`}>{rowData.email}</a>}</Cell>
+      </Column>
+
+      <Column width={250} align="right">
+        <HeaderCell>Date</HeaderCell>
+        <Cell>{rowData => rowData.date.toLocaleString()}</Cell>
+      </Column>
+
+      <Column width={200}>
+        <HeaderCell>Action</HeaderCell>
+        <ActionCell dataKey="id" />
+      </Column>
+    </Table>
+  );
+};
+
+ReactDOM.render(<App />);
 ```
 
 <!--end-code-->
