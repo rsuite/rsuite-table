@@ -94,4 +94,57 @@ describe('ColumnResizeHandler', () => {
     const instanceDom = getDOMNode(<ColumnResizeHandler style={{ fontSize }} />);
     assert.equal(instanceDom.style.fontSize, fontSize);
   });
+
+  it('Should by default not resize below 20px', done => {
+    const instance = getInstance(
+      <ColumnResizeHandler
+        defaultColumnWidth={100}
+        onColumnResizeMove={endWidth => {
+          assert.equal(endWidth, 20);
+          done();
+        }}
+      />
+    );
+
+    ReactTestUtils.Simulate.mouseDown(findDOM(instance));
+
+    ReactTestUtils.Simulate.mouseMove(document.body);
+    instance.onMove(-100);
+  });
+
+  it('Should not resize below the specified minWidth', done => {
+    const instance = getInstance(
+      <ColumnResizeHandler
+        minWidth={50}
+        defaultColumnWidth={200}
+        onColumnResizeMove={endWidth => {
+          assert.equal(endWidth, 50);
+          done();
+        }}
+      />
+    );
+
+    ReactTestUtils.Simulate.mouseDown(findDOM(instance));
+
+    ReactTestUtils.Simulate.mouseMove(document.body);
+    instance.onMove(-500);
+  });
+
+  it('Should never resize below 20px', done => {
+    const instance = getInstance(
+      <ColumnResizeHandler
+        defaultColumnWidth={100}
+        minWidth={10}
+        onColumnResizeMove={endWidth => {
+          assert.equal(endWidth, 20);
+          done();
+        }}
+      />
+    );
+
+    ReactTestUtils.Simulate.mouseDown(findDOM(instance));
+
+    ReactTestUtils.Simulate.mouseMove(document.body);
+    instance.onMove(-100);
+  });
 });

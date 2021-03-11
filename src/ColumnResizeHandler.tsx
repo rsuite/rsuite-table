@@ -6,6 +6,7 @@ import { DOMMouseMoveTracker } from 'dom-lib';
 import { defaultClassPrefix, getUnhandledProps } from './utils';
 import TableContext from './TableContext';
 import { ColumnResizeHandlerProps } from './ColumnResizeHandler.d';
+import { RESIZE_MIN_WIDTH } from './constants';
 
 class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
   static contextType = TableContext;
@@ -16,6 +17,7 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
     columnFixed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right'])]),
     className: PropTypes.string,
     classPrefix: PropTypes.string,
+    minWidth: PropTypes.number,
     style: PropTypes.object,
     onColumnResizeStart: PropTypes.func,
     onColumnResizeEnd: PropTypes.func,
@@ -53,7 +55,7 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
 
     this.columnWidth = clamp(
       defaultColumnWidth + (rtl ? -this.cursorDelta : this.cursorDelta),
-      20,
+      this.props.minWidth ? Math.max(this.props.minWidth, RESIZE_MIN_WIDTH) : RESIZE_MIN_WIDTH,
       20000
     );
     onColumnResizeMove?.(this.columnWidth, columnLeft, columnFixed);

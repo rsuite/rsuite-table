@@ -13,6 +13,7 @@ export interface ColumnResizeHandlerProps {
   columnFixed?: FixedType;
   className?: string;
   classPrefix?: string;
+  minWidth?: number;
   style?: React.CSSProperties;
   onColumnResizeStart?: (client: Client) => void;
   onColumnResizeEnd?: (columnWidth?: number, cursorDelta?: number) => void;

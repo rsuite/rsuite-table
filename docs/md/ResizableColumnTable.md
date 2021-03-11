@@ -32,7 +32,7 @@ class ResizableColumnTable extends React.Component {
             <Cell dataKey="firstName" />
           </Column>
 
-          <Column width={100} resizable>
+          <Column width={100} minWidth={75} resizable>
             <HeaderCell>Last Name</HeaderCell>
             <Cell dataKey="lastName" />
           </Column>
@@ -66,3 +66,5 @@ ReactDOM.render(<ResizableColumnTable />);
 ```
 
 <!--end-code-->
+
+Columns will resize down to `minWidth` (optional) or `20`, whichever is higher.
