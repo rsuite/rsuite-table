@@ -433,7 +433,7 @@ class Table extends React.Component<TableProps, TableState> {
       return children as React.ReactNodeArray;
     }
 
-    const flattenColumns = children.map((column: React.ReactElement) => {
+    const flattenColumns = flatten(children).map((column: React.ReactElement) => {
       if (column?.type === ColumnGroup) {
         const { header, children: childColumns, align, fixed, verticalAlign } = column?.props;
         return childColumns.map((childColumn, index) => {
