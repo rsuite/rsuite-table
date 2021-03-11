@@ -1,3 +1,7 @@
+# 3.14.4
+
+- **Bugfix**: fix(table): fix that the `ColumnGroup` array cannot be rendered in the Table
+
 # 3.14.3
 
 - **Bugfix**: Fix the type definition error of typescript (#195)
