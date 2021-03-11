@@ -119,6 +119,7 @@ class Cell extends React.PureComponent<CellProps> {
       depth,
       verticalAlign,
       expanded,
+      onClick,
       ...rest
     } = this.props;
 
@@ -179,6 +180,7 @@ class Cell extends React.PureComponent<CellProps> {
       <div
         role={isHeaderCell ? 'columnheader' : 'gridcell'}
         {...unhandledProps}
+        onClick={onClick}
         className={classes}
         style={styles}
       >
