@@ -1,3 +1,7 @@
+# 3.14.5
+
+- **Bugfix**: fix(gatsby): fix sortColumn not getting fired in Gatsby production build
+
 # 3.14.4
 
 - **Bugfix**: fix(table): fix that the `ColumnGroup` array cannot be rendered in the Table
