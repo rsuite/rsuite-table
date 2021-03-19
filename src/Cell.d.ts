@@ -9,7 +9,7 @@ export interface CellProps extends StandardProps {
   dataKey?: string;
   isHeaderCell?: boolean;
 
-  width: number;
+  width?: number;
   height?: number | ((rowData: object) => number);
   left?: number;
   headerHeight?: number;
@@ -23,7 +23,7 @@ export interface CellProps extends StandardProps {
   rowKey?: string | number;
   rowIndex?: number;
   rowData?: RowDataType;
-  depth: number;
+  depth?: number;
 
   onTreeToggle?: (
     rowKey?: string | number,
