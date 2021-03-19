@@ -1,3 +1,11 @@
+# 5.0.0 pre-release
+
+- fix(cell): change Cell width and depth prop to optional. (#206)
+- fix(cell): fix sortColumn not getting fired in Gatsby production build. (#204)
+- fix(table): gix that the ColumnGroup array cannot be rendered in the Table. (#200)
+- feat(resize): honor minWidth setting when resizing columns. (#201)
+- refactor(icons): replace all icon with @rsuite/icons. (#180)
+
 # 3.14.3
 
 - **Bugfix**: Fix the type definition error of typescript (#195)
@@ -11,9 +19,9 @@
 
 # 3.14.1
 
-- **Improve**: Use ARIA to improve accessibility
-- **Bugfix**: Fix Cell rendering redundant padding when it is not a tree column
-- **Bugfix**: fix(HeaderCell): missing children prop type
+- **Improve**: Use ARIA to improve accessibility (#178)
+- **Bugfix**: Fix Cell rendering redundant padding when it is not a tree column (#179)
+- **Bugfix**: fix(HeaderCell): missing children prop type (#177)
 
 # 3.14.0
 
