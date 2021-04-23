@@ -10,24 +10,6 @@ describe('HeaderCell', () => {
     assert.equal(instanceDom.className, 'rs-table-cell-header');
   });
 
-  it('Should output default sort icon', () => {
-    const instanceDom = getDOMNode(
-      <HeaderCell sortable dataKey="name">
-        test
-      </HeaderCell>
-    );
-    assert.isNotNull(instanceDom.querySelector('.rs-table-cell-header-icon-sort'));
-  });
-
-  it('Should output default sort desc icon', () => {
-    const instanceDom = getDOMNode(
-      <HeaderCell sortable sortColumn="name" sortType="desc" dataKey="name">
-        test
-      </HeaderCell>
-    );
-    assert.isNotNull(instanceDom.querySelector('.rs-table-cell-header-icon-sort-desc'));
-  });
-
   it('Should call `onSortColumn` callback', done => {
     const doneOp = dataKey => {
       if (dataKey === 'name') {
