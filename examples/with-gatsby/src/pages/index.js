@@ -1,5 +1,5 @@
 import React from "react"
-import { Table, Column, HeaderCell, Cell } from "rsuite-table"
+import { Table, Column, HeaderCell, Cell } from "../../../../src"
 import "rsuite-table/dist/css/rsuite-table.css"
 
 const dataList = [
@@ -17,6 +17,9 @@ export default function Home() {
         data={dataList}
         sortColumn={sortColumn}
         sortType={sortType}
+        onRowClick={(rowData)=>{
+          console.log(rowData);
+        }}
         onSortColumn={(key, type) => {
           setSortColumn(key)
           setSortType(type)
