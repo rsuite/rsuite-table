@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
-    "@rsuite/icons": "^1.0.0-12",
+    "@rsuite/icons": "^1.0.0",
     "classnames": "^2.2.5",
     "dom-lib": "^1.2.1",
     "element-resize-event": "^3.0.2",
