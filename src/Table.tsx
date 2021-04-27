@@ -441,6 +441,7 @@ class Table extends React.Component<TableProps, TableState> {
         return childColumns.map((childColumn, index) => {
           // 把 ColumnGroup 设置的属性覆盖到 Column
           const groupCellProps: any = {
+            ...childColumn?.props,
             align,
             fixed,
             verticalAlign

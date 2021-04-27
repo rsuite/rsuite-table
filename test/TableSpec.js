@@ -719,12 +719,12 @@ describe('Table', () => {
             {columnData.map((item, index) => {
               return (
                 <ColumnGroup key={index} header={item.name} fixed>
-                  <Column width={130}>
+                  <Column width={130} sortable>
                     <HeaderCell>First Name</HeaderCell>
                     <Cell dataKey="firstName" />
                   </Column>
 
-                  <Column width={130}>
+                  <Column width={130} sortable>
                     <HeaderCell>Last Name</HeaderCell>
                     <Cell dataKey="lastName" />
                   </Column>
@@ -738,6 +738,13 @@ describe('Table', () => {
     });
 
     const table = document.getElementById('my-table');
+
     assert.equal(table.querySelectorAll('.rs-table-column-group').length, 2);
+    assert.equal(
+      table.querySelectorAll(
+        '.rs-table-column-group .rs-table-cell-header .rs-table-cell-header-icon-sort'
+      ).length,
+      4
+    );
   });
 });

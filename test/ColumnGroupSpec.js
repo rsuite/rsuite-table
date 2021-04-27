@@ -2,6 +2,15 @@ import React from 'react';
 
 import { getDOMNode } from './TestWrapper';
 import ColumnGroup from '../src/ColumnGroup';
+import Column from '../src/Column';
+import Cell from '../src/Cell';
+import HeaderCell from '../src/HeaderCell';
+
+const Item = ({ className, style, children }) => (
+  <div className={className} style={style}>
+    {children}
+  </div>
+);
 
 describe('ColumnGroup', () => {
   it('Should output a ColumnGroup', () => {
@@ -18,8 +27,8 @@ describe('ColumnGroup', () => {
   it('Should render 2 cells', () => {
     const instance = getDOMNode(
       <ColumnGroup>
-        <div>a</div>
-        <div>a</div>
+        <Item>a</Item>
+        <Item>b</Item>
       </ColumnGroup>
     );
 
@@ -29,8 +38,8 @@ describe('ColumnGroup', () => {
   it('Should set height 10 for header', () => {
     const instance = getDOMNode(
       <ColumnGroup headerHeight={20} header={'header'}>
-        <div>a</div>
-        <div>a</div>
+        <Item>a</Item>
+        <Item>b</Item>
       </ColumnGroup>
     );
 
@@ -41,8 +50,8 @@ describe('ColumnGroup', () => {
   it('Should be centered vertically', () => {
     const instance = getDOMNode(
       <ColumnGroup header={'header'} verticalAlign="middle">
-        <div>a</div>
-        <div>a</div>
+        <Item>a</Item>
+        <Item>b</Item>
       </ColumnGroup>
     );
 
@@ -50,17 +59,13 @@ describe('ColumnGroup', () => {
       instance.querySelector('.rs-table-column-group-header-content').style.verticalAlign,
       'middle'
     );
-    assert.equal(
-      instance.querySelector('.rs-table-column-group-cell-content').style.verticalAlign,
-      'middle'
-    );
   });
 
   it('Should have a custom className prefix', () => {
     const instance = getDOMNode(
       <ColumnGroup classPrefix="my">
-        <div>a</div>
-        <div>a</div>
+        <Item>a</Item>
+        <Item>b</Item>
       </ColumnGroup>
     );
 
