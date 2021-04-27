@@ -21,23 +21,25 @@ interface HeaderCelltate {
   flexGrow?: number;
 }
 
+const propTypes = {
+  index: PropTypes.number,
+  sortColumn: PropTypes.string,
+  sortType: PropTypes.oneOf(['desc', 'asc']),
+  sortable: PropTypes.bool,
+  resizable: PropTypes.bool,
+  minWidth: PropTypes.number,
+  onColumnResizeStart: PropTypes.func,
+  onColumnResizeEnd: PropTypes.func,
+  onResize: PropTypes.func,
+  onColumnResizeMove: PropTypes.func,
+  onSortColumn: PropTypes.func,
+  flexGrow: PropTypes.number,
+  fixed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right'])]),
+  children: PropTypes.node
+};
+
 class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
-  static propTypes = {
-    index: PropTypes.number,
-    sortColumn: PropTypes.string,
-    sortType: PropTypes.oneOf(['desc', 'asc']),
-    sortable: PropTypes.bool,
-    resizable: PropTypes.bool,
-    minWidth: PropTypes.number,
-    onColumnResizeStart: PropTypes.func,
-    onColumnResizeEnd: PropTypes.func,
-    onResize: PropTypes.func,
-    onColumnResizeMove: PropTypes.func,
-    onSortColumn: PropTypes.func,
-    flexGrow: PropTypes.number,
-    fixed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right'])]),
-    children: PropTypes.node
-  };
+  static propTypes = propTypes;
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-cell-header')
   };
@@ -142,7 +144,7 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
     const classes = classNames(classPrefix, className, {
       [this.addPrefix('sortable')]: sortable
     });
-    const unhandledProps = getUnhandledProps(HeaderCell, rest);
+    const unhandledProps = getUnhandledProps(propTypes, rest);
 
     let ariaSort;
 
