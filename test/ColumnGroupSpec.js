@@ -2,9 +2,6 @@ import React from 'react';
 
 import { getDOMNode } from './TestWrapper';
 import ColumnGroup from '../src/ColumnGroup';
-import Column from '../src/Column';
-import Cell from '../src/Cell';
-import HeaderCell from '../src/HeaderCell';
 
 const Item = ({ className, style, children }) => (
   <div className={className} style={style}>
