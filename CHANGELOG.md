@@ -1,3 +1,8 @@
+# 3.15.0
+
+- fix(ColumnGroup): fix column cannot be sorted in ColumnGroup
+- fix(propTypes): fix unable to get propTypes after gatsby is compiled
+
 # 3.14.6
 
 - **Bugfix**: Revert "Replace all icon with @rsuite/icons (#180)"
