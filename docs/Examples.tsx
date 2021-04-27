@@ -25,9 +25,9 @@ interface ExamplesState {
 class Examples extends React.Component<ExamplesProps, ExamplesState> {
   constructor(props) {
     super(props);
-    this.state = {
-      index: 0
-    };
+    const hash = document.location.hash.replace('#', '');
+    const index = hash ? parseInt(hash) : 0;
+    this.state = { index };
   }
   render() {
     const { list, dependencies } = this.props;
@@ -41,6 +41,7 @@ class Examples extends React.Component<ExamplesProps, ExamplesState> {
                 return (
                   <Nav.Item
                     key={i}
+                    href={`#${i}`}
                     onClick={() => {
                       this.setState({ index: i });
                     }}

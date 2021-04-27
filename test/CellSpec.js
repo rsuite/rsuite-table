@@ -104,7 +104,7 @@ describe('Cell', () => {
         </TableContext.Provider>
       </div>
     );
-    assert.ok(instanceDom.querySelector('[aria-label="arrow-down"]'));
+    assert.ok(instanceDom.querySelector('[aria-label="arrow down"]'));
   });
 
   it('Should be 60 the left', () => {
