@@ -136,6 +136,7 @@ class Cell extends React.PureComponent<CellProps> {
 
     const nextHeight = isHeaderCell ? headerHeight : this.getHeight();
     const styles = {
+      ...style,
       width,
       height: nextHeight,
       zIndex: depth,
@@ -146,8 +147,7 @@ class Cell extends React.PureComponent<CellProps> {
       width,
       height: nextHeight,
       textAlign: align,
-      [rtl ? 'paddingRight' : 'paddingLeft']: this.isTreeCol() ? depth * LAYER_WIDTH + 10 : null,
-      ...style
+      [rtl ? 'paddingRight' : 'paddingLeft']: this.isTreeCol() ? depth * LAYER_WIDTH + 10 : null
     };
 
     if (verticalAlign) {

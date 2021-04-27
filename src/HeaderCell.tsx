@@ -110,9 +110,9 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
   }
 
   renderSortColumn(): React.ReactNode {
-    const { sortable, sortColumn, sortType = '', dataKey } = this.props;
+    const { sortable, sortColumn, sortType = '', dataKey, groupHeader } = this.props;
 
-    if (sortable) {
+    if (sortable && !groupHeader) {
       const SortIcon = sortColumn === dataKey ? SORTED_MAP[sortType] : Sort;
       const iconClasses = classNames(this.addPrefix('icon-sort'), {
         [this.addPrefix(`icon-sort-${sortType}`)]: sortColumn === dataKey
@@ -138,6 +138,7 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
       classPrefix,
       sortColumn,
       sortType,
+      groupHeader,
       ...rest
     } = this.props;
 
@@ -167,7 +168,7 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
           left={left}
           headerHeight={headerHeight}
           isHeaderCell={true}
-          onClick={this.handleClick}
+          onClick={!groupHeader ? this.handleClick : null}
         >
           {children}
           {this.renderSortColumn()}

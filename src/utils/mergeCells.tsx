@@ -2,6 +2,7 @@ import * as React from 'react';
 import isFunction from 'lodash/isFunction';
 import get from 'lodash/get';
 import ColumnGroup from '../ColumnGroup';
+import HeaderCell from '../HeaderCell';
 
 import isNullOrUndefined from './isNullOrUndefined';
 
@@ -32,7 +33,15 @@ function mergeCells(cells) {
       let left = 0;
       for (let j = 0; j < groupCount; j += 1) {
         const nextCell = cells[i + j];
-        const { width: nextCellWidth, children } = nextCell.props;
+        const {
+          width: nextCellWidth,
+          sortable,
+          children,
+          dataKey,
+          onSortColumn,
+          sortColumn,
+          sortType
+        } = nextCell.props;
 
         if (j !== 0) {
           nextWidth += nextCellWidth;
@@ -40,9 +49,18 @@ function mergeCells(cells) {
           cells[i + j] = cloneCell(nextCell, { removed: true });
         }
         groupChildren.push(
-          <div key={j} style={{ width: nextCellWidth, left }}>
+          <HeaderCell
+            key={j}
+            left={left}
+            dataKey={dataKey}
+            width={nextCellWidth}
+            sortable={sortable}
+            sortColumn={sortColumn}
+            sortType={sortType}
+            onSortColumn={onSortColumn}
+          >
             {children}
-          </div>
+          </HeaderCell>
         );
       }
       nextCells.push(
