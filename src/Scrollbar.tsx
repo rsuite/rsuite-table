@@ -19,18 +19,20 @@ type State = {
   handlePressed: boolean;
 };
 
+const propTypes = {
+  tableId: PropTypes.string,
+  vertical: PropTypes.bool,
+  length: PropTypes.number,
+  scrollLength: PropTypes.number,
+  className: PropTypes.string,
+  classPrefix: PropTypes.string,
+  onScroll: PropTypes.func,
+  onMouseDown: PropTypes.func
+};
+
 class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
   static contextType = TableContext;
-  static propTypes = {
-    tableId: PropTypes.string,
-    vertical: PropTypes.bool,
-    length: PropTypes.number,
-    scrollLength: PropTypes.number,
-    className: PropTypes.string,
-    classPrefix: PropTypes.string,
-    onScroll: PropTypes.func,
-    onMouseDown: PropTypes.func
-  };
+  static propTypes = propTypes;
   static defaultProps = {
     classPrefix: defaultClassPrefix('table-scrollbar'),
     scrollLength: 1,
@@ -192,7 +194,7 @@ class Scrollbar extends React.PureComponent<ScrollbarProps, State> {
       [vertical ? 'height' : 'width']: `${width}%`,
       [vertical ? 'minHeight' : 'minWidth']: SCROLLBAR_MIN_WIDTH
     };
-    const unhandled = getUnhandledProps(Scrollbar, rest);
+    const unhandled = getUnhandledProps(propTypes, rest);
     const valuenow = (this.scrollOffset / length) * 100 + width;
 
     return (

@@ -162,7 +162,7 @@ class Cell extends React.PureComponent<CellProps> {
       cellContent = getChildren(rowData, rowIndex);
     }
 
-    const unhandledProps = getUnhandledProps(Cell, getUnhandledProps(Column, rest));
+    const unhandledProps = getUnhandledProps(propTypes, getUnhandledProps(Column.propTypes, rest));
     const cell = renderCell ? renderCell(cellContent) : cellContent;
     const content = wordWrap ? (
       <div className={this.addPrefix('wrap')}>
