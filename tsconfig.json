@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "noImplicitAny": false,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "target": "es5",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "target": "esnext",
     "jsx": "react"
   },
-  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.json"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

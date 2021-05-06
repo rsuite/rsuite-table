@@ -3,7 +3,19 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 import TableContext from './TableContext';
-import { RowProps } from './Row.d';
+import { StandardProps } from './@types/common';
+
+export interface RowProps extends StandardProps {
+  width?: number;
+  height?: number;
+  headerHeight?: number;
+  top?: number;
+  isHeaderRow?: boolean;
+  rowRef?: React.Ref<any>;
+  className?: string;
+  classPrefix?: string;
+  style?: React.CSSProperties;
+}
 
 const propTypes = {
   width: PropTypes.number,
