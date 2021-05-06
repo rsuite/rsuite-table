@@ -2,8 +2,17 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
-import { CellGroupProps } from './CellGroup.d';
 import TableContext from './TableContext';
+
+export interface CellGroupProps {
+  fixed?: 'left' | 'right';
+  width?: number;
+  height?: number;
+  left?: number;
+  style?: React.CSSProperties;
+  className?: string;
+  classPrefix?: string;
+}
 
 const propTypes = {
   fixed: PropTypes.oneOf(['left', 'right']),

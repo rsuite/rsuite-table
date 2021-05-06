@@ -5,7 +5,18 @@ import { DOMMouseMoveTracker, addStyle, getOffset } from 'dom-lib';
 import { SCROLLBAR_MIN_WIDTH } from './constants';
 import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 import TableContext from './TableContext';
-import { ScrollbarProps } from './Scrollbar.d';
+
+export interface ScrollbarProps {
+  vertical?: boolean;
+  length: number;
+  scrollLength: number;
+  className?: string;
+  classPrefix?: string;
+  tableId?: string;
+  onScroll?: (delta: number, event: React.MouseEvent) => void;
+  onMouseDown?: (event: React.MouseEvent) => void;
+  [key: string]: any;
+}
 
 type Offset = {
   top: number;

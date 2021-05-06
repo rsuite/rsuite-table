@@ -1,8 +1,19 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { ColumnGroupProps } from './ColumnGroup.d';
 import { defaultClassPrefix, prefix } from './utils/prefix';
+
+export interface ColumnGroupProps {
+  align?: 'left' | 'center' | 'right';
+  verticalAlign?: 'top' | 'middle' | 'bottom';
+  fixed?: boolean | 'left' | 'right';
+  width?: number;
+  header?: React.ReactNode;
+  children?: React.ReactNode;
+  className?: string;
+  headerHeight?: number;
+  classPrefix?: string;
+}
 
 const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HTMLDivElement>) => {
   const {

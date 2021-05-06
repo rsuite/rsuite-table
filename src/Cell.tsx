@@ -5,9 +5,52 @@ import { LAYER_WIDTH } from './constants';
 import { isNullOrUndefined, defaultClassPrefix, getUnhandledProps, prefix } from './utils';
 import TableContext from './TableContext';
 import Column from './Column';
-import { CellProps } from './Cell.d';
 import ArrowRight from '@rsuite/icons/ArrowRight';
 import ArrowDown from '@rsuite/icons/ArrowDown';
+import { StandardProps, RowDataType } from './@types/common';
+
+export interface CellProps extends StandardProps {
+  align?: 'left' | 'center' | 'right';
+  verticalAlign?: 'top' | 'middle' | 'bottom';
+  className?: string;
+  classPrefix?: string;
+  dataKey?: string;
+  isHeaderCell?: boolean;
+
+  width?: number;
+  height?: number | ((rowData: object) => number);
+  left?: number;
+  headerHeight?: number;
+
+  style?: React.CSSProperties;
+  firstColumn?: boolean;
+  lastColumn?: boolean;
+  hasChildren?: boolean;
+  children?: React.ReactNode | ((rowData: RowDataType, rowIndex: number) => React.ReactNode);
+
+  rowKey?: string | number;
+  rowIndex?: number;
+  rowData?: RowDataType;
+  depth?: number;
+
+  onTreeToggle?: (
+    rowKey?: string | number,
+    rowIndex?: number,
+    rowData?: RowDataType,
+    event?: React.MouseEvent
+  ) => void;
+
+  renderTreeToggle?: (
+    expandButton: React.ReactNode,
+    rowData?: RowDataType,
+    expanded?: boolean
+  ) => React.ReactNode;
+  renderCell?: (contentChildren: any) => React.ReactNode;
+  wordWrap?: boolean;
+  removed?: boolean;
+  treeCol?: boolean;
+  expanded?: boolean;
+}
 
 export const propTypes = {
   align: PropTypes.oneOf(['left', 'center', 'right']),

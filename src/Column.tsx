@@ -1,5 +1,18 @@
 import PropTypes from 'prop-types';
-import { ColumnProps } from './Column.d';
+
+export interface ColumnProps {
+  align?: 'left' | 'center' | 'right';
+  verticalAlign?: 'top' | 'middle' | 'bottom';
+  width?: number;
+  fixed?: boolean | 'left' | 'right';
+  resizable?: boolean;
+  sortable?: boolean;
+  flexGrow?: number;
+  minWidth?: number;
+  colSpan?: number;
+  treeCol?: boolean;
+  onResize?: (columnWidth?: number, dataKey?: string) => void;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Column(_props: ColumnProps) {

@@ -2,7 +2,7 @@ import requestAnimationFramePolyfill from 'dom-lib/lib/animation/requestAnimatio
 import cancelAnimationFramePolyfill from 'dom-lib/lib/animation/cancelAnimationFramePolyfill';
 
 export const cancelAnimationTimeout = (frame: KeyframeAnimationOptions) =>
-  cancelAnimationFramePolyfill(frame.id);
+  cancelAnimationFramePolyfill(frame.id as any);
 
 /**
  * Recursively calls requestAnimationFrame until a specified delay has been met or exceeded.

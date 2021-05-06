@@ -21,7 +21,7 @@ import {
   getOffset
 } from 'dom-lib';
 
-import Row from './Row';
+import Row, { RowProps } from './Row';
 import CellGroup from './CellGroup';
 import Scrollbar from './Scrollbar';
 import TableContext from './TableContext';
@@ -44,10 +44,69 @@ import {
   resetLeftForCells
 } from './utils';
 
-import { TableProps } from './Table.d';
-import { RowProps } from './Row.d';
-import { SortType } from './common.d';
 import ColumnGroup from './ColumnGroup';
+import { StandardProps, SortType, RowDataType } from './@types/common';
+
+export interface TableLocale {
+  emptyMessage?: string;
+  loading?: string;
+}
+
+export interface TableProps extends StandardProps {
+  autoHeight?: boolean;
+  affixHeader?: boolean | number;
+  affixHorizontalScrollbar?: boolean | number;
+  bodyRef?: (ref: HTMLElement) => void;
+  bordered?: boolean;
+  className?: string;
+  classPrefix?: string;
+  children: React.ReactNode;
+  cellBordered?: boolean;
+  defaultSortType?: SortType;
+  disabledScroll?: boolean;
+  defaultExpandAllRows?: boolean;
+  defaultExpandedRowKeys?: string[] | number[];
+  data: object[];
+  expandedRowKeys?: string[] | number[];
+  height: number;
+  hover: boolean;
+  headerHeight: number;
+  locale: TableLocale;
+  loading?: boolean;
+  loadAnimation?: boolean;
+  minHeight: number;
+  rowHeight: number | ((rowData: object) => number);
+  rowKey: string | number;
+  isTree?: boolean;
+  rowExpandedHeight?: number;
+  rowClassName?: string | ((rowData: object) => string);
+  showHeader?: boolean;
+  style?: React.CSSProperties;
+  sortColumn?: string;
+  sortType?: SortType;
+  shouldUpdateScroll?: boolean;
+  translate3d?: boolean;
+  rtl?: boolean;
+  width?: number;
+  wordWrap?: boolean;
+  virtualized?: boolean;
+  renderTreeToggle?: (
+    expandButton: React.ReactNode,
+    rowData?: RowDataType,
+    expanded?: boolean
+  ) => React.ReactNode;
+  renderRowExpanded?: (rowDate?: object) => React.ReactNode;
+  renderEmpty?: (info: React.ReactNode) => React.ReactNode;
+  renderLoading?: (loading: React.ReactNode) => React.ReactNode;
+  onRowClick?: (rowData: object, event: React.MouseEvent) => void;
+  onRowContextMenu?: (rowData: object, event: React.MouseEvent) => void;
+  onScroll?: (scrollX: number, scrollY: number) => void;
+  onSortColumn?: (dataKey: string, sortType?: SortType) => void;
+  onExpandChange?: (expanded: boolean, rowData: object) => void;
+  onTouchStart?: (event: React.TouchEvent) => void; // for tests
+  onTouchMove?: (event: React.TouchEvent) => void; // for tests
+  onDataUpdated?: (nextData: object[], scrollTo: (coord: { x: number; y: number }) => void) => void;
+}
 
 interface TableRowProps extends RowProps {
   key?: string | number;
@@ -789,7 +848,7 @@ class Table extends React.Component<TableProps, TableState> {
    * 当用户在 Table 内使用 tab 键，触发了 onScroll 事件，这个时候应该更新滚动条位置
    * https://github.com/rsuite/rsuite/issues/234
    */
-  handleBodyScroll = (event: React.UIEvent<HTMLDivElement>) => {
+  handleBodyScroll = event => {
     if (event.target !== this.tableBodyRef.current) {
       return;
     }
@@ -867,7 +926,7 @@ class Table extends React.Component<TableProps, TableState> {
     const scrollArrayGroups = Array.from(scrollGroups);
 
     for (let i = 0; i < scrollArrayGroups.length; i++) {
-      const group = scrollArrayGroups[i];
+      const group = scrollArrayGroups[i] as Element;
       addStyle(group, wheelGroupStyle);
     }
 
@@ -988,9 +1047,9 @@ class Table extends React.Component<TableProps, TableState> {
     const { height, autoHeight, rowHeight, affixHeader } = this.props;
     const headerHeight = this.getTableHeaderHeight();
     const contentHeight = rows.length
-      ? Array.from(rows)
-          .map(row => getHeight(row) || rowHeight)
-          .reduce((x, y) => x + y)
+      ? (Array.from(rows)
+          .map((row: Element) => getHeight(row) || rowHeight)
+          .reduce((x: number, y: number) => x + y) as number)
       : 0;
 
     // 当设置 affixHeader 属性后要减掉两个 header 的高度
