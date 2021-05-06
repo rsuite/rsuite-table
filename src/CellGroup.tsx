@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
+import { defaultClassPrefix, prefix } from './utils';
 import TableContext from './TableContext';
 
 export interface CellGroupProps {
@@ -12,9 +12,37 @@ export interface CellGroupProps {
   style?: React.CSSProperties;
   className?: string;
   classPrefix?: string;
+  children?: React.ReactNode;
 }
 
-const propTypes = {
+const CellGroup = React.forwardRef((props: CellGroupProps, ref: React.Ref<HTMLDivElement>) => {
+  const { fixed, width, left, height, style, classPrefix, className, children, ...rest } = props;
+
+  const { translateDOMPositionXY, classPrefix: tableClassPrefix } = useContext(TableContext);
+  const addPrefix = (name: string) =>
+    prefix(classPrefix || defaultClassPrefix('table-cell-group', tableClassPrefix))(name);
+
+  const classes = classNames(classPrefix, className, {
+    [addPrefix(`fixed-${fixed || ''}`)]: fixed,
+    [addPrefix('scroll')]: !fixed
+  });
+  const styles = {
+    width,
+    height,
+    ...style
+  };
+
+  translateDOMPositionXY?.(styles, left, 0);
+
+  return (
+    <div {...rest} ref={ref} className={classes} style={styles}>
+      {children}
+    </div>
+  );
+});
+
+CellGroup.displayName = 'CellGroup';
+CellGroup.propTypes = {
   fixed: PropTypes.oneOf(['left', 'right']),
   width: PropTypes.number,
   height: PropTypes.number,
@@ -23,50 +51,5 @@ const propTypes = {
   className: PropTypes.string,
   classPrefix: PropTypes.string
 };
-class CellGroup extends React.PureComponent<CellGroupProps> {
-  static propTypes = propTypes;
-  static defaultProps = {
-    classPrefix: defaultClassPrefix('table-cell-group')
-  };
-
-  addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
-
-  render() {
-    const {
-      fixed,
-      width,
-      left,
-      height,
-      style,
-      classPrefix,
-      className,
-      children,
-      ...rest
-    } = this.props;
-    const classes = classNames(classPrefix, className, {
-      [this.addPrefix(`fixed-${fixed || ''}`)]: fixed,
-      [this.addPrefix('scroll')]: !fixed
-    });
-    const styles = {
-      width,
-      height,
-      ...style
-    };
-    const unhandledProps = getUnhandledProps(propTypes, rest);
-
-    return (
-      <TableContext.Consumer>
-        {({ translateDOMPositionXY }) => {
-          translateDOMPositionXY?.(styles, left, 0);
-          return (
-            <div {...unhandledProps} className={classes} style={styles}>
-              {children}
-            </div>
-          );
-        }}
-      </TableContext.Consumer>
-    );
-  }
-}
 
 export default CellGroup;

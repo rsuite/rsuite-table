@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import Sort from '@rsuite/icons/Sort';
 import SortUp from '@rsuite/icons/SortUp';
 import SortDown from '@rsuite/icons/SortDown';
-
+import TableContext from './TableContext';
 import ColumnResizeHandler from './ColumnResizeHandler';
 import { isNullOrUndefined, getUnhandledProps, defaultClassPrefix, prefix } from './utils';
 import Cell, { CellProps } from './Cell';
@@ -61,10 +61,7 @@ const propTypes = {
 
 class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
   static propTypes = propTypes;
-  static defaultProps = {
-    classPrefix: defaultClassPrefix('table-cell-header')
-  };
-
+  static contextType = TableContext;
   static getDerivedStateFromProps(nextProps: HeaderCellProps, prevState: HeaderCelltate) {
     if (nextProps.width !== prevState.width || nextProps.flexGrow !== prevState.flexGrow) {
       return {
@@ -105,7 +102,10 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
     }
   };
 
-  addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
+  getClassPrefix = () =>
+    this.props.classPrefix || defaultClassPrefix('table-cell-header', this.context.classPrefix);
+
+  addPrefix = (name: string) => prefix(this.getClassPrefix())(name);
 
   renderResizeSpanner() {
     const { resizable, left, onColumnResizeMove, fixed, headerHeight, minWidth } = this.props;
@@ -156,14 +156,13 @@ class HeaderCell extends React.PureComponent<HeaderCellProps, HeaderCelltate> {
       children,
       left,
       sortable,
-      classPrefix,
       sortColumn,
       sortType,
       groupHeader,
       ...rest
     } = this.props;
 
-    const classes = classNames(classPrefix, className, {
+    const classes = classNames(this.getClassPrefix(), className, {
       [this.addPrefix('sortable')]: sortable
     });
     const unhandledProps = getUnhandledProps(propTypes, rest);

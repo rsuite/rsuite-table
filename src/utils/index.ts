@@ -13,4 +13,5 @@ export { default as findAllParents } from './findAllParents';
 export { default as shouldShowRowByExpanded } from './shouldShowRowByExpanded';
 export { default as resetLeftForCells } from './resetLeftForCells';
 export { default as isNumberOrTrue } from './isNumberOrTrue';
+export { default as mergeRefs } from './mergeRefs';
 export * from './requestAnimationTimeout';

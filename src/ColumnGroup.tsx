@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { defaultClassPrefix, prefix } from './utils/prefix';
+import TableContext from './TableContext';
 
 export interface ColumnGroupProps {
   align?: 'left' | 'center' | 'right';
@@ -34,10 +35,12 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
   };
 
   const contentStyles = { ...styles, verticalAlign };
-  const addPrefix = React.useCallback((name: string) => prefix(classPrefix)(name), []);
+  const { classPrefix: tableClassPrefix } = useContext(TableContext);
+  const colClassPrefix = classPrefix || defaultClassPrefix('table-column-group', tableClassPrefix);
+  const addPrefix = React.useCallback((name: string) => prefix(colClassPrefix)(name), []);
 
   return (
-    <div ref={ref} className={classNames(classPrefix, className)} {...rest}>
+    <div ref={ref} className={classNames(colClassPrefix, className)} {...rest}>
       <div className={addPrefix('header')} style={styles}>
         <div className={addPrefix('header-content')} style={contentStyles}>
           {header}
@@ -61,8 +64,7 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
 
 ColumnGroup.displayName = 'ColumnGroup';
 ColumnGroup.defaultProps = {
-  headerHeight: 80,
-  classPrefix: defaultClassPrefix('table-column-group')
+  headerHeight: 80
 };
 
 ColumnGroup.propTypes = {

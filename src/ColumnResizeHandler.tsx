@@ -44,9 +44,6 @@ const propTypes = {
 class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
   static contextType = TableContext;
   static propTypes = propTypes;
-  static defaultProps = {
-    classPrefix: defaultClassPrefix('table-column-resize-spanner')
-  };
 
   columnWidth = 0;
   cursorDelta = 0;
@@ -130,7 +127,10 @@ class ColumnResizeHandler extends React.Component<ColumnResizeHandlerProps> {
       ...style
     };
 
-    const classes = classNames(classPrefix, className);
+    const classes = classNames(
+      classPrefix || defaultClassPrefix('table-column-resize-spanner', this.context.classPrefix),
+      className
+    );
     const unhandled = getUnhandledProps(propTypes, rest);
 
     return (

@@ -1172,12 +1172,13 @@ class Table extends React.Component<TableProps, TableState> {
     props: TableRowProps,
     shouldRenderExpandedRow?: boolean
   ) {
-    const { renderTreeToggle, rowKey, wordWrap, isTree } = this.props;
+    const { renderTreeToggle, rowKey, wordWrap, isTree, classPrefix } = this.props;
     const hasChildren = isTree && rowData.children && Array.isArray(rowData.children);
     const nextRowKey = typeof rowData[rowKey] !== 'undefined' ? rowData[rowKey] : props.key;
 
     const rowProps: TableRowProps = {
       ...props,
+      classPrefix: `${classPrefix}-row`,
       key: nextRowKey,
       'aria-rowindex': (props.key as number) + 2,
       rowRef: this.bindTableRowsRef(props.key, rowData),
@@ -1211,9 +1212,11 @@ class Table extends React.Component<TableProps, TableState> {
   }
 
   renderRow(props: TableRowProps, cells: any[], shouldRenderExpandedRow?: boolean, rowData?: any) {
-    const { rowClassName } = this.props;
+    const { rowClassName, classPrefix } = this.props;
     const { shouldFixedColumn, width, contentWidth } = this.state;
     const { depth, ...restRowProps } = props;
+    const cellGroupClassPrefix = `${classPrefix}-cell-group`;
+
     if (typeof rowClassName === 'function') {
       restRowProps.className = rowClassName(rowData);
     } else {
@@ -1263,6 +1266,7 @@ class Table extends React.Component<TableProps, TableState> {
         <Row {...restRowProps} data-depth={depth} style={rowStyles}>
           {fixedLeftCellGroupWidth ? (
             <CellGroup
+              classPrefix={cellGroupClassPrefix}
               fixed="left"
               height={props.isHeaderRow ? props.headerHeight : props.height}
               width={fixedLeftCellGroupWidth}
@@ -1272,10 +1276,11 @@ class Table extends React.Component<TableProps, TableState> {
             </CellGroup>
           ) : null}
 
-          <CellGroup>{mergeCells(scrollCells)}</CellGroup>
+          <CellGroup classPrefix={cellGroupClassPrefix}>{mergeCells(scrollCells)}</CellGroup>
 
           {fixedRightCellGroupWidth ? (
             <CellGroup
+              classPrefix={cellGroupClassPrefix}
               fixed="right"
               style={
                 this.isRTL()
@@ -1296,7 +1301,7 @@ class Table extends React.Component<TableProps, TableState> {
 
     return (
       <Row {...restRowProps} data-depth={depth} style={rowStyles}>
-        <CellGroup>{mergeCells(cells)}</CellGroup>
+        <CellGroup classPrefix={cellGroupClassPrefix}>{mergeCells(cells)}</CellGroup>
         {shouldRenderExpandedRow && this.renderRowExpanded(rowData)}
       </Row>
     );
@@ -1329,11 +1334,12 @@ class Table extends React.Component<TableProps, TableState> {
   }
 
   renderTableHeader(headerCells: any[], rowWidth: number) {
-    const { affixHeader } = this.props;
+    const { affixHeader, classPrefix } = this.props;
     const { width: tableWidth } = this.state;
     const top = typeof affixHeader === 'number' ? affixHeader : 0;
     const headerHeight = this.getTableHeaderHeight();
     const rowProps: TableRowProps = {
+      classPrefix: `${classPrefix}-row`,
       'aria-rowindex': 1,
       rowRef: this.tableHeaderRef,
       width: rowWidth,
@@ -1541,7 +1547,7 @@ class Table extends React.Component<TableProps, TableState> {
   }
 
   renderScrollbar() {
-    const { disabledScroll, affixHorizontalScrollbar, id } = this.props;
+    const { disabledScroll, affixHorizontalScrollbar, id, classPrefix } = this.props;
     const { contentWidth, contentHeight, width, fixedHorizontalScrollbar } = this.state;
     const bottom = typeof affixHorizontalScrollbar === 'number' ? affixHorizontalScrollbar : 0;
 
@@ -1552,27 +1558,29 @@ class Table extends React.Component<TableProps, TableState> {
       return null;
     }
 
-    return (
-      <div>
-        <Scrollbar
-          tableId={id}
-          className={classNames({ fixed: fixedHorizontalScrollbar })}
-          style={{ width, bottom: fixedHorizontalScrollbar ? bottom : undefined }}
-          length={this.state.width}
-          onScroll={this.handleScrollX}
-          scrollLength={contentWidth}
-          ref={this.scrollbarXRef}
-        />
-        <Scrollbar
-          vertical
-          tableId={id}
-          length={height - headerHeight}
-          scrollLength={contentHeight}
-          onScroll={this.handleScrollY}
-          ref={this.scrollbarYRef}
-        />
-      </div>
-    );
+    return [
+      <Scrollbar
+        key="scrollbar"
+        tableId={id}
+        classPrefix={`${classPrefix}-scrollbar`}
+        className={classNames({ fixed: fixedHorizontalScrollbar })}
+        style={{ width, bottom: fixedHorizontalScrollbar ? bottom : undefined }}
+        length={this.state.width}
+        onScroll={this.handleScrollX}
+        scrollLength={contentWidth}
+        ref={this.scrollbarXRef}
+      />,
+      <Scrollbar
+        key="vertical-scrollbar"
+        classPrefix={`${classPrefix}-scrollbar`}
+        vertical
+        tableId={id}
+        length={height - headerHeight}
+        scrollLength={contentHeight}
+        onScroll={this.handleScrollY}
+        ref={this.scrollbarYRef}
+      />
+    ];
   }
 
   /**
@@ -1600,6 +1608,7 @@ class Table extends React.Component<TableProps, TableState> {
   render() {
     const {
       children,
+      classPrefix,
       className,
       data,
       width = 0,
@@ -1609,7 +1618,7 @@ class Table extends React.Component<TableProps, TableState> {
       bordered,
       cellBordered,
       wordWrap,
-      classPrefix,
+
       loading,
       showHeader,
       ...rest
@@ -1639,6 +1648,7 @@ class Table extends React.Component<TableProps, TableState> {
     return (
       <TableContext.Provider
         value={{
+          classPrefix,
           translateDOMPositionXY: this.translateDOMPositionXY,
           rtl: this.isRTL(),
           isTree,
