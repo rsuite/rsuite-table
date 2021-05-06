@@ -146,9 +146,7 @@ describe('Cell', () => {
 
   it('Should have a custom style', () => {
     const fontSize = '12px';
-    const instanceDom = getDOMNode(<Cell style={{ fontSize }} />).querySelector(
-      '.rs-table-cell-content'
-    );
+    const instanceDom = getDOMNode(<Cell style={{ fontSize }} />);
     assert.equal(instanceDom.style.fontSize, fontSize);
   });
 
