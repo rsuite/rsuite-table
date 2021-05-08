@@ -9,6 +9,7 @@ const FixedColumnTable = () => {
 
   return (
     <Table
+      classPrefix="rs-table"
       bordered
       height={400}
       headerHeight={80}

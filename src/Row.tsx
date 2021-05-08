@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { defaultClassPrefix, getUnhandledProps, prefix } from './utils';
+import { defaultClassPrefix, prefix, mergeRefs } from './utils';
 import TableContext from './TableContext';
 import { StandardProps } from './@types/common';
 
@@ -17,7 +17,49 @@ export interface RowProps extends StandardProps {
   style?: React.CSSProperties;
 }
 
-const propTypes = {
+const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) => {
+  const {
+    className,
+    width,
+    height,
+    top,
+    style,
+    isHeaderRow,
+    headerHeight,
+    rowRef,
+    classPrefix,
+    children,
+    ...rest
+  } = props;
+
+  const addPrefix = prefix(classPrefix);
+  const classes = classNames(classPrefix, className, {
+    [addPrefix('header')]: isHeaderRow
+  });
+  const { translateDOMPositionXY } = useContext(TableContext);
+
+  const styles = {
+    minWidth: width,
+    height: isHeaderRow ? headerHeight : height,
+    ...style
+  };
+
+  translateDOMPositionXY?.(styles, 0, top);
+
+  return (
+    <div role="row" {...rest} ref={mergeRefs(rowRef, ref)} className={classes} style={styles}>
+      {children}
+    </div>
+  );
+});
+
+Row.displayName = 'Row';
+Row.defaultProps = {
+  classPrefix: defaultClassPrefix('table-row'),
+  height: 46,
+  headerHeight: 40
+};
+Row.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   headerHeight: PropTypes.number,
@@ -28,54 +70,5 @@ const propTypes = {
   classPrefix: PropTypes.string,
   style: PropTypes.object
 };
-class Row extends React.PureComponent<RowProps> {
-  static propTypes = propTypes;
-  static defaultProps = {
-    classPrefix: defaultClassPrefix('table-row'),
-    height: 46,
-    headerHeight: 40
-  };
-  render() {
-    const {
-      className,
-      width,
-      height,
-      top,
-      style,
-      isHeaderRow,
-      headerHeight,
-      rowRef,
-      classPrefix,
-      children,
-      ...rest
-    } = this.props;
-
-    const addPrefix = prefix(classPrefix);
-    const classes = classNames(classPrefix, className, {
-      [addPrefix('header')]: isHeaderRow
-    });
-
-    const styles = {
-      minWidth: width,
-      height: isHeaderRow ? headerHeight : height,
-      ...style
-    };
-
-    const unhandledProps = getUnhandledProps(propTypes, rest);
-
-    return (
-      <TableContext.Consumer>
-        {({ translateDOMPositionXY }) => {
-          translateDOMPositionXY?.(styles, 0, top);
-          return (
-            <div role="row" {...unhandledProps} ref={rowRef} className={classes} style={styles}>
-              {children}
-            </div>
-          );
-        }}
-      </TableContext.Consumer>
-    );
-  }
-}
 
 export default Row;

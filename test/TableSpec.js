@@ -746,4 +746,41 @@ describe('Table', () => {
       4
     );
   });
+
+  it('Should replace all classPrefix', () => {
+    ReactTestUtils.act(() => {
+      ReactDOM.render(
+        <div id="my-list">
+          <Table
+            style={{ width: 300 }}
+            classPrefix={'my-list'}
+            data={[
+              {
+                id: 1,
+                name: 'a'
+              }
+            ]}
+          >
+            <Column width={200} fixed>
+              <HeaderCell>11</HeaderCell>
+              <Cell>12</Cell>
+            </Column>
+            <Column width={200}>
+              <HeaderCell>11</HeaderCell>
+              <Cell>12</Cell>
+            </Column>
+          </Table>
+        </div>,
+        container
+      );
+    });
+
+    const table = document.getElementById('my-list');
+
+    assert.include(table.childNodes[0].className, 'my-list');
+    assert.equal(table.querySelectorAll('.my-list-cell-group').length, 4);
+    assert.equal(table.querySelectorAll('.my-list-cell').length, 4);
+    assert.equal(table.querySelectorAll('.my-list-cell-header').length, 2);
+    assert.equal(table.querySelectorAll('.my-list-row').length, 2);
+  });
 });

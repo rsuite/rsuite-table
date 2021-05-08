@@ -87,7 +87,6 @@ class Cell extends React.PureComponent<CellProps> {
   static contextType = TableContext;
   static propTypes = propTypes;
   static defaultProps = {
-    classPrefix: defaultClassPrefix('table-cell'),
     headerHeight: 36,
     depth: 0,
     height: 36,
@@ -95,7 +94,11 @@ class Cell extends React.PureComponent<CellProps> {
     left: 0
   };
 
-  addPrefix = (name: string) => prefix(this.props.classPrefix)(name);
+  getClassPrefix = () =>
+    this.props.classPrefix || defaultClassPrefix('table-cell', this.context.classPrefix);
+
+  addPrefix = (name: string) => prefix(this.getClassPrefix())(name);
+
   isTreeCol() {
     const { treeCol, firstColumn } = this.props;
     const { hasCustomTreeCol, isTree } = this.context;
@@ -158,7 +161,6 @@ class Cell extends React.PureComponent<CellProps> {
       renderCell,
       removed,
       wordWrap,
-      classPrefix,
       depth,
       verticalAlign,
       expanded,
@@ -170,7 +172,7 @@ class Cell extends React.PureComponent<CellProps> {
       return null;
     }
 
-    const classes = classNames(classPrefix, className, {
+    const classes = classNames(this.getClassPrefix(), className, {
       [this.addPrefix('expanded')]: expanded && this.isTreeCol(),
       [this.addPrefix('first')]: firstColumn,
       [this.addPrefix('last')]: lastColumn

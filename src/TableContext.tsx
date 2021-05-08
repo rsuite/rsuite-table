@@ -7,6 +7,7 @@ export interface TableContextProps {
   hasCustomTreeCol: boolean;
   isTree: boolean;
   translateDOMPositionXY: (style: React.CSSProperties, x: number, y: number) => void;
+  classPrefix?: string;
 }
 
 const TableContext = createContext<TableContextProps>({
