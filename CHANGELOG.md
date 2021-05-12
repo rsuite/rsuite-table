@@ -1,3 +1,7 @@
+# 3.15.1
+
+- fix(babel): fix the problem that commonjs import default is undefined
+
 # 3.15.0
 
 - fix(ColumnGroup): fix column cannot be sorted in ColumnGroup
