@@ -116,7 +116,7 @@ function mergeCells(cells) {
       nextCells.push(
         cloneCell(cells[i], {
           width: nextWidth,
-          'aria-colspan': colSpan && nextWidth > width ? colSpan : undefined
+          'aria-colspan': nextWidth > width ? colSpan : undefined
         })
       );
       continue;
