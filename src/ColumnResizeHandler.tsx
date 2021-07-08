@@ -11,7 +11,7 @@ export type FixedType = boolean | 'left' | 'right';
 export interface Client {
   clientX?: number;
   clientY?: number;
-  preventDefault?: Function;
+  preventDefault?: any;
 }
 
 export interface ColumnResizeHandlerProps {

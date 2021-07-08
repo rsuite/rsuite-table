@@ -32,7 +32,10 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
   const contentStyles = { ...styles, verticalAlign };
   const { classPrefix: tableClassPrefix } = useContext(TableContext);
   const colClassPrefix = classPrefix || defaultClassPrefix('table-column-group', tableClassPrefix);
-  const addPrefix = React.useCallback((name: string) => prefix(colClassPrefix)(name), []);
+  const addPrefix = React.useCallback(
+    (name: string) => prefix(colClassPrefix)(name),
+    [colClassPrefix]
+  );
 
   return (
     <div ref={ref} className={classNames(colClassPrefix, className)} {...rest}>
