@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { LAYER_WIDTH } from './constants';
@@ -10,29 +10,30 @@ import ArrowDown from '@rsuite/icons/ArrowDown';
 import { StandardProps, RowDataType } from './@types/common';
 
 export interface CellProps extends StandardProps {
+  /** Data binding key, but also a sort of key */
+  dataKey?: string;
+  /** Row Number */
+  rowIndex?: number;
+  /** Row Data */
+  rowData?: RowDataType;
   align?: 'left' | 'center' | 'right';
   verticalAlign?: 'top' | 'middle' | 'bottom';
-  className?: string;
-  classPrefix?: string;
-  dataKey?: string;
   isHeaderCell?: boolean;
-
   width?: number;
-  height?: number | ((rowData: object) => number);
+  height?: number | ((rowData: RowDataType) => number);
   left?: number;
   headerHeight?: number;
-
   style?: React.CSSProperties;
   firstColumn?: boolean;
   lastColumn?: boolean;
   hasChildren?: boolean;
   children?: React.ReactNode | ((rowData: RowDataType, rowIndex: number) => React.ReactNode);
-
   rowKey?: string | number;
-  rowIndex?: number;
-  rowData?: RowDataType;
   depth?: number;
-
+  wordWrap?: boolean;
+  removed?: boolean;
+  treeCol?: boolean;
+  expanded?: boolean;
   onTreeToggle?: (
     rowKey?: string | number,
     rowIndex?: number,
@@ -46,10 +47,6 @@ export interface CellProps extends StandardProps {
     expanded?: boolean
   ) => React.ReactNode;
   renderCell?: (contentChildren: any) => React.ReactNode;
-  wordWrap?: boolean;
-  removed?: boolean;
-  treeCol?: boolean;
-  expanded?: boolean;
 }
 
 export const propTypes = {
@@ -203,8 +200,7 @@ class Cell extends React.PureComponent<CellProps> {
     let cellContent = isNullOrUndefined(children) && rowData ? rowData[dataKey] : children;
 
     if (typeof children === 'function') {
-      const getChildren = children as Function;
-      cellContent = getChildren(rowData, rowIndex);
+      cellContent = children(rowData, rowIndex);
     }
 
     const unhandledProps = getUnhandledProps(propTypes, getUnhandledProps(Column.propTypes, rest));

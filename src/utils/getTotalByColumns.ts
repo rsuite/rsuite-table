@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import isPlainObject from 'lodash/isPlainObject';
 import { ColumnProps } from '../Column';
 

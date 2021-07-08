@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isFunction from 'lodash/isFunction';
@@ -45,67 +45,150 @@ import {
 } from './utils';
 
 import ColumnGroup from './ColumnGroup';
-import { StandardProps, SortType, RowDataType } from './@types/common';
+import { StandardProps, SortType, RowDataType, RowKeyType } from './@types/common';
 
-export interface TableLocale {
+export interface TableLocaleType {
   emptyMessage?: string;
   loading?: string;
 }
 
-export interface TableProps extends StandardProps {
+export interface TableProps extends Omit<StandardProps, 'onScroll'> {
+  /** Automatic Height */
   autoHeight?: boolean;
+
+  /** Affix the table header to the specified position on the page */
   affixHeader?: boolean | number;
+
+  /** Affix the table horizontal scrollbar to the specified position on the page */
   affixHorizontalScrollbar?: boolean | number;
+
+  /** A ref attached to the table body element */
   bodyRef?: (ref: HTMLElement) => void;
+
+  /** Show border */
   bordered?: boolean;
-  className?: string;
-  classPrefix?: string;
-  children: React.ReactNode;
+
+  /** Show cell border */
   cellBordered?: boolean;
+
+  /** Sort type */
   defaultSortType?: SortType;
+
   disabledScroll?: boolean;
+
+  /** Expand all nodes By default */
   defaultExpandAllRows?: boolean;
-  defaultExpandedRowKeys?: string[] | number[];
-  data: object[];
-  expandedRowKeys?: string[] | number[];
+
+  /** Specify the default expanded row by  rowkey */
+  defaultExpandedRowKeys?: RowKeyType[];
+
+  /** Table data */
+  data: RowDataType[];
+
+  /** Specify the default expanded row by  rowkey (Controlled) */
+  expandedRowKeys?: RowKeyType[];
+
+  /** Table Height */
   height: number;
+
+  /** The row of the table has a mouseover effect */
   hover: boolean;
+
+  /** Header height */
   headerHeight: number;
-  locale: TableLocale;
+
+  /** The component localized character set. */
+  locale: TableLocaleType;
+
+  /** Show loading */
   loading?: boolean;
+
+  /** Whether to enable loading animation */
   loadAnimation?: boolean;
+
+  /** Minimum Height */
   minHeight: number;
-  rowHeight: number | ((rowData: object) => number);
-  rowKey: string | number;
+
+  /** Row height */
+  rowHeight: number | ((rowData: RowDataType) => number);
+
+  /** Each row corresponds to the unique key in  data */
+  rowKey: RowKeyType;
+
+  /** Show as Tree table */
   isTree?: boolean;
+
+  /** Set the height of an expandable area */
   rowExpandedHeight?: number;
-  rowClassName?: string | ((rowData: object) => string);
+
+  /** Add an optional extra class name to row */
+  rowClassName?: string | ((rowData: RowDataType) => string);
+
+  /** Display header */
   showHeader?: boolean;
-  style?: React.CSSProperties;
+
+  /** Sort Column Name */
   sortColumn?: string;
+
+  /** Sort type */
   sortType?: SortType;
+
+  /** Whether to update the scroll bar after data update */
   shouldUpdateScroll?: boolean;
   translate3d?: boolean;
   rtl?: boolean;
+
+  /** width */
   width?: number;
+
+  /** The cell wraps automatically */
   wordWrap?: boolean;
+
+  /** Effectively render large tabular data */
   virtualized?: boolean;
+
+  /** Tree table, the callback function in the expanded node */
   renderTreeToggle?: (
     expandButton: React.ReactNode,
     rowData?: RowDataType,
     expanded?: boolean
   ) => React.ReactNode;
-  renderRowExpanded?: (rowDate?: object) => React.ReactNode;
+
+  /** Customize what you can do to expand a zone */
+  renderRowExpanded?: (rowDate?: RowDataType) => React.ReactNode;
+
+  /** Customized data is empty display content */
   renderEmpty?: (info: React.ReactNode) => React.ReactNode;
+
+  /** Customize the display content in the data load */
   renderLoading?: (loading: React.ReactNode) => React.ReactNode;
-  onRowClick?: (rowData: object, event: React.MouseEvent) => void;
-  onRowContextMenu?: (rowData: object, event: React.MouseEvent) => void;
+
+  /** Click the callback function after the row and return to rowDate */
+  onRowClick?: (rowData: RowDataType, event: React.MouseEvent) => void;
+
+  /** Callback after right-click row */
+  onRowContextMenu?: (rowData: RowDataType, event: React.MouseEvent) => void;
+
+  /** Callback function for scroll bar scrolling */
   onScroll?: (scrollX: number, scrollY: number) => void;
+
+  /** Click the callback function of the sort sequence to return the value sortColumn, sortType */
   onSortColumn?: (dataKey: string, sortType?: SortType) => void;
-  onExpandChange?: (expanded: boolean, rowData: object) => void;
-  onTouchStart?: (event: React.TouchEvent) => void; // for tests
-  onTouchMove?: (event: React.TouchEvent) => void; // for tests
-  onDataUpdated?: (nextData: object[], scrollTo: (coord: { x: number; y: number }) => void) => void;
+
+  /** Tree table, the callback function in the expanded node */
+  onExpandChange?: (expanded: boolean, rowData: RowDataType) => void;
+
+  // for tests
+  onTouchStart?: (event: React.TouchEvent) => void;
+
+  // for tests
+  onTouchMove?: (event: React.TouchEvent) => void;
+
+  /** Callback after table data update. */
+  onDataUpdated?: (
+    nextData: RowDataType[],
+    scrollTo: (coord: { x: number; y: number }) => void
+  ) => void;
 }
 
 interface TableRowProps extends RowProps {
@@ -136,12 +219,12 @@ interface TableState {
   contentWidth: number;
   tableRowsMaxHeight: number[];
   isColumnResizing?: boolean;
-  expandedRowKeys: string[] | number[];
+  expandedRowKeys: RowKeyType[];
   sortType?: SortType;
   scrollY: number;
   isScrolling?: boolean;
-  data: object[];
-  cacheData: object[];
+  data: RowDataType[];
+  cacheData: RowDataType[];
   fixedHeader: boolean;
   fixedHorizontalScrollbar?: boolean;
   isTree?: boolean;
@@ -959,7 +1042,7 @@ class Table extends React.Component<TableProps, TableState> {
     return (delta >= 0 && this.scrollY > this.minScrollY) || (delta < 0 && this.scrollY < 0);
   };
 
-  shouldRenderExpandedRow(rowData: object) {
+  shouldRenderExpandedRow(rowData: RowDataType) {
     const { rowKey, renderRowExpanded, isTree } = this.props;
     const expandedRowKeys = this.getExpandedRowKeys() || [];
 
@@ -1154,13 +1237,13 @@ class Table extends React.Component<TableProps, TableState> {
     }
   };
 
-  bindRowClick = (rowData: object) => {
+  bindRowClick = (rowData: RowDataType) => {
     return (event: React.MouseEvent) => {
       this.props.onRowClick?.(rowData, event);
     };
   };
 
-  bindRowContextMenu = (rowData: object) => {
+  bindRowContextMenu = (rowData: RowDataType) => {
     return (event: React.MouseEvent) => {
       this.props.onRowContextMenu?.(rowData, event);
     };
@@ -1181,7 +1264,7 @@ class Table extends React.Component<TableProps, TableState> {
       classPrefix: `${classPrefix}-row`,
       key: nextRowKey,
       'aria-rowindex': (props.key as number) + 2,
-      rowRef: this.bindTableRowsRef(props.key, rowData),
+      rowRef: this.bindTableRowsRef(props.key as any, rowData),
       onClick: this.bindRowClick(rowData),
       onContextMenu: this.bindRowContextMenu(rowData)
     };
@@ -1307,7 +1390,7 @@ class Table extends React.Component<TableProps, TableState> {
     );
   }
 
-  renderRowExpanded(rowData?: object) {
+  renderRowExpanded(rowData?: RowDataType) {
     const { renderRowExpanded, rowExpandedHeight } = this.props;
     const styles = { height: rowExpandedHeight };
 

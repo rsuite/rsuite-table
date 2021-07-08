@@ -11,10 +11,7 @@ export interface RowProps extends StandardProps {
   headerHeight?: number;
   top?: number;
   isHeaderRow?: boolean;
-  rowRef?: React.Ref<any>;
-  className?: string;
-  classPrefix?: string;
-  style?: React.CSSProperties;
+  rowRef?: any;
 }
 
 const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) => {

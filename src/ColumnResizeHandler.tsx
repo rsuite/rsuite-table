@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import clamp from 'lodash/clamp';
@@ -11,7 +11,7 @@ export type FixedType = boolean | 'left' | 'right';
 export interface Client {
   clientX?: number;
   clientY?: number;
-  preventDefault?: Function;
+  preventDefault?: any;
 }
 
 export interface ColumnResizeHandlerProps {

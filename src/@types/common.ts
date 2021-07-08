@@ -1,18 +1,21 @@
-export interface StandardProps {
+export interface StandardProps extends React.HTMLAttributes<HTMLElement> {
   /** The prefix of the component CSS class */
   classPrefix?: string;
 
   /** Additional classes */
   className?: string;
 
+  /** Primary content */
+  children?: React.ReactNode;
+
   /** Additional style */
   style?: React.CSSProperties;
-
-  [key: string]: any;
 }
 
 export type SortType = 'desc' | 'asc';
 export interface RowDataType {
-  dataKey: string;
+  dataKey?: string;
   [key: string]: any;
 }
+
+export type RowKeyType = string | number;

@@ -3,30 +3,25 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { defaultClassPrefix, prefix } from './utils/prefix';
 import TableContext from './TableContext';
+import { StandardProps } from './@types/common';
 
-export interface ColumnGroupProps {
+export interface ColumnGroupProps extends StandardProps {
+  /** Alignment */
   align?: 'left' | 'center' | 'right';
+  /** Vertical alignment */
   verticalAlign?: 'top' | 'middle' | 'bottom';
+  /** Fixed column */
   fixed?: boolean | 'left' | 'right';
-  width?: number;
+
+  /** Group header */
   header?: React.ReactNode;
-  children?: React.ReactNode;
-  className?: string;
+  width?: number;
   headerHeight?: number;
-  classPrefix?: string;
 }
 
 const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HTMLDivElement>) => {
-  const {
-    header,
-    className,
-    children,
-    classPrefix,
-    headerHeight,
-    verticalAlign,
-    width,
-    ...rest
-  } = props;
+  const { header, className, children, classPrefix, headerHeight, verticalAlign, width, ...rest } =
+    props;
 
   const height = headerHeight / 2;
   const styles: React.CSSProperties = {
@@ -37,7 +32,10 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
   const contentStyles = { ...styles, verticalAlign };
   const { classPrefix: tableClassPrefix } = useContext(TableContext);
   const colClassPrefix = classPrefix || defaultClassPrefix('table-column-group', tableClassPrefix);
-  const addPrefix = React.useCallback((name: string) => prefix(colClassPrefix)(name), []);
+  const addPrefix = React.useCallback(
+    (name: string) => prefix(colClassPrefix)(name),
+    [colClassPrefix]
+  );
 
   return (
     <div ref={ref} className={classNames(colClassPrefix, className)} {...rest}>
