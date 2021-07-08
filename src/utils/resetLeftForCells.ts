@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 /**
  * 重置数组中所有 cell 的相对 left 的距离。

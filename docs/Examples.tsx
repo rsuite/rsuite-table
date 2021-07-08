@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Row, Col, Nav } from 'rsuite';
 import CodeView from 'react-code-view';
 

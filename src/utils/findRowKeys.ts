@@ -1,4 +1,6 @@
-export default function findRowKeys(rows: any[], rowKey: string | number, expanded?: boolean) {
+import { RowKeyType } from '../@types/common';
+
+export default function findRowKeys(rows: any[], rowKey: RowKeyType, expanded?: boolean) {
   let keys = [];
   for (let i = 0; i < rows.length; i++) {
     const item = rows[i];

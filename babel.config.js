@@ -7,21 +7,19 @@ module.exports = (api, options) => {
     api.cache(() => NODE_ENV);
   }
 
-  const plugins = [
-    'lodash',
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-    '@babel/plugin-proposal-optional-chaining',
-    '@babel/plugin-proposal-export-namespace-from',
-    '@babel/plugin-proposal-export-default-from',
-    ['@babel/plugin-transform-runtime', { useESModules: !modules }]
-  ];
-
   return {
     presets: [
       ['@babel/preset-env', { modules, loose: true }],
       ['@babel/preset-react', { development: dev }],
       '@babel/typescript'
     ],
-    plugins
+    plugins: [
+      'lodash',
+      ['@babel/plugin-proposal-class-properties', { loose: true }],
+      '@babel/plugin-proposal-optional-chaining',
+      '@babel/plugin-proposal-export-namespace-from',
+      '@babel/plugin-proposal-export-default-from',
+      ['@babel/plugin-transform-runtime', { useESModules: !modules }]
+    ]
   };
 };

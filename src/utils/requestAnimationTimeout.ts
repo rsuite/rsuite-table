@@ -11,7 +11,7 @@ export const cancelAnimationTimeout = (frame: KeyframeAnimationOptions) =>
  * Credit: Joe Lambert (https://gist.github.com/joelambert/1002116#file-requesttimeout-js)
  */
 export const requestAnimationTimeout = (
-  callback: Function,
+  callback: () => void,
   delay: number
 ): KeyframeAnimationOptions => {
   let start;

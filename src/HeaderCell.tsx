@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Sort from '@rsuite/icons/Sort';
@@ -16,6 +16,7 @@ export interface HeaderCellProps extends CellProps {
   sortType?: 'desc' | 'asc';
   sortable?: boolean;
   resizable?: boolean;
+  groupHeader?: boolean;
   onColumnResizeStart?: (columnWidth?: number, left?: number, fixed?: boolean) => void;
   onColumnResizeEnd?: (
     columnWidth?: number,

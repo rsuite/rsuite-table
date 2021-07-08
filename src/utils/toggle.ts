@@ -3,7 +3,7 @@
  * @param a
  * @param b
  */
-function toggle(a: Function, b: Function) {
+function toggle(a: any, b: any) {
   return (target: HTMLElement, value: any[]) => {
     const options = [target, ...value];
     return condition => {

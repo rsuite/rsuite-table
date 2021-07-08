@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Popover, Whisper, Toggle, Grid, Button, ButtonGroup, Checkbox } from 'rsuite';
 import clone from 'lodash/clone';
