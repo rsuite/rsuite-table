@@ -155,7 +155,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   ) => React.ReactNode;
 
   /** Customize what you can do to expand a zone */
-  renderRowExpanded?: (rowDate?: RowDataType) => React.ReactNode;
+  renderRowExpanded?: (rowData?: RowDataType) => React.ReactNode;
 
   /** Customized data is empty display content */
   renderEmpty?: (info: React.ReactNode) => React.ReactNode;
