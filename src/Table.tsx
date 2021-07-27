@@ -89,7 +89,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   expandedRowKeys?: RowKeyType[];
 
   /** Table Height */
-  height: number;
+  height?: number;
 
   /** The row of the table has a mouseover effect */
   hover: boolean;
