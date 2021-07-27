@@ -113,7 +113,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   rowHeight: number | ((rowData: RowDataType) => number);
 
   /** Each row corresponds to the unique key in  data */
-  rowKey: RowKeyType;
+  rowKey?: RowKeyType;
 
   /** Show as Tree table */
   isTree?: boolean;
