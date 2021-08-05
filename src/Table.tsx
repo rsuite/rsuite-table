@@ -73,7 +73,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   expandedRowKeys?: RowKeyType[];
 
   /** The visible height of the table (the height of the scrollable container). */
-  height: number;
+  height?: number;
 
   /** The minimum height of the table. The height is maintained even when the content is not stretched. */
   minHeight: number;
@@ -97,7 +97,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   rowHeight: number | ((rowData: RowDataType) => number);
 
   /** Each row corresponds to the unique key in  data */
-  rowKey: RowKeyType;
+  rowKey?: RowKeyType;
 
   /** The table will be displayed as a tree structure */
   isTree?: boolean;
@@ -143,7 +143,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   ) => React.ReactNode;
 
   /** Customize what you can do to expand a zone */
-  renderRowExpanded?: (rowDate?: RowDataType) => React.ReactNode;
+  renderRowExpanded?: (rowData?: RowDataType) => React.ReactNode;
 
   /** Customized data is empty display content */
   renderEmpty?: (info: React.ReactNode) => React.ReactNode;
