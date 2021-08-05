@@ -62,14 +62,15 @@ class DynamicTable extends React.Component {
   handleColumnClick() {
     const { columns } = this.state;
 
-    columns.push(
-      <Column width={200} key={columns.length + 1}>
-        <HeaderCell>Email</HeaderCell>
-        <Cell dataKey="email" />
-      </Column>
-    );
-
-    this.setState({ columns });
+    this.setState({
+      columns: [
+        ...columns,
+        <Column width={200} key={columns.length + 1}>
+          <HeaderCell>Email</HeaderCell>
+          <Cell dataKey="email" />
+        </Column>
+      ]
+    });
   }
 
   handleClearData() {

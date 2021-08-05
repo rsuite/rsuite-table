@@ -3,22 +3,37 @@
 <!--start-code-->
 
 ```js
-const DateCell = ({ rowData, dataKey, ...props }) => (
-  <Cell {...props}>{rowData[dataKey].toLocaleString()}</Cell>
-);
+const BaseCell = React.forwardRef((props, ref) => {
+  const { children, rowData, ...rest } = props;
+  return (
+    <Cell
+      ref={ref}
+      rowData={rowData}
+      onDoubleClick={() => {
+        console.log(rowData);
+      }}
+      {...rest}
+    >
+      {children}
+    </Cell>
+  );
+});
 
-const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
-  <Cell {...props} style={{ padding: 0 }}>
-    <div style={{ lineHeight: '46px' }}>
-      <input
-        type="checkbox"
-        value={rowData[dataKey]}
-        onChange={onChange}
-        checked={checkedKeys.some(item => item === rowData[dataKey])}
-      />
-    </div>
-  </Cell>
-);
+const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => {
+  console.log(checkedKeys, 'checkedKeys');
+  return (
+    <BaseCell {...props} style={{ padding: 0 }}>
+      <div style={{ lineHeight: '46px' }}>
+        <input
+          type="checkbox"
+          value={rowData[dataKey]}
+          onChange={onChange}
+          checked={checkedKeys.some(item => item === rowData[dataKey])}
+        />
+      </div>
+    </BaseCell>
+  );
+};
 
 const NameCell = ({ rowData, dataKey, ...props }) => {
   const speaker = (
@@ -39,11 +54,11 @@ const NameCell = ({ rowData, dataKey, ...props }) => {
   );
 
   return (
-    <Cell {...props}>
+    <BaseCell rowData={rowData} {...props}>
       <Whisper placement="top" speaker={speaker}>
         <a>{rowData[dataKey].toLocaleString()}</a>
       </Whisper>
-    </Cell>
+    </BaseCell>
   );
 };
 
@@ -54,9 +69,9 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
   }
 
   return (
-    <Cell {...props}>
+    <BaseCell {...props}>
       <a onClick={handleAction}> Edit </a>|<a onClick={handleAction}> Remove </a>
-    </Cell>
+    </BaseCell>
   );
 };
 
@@ -66,7 +81,10 @@ const App = () => {
 
   const handleCheckAll = event => {
     const checked = event.target.checked;
+
     const keys = checked ? data.map(item => item.id) : [];
+
+    console.log(checked, keys);
     setCheckedKeys(keys);
   };
   const handleCheck = event => {
@@ -82,7 +100,11 @@ const App = () => {
       <Column width={50} align="center">
         <HeaderCell style={{ padding: 0 }}>
           <div style={{ lineHeight: '40px' }}>
-            <input type="checkbox" onChange={handleCheckAll} />
+            <input
+              type="checkbox"
+              onChange={handleCheckAll}
+              checked={checkedKeys.length === data.length}
+            />
           </div>
         </HeaderCell>
         <CheckCell dataKey="id" checkedKeys={checkedKeys} onChange={handleCheck} />
@@ -98,17 +120,21 @@ const App = () => {
 
       <Column width={160}>
         <HeaderCell>Last Name</HeaderCell>
-        <Cell dataKey="lastName" />
+        <BaseCell dataKey="lastName" />
       </Column>
 
       <Column width={300}>
         <HeaderCell>Email</HeaderCell>
-        <Cell>{rowData => <a href={`mailto:${rowData.email}`}>{rowData.email}</a>}</Cell>
+        <BaseCell>{rowData => <a href={`mailto:${rowData.email}`}>{rowData.email}</a>}</BaseCell>
       </Column>
 
       <Column width={250} align="right">
         <HeaderCell>Date</HeaderCell>
-        <Cell>{rowData => rowData.date.toLocaleString()}</Cell>
+        <BaseCell>
+          {rowData => {
+            return rowData.date.toLocaleString();
+          }}
+        </BaseCell>
       </Column>
 
       <Column width={200}>
@@ -164,7 +190,7 @@ If you need to define row heights based on the content of your data in practical
 
 ```html
 <Table
-    onRerenderRowHeight={(rowData) => {
+    rowHeight={(rowData) => {
       if (rowData.firstName === 'Janis') {
         return 30;
       }

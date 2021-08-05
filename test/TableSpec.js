@@ -1,13 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import ColumnGroup from '../src/ColumnGroup';
 import Cell from '../src/Cell';
-
-import { getDOMNode, getInstance } from './TestWrapper';
+import { getDOMNode, getInstance, render } from './utils';
 import HeaderCell from '../src/HeaderCell';
+import { getHeight } from 'dom-lib';
 
 let container;
 
@@ -23,12 +22,12 @@ afterEach(() => {
 
 describe('Table', () => {
   it('Should output a table', () => {
-    const instanceDom = getDOMNode(<Table>test</Table>);
-    assert.include(instanceDom.className, 'rs-table');
+    const instance = getDOMNode(<Table>test</Table>);
+    assert.include(instance.className, 'rs-table');
   });
 
   it('Should output 2 cell', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -41,11 +40,11 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.equal(instanceDom.querySelectorAll('.rs-table-cell').length, 2);
+    assert.equal(instance.querySelectorAll('.rs-table-cell').length, 2);
   });
 
   it('Should be disabled scroll', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table disabledScroll>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -58,11 +57,11 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.equal(instanceDom.querySelectorAll('.scrollbar-handle').length, 0);
+    assert.equal(instance.querySelectorAll('.rs-table-scrollbar-handle').length, 0);
   });
 
   it('Should be loading', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table loading>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -71,12 +70,12 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.include(instanceDom.className, 'rs-table-loading');
-    assert.ok(instanceDom.querySelectorAll('.rs-table-loader').length);
+    assert.include(instance.className, 'rs-table-loading');
+    assert.ok(instance.querySelectorAll('.rs-table-loader').length);
   });
 
   it('Should render custom loading', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table
         loading
         renderLoading={() => {
@@ -89,11 +88,11 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instanceDom.querySelector('.my-loading').innerText, 'loading');
+    assert.equal(instance.querySelector('.my-loading').innerText, 'loading');
   });
 
   it('Should render custom empty info', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table
         data={[]}
         renderEmpty={() => {
@@ -106,11 +105,11 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instanceDom.querySelector('.my-info').innerText, 'empty');
+    assert.equal(instance.querySelector('.my-info').innerText, 'empty');
   });
 
   it('Should be bordered', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table bordered>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -119,7 +118,7 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.include(instanceDom.className, 'rs-table-bordered');
+    assert.include(instance.className, 'rs-table-bordered');
   });
 
   it('Should be virtualized. Check: Maximum update depth exceeded', () => {
@@ -134,7 +133,7 @@ describe('Table', () => {
   });
 
   it('Should be bordered for cell', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table cellBordered>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -143,11 +142,11 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.include(instanceDom.className, 'rs-table-cell-bordered');
+    assert.include(instance.className, 'rs-table-cell-bordered');
   });
 
   it('Should render loader dom element when set `loadAnimation`', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table loadAnimation>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -155,11 +154,11 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.ok(instanceDom.querySelectorAll('.rs-table-loader').length);
+    assert.ok(instance.querySelectorAll('.rs-table-loader').length);
   });
 
   it('Should be wordWrap', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table wordWrap>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -171,11 +170,11 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.include(instanceDom.className, 'rs-table-word-wrap');
+    assert.include(instance.className, 'rs-table-word-wrap');
   });
 
   it('Should be automatic height', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table
         autoHeight
         data={[
@@ -200,12 +199,12 @@ describe('Table', () => {
       </Table>
     );
     // 2 rows + header row
-    const height = 46 * 2 + 46;
-    assert.equal(instanceDom.style.height, `${height}px`);
+    const height = 46 * 2 + 40;
+    assert.equal(instance.style.height, `${height}px`);
   });
 
   it('Should be min height', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table
         autoHeight
         minHeight={500}
@@ -230,7 +229,7 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instanceDom.style.height, `${500}px`);
+    assert.equal(instance.style.height, `${500}px`);
   });
 
   it('Should render custom tree columns', () => {
@@ -342,7 +341,7 @@ describe('Table', () => {
     const doneOp = () => {
       done();
     };
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table
         onWheel={doneOp}
         data={[
@@ -359,14 +358,14 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    ReactTestUtils.Simulate.wheel(instanceDom.querySelector('.rs-table-body-row-wrapper'));
+    ReactTestUtils.Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
   });
 
   it('Should call `onExpandChange` callback', done => {
     const doneOp = () => {
       done();
     };
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table
         onExpandChange={doneOp}
         isTree
@@ -391,7 +390,7 @@ describe('Table', () => {
       </Table>
     );
 
-    ReactTestUtils.Simulate.click(instanceDom.querySelector('.rs-table-cell-expand-icon'));
+    ReactTestUtils.Simulate.click(instance.querySelector('.rs-table-cell-expand-icon'));
   });
 
   it('Should get the body DOM', () => {
@@ -401,25 +400,20 @@ describe('Table', () => {
         name: 'a'
       }
     ];
-    let body;
-    getInstance(
-      <Table
-        bodyRef={ref => {
-          body = ref;
-        }}
-        data={data}
-      >
+
+    const instance = getInstance(
+      <Table data={data}>
         <Column>
           <HeaderCell>11</HeaderCell>
           <Cell dataKey="id" />
         </Column>
       </Table>
     );
-    assert.equal(body.style.height, `${data.length * 46}px`);
+    assert.equal(instance.body.style.height, `${data.length * 46}px`);
   });
 
   it('Should not be displayed header', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table showHeader={false}>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -431,11 +425,11 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instanceDom.querySelectorAll('.rs-table-header-row-wrapper').length, 0);
+    assert.equal(instance.querySelectorAll('.rs-table-header-row-wrapper').length, 0);
   });
 
   it('Should hava row className', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table
         rowClassName="custom-row"
         minHeight={500}
@@ -460,11 +454,11 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instanceDom.querySelectorAll('.rs-table-row.custom-row').length, 3);
+    assert.equal(instance.querySelectorAll('.rs-table-row.custom-row').length, 3);
   });
 
   it('Should hava row className by rowClassName()', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Table
         rowClassName={rowData => {
           if (rowData && rowData.id === 1) {
@@ -494,15 +488,17 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instanceDom.querySelectorAll('.rs-table-row.custom-row').length, 1);
-    assert.equal(instanceDom.querySelectorAll('.rs-table-row.default-row').length, 2);
+    assert.equal(instance.querySelectorAll('.rs-table-row.custom-row').length, 1);
+    assert.equal(instance.querySelectorAll('.rs-table-row.default-row').length, 2);
   });
 
   it('Should be fixed column', () => {
+    const ref = React.createRef();
     ReactTestUtils.act(() => {
-      ReactDOM.render(
-        <div style={{ width: 300 }} id="my-table">
+      render(
+        <div style={{ width: 300 }}>
           <Table
+            ref={ref}
             showHeader={false}
             data={[
               {
@@ -520,12 +516,11 @@ describe('Table', () => {
               <Cell>12</Cell>
             </Column>
           </Table>
-        </div>,
-        container
+        </div>
       );
     });
 
-    const table = document.getElementById('my-table');
+    const table = ref.current.root;
 
     assert.equal(table.querySelectorAll('.rs-table-cell-group').length, 2);
     assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
@@ -545,11 +540,15 @@ describe('Table', () => {
         <Cell>12</Cell>
       </Column>
     ];
+
+    const ref = React.createRef();
+
     ReactTestUtils.act(() => {
-      ReactDOM.render(
-        <div style={{ width: 300 }} id="my-table2">
+      render(
+        <div style={{ width: 300 }}>
           <Table
             showHeader={false}
+            ref={ref}
             data={[
               {
                 id: 1,
@@ -559,12 +558,11 @@ describe('Table', () => {
           >
             {columns}
           </Table>
-        </div>,
-        container
+        </div>
       );
     });
 
-    const table = document.getElementById('my-table2');
+    const table = ref.current.root;
 
     assert.equal(table.querySelectorAll('.rs-table-cell-group').length, 2);
     assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
@@ -593,13 +591,17 @@ describe('Table', () => {
     ];
     const App = React.forwardRef((props, ref) => {
       const [tree, setTree] = React.useState(true);
+      const tableRef = React.useRef();
       React.useImperativeHandle(ref, () => ({
+        get table() {
+          return tableRef.current.root;
+        },
         setTree
       }));
       return (
         <div>
           <Table
-            id="my-table3"
+            ref={tableRef}
             isTree={tree}
             data={data}
             showHeader={false}
@@ -621,16 +623,19 @@ describe('Table', () => {
     App.displayName = 'App';
     const ref = React.createRef();
     ReactTestUtils.act(() => {
-      ReactDOM.render(<App ref={ref} />, container);
+      render(<App ref={ref} />);
     });
 
-    const table = document.getElementById('my-table3');
+    const table = ref.current.table;
+
     assert.equal(table.querySelectorAll('.rs-table-row').length, 3);
+
     ReactTestUtils.act(() => {
       ref.current.setTree(false);
     });
 
     assert.equal(table.querySelectorAll('.rs-table-row').length, 1);
+    assert.equal(getHeight(table.querySelector('.rs-table-row')), 46);
   });
 
   it('Should show a vertical scroll bar when the tree is expanded', () => {
@@ -668,24 +673,19 @@ describe('Table', () => {
         ]
       }
     ];
-    const App = () => {
-      return (
-        <div>
-          <Table id="tree-table" isTree data={data} showHeader={false} rowKey="name">
-            <Column>
-              <HeaderCell>name</HeaderCell>
-              <Cell dataKey="name" />
-            </Column>
-          </Table>
-        </div>
-      );
-    };
-    App.displayName = 'App';
-    ReactTestUtils.act(() => {
-      ReactDOM.render(<App />, container);
-    });
 
-    const table = document.getElementById('tree-table');
+    const ref = React.createRef();
+
+    render(
+      <Table ref={ref} isTree data={data} showHeader={false} rowKey="name">
+        <Column>
+          <HeaderCell>name</HeaderCell>
+          <Cell dataKey="name" />
+        </Column>
+      </Table>
+    );
+
+    const table = ref.current.root;
     const expand = table.querySelector('.rs-table-cell-expand-icon');
 
     // Tree 在展开前，显示 1 行，同时没有垂直滚动条。
@@ -702,20 +702,21 @@ describe('Table', () => {
   });
 
   it('Should render 2 ColumnGroup', () => {
+    const ref = React.createRef();
+    const columnData = [
+      {
+        name: 'test 1',
+        id: 1
+      },
+      {
+        name: 'test 2',
+        id: 2
+      }
+    ];
     ReactTestUtils.act(() => {
-      const columnData = [
-        {
-          name: 'test 1',
-          id: 1
-        },
-        {
-          name: 'test 2',
-          id: 2
-        }
-      ];
-      ReactDOM.render(
-        <div style={{ width: 300 }} id="my-table">
-          <Table data={[]}>
+      render(
+        <div style={{ width: 300 }}>
+          <Table data={[]} ref={ref}>
             {columnData.map((item, index) => {
               return (
                 <ColumnGroup key={index} header={item.name} fixed>
@@ -732,12 +733,11 @@ describe('Table', () => {
               );
             })}
           </Table>
-        </div>,
-        container
+        </div>
       );
     });
 
-    const table = document.getElementById('my-table');
+    const table = ref.current.root;
     assert.equal(table.querySelectorAll('.rs-table-column-group').length, 2);
     assert.equal(
       table.querySelectorAll(
@@ -748,37 +748,33 @@ describe('Table', () => {
   });
 
   it('Should replace all classPrefix', () => {
-    ReactTestUtils.act(() => {
-      ReactDOM.render(
-        <div id="my-list">
-          <Table
-            style={{ width: 300 }}
-            classPrefix={'my-list'}
-            data={[
-              {
-                id: 1,
-                name: 'a'
-              }
-            ]}
-          >
-            <Column width={200} fixed>
-              <HeaderCell>11</HeaderCell>
-              <Cell>12</Cell>
-            </Column>
-            <Column width={200}>
-              <HeaderCell>11</HeaderCell>
-              <Cell>12</Cell>
-            </Column>
-          </Table>
-        </div>,
-        container
-      );
-    });
+    const ref = React.createRef();
+    render(
+      <Table
+        ref={ref}
+        style={{ width: 300 }}
+        classPrefix="my-list"
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          }
+        ]}
+      >
+        <Column width={200} fixed>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+        <Column width={200}>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
 
-    const table = document.getElementById('my-list');
+    const table = ref.current.root;
 
-    assert.include(table.childNodes[0].className, 'my-list');
-    assert.equal(table.querySelectorAll('.my-list-cell-group').length, 4);
+    assert.equal(table.querySelectorAll('.my-list-cell-group').length, 2);
     assert.equal(table.querySelectorAll('.my-list-cell').length, 4);
     assert.equal(table.querySelectorAll('.my-list-cell-header').length, 2);
     assert.equal(table.querySelectorAll('.my-list-row').length, 2);

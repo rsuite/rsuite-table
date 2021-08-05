@@ -1,12 +1,12 @@
 import React from 'react';
 import Row from '../src/Row';
-import { getDOMNode } from './TestWrapper';
+import { getDOMNode } from './utils';
 
 describe('Row', () => {
   it('Should output a row', () => {
     const Title = 'Title';
     const instanceDom = getDOMNode(<Row>Title</Row>);
-    assert.include(instanceDom.className, 'rs-table-row');
+    assert.include(instanceDom.className, 'rs-row');
     assert.equal(instanceDom.style.height, '46px');
     assert.equal(instanceDom.innerText, Title);
   });

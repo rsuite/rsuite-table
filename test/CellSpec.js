@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
-
-import { getDOMNode } from './TestWrapper';
+import { getDOMNode } from './utils';
 import Cell from '../src/Cell';
 import TableContext from '../src/TableContext';
 import { LAYER_WIDTH } from '../src/constants';
@@ -9,70 +8,68 @@ import { LAYER_WIDTH } from '../src/constants';
 describe('Cell', () => {
   it('Should output a cell', () => {
     const Title = 'Title';
-    const instanceDom = getDOMNode(<Cell>Title</Cell>);
+    const instance = getDOMNode(<Cell>Title</Cell>);
 
-    assert.equal(instanceDom.className, 'rs-table-cell');
-    assert.equal(instanceDom.style.height, '36px');
-    assert.equal(instanceDom.innerText, Title);
+    assert.equal(instance.className, 'rs-cell');
+    assert.equal(instance.style.height, '36px');
+    assert.equal(instance.innerText, Title);
   });
 
   it('Should The text be `right` aligned', () => {
-    const instanceDom = getDOMNode(<Cell align="right" />).querySelector('.rs-table-cell-content');
-    assert.equal(instanceDom.style.textAlign, 'right');
+    const instance = getDOMNode(<Cell align="right" />).querySelector('.rs-cell-content');
+    assert.equal(instance.style.textAlign, 'right');
   });
 
   it('Should The text be `middle` aligned', () => {
-    const instanceDom = getDOMNode(<Cell verticalAlign="middle" />).querySelector(
-      '.rs-table-cell-content'
-    );
+    const instance = getDOMNode(<Cell verticalAlign="middle" />).querySelector('.rs-cell-content');
 
-    assert.equal(instanceDom.style.display, 'table-cell');
-    assert.equal(instanceDom.style.verticalAlign, 'middle');
+    assert.equal(instance.style.display, 'table-cell');
+    assert.equal(instance.style.verticalAlign, 'middle');
   });
 
   it('Should have a children is `abc`', () => {
-    const instanceDom = getDOMNode(<Cell rowData={{ name: 'abc' }} dataKey="name" />);
+    const instance = getDOMNode(<Cell rowData={{ name: 'abc' }} dataKey="name" />);
 
-    assert.equal(instanceDom.innerText, 'abc');
+    assert.equal(instance.innerText, 'abc');
   });
 
   it('Should be 100 the width', () => {
-    const instanceDom = getDOMNode(<Cell width={100} />).querySelector('.rs-table-cell-content');
-    assert.equal(instanceDom.style.width, '100px');
+    const instance = getDOMNode(<Cell width={100} />).querySelector('.rs-cell-content');
+    assert.equal(instance.style.width, '100px');
   });
 
   it('Should be 100 the height', () => {
-    const instanceDom = getDOMNode(<Cell height={100} />);
+    const instance = getDOMNode(<Cell height={100} />);
 
-    assert.equal(instanceDom.style.height, '100px');
+    assert.equal(instance.style.height, '100px');
   });
 
   it('Should be 100 the left', () => {
-    const instanceDom = getDOMNode(<Cell left={100} />);
+    const instance = getDOMNode(<Cell left={100} />);
 
-    assert.equal(instanceDom.style.left, '100px');
+    assert.equal(instance.style.left, '100px');
   });
 
   it('Should be 100 the height when set isHeaderCell', () => {
-    const instanceDom = getDOMNode(<Cell headerHeight={100} height={20} isHeaderCell />);
+    const instance = getDOMNode(<Cell headerHeight={100} height={20} isHeaderCell />);
 
-    assert.equal(instanceDom.style.height, '100px');
+    assert.equal(instance.style.height, '100px');
   });
 
   it('Should hava a `first` className ', () => {
-    const instanceDom = getDOMNode(<Cell firstColumn />);
+    const instance = getDOMNode(<Cell firstColumn />);
 
-    assert.ok(instanceDom.className.match(/\bfirst\b/));
+    assert.ok(instance.className.match(/\bfirst\b/));
   });
 
   it('Should hava a `last` className ', () => {
-    const instanceDom = getDOMNode(<Cell lastColumn />);
+    const instance = getDOMNode(<Cell lastColumn />);
 
-    assert.ok(instanceDom.className.match(/\blast\b/));
+    assert.ok(instance.className.match(/\blast\b/));
   });
 
   it('Should call `renderCell`', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <Cell
         renderCell={cell => {
           return <div className="abc">{cell}</div>;
@@ -82,36 +79,36 @@ describe('Cell', () => {
       </Cell>
     );
 
-    assert.equal(instanceDom.querySelector('.abc').innerText, 'ABC');
+    assert.equal(instance.querySelector('.abc').innerText, 'ABC');
   });
 
   it('Should have a expand icon', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <div>
         <TableContext.Provider value={{ isTree: true }}>
           <Cell hasChildren firstColumn />
         </TableContext.Provider>
       </div>
     );
-    assert.ok(instanceDom.querySelector('.rs-table-cell-expand-icon'));
+    assert.ok(instance.querySelector('.rs-cell-expand-icon'));
   });
 
   it('Should have a expanded icon', () => {
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <div>
         <TableContext.Provider value={{ isTree: true }}>
           <Cell hasChildren firstColumn expanded />
         </TableContext.Provider>
       </div>
     );
-    assert.ok(instanceDom.querySelector('[aria-label="arrow down"]'));
+    assert.ok(instance.querySelector('[aria-label="arrow down"]'));
   });
 
   it('Should be 60 the left', () => {
     const layer = 2;
-    const instanceDom = getDOMNode(<Cell layer={layer} firstColumn />);
+    const instance = getDOMNode(<Cell layer={layer} firstColumn />);
 
-    assert.ok(instanceDom.style.left, LAYER_WIDTH * layer);
+    assert.ok(instance.style.left, LAYER_WIDTH * layer);
   });
 
   it('Should call onTreeToggle callback', done => {
@@ -121,7 +118,7 @@ describe('Cell', () => {
       }
     };
 
-    const instanceDom = getDOMNode(
+    const instance = getDOMNode(
       <div>
         <TableContext.Provider value={{ isTree: true }}>
           <Cell
@@ -136,24 +133,24 @@ describe('Cell', () => {
       </div>
     );
 
-    ReactTestUtils.Simulate.click(instanceDom.querySelector('.rs-table-cell-expand-icon'));
+    ReactTestUtils.Simulate.click(instance.querySelector('.rs-cell-expand-icon'));
   });
 
   it('Should have a custom className', () => {
-    const instanceDom = getDOMNode(<Cell className="custom" />);
-    assert.ok(instanceDom.className.match(/\bcustom\b/));
+    const instance = getDOMNode(<Cell className="custom" />);
+    assert.ok(instance.className.match(/\bcustom\b/));
   });
 
   it('Should have a custom style', () => {
-    const fontSize = '12px';
-    const instanceDom = getDOMNode(<Cell style={{ fontSize }} />);
-    assert.equal(instanceDom.style.fontSize, fontSize);
+    const instance = getDOMNode(<Cell contentStyle={{ fontSize: 12 }} style={{ fontSize: 14 }} />);
+    assert.equal(instance.style.fontSize, '14px');
+    assert.equal(instance.querySelector('.rs-cell-content').style.fontSize, '12px');
   });
 
   it('Should render custom children', () => {
-    const instanceDom1 = getDOMNode(<Cell rowData={{ id: 1 }}>{rowData => rowData.id}</Cell>);
-    const instanceDom2 = getDOMNode(<Cell>1</Cell>);
-    assert.ok(instanceDom1.innerText, 1);
-    assert.ok(instanceDom2.innerText, 1);
+    const instance1 = getDOMNode(<Cell rowData={{ id: 1 }}>{rowData => rowData.id}</Cell>);
+    const instance2 = getDOMNode(<Cell>1</Cell>);
+    assert.ok(instance1.innerText, 1);
+    assert.ok(instance2.innerText, 1);
   });
 });

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { defaultClassPrefix, prefix } from './utils';
+import { useClassNames } from './utils';
 import TableContext from './TableContext';
 
 export interface CellGroupProps {
@@ -18,14 +17,10 @@ export interface CellGroupProps {
 const CellGroup = React.forwardRef((props: CellGroupProps, ref: React.Ref<HTMLDivElement>) => {
   const { fixed, width, left, height, style, classPrefix, className, children, ...rest } = props;
 
-  const { translateDOMPositionXY, classPrefix: tableClassPrefix } = useContext(TableContext);
-  const addPrefix = (name: string) =>
-    prefix(classPrefix || defaultClassPrefix('table-cell-group', tableClassPrefix))(name);
+  const { translateDOMPositionXY } = useContext(TableContext);
+  const { withClassPrefix, merge } = useClassNames(classPrefix);
+  const classes = merge(className, withClassPrefix({ [`fixed-${fixed}`]: fixed, scroll: !fixed }));
 
-  const classes = classNames(classPrefix, className, {
-    [addPrefix(`fixed-${fixed || ''}`)]: fixed,
-    [addPrefix('scroll')]: !fixed
-  });
   const styles = {
     width,
     height,
@@ -41,7 +36,7 @@ const CellGroup = React.forwardRef((props: CellGroupProps, ref: React.Ref<HTMLDi
   );
 });
 
-CellGroup.displayName = 'CellGroup';
+CellGroup.displayName = 'Table.CellGroup';
 CellGroup.propTypes = {
   fixed: PropTypes.oneOf(['left', 'right']),
   width: PropTypes.number,
@@ -51,5 +46,7 @@ CellGroup.propTypes = {
   className: PropTypes.string,
   classPrefix: PropTypes.string
 };
-
+CellGroup.defaultProps = {
+  classPrefix: 'cell-group'
+};
 export default CellGroup;

@@ -19,3 +19,17 @@ export interface RowDataType {
 }
 
 export type RowKeyType = string | number;
+
+export interface TableLocaleType {
+  emptyMessage?: string;
+  loading?: string;
+}
+
+export type ListenerCallback = { off: () => void };
+
+export type ElementOffset = {
+  top?: number;
+  left?: number;
+  width?: number;
+  height?: number;
+};

@@ -1,10 +1,9 @@
 import React from 'react';
 import isFunction from 'lodash/isFunction';
 import get from 'lodash/get';
+import isNil from 'lodash/isNil';
 import ColumnGroup from '../ColumnGroup';
 import HeaderCell from '../HeaderCell';
-
-import isNullOrUndefined from './isNullOrUndefined';
 
 function cloneCell(Cell, props) {
   return React.cloneElement(Cell, props);
@@ -75,7 +74,7 @@ function mergeCells(cells) {
     } else if (colSpan) {
       /**
        * 如果存在 colSpan 属性，就去找它的下一个 Cell,
-       * 看看值是否是 isNullOrUndefined，，如果为空这可以合并这个单元格
+       * 判断值是否是 null 或者 undefined，则合并这个单元格
        */
       let nextWidth = width;
       for (let j = 0; j < colSpan; j += 1) {
@@ -94,10 +93,7 @@ function mergeCells(cells) {
             ? children(rowData, rowIndex)
             : get(rowData, dataKey);
 
-          if (
-            (rowData && isNullOrUndefined(cellText)) ||
-            (isHeaderCell && isNullOrUndefined(children))
-          ) {
+          if ((rowData && isNil(cellText)) || (isHeaderCell && isNil(children))) {
             nextWidth += colSpanWidth;
             cells[i + j] = cloneCell(nextCell, {
               removed: true
