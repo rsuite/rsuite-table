@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { addStyle } from 'dom-lib';
+import { addStyle, addClass, removeClass } from 'dom-lib';
 import omit from 'lodash/omit';
 import merge from 'lodash/merge';
 
@@ -21,26 +21,33 @@ interface CellDescriptorProps {
   sortType: SortType;
   defaultSortType: SortType;
   sortColumn: string;
+  prefix?: (str: string) => string;
   onSortColumn: (dataKey: string, sortType?: SortType) => void;
   rowHeight: number | ((rowData?: RowDataType) => number);
   mouseAreaRef: React.RefObject<HTMLDivElement>;
+  tableRef: React.RefObject<HTMLDivElement>;
 }
 
-interface CacheCells {
+interface CellDescriptor {
   headerCells: any[];
   bodyCells: any[];
   hasCustomTreeCol: boolean;
   allColumnsWidth: number;
 }
-interface CellDescriptor extends CacheCells {
-  isColumnResizing: boolean;
-}
 
+//
+
+/**
+ * Attach rendering-related attributes to all cells of the form and cache them.
+ * @param props
+ * @returns
+ */
 const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
   const {
     children,
     rtl,
     mouseAreaRef,
+    tableRef,
     minScrollX,
     scrollX,
     tableWidth,
@@ -49,17 +56,28 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
     sortType: sortTypeProp,
     defaultSortType,
     sortColumn,
+    rowHeight,
     onSortColumn,
-    rowHeight
+    prefix
   } = props;
 
-  const [isColumnResizing, setColumnResizing] = useState(false);
   const [sortType, setSortType] = useControlled(sortTypeProp, defaultSortType);
-  const [cacheData, setCacheData] = useState<CacheCells>();
+  const [cacheData, setCacheData] = useState<CellDescriptor>();
 
   const clearCache = useCallback(() => {
     setCacheData(null);
   }, []);
+
+  const setColumnResizing = useCallback(
+    (resizing: boolean) => {
+      if (resizing) {
+        addClass(tableRef.current, prefix('column-resizing'));
+      } else {
+        removeClass(tableRef.current, prefix('column-resizing'));
+      }
+    },
+    [prefix, tableRef]
+  );
 
   const columnWidths = useRef({});
 
@@ -75,7 +93,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
       addStyle(mouseAreaRef.current, { display: 'none' });
       clearCache();
     },
-    [clearCache, mouseAreaRef]
+    [clearCache, mouseAreaRef, setColumnResizing]
   );
 
   const handleColumnResizeMove = useCallback(
@@ -103,7 +121,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
       setColumnResizing(true);
       handleColumnResizeMove(width, left, fixed);
     },
-    [handleColumnResizeMove]
+    [handleColumnResizeMove, setColumnResizing]
   );
 
   const handleSortColumn = useCallback(
@@ -121,10 +139,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
   );
 
   if (cacheData) {
-    return {
-      ...cacheData,
-      isColumnResizing
-    };
+    return cacheData;
   }
 
   let hasCustomTreeCol = false;
@@ -141,10 +156,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
     };
     setCacheData(cacheCell);
 
-    return {
-      ...cacheCell,
-      isColumnResizing
-    };
+    return cacheCell;
   }
 
   const columns = getTableColumns(children) as React.ReactNodeArray;
@@ -235,10 +247,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
 
   setCacheData(cacheCell);
 
-  return {
-    ...cacheCell,
-    isColumnResizing
-  };
+  return cacheCell;
 };
 
 export default useCellDescriptor;

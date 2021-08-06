@@ -1,13 +1,6 @@
 import classNames from 'classnames';
 import curry from 'lodash/curry';
 
-export const globalKey = 'rs-';
-export const getClassNamePrefix = () => {
-  // TODO: A prefix that can be replaced at runtime.
-
-  return globalKey;
-};
-
 export function prefix(pre: string, className: string | string[]): string {
   if (!pre || !className) {
     return '';

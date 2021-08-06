@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useImperativeHandle } from 'react';
+import React, { useState, useRef, useCallback, useImperativeHandle, useReducer } from 'react';
 import { getTranslateDOMPositionXY } from 'dom-lib/lib/transition/translateDOMPositionXY';
 import PropTypes from 'prop-types';
 import isFunction from 'lodash/isFunction';
@@ -172,7 +172,10 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   /** Callback for the `touchmove` event. */
   onTouchMove?: (event: React.TouchEvent) => void;
 
-  /** Callback after table data update. */
+  /**
+   * Callback after table data update.
+   * @deprecated
+   **/
   onDataUpdated?: (
     nextData: RowDataType[],
     scrollTo: (coord: { x: number; y: number }) => void
@@ -241,7 +244,6 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     onExpandChange,
     onTouchStart,
     onTouchMove,
-    onDataUpdated,
     ...rest
   } = props;
 
@@ -254,6 +256,9 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     merge: mergeCls,
     prefix
   } = useClassNames(classPrefix || 'table', typeof classPrefix !== 'undefined');
+
+  // Use `forceUpdate` to force the component to re-render after manipulating the DOM.
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const { tableRowsMaxHeight, bindTableRowsRef } = useTableRows({
     data: dataProp,
@@ -277,16 +282,14 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   };
 
   const translateDOMPositionXY = useRef(
-    getTranslateDOMPositionXY({
-      enable3DTransform: translate3d
-    })
+    getTranslateDOMPositionXY({ enable3DTransform: translate3d })
   );
 
   const shouldFixedColumn = Array.from(flatten(children as any) as Iterable<any>).some(
-    (child: any) => child && child.props && child.props.fixed
+    child => child?.props?.fixed
   );
 
-  const cacheChildrenSize = useRef(flatten(children as any[]).length);
+  const colCounts = useRef(flatten(children as any[]).length);
   const visibleRows = useRef([]);
   const mouseAreaRef = useRef<HTMLDivElement>();
   const tableRef = useRef<HTMLDivElement>();
@@ -324,11 +327,24 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     autoHeight,
     children,
     expandedRowKeys,
-    onTableHeightChange: y => {
-      handleScrollTop(y);
+    onTableScroll: ({ x, y }) => {
+      handleScrollTo({ x, y });
     },
-    resetScrollBarPosition: () => {
-      scrollbarXRef?.current?.resetScrollBarPosition();
+    onTableContentHeightChange: () => {
+      forceUpdate();
+      if (shouldUpdateScroll) {
+        handleScrollTop(0);
+      }
+    },
+    onTableContentWidthChange: () => {
+      if (shouldUpdateScroll) {
+        handleScrollLeft(0);
+      }
+    },
+    onTableWidthChange: () => {
+      if (shouldUpdateScroll) {
+        handleScrollLeft(0);
+      }
     }
   });
 
@@ -407,39 +423,30 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     onTouchStart
   });
 
-  const { headerCells, bodyCells, allColumnsWidth, hasCustomTreeCol, isColumnResizing } =
-    useCellDescriptor({
-      children,
-      rtl,
-      mouseAreaRef,
-      minScrollX,
-      scrollX,
-      tableWidth,
-      headerHeight,
-      showHeader,
-      sortType: sortTypeProp,
-      defaultSortType,
-      sortColumn,
-      onSortColumn,
-      rowHeight
-    });
+  const { headerCells, bodyCells, allColumnsWidth, hasCustomTreeCol } = useCellDescriptor({
+    children,
+    rtl,
+    mouseAreaRef,
+    tableRef,
+    minScrollX,
+    scrollX,
+    tableWidth,
+    headerHeight,
+    showHeader,
+    sortType: sortTypeProp,
+    defaultSortType,
+    sortColumn,
+    prefix,
+    onSortColumn,
+    rowHeight
+  });
 
   useUpdateEffect(() => {
-    onDataUpdated?.(dataProp, handleScrollTo);
     setData(isTree ? flattenData(dataProp) : dataProp);
-
-    const maxHeight =
-      dataProp.length * (typeof rowHeight === 'function' ? rowHeight(null) : rowHeight);
-
-    // When the scroll bar is allowed to be updated, or the scroll bar position is greater
-    // than the maximum height of the table, the initial scroll bar position.
-    if (shouldUpdateScroll || Math.abs(scrollY.current) > maxHeight) {
-      handleScrollTo({ x: 0, y: 0 });
-    }
   }, [dataProp, isTree]);
 
   useUpdateEffect(() => {
-    cacheChildrenSize.current = flatten((children as any[]) || []).length;
+    colCounts.current = flatten((children as any[]) || []).length;
   }, [children]);
 
   useImperativeHandle(ref, () => ({
@@ -463,13 +470,12 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       loading,
       treetable: isTree,
       'word-wrap': wordWrap,
-      'cell-bordered': cellBordered,
-      'column-resizing': isColumnResizing
+      'cell-bordered': cellBordered
     })
   );
 
   const styles = {
-    width: tableWidth.current || 'auto',
+    width: widthProp || 'auto',
     height: getTableHeight(),
     ...style
   };
@@ -910,7 +916,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
         // The aria-rowcount is specified on the element with the table.
         // Its value is an integer equal to the total number of rows available, including header rows.
         aria-rowcount={data.length + 1}
-        aria-colcount={cacheChildrenSize.current}
+        aria-colcount={colCounts.current}
         {...rest}
         className={classes}
         style={styles}
@@ -956,7 +962,6 @@ Table.propTypes = {
   affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   affixHorizontalScrollbar: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   bordered: PropTypes.bool,
-  bodyRef: PropTypes.func,
   className: PropTypes.string,
   classPrefix: PropTypes.string,
   children: PropTypes.any,
@@ -1001,8 +1006,7 @@ Table.propTypes = {
   onSortColumn: PropTypes.func,
   onExpandChange: PropTypes.func,
   onTouchStart: PropTypes.func,
-  onTouchMove: PropTypes.func,
-  onDataUpdated: PropTypes.func
+  onTouchMove: PropTypes.func
 };
 
 export default Table;

@@ -61,6 +61,8 @@
     "@babel/preset-env": "^7.12.7",
     "@babel/preset-react": "^7.12.7",
     "@babel/preset-typescript": "^7.12.7",
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.165",
     "@types/prop-types": "^15.7.1",
@@ -79,6 +81,7 @@
     "cross-env": "^5.2.1",
     "css-loader": "^0.23.1",
     "cssnano": "^4.1.10",
+    "cz-conventional-changelog": "^3.3.0",
     "del": "^5.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-15": "^1.4.2",
@@ -135,5 +138,15 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "why-did-you-update": "^0.1.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }

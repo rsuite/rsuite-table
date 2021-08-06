@@ -1,8 +1,8 @@
-import { EffectCallback, useEffect } from 'react';
+import { EffectCallback } from 'react';
+import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect';
 
 const useMount = (effect: EffectCallback) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(effect, []);
+  useIsomorphicLayoutEffect(effect, []);
 };
 
 export default useMount;

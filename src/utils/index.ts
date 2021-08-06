@@ -1,4 +1,4 @@
-export { default as prefix, globalKey, getClassNamePrefix } from './prefix';
+export { default as prefix } from './prefix';
 export { default as getTotalByColumns } from './getTotalByColumns';
 export { default as mergeCells } from './mergeCells';
 export { default as toggleClass } from './toggleClass';
@@ -14,6 +14,8 @@ export { default as isNumberOrTrue } from './isNumberOrTrue';
 export { default as mergeRefs } from './mergeRefs';
 export { cancelAnimationTimeout, requestAnimationTimeout } from './requestAnimationTimeout';
 export { default as useUpdateEffect } from './useUpdateEffect';
+export { default as useUpdateLayoutEffect } from './useUpdateLayoutEffect';
+export { default as useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
 export { default as useMount } from './useMount';
 export { default as useClassNames } from './useClassNames';
 export { default as useControlled } from './useControlled';

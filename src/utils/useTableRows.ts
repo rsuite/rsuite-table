@@ -10,6 +10,11 @@ interface TableRowsProps {
   data: RowDataType[];
 }
 
+/**
+ * The row information of the table, get the DOM of all rows, and summarize the row height.
+ * @param props
+ * @returns
+ */
 const useTableRows = (props: TableRowsProps) => {
   const { prefix, wordWrap, data } = props;
   const [tableRowsMaxHeight, setTableRowsMaxHeight] = useState([]);

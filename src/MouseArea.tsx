@@ -18,6 +18,6 @@ const MouseArea = React.forwardRef((props: MouseAreaProps, ref: React.Ref<HTMLDi
   );
 });
 
-MouseArea.displayName = 'MouseArea';
+MouseArea.displayName = 'Table.MouseArea';
 
 export default MouseArea;

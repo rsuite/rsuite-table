@@ -36,6 +36,6 @@ Loader.propTypes = {
   addPrefix: PropTypes.func,
   renderLoading: PropTypes.func
 };
-Loader.displayName = 'Loader';
+Loader.displayName = 'Table.Loader';
 
 export default Loader;

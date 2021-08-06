@@ -56,7 +56,7 @@ function App() {
         list={[
           {
             title: 'Virtualized',
-            content: require('./md/LargeLists.md')
+            content: require('./md/Virtualized.md')
           },
           {
             title: 'Fixed Column',
@@ -137,7 +137,7 @@ function App() {
           },
           {
             title: 'Scroll loading data',
-            content: require('./md/DynamicDataTable.md')
+            content: require('./md/ScrollLoadingData.md')
           },
 
           {

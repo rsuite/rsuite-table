@@ -20,19 +20,19 @@ export interface HeaderCellProps extends InnerCellProps {
   flexGrow?: number;
   fixed?: boolean | 'left' | 'right';
   children: React.ReactNode;
+  onResize?: (columnWidth?: number, dataKey?: string) => void;
+  onSortColumn?: (dataKey?: string) => void;
   onColumnResizeStart?: (columnWidth?: number, left?: number, fixed?: boolean) => void;
+  onColumnResizeMove?: (columnWidth?: number, columnLeft?: number, columnFixed?: boolean) => void;
   onColumnResizeEnd?: (
     columnWidth?: number,
     cursorDelta?: number,
     dataKey?: any,
     index?: number
   ) => void;
-  onResize?: (columnWidth?: number, dataKey?: string) => void;
-  onColumnResizeMove?: (columnWidth?: number, columnLeft?: number, columnFixed?: boolean) => void;
-  onSortColumn?: (dataKey?: string) => void;
 }
 
-const SORTED_MAP = {
+const SORTED_ICON = {
   desc: SortDown,
   asc: SortUp
 };
@@ -104,7 +104,7 @@ const HeaderCell = React.forwardRef((props: HeaderCellProps, ref: React.Ref<HTML
 
   const renderSortColumn = () => {
     if (sortable && !groupHeader) {
-      const SortIcon = sortColumn === dataKey && sortType ? SORTED_MAP[sortType] : Sort;
+      const SortIcon = sortColumn === dataKey && sortType ? SORTED_ICON[sortType] : Sort;
       const iconClasses = classNames(prefix('icon-sort'), {
         [prefix(`icon-sort-${sortType}`)]: sortColumn === dataKey
       });

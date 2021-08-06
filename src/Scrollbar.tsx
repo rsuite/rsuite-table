@@ -220,7 +220,7 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
   );
 });
 
-Scrollbar.displayName = 'Scrollbar';
+Scrollbar.displayName = 'Table.Scrollbar';
 Scrollbar.propTypes = {
   tableId: PropTypes.string,
   vertical: PropTypes.bool,

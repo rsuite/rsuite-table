@@ -26,7 +26,7 @@ const EmptyMessage = React.forwardRef(
     return renderEmpty ? renderEmpty(emptyMessage) : emptyMessage;
   }
 );
-
+EmptyMessage.displayName = 'Table.EmptyMessage';
 EmptyMessage.propTypes = {
   locale: PropTypes.object,
   loading: PropTypes.bool,

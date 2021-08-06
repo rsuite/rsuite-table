@@ -58,7 +58,6 @@ const ColumnResizeHandler = React.forwardRef(
         }
 
         cursorDelta.current += deltaX;
-
         columnWidth.current = clamp(
           defaultColumnWidth + (rtl ? -cursorDelta.current : cursorDelta.current),
           minWidth ? Math.max(minWidth, RESIZE_MIN_WIDTH) : RESIZE_MIN_WIDTH,

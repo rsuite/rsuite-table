@@ -20,7 +20,7 @@ export interface CellProps extends StandardProps {
   /** Row Data */
   rowData?: any;
 
-  /** Add custom styles to content */
+  /** Add custom styles to cell content */
   contentStyle?: React.CSSProperties;
 }
 
@@ -216,7 +216,8 @@ Cell.propTypes = {
   wordWrap: PropTypes.bool,
   removed: PropTypes.bool,
   treeCol: PropTypes.bool,
-  expanded: PropTypes.bool
+  expanded: PropTypes.bool,
+  contentStyle: PropTypes.object
 };
 Cell.defaultProps = {
   classPrefix: 'cell',

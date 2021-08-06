@@ -17,9 +17,7 @@ function mergeCells(cells) {
 
     const groupChildren = [];
 
-    /**
-     * 为列头添加分组
-     */
+    // Add grouping to column headers.
     if (groupCount && isHeaderCell) {
       let nextWidth = width;
       let left = 0;
@@ -72,10 +70,9 @@ function mergeCells(cells) {
       );
       continue;
     } else if (colSpan) {
-      /**
-       * 如果存在 colSpan 属性，就去找它的下一个 Cell,
-       * 判断值是否是 null 或者 undefined，则合并这个单元格
-       */
+      // If there is a colSpan attribute, go to its next Cell.
+      // Determine whether the value is null or undefined, then merge this cell.
+
       let nextWidth = width;
       for (let j = 0; j < colSpan; j += 1) {
         const nextCell = cells[i + j];

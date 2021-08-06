@@ -16,7 +16,7 @@ const fakeData = (length, start) => {
 
 const TableHeight = 400;
 
-class DynamicDataTable extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.tableRef = React.createRef();
@@ -42,6 +42,7 @@ class DynamicDataTable extends React.Component {
     return (
       <div>
         <Table
+          shouldUpdateScroll={false}
           virtualized={true}
           height={TableHeight}
           data={this.state.data}
@@ -62,7 +63,7 @@ class DynamicDataTable extends React.Component {
   }
 }
 
-ReactDOM.render(<DynamicDataTable />);
+ReactDOM.render(<App />);
 ```
 
 <!--end-code-->

@@ -99,7 +99,6 @@ const App = () => (
 | affixHeader              | boolean,number                                                                    | Affix the table header to the specified position on the page                                  |
 | affixHorizontalScrollbar | boolean,number                                                                    | Affix the table horizontal scrollbar to the specified position on the page                    |
 | autoHeight               | boolean                                                                           | Automatic height                                                                              |
-| bodyRef                  | (ref: HTMLElement) => void                                                        | A ref attached to the table body element                                                      |
 | bordered                 | boolean                                                                           | Show border                                                                                   |
 | cellBordered             | boolean                                                                           | Show cell border                                                                              |
 | data \*                  | object[]                                                                          | Table data                                                                                    |
@@ -161,16 +160,17 @@ const App = () => (
 | ------------- | ------------------------------- | ------------------ |
 | align         | enum: 'left','center','right'   | Alignment          |
 | fixed         | boolean, 'left', 'right'        | Fixed column       |
-| verticalAlign | enum: 'top', 'middle', 'bottom' | Vertical alignment |
 | header        | React.ReactNode                 | Group header       |
+| verticalAlign | enum: 'top', 'middle', 'bottom' | Vertical alignment |
 
 ### `<Cell>`
 
-| Property | Type `(Default)` | Description                                  |
-| -------- | ---------------- | -------------------------------------------- |
-| dataKey  | string           | Data binding `key`, but also a sort of `key` |
-| rowData  | object           | Row data                                     |
-| rowIndex | number           | Row number                                   |
+| Property     | Type `(Default)` | Description                                  |
+| ------------ | ---------------- | -------------------------------------------- |
+| contentStyle | CSSProperties    | Add custom styles to cell content            |
+| dataKey      | string           | Data binding `key`, but also a sort of `key` |
+| rowData      | object           | Row data                                     |
+| rowIndex     | number           | Row number                                   |
 
 #### There are three ways to use `<Cell>`, as follows:
 

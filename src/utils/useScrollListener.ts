@@ -37,6 +37,12 @@ interface ScrollListenerProps {
   onTouchMove?: (event: React.TouchEvent) => void;
 }
 
+/**
+ * Add scroll, touch, and wheel monitoring events to the table,
+ * and update the scroll position of the table.
+ * @param props
+ * @returns
+ */
 const useScrollListener = (props: ScrollListenerProps) => {
   const {
     data,
@@ -270,6 +276,11 @@ const useScrollListener = (props: ScrollListenerProps) => {
     [autoHeight, contentHeight, getTableHeight, headerHeight]
   );
 
+  const rerender = () => {
+    setScrolling(true);
+    setTimeout(() => setScrolling(false), 0);
+  };
+
   const handleScrollTop = useCallback(
     (top = 0) => {
       const [nextScrollY, handleScrollY] = getControlledScrollTopValue(top);
@@ -279,13 +290,13 @@ const useScrollListener = (props: ScrollListenerProps) => {
       forceUpdatePosition();
 
       /**
-       * 当开启 virtualized，调用 scrollTop 后会出现白屏现象，
-       * 原因是直接操作 DOM 的坐标，但是组件没有重新渲染，需要调用 forceUpdate 重新进入 render。
+       * After calling `scrollTop`, a white screen will appear when `virtualized` is true.
+       * The reason is that the coordinates of the DOM are directly manipulated,
+       * but the component is not re-rendered. Need to call `rerender`.
        * Fix: rsuite#1044
        */
       if (virtualized && contentHeight.current > height) {
-        // TODO
-        // this.forceUpdate();
+        rerender();
       }
     },
     [
@@ -353,11 +364,9 @@ const useScrollListener = (props: ScrollListenerProps) => {
   useMount(() => {
     if (rtl) {
       // Initialize scroll position
-      setTimeout(() => {
-        setScrollX(tableWidth.current - contentWidth.current - SCROLLBAR_WIDTH);
-        scrollbarXRef?.current?.resetScrollBarPosition?.(-scrollX.current);
-        forceUpdatePosition();
-      }, 0);
+      setScrollX(tableWidth.current - contentWidth.current - SCROLLBAR_WIDTH);
+      scrollbarXRef?.current?.resetScrollBarPosition?.(-scrollX.current);
+      forceUpdatePosition();
     }
   });
 

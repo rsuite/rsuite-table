@@ -22,6 +22,11 @@ interface PositionProps {
   shouldFixedColumn: boolean;
 }
 
+/**
+ * Update the position of the table according to the scrolling information of the table.
+ * @param props
+ * @returns
+ */
 const usePosition = (props: PositionProps) => {
   const {
     data,
@@ -99,9 +104,7 @@ const usePosition = (props: PositionProps) => {
   ]);
 
   const updatePosition = useCallback(() => {
-    /**
-     * 当存在锁定列情况处理
-     */
+    // When there are fixed columns.
     if (shouldFixedColumn) {
       updatePositionByFixedCell();
     } else {

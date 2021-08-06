@@ -749,32 +749,34 @@ describe('Table', () => {
 
   it('Should replace all classPrefix', () => {
     const ref = React.createRef();
+
     render(
-      <Table
-        ref={ref}
-        style={{ width: 300 }}
-        classPrefix="my-list"
-        data={[
-          {
-            id: 1,
-            name: 'a'
-          }
-        ]}
-      >
-        <Column width={200} fixed>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
-        </Column>
-        <Column width={200}>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
-        </Column>
-      </Table>
+      <div style={{ width: 300 }}>
+        <Table
+          ref={ref}
+          classPrefix="my-list"
+          data={[
+            {
+              id: 1,
+              name: 'a'
+            }
+          ]}
+        >
+          <Column width={200} fixed>
+            <HeaderCell>11</HeaderCell>
+            <Cell>12</Cell>
+          </Column>
+          <Column width={200}>
+            <HeaderCell>11</HeaderCell>
+            <Cell>12</Cell>
+          </Column>
+        </Table>
+      </div>
     );
 
     const table = ref.current.root;
 
-    assert.equal(table.querySelectorAll('.my-list-cell-group').length, 2);
+    assert.equal(table.querySelectorAll('.my-list-cell-group').length, 4);
     assert.equal(table.querySelectorAll('.my-list-cell').length, 4);
     assert.equal(table.querySelectorAll('.my-list-cell-header').length, 2);
     assert.equal(table.querySelectorAll('.my-list-row').length, 2);
