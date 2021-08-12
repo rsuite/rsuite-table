@@ -5,6 +5,7 @@
 - fix(table): gix that the ColumnGroup array cannot be rendered in the Table. (#200)
 - feat(resize): honor minWidth setting when resizing columns. (#201)
 - refactor(icons): replace all icon with @rsuite/icons. (#180)
+- refactor: use react hooks to refactor Table. (#232)
 
 # 3.14.3
 
