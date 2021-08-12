@@ -1,13 +1,13 @@
 import React from 'react';
 
 import CellGroup from '../src/CellGroup';
-import { getDOMNode } from './TestWrapper';
+import { getDOMNode } from './utils';
 
 describe('CellGroup', () => {
   it('Should output a cell group', () => {
     const Title = 'Title';
     const instanceDom = getDOMNode(<CellGroup>Title</CellGroup>);
-    assert.include(instanceDom.className, 'rs-table-cell-group');
+    assert.include(instanceDom.className, 'rs-cell-group');
     assert.equal(instanceDom.style.transform, 'translate3d(0px, 0px, 0px)');
     assert.equal(instanceDom.innerText, Title);
   });

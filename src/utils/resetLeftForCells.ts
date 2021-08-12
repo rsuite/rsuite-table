@@ -1,9 +1,9 @@
 import React from 'react';
 
 /**
- * 重置数组中所有 cell 的相对 left 的距离。
+ * Resets the relative left distance of all cells in the array.
  * @param cells
- * @param extraWidth 额外为最后一个元素添加的的宽度，当存在纵向滚动条的时候设置。
+ * @param extraWidth The additional width added to the last cell when there is a vertical scroll bar.
  */
 export default function resetLeftForCells(cells, extraWidth?: number) {
   let left = 0;

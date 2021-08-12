@@ -1,8 +1,6 @@
-import React, { useContext } from 'react';
-import classNames from 'classnames';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { defaultClassPrefix, prefix } from './utils/prefix';
-import TableContext from './TableContext';
+import { useClassNames } from './utils';
 import { StandardProps } from './@types/common';
 
 export interface ColumnGroupProps extends StandardProps {
@@ -29,18 +27,14 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
     width
   };
 
+  const { withClassPrefix, merge, prefix } = useClassNames(classPrefix);
+  const classes = merge(className, withClassPrefix());
   const contentStyles = { ...styles, verticalAlign };
-  const { classPrefix: tableClassPrefix } = useContext(TableContext);
-  const colClassPrefix = classPrefix || defaultClassPrefix('table-column-group', tableClassPrefix);
-  const addPrefix = React.useCallback(
-    (name: string) => prefix(colClassPrefix)(name),
-    [colClassPrefix]
-  );
 
   return (
-    <div ref={ref} className={classNames(colClassPrefix, className)} {...rest}>
-      <div className={addPrefix('header')} style={styles}>
-        <div className={addPrefix('header-content')} style={contentStyles}>
+    <div ref={ref} className={classes} {...rest}>
+      <div className={prefix('header')} style={styles}>
+        <div className={prefix('header-content')} style={contentStyles}>
           {header}
         </div>
       </div>
@@ -49,20 +43,21 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
         const nodeStyles = { height, ...node.props?.style, top: styles.height };
 
         return React.cloneElement(node, {
-          className: addPrefix('cell'),
+          className: prefix('cell'),
           style: nodeStyles,
           headerHeight: height,
           verticalAlign,
-          children: <span className={addPrefix('cell-content')}>{node.props.children}</span>
+          children: <span className={prefix('cell-content')}>{node.props.children}</span>
         });
       })}
     </div>
   );
 });
 
-ColumnGroup.displayName = 'ColumnGroup';
+ColumnGroup.displayName = 'Table.ColumnGroup';
 ColumnGroup.defaultProps = {
-  headerHeight: 80
+  headerHeight: 80,
+  classPrefix: 'column-group'
 };
 
 ColumnGroup.propTypes = {

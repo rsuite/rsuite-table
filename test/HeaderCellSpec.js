@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
-
-import { getDOMNode, getInstance } from './TestWrapper';
+import { getDOMNode } from './utils';
 import HeaderCell from '../src/HeaderCell';
 
 describe('HeaderCell', () => {
   it('Should output a header', () => {
     const instanceDom = getDOMNode(<HeaderCell>test</HeaderCell>);
-    assert.equal(instanceDom.className, 'rs-table-cell-header');
+    assert.equal(instanceDom.className, 'rs-cell-header');
   });
 
   it('Should output default sort icon', () => {
@@ -16,7 +15,7 @@ describe('HeaderCell', () => {
         test
       </HeaderCell>
     );
-    assert.isNotNull(instanceDom.querySelector('.rs-table-cell-header-icon-sort'));
+    assert.isNotNull(instanceDom.querySelector('.rs-cell-header-icon-sort'));
   });
 
   it('Should output default sort desc icon', () => {
@@ -25,7 +24,7 @@ describe('HeaderCell', () => {
         test
       </HeaderCell>
     );
-    assert.isNotNull(instanceDom.querySelector('.rs-table-cell-header-icon-sort-desc'));
+    assert.isNotNull(instanceDom.querySelector('.rs-cell-header-icon-sort-desc'));
   });
 
   it('Should call `onSortColumn` callback', done => {
@@ -41,7 +40,7 @@ describe('HeaderCell', () => {
       </HeaderCell>
     );
 
-    ReactTestUtils.Simulate.click(instanceDom.querySelector('.rs-table-cell'));
+    ReactTestUtils.Simulate.click(instanceDom.querySelector('.rs-cell'));
   });
 
   it('Should call `onColumnResizeStart` callback', done => {
@@ -55,30 +54,6 @@ describe('HeaderCell', () => {
       </HeaderCell>
     );
 
-    ReactTestUtils.Simulate.mouseDown(instanceDom.querySelector('.rs-table-column-resize-spanner'));
-  });
-
-  it('Should call `onColumnResizeEnd` callback', done => {
-    const instance = getInstance(
-      <HeaderCell
-        width={100}
-        onColumnResizeEnd={() => {
-          done();
-        }}
-      />
-    );
-    instance.handleColumnResizeEnd(10, 2);
-  });
-
-  it('Should call `onResize` callback', done => {
-    const instance = getInstance(
-      <HeaderCell
-        width={100}
-        onResize={() => {
-          done();
-        }}
-      />
-    );
-    instance.handleColumnResizeEnd(10, 2);
+    ReactTestUtils.Simulate.mouseDown(instanceDom.querySelector('.rs-column-resize-spanner'));
   });
 });

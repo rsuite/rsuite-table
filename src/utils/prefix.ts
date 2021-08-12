@@ -1,24 +1,7 @@
-import curry from 'lodash/curry';
 import classNames from 'classnames';
+import curry from 'lodash/curry';
 
-export const globalKey = 'rs-';
-export const getClassNamePrefix = () => {
-  if (typeof __RSUITE_CLASSNAME_PREFIX__ !== 'undefined') {
-    return __RSUITE_CLASSNAME_PREFIX__;
-  }
-
-  return globalKey;
-};
-export const defaultClassPrefix = (name: string, tableClassPrefix?: string) => {
-  // 当设置了 table 的 classPrefix，则使用它作为前缀，并删除 name 中的 table
-  if (tableClassPrefix) {
-    return `${tableClassPrefix}-${name?.replace('table-', '')}`;
-  }
-
-  return `${getClassNamePrefix()}${name}`;
-};
-
-export const prefix = curry((pre: string, className: string | string[]) => {
+export function prefix(pre: string, className: string | string[]): string {
   if (!pre || !className) {
     return '';
   }
@@ -27,5 +10,12 @@ export const prefix = curry((pre: string, className: string | string[]) => {
     return classNames(className.filter(name => !!name).map(name => `${pre}-${name}`));
   }
 
+  // TODO Compatible with V4
+  if (pre[pre.length - 1] === '-') {
+    return `${pre}${className}`;
+  }
+
   return `${pre}-${className}`;
-});
+}
+
+export default curry(prefix);

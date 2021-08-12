@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getDOMNode } from './TestWrapper';
+import { getDOMNode } from './utils';
 import ColumnGroup from '../src/ColumnGroup';
 
 const Item = ({ className, style, children }) => (
@@ -13,7 +13,7 @@ describe('ColumnGroup', () => {
   it('Should output a ColumnGroup', () => {
     const instance = getDOMNode(<ColumnGroup />);
 
-    assert.equal(instance.className, 'rs-table-column-group');
+    assert.equal(instance.className, 'rs-column-group');
   });
 
   it('Should output a header', () => {
@@ -29,7 +29,7 @@ describe('ColumnGroup', () => {
       </ColumnGroup>
     );
 
-    assert.equal(instance.querySelectorAll('.rs-table-column-group-cell-content').length, 2);
+    assert.equal(instance.querySelectorAll('.rs-column-group-cell-content').length, 2);
   });
 
   it('Should set height 10 for header', () => {
@@ -40,8 +40,8 @@ describe('ColumnGroup', () => {
       </ColumnGroup>
     );
 
-    assert.equal(instance.querySelector('.rs-table-column-group-header').style.height, '10px');
-    assert.equal(instance.querySelector('.rs-table-column-group-cell').style.height, '10px');
+    assert.equal(instance.querySelector('.rs-column-group-header').style.height, '10px');
+    assert.equal(instance.querySelector('.rs-column-group-cell').style.height, '10px');
   });
 
   it('Should be centered vertically', () => {
@@ -53,7 +53,7 @@ describe('ColumnGroup', () => {
     );
 
     assert.equal(
-      instance.querySelector('.rs-table-column-group-header-content').style.verticalAlign,
+      instance.querySelector('.rs-column-group-header-content').style.verticalAlign,
       'middle'
     );
   });
@@ -66,7 +66,7 @@ describe('ColumnGroup', () => {
       </ColumnGroup>
     );
 
-    assert.equal(instance.className, 'my');
-    assert.ok(instance.querySelector('.my-header'));
+    assert.equal(instance.className, 'rs-my');
+    assert.ok(instance.querySelector('.rs-my-header'));
   });
 });

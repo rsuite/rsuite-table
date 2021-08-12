@@ -38,7 +38,7 @@ module.exports = config => {
 
     logLevel: config.LOG_INFO,
     preprocessors: {
-      'test/index.js': ['webpack']
+      'test/*.js': ['webpack']
     },
     webpack: webpackConfig,
     webpackMiddleware: {

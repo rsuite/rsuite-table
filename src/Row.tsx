@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { defaultClassPrefix, prefix, mergeRefs } from './utils';
+import { mergeRefs, useClassNames } from './utils';
 import TableContext from './TableContext';
 import { StandardProps } from './@types/common';
 
@@ -29,11 +28,9 @@ const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) =
     ...rest
   } = props;
 
-  const addPrefix = prefix(classPrefix);
-  const classes = classNames(classPrefix, className, {
-    [addPrefix('header')]: isHeaderRow
-  });
   const { translateDOMPositionXY } = useContext(TableContext);
+  const { withClassPrefix, merge } = useClassNames(classPrefix);
+  const classes = merge(className, withClassPrefix({ header: isHeaderRow }));
 
   const styles = {
     minWidth: width,
@@ -50,9 +47,9 @@ const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) =
   );
 });
 
-Row.displayName = 'Row';
+Row.displayName = 'Table.Row';
 Row.defaultProps = {
-  classPrefix: defaultClassPrefix('table-row'),
+  classPrefix: 'row',
   height: 46,
   headerHeight: 40
 };
