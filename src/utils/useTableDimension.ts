@@ -131,13 +131,15 @@ const useTableDimension = (props: TableDimensionProps) => {
 
     contentWidth.current = nextContentWidth;
 
-    // The value of SCROLLBAR_WIDTH is subtracted so that the scroll bar does not block the content part
-    minScrollX.current = -(nextContentWidth - tableWidth.current) - SCROLLBAR_WIDTH;
+    // The value of SCROLLBAR_WIDTH is subtracted so that the scroll bar does not block the content part.
+    // There is no vertical scroll bar after autoHeight.
+    minScrollX.current =
+      -(nextContentWidth - tableWidth.current) - (autoHeight ? 0 : SCROLLBAR_WIDTH);
 
     if (prevWidth !== contentWidth.current) {
       onTableContentWidthChange(prevWidth);
     }
-  }, [onTableContentWidthChange, prefix, tableRef]);
+  }, [autoHeight, onTableContentWidthChange, prefix, tableRef]);
 
   const calculateTableWidth = useCallback(() => {
     const prevWidth = tableWidth.current;

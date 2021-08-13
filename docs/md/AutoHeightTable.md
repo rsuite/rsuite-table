@@ -22,12 +22,12 @@ const App = () => {
           console.log(data);
         }}
       >
-        <Column width={70} align="center" fixed>
+        <Column width={70} align="center">
           <HeaderCell>Id</HeaderCell>
           <Cell dataKey="id" />
         </Column>
 
-        <Column width={130} fixed>
+        <Column width={130}>
           <HeaderCell>First Name</HeaderCell>
           <Cell dataKey="firstName" />
         </Column>
