@@ -142,8 +142,9 @@ describe('Cell', () => {
   });
 
   it('Should have a custom style', () => {
-    const instance = getDOMNode(<Cell style={{ fontSize: 14 }} />);
+    const instance = getDOMNode(<Cell style={{ fontSize: 14, padding: 20 }} />);
     assert.equal(instance.querySelector('.rs-cell-content').style.fontSize, '14px');
+    assert.equal(instance.querySelector('.rs-cell-content').style.padding, '20px');
   });
 
   it('Should render custom children', () => {
