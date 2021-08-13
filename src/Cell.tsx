@@ -175,7 +175,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     <div
       ref={ref}
       role={isHeaderCell ? 'columnheader' : 'gridcell'}
-      {...omit(rest, ['groupCount', 'groupHeader', ...columnHandledProps])}
+      {...omit(rest, ['groupCount', 'groupHeader', 'groupHeaderHeight', ...columnHandledProps])}
       onClick={onClick}
       className={classes}
       style={styles}

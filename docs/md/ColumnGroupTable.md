@@ -12,7 +12,7 @@ const FixedColumnTable = () => {
       classPrefix="rs-table"
       bordered
       height={400}
-      headerHeight={80}
+      headerHeight={100}
       data={fakeDataForColSpan}
       sortColumn={sortColumn}
       sortType={sortType}
@@ -30,7 +30,13 @@ const FixedColumnTable = () => {
         <Cell dataKey="id" />
       </Column>
 
-      <ColumnGroup header={'Basic Info'} fixed align="center" verticalAlign="middle">
+      <ColumnGroup
+        header={'Basic Info'}
+        fixed
+        align="center"
+        verticalAlign="middle"
+        groupHeaderHeight={40}
+      >
         <Column width={120} resizable sortable>
           <HeaderCell>firstName</HeaderCell>
           <Cell dataKey="firstName" />

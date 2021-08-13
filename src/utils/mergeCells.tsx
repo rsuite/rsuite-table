@@ -12,8 +12,16 @@ function cloneCell(Cell, props) {
 function mergeCells(cells) {
   const nextCells = [];
   for (let i = 0; i < cells.length; i += 1) {
-    const { width, colSpan, groupCount, groupHeader, isHeaderCell, headerHeight, verticalAlign } =
-      cells[i].props;
+    const {
+      width,
+      colSpan,
+      groupCount,
+      groupHeader,
+      isHeaderCell,
+      headerHeight,
+      verticalAlign,
+      groupHeaderHeight
+    } = cells[i].props;
 
     const groupChildren = [];
 
@@ -62,6 +70,7 @@ function mergeCells(cells) {
               headerHeight={headerHeight}
               header={groupHeader}
               verticalAlign={verticalAlign}
+              groupHeaderHeight={groupHeaderHeight}
             >
               {groupChildren}
             </ColumnGroup>

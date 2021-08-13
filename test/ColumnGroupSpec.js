@@ -3,8 +3,8 @@ import React from 'react';
 import { getDOMNode } from './utils';
 import ColumnGroup from '../src/ColumnGroup';
 
-const Item = ({ className, style, children }) => (
-  <div className={className} style={style}>
+const Item = ({ className, style, children, headerHeight }) => (
+  <div className={className} style={{ height: headerHeight, ...style }}>
     {children}
   </div>
 );
@@ -42,6 +42,20 @@ describe('ColumnGroup', () => {
 
     assert.equal(instance.querySelector('.rs-column-group-header').style.height, '10px');
     assert.equal(instance.querySelector('.rs-column-group-header-content').style.height, '10px');
+    assert.equal(instance.querySelector('.rs-column-group-cell').style.height, '10px');
+  });
+
+  it('Should render height via groupHeaderHeight', () => {
+    const instance = getDOMNode(
+      <ColumnGroup headerHeight={20} groupHeaderHeight={5} header={'header'}>
+        <Item>a</Item>
+        <Item>b</Item>
+      </ColumnGroup>
+    );
+
+    assert.equal(instance.querySelector('.rs-column-group-header').style.height, '5px');
+    assert.equal(instance.querySelector('.rs-column-group-header-content').style.height, '5px');
+    assert.equal(instance.querySelector('.rs-column-group-cell').style.height, '15px');
   });
 
   it('Should be centered vertically', () => {
