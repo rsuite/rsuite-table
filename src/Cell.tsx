@@ -19,9 +19,6 @@ export interface CellProps extends StandardProps {
 
   /** Row Data */
   rowData?: any;
-
-  /** Add custom styles to cell content */
-  contentStyle?: React.CSSProperties;
 }
 
 export interface InnerCellProps extends CellProps {
@@ -43,6 +40,7 @@ export interface InnerCellProps extends CellProps {
   removed?: boolean;
   treeCol?: boolean;
   expanded?: boolean;
+  predefinedStyle?: React.CSSProperties;
   onTreeToggle?: (
     rowKey?: string | number,
     rowIndex?: number,
@@ -65,7 +63,6 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     style,
     className,
     classPrefix,
-    contentStyle,
     firstColumn,
     lastColumn,
     isHeaderCell,
@@ -84,6 +81,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     treeCol,
     height,
     hasChildren,
+    predefinedStyle,
     renderCell,
     renderTreeToggle,
     onClick,
@@ -111,7 +109,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
 
   const nextHeight = isHeaderCell ? headerHeight : cellHeight;
   const styles = {
-    ...style,
+    ...predefinedStyle,
     width,
     height: nextHeight,
     zIndex: depth,
@@ -119,7 +117,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
   };
 
   const contentStyles: React.CSSProperties = {
-    ...contentStyle,
+    ...style,
     width,
     height: nextHeight,
     textAlign: align,
@@ -216,8 +214,7 @@ Cell.propTypes = {
   wordWrap: PropTypes.bool,
   removed: PropTypes.bool,
   treeCol: PropTypes.bool,
-  expanded: PropTypes.bool,
-  contentStyle: PropTypes.object
+  expanded: PropTypes.bool
 };
 Cell.defaultProps = {
   classPrefix: 'cell',

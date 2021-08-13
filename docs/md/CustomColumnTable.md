@@ -20,7 +20,6 @@ const BaseCell = React.forwardRef((props, ref) => {
 });
 
 const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => {
-  console.log(checkedKeys, 'checkedKeys');
   return (
     <BaseCell {...props} style={{ padding: 0 }}>
       <div style={{ lineHeight: '46px' }}>
@@ -96,7 +95,7 @@ const App = () => {
   };
 
   return (
-    <Table height={400} data={data} headerHeight={50} virtualized>
+    <Table height={400} data={fakeLargeData} headerHeight={50} virtualized>
       <Column width={50} align="center">
         <HeaderCell style={{ padding: 0 }}>
           <div style={{ lineHeight: '40px' }}>
@@ -126,15 +125,6 @@ const App = () => {
       <Column width={300}>
         <HeaderCell>Email</HeaderCell>
         <BaseCell>{rowData => <a href={`mailto:${rowData.email}`}>{rowData.email}</a>}</BaseCell>
-      </Column>
-
-      <Column width={250} align="right">
-        <HeaderCell>Date</HeaderCell>
-        <BaseCell>
-          {rowData => {
-            return rowData.date.toLocaleString();
-          }}
-        </BaseCell>
       </Column>
 
       <Column width={200}>

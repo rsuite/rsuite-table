@@ -6,44 +6,44 @@ import { getDOMNode } from './utils';
 describe('CellGroup', () => {
   it('Should output a cell group', () => {
     const Title = 'Title';
-    const instanceDom = getDOMNode(<CellGroup>Title</CellGroup>);
-    assert.include(instanceDom.className, 'rs-cell-group');
-    assert.equal(instanceDom.style.transform, 'translate3d(0px, 0px, 0px)');
-    assert.equal(instanceDom.innerText, Title);
+    const instance = getDOMNode(<CellGroup>Title</CellGroup>);
+    assert.include(instance.className, 'rs-cell-group');
+    assert.equal(instance.style.transform, 'translate3d(0px, 0px, 0px)');
+    assert.equal(instance.innerText, Title);
   });
 
   it('Should be 100 the width', () => {
-    const instanceDom = getDOMNode(<CellGroup width={100} />);
+    const instance = getDOMNode(<CellGroup width={100} />);
 
-    assert.equal(instanceDom.style.width, '100px');
+    assert.equal(instance.style.width, '100px');
   });
 
   it('Should be 100 the height', () => {
-    const instanceDom = getDOMNode(<CellGroup height={100} />);
+    const instance = getDOMNode(<CellGroup height={100} />);
 
-    assert.equal(instanceDom.style.height, '100px');
+    assert.equal(instance.style.height, '100px');
   });
 
   it('Should be 100 the left', () => {
-    const instanceDom = getDOMNode(<CellGroup left={100} />);
+    const instance = getDOMNode(<CellGroup left={100} />);
 
-    assert.equal(instanceDom.style.transform, 'translate3d(100px, 0px, 0px)');
+    assert.equal(instance.style.transform, 'translate3d(100px, 0px, 0px)');
   });
 
   it('Should be fixed', () => {
-    const instanceDom = getDOMNode(<CellGroup fixed="left" />);
+    const instance = getDOMNode(<CellGroup fixed="left" />);
 
-    assert.ok(instanceDom.className.match(/\bfixed\b/));
+    assert.ok(instance.className.match(/\bfixed\b/));
   });
 
   it('Should have a custom className', () => {
-    const instanceDom = getDOMNode(<CellGroup className="custom" />);
-    assert.ok(instanceDom.className.match(/\bcustom\b/));
+    const instance = getDOMNode(<CellGroup className="custom" />);
+    assert.ok(instance.className.match(/\bcustom\b/));
   });
 
   it('Should have a custom style', () => {
     const fontSize = '12px';
-    const instanceDom = getDOMNode(<CellGroup style={{ fontSize }} />);
-    assert.equal(instanceDom.style.fontSize, fontSize);
+    const instance = getDOMNode(<CellGroup style={{ fontSize }} />);
+    assert.equal(instance.style.fontSize, fontSize);
   });
 });
