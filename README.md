@@ -156,13 +156,13 @@ const App = () => (
 
 ### `<ColumnGroup>`
 
-| Property          | Type `(Default)`                | Description                                                                                                                 |
-| ----------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| align             | enum: 'left','center','right'   | Alignment                                                                                                                   |
-| fixed             | boolean, 'left', 'right'        | Fixed column                                                                                                                |
-| groupHeaderHeight | number                          | The height of the header of the merged cell group. The default value is the square value of the table `headerHeight` value. |
-| header            | React.ReactNode                 | Group header                                                                                                                |
-| verticalAlign     | enum: 'top', 'middle', 'bottom' | Vertical alignment                                                                                                          |
+| Property          | Type `(Default)`                | Description                                                                                             |
+| ----------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| align             | enum: 'left','center','right'   | Alignment                                                                                               |
+| fixed             | boolean, 'left', 'right'        | Fixed column                                                                                            |
+| groupHeaderHeight | number                          | The height of the header of the merged cell group. The default value is 50% of the table `headerHeight` |
+| header            | React.ReactNode                 | Group header                                                                                            |
+| verticalAlign     | enum: 'top', 'middle', 'bottom' | Vertical alignment                                                                                      |
 
 ### `<Cell>`
 
