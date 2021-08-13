@@ -156,20 +156,21 @@ const App = () => (
 
 ### `<ColumnGroup>`
 
-| Property      | Type `(Default)`                | Description        |
-| ------------- | ------------------------------- | ------------------ |
-| align         | enum: 'left','center','right'   | Alignment          |
-| fixed         | boolean, 'left', 'right'        | Fixed column       |
-| header        | React.ReactNode                 | Group header       |
-| verticalAlign | enum: 'top', 'middle', 'bottom' | Vertical alignment |
+| Property          | Type `(Default)`                | Description                                                                                                                 |
+| ----------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| align             | enum: 'left','center','right'   | Alignment                                                                                                                   |
+| fixed             | boolean, 'left', 'right'        | Fixed column                                                                                                                |
+| groupHeaderHeight | number                          | The height of the header of the merged cell group. The default value is the square value of the table `headerHeight` value. |
+| header            | React.ReactNode                 | Group header                                                                                                                |
+| verticalAlign     | enum: 'top', 'middle', 'bottom' | Vertical alignment                                                                                                          |
 
 ### `<Cell>`
 
-| Property     | Type `(Default)` | Description                                  |
-| ------------ | ---------------- | -------------------------------------------- |
-| dataKey      | string           | Data binding `key`, but also a sort of `key` |
-| rowData      | object           | Row data                                     |
-| rowIndex     | number           | Row number                                   |
+| Property | Type `(Default)` | Description                                  |
+| -------- | ---------------- | -------------------------------------------- |
+| dataKey  | string           | Data binding `key`, but also a sort of `key` |
+| rowData  | object           | Row data                                     |
+| rowIndex | number           | Row number                                   |
 
 #### There are three ways to use `<Cell>`, as follows:
 

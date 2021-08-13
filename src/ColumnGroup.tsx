@@ -11,6 +11,12 @@ export interface ColumnGroupProps extends StandardProps {
   /** Fixed column */
   fixed?: boolean | 'left' | 'right';
 
+  /**
+   * The height of the header of the merged cell group.
+   * The default value is the square value of the table `headerHeight` value.
+   * */
+  groupHeaderHeight?: number;
+
   /** Group header */
   header?: React.ReactNode;
   width?: number;
@@ -18,12 +24,24 @@ export interface ColumnGroupProps extends StandardProps {
 }
 
 const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HTMLDivElement>) => {
-  const { header, className, children, classPrefix, headerHeight, verticalAlign, width, ...rest } =
-    props;
+  const {
+    header,
+    className,
+    children,
+    classPrefix,
+    headerHeight,
+    verticalAlign,
+    width,
+    groupHeaderHeight: groupHeightProp,
+    ...rest
+  } = props;
 
-  const height = headerHeight / 2;
+  const hasGroupHeight = typeof groupHeightProp !== 'undefined';
+  const groupHeight = hasGroupHeight ? groupHeightProp : headerHeight / 2;
+  const restHeight = hasGroupHeight ? headerHeight - groupHeightProp : headerHeight / 2;
+
   const styles: React.CSSProperties = {
-    height,
+    height: groupHeight,
     width
   };
 
@@ -42,8 +60,8 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
       {React.Children.map(children, (node: React.ReactElement) => {
         return React.cloneElement(node, {
           className: prefix('cell'),
-          predefinedStyle: { height, top: styles.height },
-          headerHeight: height,
+          predefinedStyle: { height: restHeight, top: styles.height },
+          headerHeight: restHeight,
           verticalAlign,
           children: <span className={prefix('cell-content')}>{node.props.children}</span>
         });
@@ -61,6 +79,7 @@ ColumnGroup.defaultProps = {
 ColumnGroup.propTypes = {
   header: PropTypes.node,
   classPrefix: PropTypes.string,
+  groupHeaderHeight: PropTypes.number,
   verticalAlign: PropTypes.oneOf(['top', 'middle', 'bottom'])
 };
 

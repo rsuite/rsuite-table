@@ -14,11 +14,20 @@ function getTableColumns(children) {
 
   const flattenColumns = flatten(children).map((column: React.ReactElement) => {
     if (column?.type === ColumnGroup) {
-      const { header, children: childColumns, align, fixed, verticalAlign } = column?.props;
+      const {
+        header,
+        children: childColumns,
+        align,
+        fixed,
+        verticalAlign,
+        groupHeaderHeight
+      } = column?.props;
+
       return childColumns.map((childColumn, index) => {
         // Overwrite the props set by ColumnGroup to Column.
         const groupCellProps: any = {
           ...childColumn?.props,
+          groupHeaderHeight,
           align,
           fixed,
           verticalAlign
