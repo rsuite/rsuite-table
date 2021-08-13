@@ -40,11 +40,9 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
       </div>
 
       {React.Children.map(children, (node: React.ReactElement) => {
-        const nodeStyles = { height, ...node.props?.style, top: styles.height };
-
         return React.cloneElement(node, {
           className: prefix('cell'),
-          style: nodeStyles,
+          predefinedStyle: { height, top: styles.height },
           headerHeight: height,
           verticalAlign,
           children: <span className={prefix('cell-content')}>{node.props.children}</span>

@@ -41,7 +41,7 @@ describe('ColumnGroup', () => {
     );
 
     assert.equal(instance.querySelector('.rs-column-group-header').style.height, '10px');
-    assert.equal(instance.querySelector('.rs-column-group-cell').style.height, '10px');
+    assert.equal(instance.querySelector('.rs-column-group-header-content').style.height, '10px');
   });
 
   it('Should be centered vertically', () => {

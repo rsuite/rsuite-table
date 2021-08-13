@@ -167,7 +167,6 @@ const App = () => (
 
 | Property     | Type `(Default)` | Description                                  |
 | ------------ | ---------------- | -------------------------------------------- |
-| contentStyle | CSSProperties    | Add custom styles to cell content            |
 | dataKey      | string           | Data binding `key`, but also a sort of `key` |
 | rowData      | object           | Row data                                     |
 | rowIndex     | number           | Row number                                   |
