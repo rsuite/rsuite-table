@@ -2,6 +2,7 @@ import React, { useRef, useCallback, useEffect } from 'react';
 import { getHeight, addStyle, removeStyle, on } from 'dom-lib';
 import toggleClass from './toggleClass';
 import isNumberOrTrue from './isNumberOrTrue';
+import useUpdateEffect from './useUpdateEffect';
 import type { ListenerCallback, ElementOffset } from '../@types/common';
 import type { ScrollbarInstance } from '../Scrollbar';
 
@@ -78,6 +79,12 @@ const useAffix = (props: AffixProps) => {
     handleAffixTableHeader,
     handleAffixHorizontalScrollbar
   ]);
+
+  /**
+   * Update the position of the fixed element after the height of the table changes.
+   * fix: https://github.com/rsuite/rsuite/issues/1716
+   */
+  useUpdateEffect(handleWindowScroll, [tableHeight]);
 
   useEffect(() => {
     if (isNumberOrTrue(affixHeader) || isNumberOrTrue(affixHorizontalScrollbar)) {
