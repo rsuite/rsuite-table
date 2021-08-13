@@ -6,6 +6,9 @@
 - feat(resize): honor minWidth setting when resizing columns. (#201)
 - refactor(icons): replace all icon with @rsuite/icons. (#180)
 - refactor: use react hooks to refactor Table. (#232)
+- feat(ColumnGroup): support groupHeaderHeight on `<ColumnGroup>`. (#235)
+- fix(autoHeight): fix the extra scroll bar width after autoHeight. (#236)
+- fix(affix): fix scrollbar not re-rendering after data update. (#237)
 
 # 3.14.3
 
