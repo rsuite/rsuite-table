@@ -18,6 +18,13 @@ class AffixHorizontalScrollbarTable extends React.Component {
           <p style={{ textAlign: 'center' }}>⬇️ Scroll down the page ⬇️</p>
           <hr />
         </div>
+        <Button
+          onClick={() => {
+            this.setState({ data: [] });
+          }}
+        >
+          clear data
+        </Button>
         <Table
           height={400}
           autoHeight
