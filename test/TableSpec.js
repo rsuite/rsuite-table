@@ -781,4 +781,121 @@ describe('Table', () => {
     assert.equal(table.querySelectorAll('.my-list-cell-header').length, 2);
     assert.equal(table.querySelectorAll('.my-list-row').length, 2);
   });
+
+  it('Should call `onScroll` callback', done => {
+    const instance = getDOMNode(
+      <Table
+        onScroll={() => done()}
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          }
+        ]}
+        height={10}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      </Table>
+    );
+    const body = instance.querySelector('.rs-table-body-row-wrapper');
+
+    body.dispatchEvent(new WheelEvent('wheel', { deltaY: 10 }));
+  });
+
+  it('Should call `onScroll` callback by scrollTop', done => {
+    const App = React.forwardRef((props, ref) => {
+      const data = [
+        {
+          id: 1,
+          name: 'a'
+        }
+      ];
+
+      const handleScroll = (x, y) => {
+        if (y === 10) {
+          done();
+        }
+      };
+
+      return (
+        <Table ref={ref} onScroll={handleScroll} data={data} height={10}>
+          <Column>
+            <HeaderCell>11</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+        </Table>
+      );
+    });
+
+    const instance = getInstance(<App />);
+    instance.scrollTop(10);
+  });
+
+  it('Should call `onScroll` callback by scrollLeft', done => {
+    const App = React.forwardRef((props, ref) => {
+      const data = [
+        {
+          id: 1,
+          name: 'a'
+        }
+      ];
+
+      const handleScroll = x => {
+        if (x === 10) {
+          done();
+        }
+      };
+
+      return (
+        <Table ref={ref} onScroll={handleScroll} data={data} height={10} style={{ width: 100 }}>
+          <Column>
+            <HeaderCell>id</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+          <Column>
+            <HeaderCell>name</HeaderCell>
+            <Cell dataKey="name" />
+          </Column>
+        </Table>
+      );
+    });
+
+    const instance = getInstance(<App />);
+    instance.scrollLeft(10);
+  });
+
+  it('Should get the latest `data` in onScroll', done => {
+    const App = React.forwardRef((props, ref) => {
+      const [data, setData] = React.useState([]);
+
+      const handleScroll = () => {
+        if (data.length === 1) {
+          done();
+        }
+      };
+      React.useEffect(() => {
+        setData([
+          {
+            id: 1,
+            name: 'a'
+          }
+        ]);
+      }, []);
+      return (
+        <Table ref={ref} onScroll={handleScroll} data={data} height={10}>
+          <Column>
+            <HeaderCell>11</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+        </Table>
+      );
+    });
+    const instance = getDOMNode(<App />);
+    const body = instance.querySelector('.rs-table-body-row-wrapper');
+
+    body.dispatchEvent(new WheelEvent('wheel', { deltaY: 10 }));
+  });
 });

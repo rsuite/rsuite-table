@@ -23,6 +23,7 @@ const App = () => {
         minHeight={260}
         height={400}
         data={fakeTreeData}
+        shouldUpdateScroll={false}
         defaultExpandedRowKeys={[0]}
         onExpandChange={(expanded, rowData) => {
           console.log(expanded, rowData);

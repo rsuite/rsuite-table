@@ -125,7 +125,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
       setScrollX(x);
       setScrollY(y);
-      onScroll?.(x, y);
+      onScroll?.(Math.abs(x), Math.abs(y));
 
       forceUpdatePosition();
 
@@ -165,9 +165,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     [handleWheel, scrollbarXRef, scrollbarYRef]
   );
 
-  const wheelHandler = useRef<WheelHandler>(
-    new WheelHandler(listenWheel, shouldHandleWheelX, shouldHandleWheelY, false)
-  );
+  const wheelHandler = useRef<WheelHandler>();
 
   // When handling the Touch event on the mobile terminal, initialize x and y when Start.
   const handleTouchStart = useCallback(
@@ -281,35 +279,6 @@ const useScrollListener = (props: ScrollListenerProps) => {
     setTimeout(() => setScrolling(false), 0);
   };
 
-  const handleScrollTop = useCallback(
-    (top = 0) => {
-      const [nextScrollY, handleScrollY] = getControlledScrollTopValue(top);
-
-      setScrollY(nextScrollY);
-      scrollbarYRef?.current?.resetScrollBarPosition?.(handleScrollY);
-      forceUpdatePosition();
-
-      /**
-       * After calling `scrollTop`, a white screen will appear when `virtualized` is true.
-       * The reason is that the coordinates of the DOM are directly manipulated,
-       * but the component is not re-rendered. Need to call `rerender`.
-       * Fix: rsuite#1044
-       */
-      if (virtualized && contentHeight.current > height) {
-        rerender();
-      }
-    },
-    [
-      contentHeight,
-      getControlledScrollTopValue,
-      height,
-      scrollbarYRef,
-      setScrollY,
-      forceUpdatePosition,
-      virtualized
-    ]
-  );
-
   const getControlledScrollLeftValue = value => {
     // The maximum range of scrolling value is judged.
     value = Math.min(value, Math.max(0, contentWidth.current - tableWidth.current));
@@ -317,9 +286,29 @@ const useScrollListener = (props: ScrollListenerProps) => {
     return [-value, (value / contentWidth.current) * tableWidth.current];
   };
 
+  const handleScrollTop = (top = 0) => {
+    const [nextScrollY, handleScrollY] = getControlledScrollTopValue(top);
+
+    setScrollY(nextScrollY);
+    scrollbarYRef?.current?.resetScrollBarPosition?.(handleScrollY);
+    forceUpdatePosition();
+    onScroll?.(Math.abs(scrollX.current), Math.abs(nextScrollY));
+
+    /**
+     * After calling `scrollTop`, a white screen will appear when `virtualized` is true.
+     * The reason is that the coordinates of the DOM are directly manipulated,
+     * but the component is not re-rendered. Need to call `rerender`.
+     * Fix: rsuite#1044
+     */
+    if (virtualized && contentHeight.current > height) {
+      rerender();
+    }
+  };
+
   const handleScrollLeft = (left = 0) => {
     const [nextScrollX, scrollbarX] = getControlledScrollLeftValue(left);
     setScrollX(nextScrollX);
+    onScroll?.(Math.abs(nextScrollX), Math.abs(scrollY.current));
     scrollbarXRef?.current?.resetScrollBarPosition?.(scrollbarX);
     forceUpdatePosition();
   };
@@ -348,6 +337,12 @@ const useScrollListener = (props: ScrollListenerProps) => {
     const options = { passive: false };
     const tableBody = tableBodyRef.current;
     if (tableBody) {
+      wheelHandler.current = new WheelHandler(
+        listenWheel,
+        shouldHandleWheelX,
+        shouldHandleWheelY,
+        false
+      );
       wheelListener.current = on(tableBody, 'wheel', wheelHandler.current.onWheel, options);
       touchStartListener.current = on(tableBody, 'touchstart', handleTouchStart, options);
       touchMoveListener.current = on(tableBody, 'touchmove', handleTouchMove, options);
@@ -359,7 +354,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
       touchMoveListener.current?.off();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
 
   useMount(() => {
     if (rtl) {

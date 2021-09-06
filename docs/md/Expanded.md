@@ -51,6 +51,7 @@ class ExpandedTable extends React.Component {
     const { expandedRowKeys, data } = this.state;
     return (
       <Table
+        shouldUpdateScroll={false}
         height={400}
         data={data}
         rowKey={rowKey}
