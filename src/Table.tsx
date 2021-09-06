@@ -76,16 +76,16 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   height?: number;
 
   /** The minimum height of the table. The height is maintained even when the content is not stretched. */
-  minHeight: number;
+  minHeight?: number;
 
   /** The row of the table has a mouseover effect */
-  hover: boolean;
+  hover?: boolean;
 
   /** The height of the table header */
-  headerHeight: number;
+  headerHeight?: number;
 
   /** The component localized character set. */
-  locale: TableLocaleType;
+  locale?: TableLocaleType;
 
   /** Show loading */
   loading?: boolean;
@@ -94,7 +94,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   loadAnimation?: boolean;
 
   /** The row height of the table */
-  rowHeight: number | ((rowData: RowDataType) => number);
+  rowHeight?: number | ((rowData: RowDataType) => number);
 
   /** Each row corresponds to the unique key in  data */
   rowKey?: RowKeyType;
