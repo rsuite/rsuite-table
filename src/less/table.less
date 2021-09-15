@@ -15,6 +15,9 @@
     top: 0;
     border-bottom: 1px solid @border-color;
   }
+  &-row-rowspan + &-row {
+    border-top: 1px solid #eee;
+  }
 
   &-hover &-row:hover {
     background: @head-background;
@@ -116,6 +119,10 @@
       &-sort-wrapper {
         display: inline-block;
       }
+    }
+
+    &-rowspan {
+      border-bottom: 1px solid @border-color !important;
     }
   }
   &-column-resize-spanner {

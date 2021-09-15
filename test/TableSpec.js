@@ -898,4 +898,55 @@ describe('Table', () => {
 
     body.dispatchEvent(new WheelEvent('wheel', { deltaY: 10 }));
   });
+
+  it('Should be rowSpan', () => {
+    const data = [
+      {
+        city: 'New Gust',
+        name: 'Janis',
+        rowspan: 2
+      },
+      {
+        city: 'New Gust',
+        name: 'Ernest Schuppe Anderson'
+      },
+      {
+        city: 'Maria Junctions',
+        name: 'Alessandra',
+        rowspan: 3
+      },
+      {
+        city: 'Maria Junctions',
+        name: 'Margret'
+      },
+      {
+        city: 'Maria Junctions',
+        name: 'Emiliano'
+      }
+    ];
+    const instance = getDOMNode(
+      <Table height={500} data={data} rowHeight={40}>
+        <Column
+          width={100}
+          verticalAlign="middle"
+          rowSpan={rowData => {
+            return rowData.rowspan;
+          }}
+        >
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="city" />
+        </Column>
+        <Column width={100}>
+          <HeaderCell />
+          <Cell dataKey="name" />
+        </Column>
+      </Table>
+    );
+
+    const rowspanCells = instance.querySelectorAll('.rs-table-cell-rowspan');
+    assert.equal(rowspanCells[0].style.height, `${40 * 2}px`);
+    assert.equal(rowspanCells[1].style.height, `${40 * 3}px`);
+    assert.equal(instance.querySelectorAll('.rs-table-cell-rowspan').length, 2);
+    assert.equal(instance.querySelectorAll('.rs-table-row-rowspan').length, 2);
+  });
 });
