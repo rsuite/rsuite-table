@@ -30,9 +30,6 @@ const App = () => {
         shouldUpdateScroll={false}
         showHeader={false}
         bordered
-        onDataUpdated={(data, scrollTo) => {
-          //scrollTo({ x: 1000, y: 10 });
-        }}
       >
         <Column width={200} align="center" flexGrow={1}>
           <HeaderCell>ID</HeaderCell>
