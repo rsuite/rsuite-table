@@ -510,7 +510,9 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       restRowProps.className = rowClassName;
     }
 
-    const rowStyles: React.CSSProperties = {};
+    const rowStyles: React.CSSProperties = {
+      ...props?.style
+    };
     let rowRight = 0;
 
     if (rtl && contentWidth.current > tableWidth.current) {
@@ -707,18 +709,30 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
     for (let i = 0; i < bodyCells.length; i++) {
       const cell = bodyCells[i];
+      const rowSpan: number = cell.props?.rowSpan?.(rowData);
+      const rowHeight = rowSpan ? rowSpan * props.height : props.height;
+
+      if (rowSpan) {
+        rowProps.rowSpan = rowSpan;
+        rowProps.style = {
+          zIndex: 1,
+          overflow: 'unset'
+        };
+      }
+
       cells.push(
         React.cloneElement(cell, {
           hasChildren,
           rowData,
           wordWrap,
-          height: props.height,
+          height: rowHeight,
           rowIndex: props.key,
           depth: props.depth,
           renderTreeToggle,
           onTreeToggle: handleTreeToggle,
           rowKey: nextRowKey,
-          expanded
+          expanded,
+          rowSpan
         })
       );
     }

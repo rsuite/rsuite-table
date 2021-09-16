@@ -11,6 +11,7 @@ export interface RowProps extends StandardProps {
   top?: number;
   isHeaderRow?: boolean;
   rowRef?: any;
+  rowSpan?: number;
 }
 
 const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) => {
@@ -25,12 +26,13 @@ const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) =
     rowRef,
     classPrefix,
     children,
+    rowSpan,
     ...rest
   } = props;
 
   const { translateDOMPositionXY } = useContext(TableContext);
   const { withClassPrefix, merge } = useClassNames(classPrefix);
-  const classes = merge(className, withClassPrefix({ header: isHeaderRow }));
+  const classes = merge(className, withClassPrefix({ header: isHeaderRow, rowspan: rowSpan }));
 
   const styles = {
     minWidth: width,
@@ -62,7 +64,8 @@ Row.propTypes = {
   rowRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   className: PropTypes.string,
   classPrefix: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
+  rowSpan: PropTypes.number
 };
 
 export default Row;

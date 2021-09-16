@@ -7,6 +7,9 @@ export interface ColumnProps {
   /** Merges column cells to merge when the dataKey value for the merged column is null or undefined. */
   colSpan?: number;
 
+  /** Merges rows on the specified column. */
+  rowSpan?: (rowData: any) => number;
+
   /** Fixed column */
   fixed?: boolean | 'left' | 'right';
 
@@ -50,6 +53,7 @@ const propTypes = {
   flexGrow: PropTypes.number,
   minWidth: PropTypes.number,
   colSpan: PropTypes.number,
+  rowSpan: PropTypes.func,
   treeCol: PropTypes.bool,
   onResize: PropTypes.func
 };

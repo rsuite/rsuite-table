@@ -11,6 +11,7 @@ import { Table, Column, Cell, HeaderCell, ColumnGroup } from '../src';
 import fakeData from './data/users';
 import fakeTreeData from './data/treeData';
 import fakeDataForColSpan from './data/usersForColSpan';
+import fakeDataForRowSpan from './data/usersForRowSpan';
 import fakeLargeData from './data/fakeLargeData.json';
 import fakeObjectDataListStore, { createFakeRowObjectData } from './data/fakeObjectDataListStore';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
@@ -37,6 +38,7 @@ function App() {
           fakeTreeData,
           fakeLargeData,
           fakeDataForColSpan,
+          fakeDataForRowSpan,
           Table,
           Column,
           ColumnGroup,
@@ -117,7 +119,10 @@ function App() {
             title: 'Colspan Cell',
             content: require('./md/ColspanTable.md')
           },
-
+          {
+            title: 'Rowspan Cell',
+            content: require('./md/RowspanTable.md')
+          },
           {
             title: 'Column Group',
             content: require('./md/ColumnGroupTable.md')

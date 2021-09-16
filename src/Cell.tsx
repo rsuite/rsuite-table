@@ -35,6 +35,7 @@ export interface InnerCellProps extends CellProps {
   hasChildren?: boolean;
   children?: React.ReactNode | ((rowData: RowDataType, rowIndex: number) => React.ReactNode);
   rowKey?: string | number;
+  rowSpan?: number;
   depth?: number;
   wordWrap?: boolean;
   removed?: boolean;
@@ -74,6 +75,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     rowIndex,
     removed,
     rowKey,
+    rowSpan,
     wordWrap,
     depth,
     verticalAlign,
@@ -104,7 +106,12 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
   const { withClassPrefix, merge, prefix } = useClassNames(classPrefix);
   const classes = merge(
     className,
-    withClassPrefix({ expanded: expanded && isTreeCol, first: firstColumn, last: lastColumn })
+    withClassPrefix({
+      expanded: expanded && isTreeCol,
+      first: firstColumn,
+      last: lastColumn,
+      rowspan: rowSpan && !isHeaderCell
+    })
   );
 
   const nextHeight = isHeaderCell ? headerHeight : cellHeight;
