@@ -715,9 +715,16 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       if (rowSpan) {
         rowProps.rowSpan = rowSpan;
         rowProps.style = {
-          zIndex: 1,
+          /**
+           * In the case of multiple-column merged rows,
+           * the `zIndex` value of the previous row should be greater than the `zIndex` value of the following row.
+           * So `rowSpan` is used as the `zIndex` value.
+           */
+          zIndex: rowProps.style?.zIndex || rowSpan,
           overflow: 'unset'
         };
+
+        // TODO: Do not render those cells merged by `rowSpan`
       }
 
       cells.push(
