@@ -6,25 +6,8 @@ const markdownRenderer = require('react-markdown-reader').renderer;
 const { NODE_ENV } = process.env;
 
 const docsPath = NODE_ENV === 'development' ? './assets' : './';
-const plugins = [
-  new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
-  }),
-  new HtmlwebpackPlugin({
-    title: 'RSUITE Table',
-    filename: 'index.html',
-    template: 'docs/index.html',
-    inject: true,
-    hash: true,
-    path: docsPath
-  }),
-  new MiniCssExtractPlugin({
-    filename: '[name].css',
-    chunkFilename: '[id].css'
-  })
-];
 
-module.exports = (env = {}) => {
+module.exports = () => {
   return {
     entry: './docs/index.tsx',
     devtool: 'source-map',
@@ -34,15 +17,27 @@ module.exports = (env = {}) => {
     devServer: {
       hot: true,
       contentBase: path.resolve(__dirname, ''),
-      publicPath: '/',
-      disableHostCheck: true
+      publicPath: '/'
     },
     output: {
       path: path.resolve(__dirname, 'assets'),
       filename: 'bundle.js',
       publicPath: './'
     },
-    plugins,
+    plugins: [
+      new HtmlwebpackPlugin({
+        title: 'Responsive Nav',
+        filename: 'index.html',
+        template: 'docs/index.html',
+        inject: true,
+        hash: true,
+        path: docsPath
+      }),
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[id].css'
+      })
+    ],
     module: {
       rules: [
         {
@@ -53,11 +48,19 @@ module.exports = (env = {}) => {
         {
           test: /\.(less|css)$/,
           use: [
+            MiniCssExtractPlugin.loader,
             {
-              loader: MiniCssExtractPlugin.loader
+              loader: 'css-loader'
             },
-            'css-loader',
-            'less-loader?javascriptEnabled=true'
+            {
+              loader: 'less-loader',
+              options: {
+                sourceMap: true,
+                lessOptions: {
+                  javascriptEnabled: true
+                }
+              }
+            }
           ]
         },
         {
