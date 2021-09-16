@@ -1,6 +1,6 @@
 {
   "name": "rsuite-table",
-  "version": "5.0.0-alpha.8",
+  "version": "5.0.0-beta.1",
   "description": "A React table component",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -20,7 +20,8 @@
     "test": "npm run lint && cross-env NODE_ENV=test karma start --single-run",
     "clean": "rm -rf node_modules/gh-pages/.cache",
     "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "npm run test && npm run build",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "author": "simonguo.2009@gmail.com",
   "license": "MIT",
@@ -77,6 +78,7 @@
     "babel-plugin-istanbul": "^4.1.4",
     "babel-plugin-lodash": "^3.3.4",
     "chai": "^4.1.0",
+    "conventional-changelog-cli": "^2.1.1",
     "coveralls": "^3.1.0",
     "cross-env": "^5.2.1",
     "css-loader": "^0.23.1",

@@ -1,14 +1,21 @@
-# 5.0.0 pre-release
+# [5.0.0-beta.1](https://github.com/rsuite/rsuite-table/compare/5.0.0-alpha.6...5.0.0) (2021-09-16)
 
-- fix(cell): change Cell width and depth prop to optional. (#206)
-- fix(cell): fix sortColumn not getting fired in Gatsby production build. (#204)
-- fix(table): gix that the ColumnGroup array cannot be rendered in the Table. (#200)
-- feat(resize): honor minWidth setting when resizing columns. (#201)
-- refactor(icons): replace all icon with @rsuite/icons. (#180)
-- refactor: use react hooks to refactor Table. (#232)
-- feat(ColumnGroup): support groupHeaderHeight on `<ColumnGroup>`. (#235)
-- fix(autoHeight): fix the extra scroll bar width after autoHeight. (#236)
-- fix(affix): fix scrollbar not re-rendering after data update. (#237)
+### Bug Fixes
+
+- **affix:** fix scrollbar not re-rendering after data update ([#237](https://github.com/rsuite/rsuite-table/issues/237)) ([5a759d6](https://github.com/rsuite/rsuite-table/commit/5a759d6d2115448e805df554c2eb62ab228f9026))
+- **autoHeight:** fix the extra scroll bar width after autoHeight ([#236](https://github.com/rsuite/rsuite-table/issues/236)) ([3ef47cb](https://github.com/rsuite/rsuite-table/commit/3ef47cbb4a65a39da02c31fbb10387a9f0e31303))
+- **Cell:** fix that the content cannot be styled through `style` ([#234](https://github.com/rsuite/rsuite-table/issues/234)) ([7823adb](https://github.com/rsuite/rsuite-table/commit/7823adb7dbf77a031a35aa9b151a03331d092f53))
+- **Cell:** fix the problem that style padding value is overwritten ([#238](https://github.com/rsuite/rsuite-table/issues/238)) ([8b307c2](https://github.com/rsuite/rsuite-table/commit/8b307c2682c45ade7549519b3f49b1783e178a2d))
+- some props of TableProps should be optional. ([#240](https://github.com/rsuite/rsuite-table/issues/240)) ([f8bf9c8](https://github.com/rsuite/rsuite-table/commit/f8bf9c85cdcf77fa9d4a1a85c9fbad0fbe46b710))
+- **table:** fix scroll listener not updated after data update ([#242](https://github.com/rsuite/rsuite-table/issues/242)) ([75aef50](https://github.com/rsuite/rsuite-table/commit/75aef50ac89e8ac8a9ea688c10ed0a8db56c1a20)), closes [#239](https://github.com/rsuite/rsuite-table/issues/239)
+
+### Features
+
+- **ColumnGroup:** support `groupHeaderHeight` on `<ColumnGroup>` ([#235](https://github.com/rsuite/rsuite-table/issues/235)) ([680035a](https://github.com/rsuite/rsuite-table/commit/680035ab0b17a13cefa6b91943a4aed65e3e471a))
+- **column:** support `rowSpan` on `<Column>` ([#243](https://github.com/rsuite/rsuite-table/issues/243)) ([a6e08c2](https://github.com/rsuite/rsuite-table/commit/a6e08c2dfa8f3341205c090a846cfe65a73d4658))
+- **Table:** refactor: use react hooks to refactor Table. (#232)
+- **icons:** refactor(icons): replace all icon with @rsuite/icons. (#180)
+- **resize:** honor minWidth setting when resizing columns. (#201)
 
 # 3.14.3
 
