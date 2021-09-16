@@ -32,7 +32,7 @@ module.exports = config => {
   config.set({
     basePath: '',
     files: [testFile],
-    frameworks: ['mocha', 'sinon-chai'],
+    frameworks: ['mocha', 'sinon-chai', 'webpack'],
     colors: true,
     reporters: ['mocha', 'coverage'],
 
