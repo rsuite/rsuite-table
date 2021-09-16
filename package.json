@@ -42,7 +42,7 @@
     "classnames": "^2.2.5",
     "dom-lib": "^2.0.3",
     "element-resize-event": "^3.0.6",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "react": "^0.14.9 || >=15.3.0",
