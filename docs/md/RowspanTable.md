@@ -14,40 +14,40 @@ const App = () => {
       }}
     >
       <Column
-        width={250}
-        resizable
+        width={200}
         verticalAlign="middle"
         rowSpan={rowData => {
-          return rowData.rowspan;
+          return rowData.cityRowSpan;
         }}
       >
-        <HeaderCell>city</HeaderCell>
+        <HeaderCell>City</HeaderCell>
         <Cell dataKey="city" />
       </Column>
 
-      <Column width={130} resizable>
-        <HeaderCell>firstName</HeaderCell>
-        <Cell dataKey="firstName" />
-      </Column>
-
-      <Column width={130} resizable>
-        <HeaderCell>lastName</HeaderCell>
-        <Cell dataKey="lastName" />
-      </Column>
-
-      <Column width={200} resizable>
-        <HeaderCell>street</HeaderCell>
+      <Column
+        width={200}
+        verticalAlign="middle"
+        rowSpan={rowData => {
+          return rowData.streetRowSpan;
+        }}
+      >
+        <HeaderCell>Street</HeaderCell>
         <Cell dataKey="street" />
       </Column>
 
-      <Column width={200}>
-        <HeaderCell>Company Name</HeaderCell>
-        <Cell dataKey="companyName" />
+      <Column width={130}>
+        <HeaderCell>First Name</HeaderCell>
+        <Cell dataKey="firstName" />
       </Column>
 
-      <Column width={200}>
-        <HeaderCell>Email</HeaderCell>
-        <Cell dataKey="email" />
+      <Column width={130}>
+        <HeaderCell>Last Name</HeaderCell>
+        <Cell dataKey="lastName" />
+      </Column>
+
+      <Column width={200} flexGrow={1}>
+        <HeaderCell>Company Name</HeaderCell>
+        <Cell dataKey="companyName" />
       </Column>
     </Table>
   );
