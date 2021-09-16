@@ -1,3 +1,12 @@
+# [5.0.0-beta.2](https://github.com/rsuite/rsuite-table/compare/5.0.0-beta.1...5.0.0-beta.2) (2021-09-16)
+
+
+### Bug Fixes
+
+* **column:** fix that `rowSpan` cannot be used in multiple Columns ([#245](https://github.com/rsuite/rsuite-table/issues/245)) ([5095062](https://github.com/rsuite/rsuite-table/commit/50950620e40ae8549761390aa40af30e114dbe65))
+
+
+
 # [5.0.0-beta.1](https://github.com/rsuite/rsuite-table/compare/5.0.0-alpha.6...5.0.0) (2021-09-16)
 
 ### Bug Fixes
