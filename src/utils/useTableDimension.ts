@@ -81,8 +81,13 @@ const useTableDimension = (props: TableDimensionProps) => {
     contentHeight.current = nextContentHeight - (affixHeader ? headerHeight * 2 : headerHeight);
 
     if (!autoHeight) {
-      // The purpose of subtracting SCROLLBAR_WIDTH is to keep the scroll bar from blocking the content part.
-      minScrollY.current = -(nextContentHeight - height) - SCROLLBAR_WIDTH;
+      /**
+       *  The purpose of subtracting SCROLLBAR_WIDTH is to keep the scroll bar from blocking the content part.
+       *  But it will only be calculated when there is a horizontal scroll bar (contentWidth > tableWidth).
+       */
+      minScrollY.current =
+        -(nextContentHeight - height) -
+        (contentWidth.current > tableWidth.current ? SCROLLBAR_WIDTH : 0);
     }
 
     // If the height of the content area is less than the height of the table, the vertical scroll bar is reset.
