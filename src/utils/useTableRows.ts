@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { getHeight } from 'dom-lib';
-import useUpdateEffect from './useUpdateEffect';
+import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import useMount from './useMount';
 import { RowDataType } from '../@types/common';
 
@@ -53,11 +53,17 @@ const useTableRows = (props: TableRowsProps) => {
   }, [prefix, wordWrap]);
 
   useMount(() => {
-    calculateRowMaxHeight();
+    setTimeout(calculateRowMaxHeight, 1);
   });
 
-  useUpdateEffect(() => {
-    calculateRowMaxHeight();
+  useUpdateLayoutEffect(() => {
+    /**
+     * After the data is updated, the height of the cell DOM needs to be re-acquired,
+     * and what is often obtained is not the latest DOM that has been rendered.
+     * So use `setTimeout` to delay obtaining the height of the cell DOM.
+     * TODO: To be improved
+     */
+    setTimeout(calculateRowMaxHeight, 1);
   }, [data]);
 
   return {

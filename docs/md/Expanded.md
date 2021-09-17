@@ -108,7 +108,7 @@ class ExpandedTable extends React.Component {
           <Cell dataKey="street" />
         </Column>
 
-        <Column width={200}>
+        <Column width={300}>
           <HeaderCell>Company Name</HeaderCell>
           <Cell dataKey="companyName" />
         </Column>
