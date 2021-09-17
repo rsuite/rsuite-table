@@ -158,14 +158,16 @@ const useTableDimension = (props: TableDimensionProps) => {
   }, [onTableWidthChange, setOffsetByAffix, tableRef]);
 
   useMount(() => {
-    calculateTableWidth();
     calculateTableContextHeight();
     calculateTableContentWidth();
+    calculateTableWidth();
     setOffsetByAffix();
+
     bindElementResize(tableRef.current, debounce(calculateTableWidth, 400));
   });
 
   useUpdateLayoutEffect(() => {
+    calculateTableWidth();
     calculateTableContextHeight();
     calculateTableContentWidth();
   }, [

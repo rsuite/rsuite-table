@@ -36,7 +36,7 @@ const App = () => {
           <Cell dataKey="id" />
         </Column>
 
-        <Column width={130} fixed>
+        <Column width={130} fixed flexGrow={1}>
           <HeaderCell>First Name</HeaderCell>
           <Cell dataKey="firstName" />
         </Column>
@@ -65,7 +65,6 @@ const App = () => {
           <HeaderCell>Email</HeaderCell>
           <Cell dataKey="email" />
         </Column>
-
       </Table>
     </div>
   );
