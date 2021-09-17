@@ -1,3 +1,14 @@
+# [5.0.0-beta.3](https://github.com/rsuite/rsuite-table/compare/5.0.0-beta.2...5.0.0-beta.3) (2021-09-17)
+
+
+### Bug Fixes
+
+* **table:** fix cell text does not wrap when `wordWrap` ([#246](https://github.com/rsuite/rsuite-table/issues/246)) ([572b1cd](https://github.com/rsuite/rsuite-table/commit/572b1cd43f0dc56f61b51419ee1cbb34160b3cce))
+* **table:** fix that `flexGrow` and `wordWrap` cannot be used together ([#247](https://github.com/rsuite/rsuite-table/issues/247)) ([f91aa2b](https://github.com/rsuite/rsuite-table/commit/f91aa2bea9e5e1bd8bb4640b8e632a1655b7d4cd))
+* **table:** fix the redundant scroll bar height ([#248](https://github.com/rsuite/rsuite-table/issues/248)) ([26fa42f](https://github.com/rsuite/rsuite-table/commit/26fa42ff653a79b54e81051de52ae6d02356efc4))
+
+
+
 # [5.0.0-beta.2](https://github.com/rsuite/rsuite-table/compare/5.0.0-beta.1...5.0.0-beta.2) (2021-09-16)
 
 
