@@ -938,6 +938,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
         // Its value is an integer equal to the total number of rows available, including header rows.
         aria-rowcount={data.length + 1}
         aria-colcount={colCounts.current}
+        aria-busy={loading}
         {...rest}
         className={classes}
         style={styles}
