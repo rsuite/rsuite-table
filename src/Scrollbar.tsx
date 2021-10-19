@@ -80,10 +80,10 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
 
   useUpdateEffect(() => {
     if (scrollOffset.current) {
+      // Update the position of the scroll bar when the height of the table content area changes.
       scrollOffset.current = (scrollRange.current / scrollLength) * scrollOffset.current;
+      updateScrollBarPosition(0);
     }
-
-    updateScrollBarPosition(0);
 
     scrollRange.current = scrollLength;
   }, [scrollLength]);
