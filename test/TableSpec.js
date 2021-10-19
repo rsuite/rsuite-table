@@ -72,6 +72,7 @@ describe('Table', () => {
 
     assert.include(instance.className, 'rs-table-loading');
     assert.ok(instance.querySelectorAll('.rs-table-loader').length);
+    assert.equal(instance.getAttribute('aria-busy'), 'true');
   });
 
   it('Should render custom loading', () => {
