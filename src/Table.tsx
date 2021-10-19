@@ -327,8 +327,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     autoHeight,
     children,
     expandedRowKeys,
-    onTableScroll: ({ x, y }) => {
-      handleScrollTo({ x, y });
+    onTableScroll: (coords: { x: number; y: number }) => {
+      handleScrollTo(coords);
     },
     onTableContentHeightChange: () => {
       forceUpdate();
