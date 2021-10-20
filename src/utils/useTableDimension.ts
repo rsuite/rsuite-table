@@ -78,7 +78,9 @@ const useTableDimension = (props: TableDimensionProps) => {
       : 0;
 
     // After setting the affixHeader property, the height of the two headers should be subtracted.
-    contentHeight.current = nextContentHeight - (affixHeader ? headerHeight * 2 : headerHeight);
+    contentHeight.current = Math.round(
+      nextContentHeight - (affixHeader ? headerHeight * 2 : headerHeight)
+    );
 
     if (!autoHeight) {
       /**

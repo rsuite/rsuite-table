@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { DOMMouseMoveTracker, addStyle, getOffset } from 'dom-lib';
 import { SCROLLBAR_MIN_WIDTH } from './constants';
-import { useMount, useClassNames } from './utils';
+import { useMount, useClassNames, useUpdateEffect } from './utils';
 import TableContext from './TableContext';
 import type { StandardProps } from './@types/common';
 
@@ -40,6 +40,7 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
   const [handlePressed, setHandlePressed] = useState(false);
   const [barOffset, setBarOffset] = useState({ top: 0, left: 0 });
   const scrollOffset = useRef(0);
+  const scrollRange = useRef(scrollLength);
   const barRef = useRef<HTMLDivElement>();
   const handleRef = useRef<HTMLDivElement>();
   const mouseMoveTracker = useRef<DOMMouseMoveTracker>();
@@ -77,6 +78,16 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useUpdateEffect(() => {
+    if (scrollOffset.current) {
+      // Update the position of the scroll bar when the height of the table content area changes.
+      scrollOffset.current = (scrollRange.current / scrollLength) * scrollOffset.current;
+      updateScrollBarPosition(0);
+    }
+
+    scrollRange.current = scrollLength;
+  }, [scrollLength]);
+
   useImperativeHandle(ref, () => ({
     get root() {
       return barRef.current;
@@ -86,6 +97,7 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
     },
     onWheelScroll: (delta: number) => {
       const nextDelta = delta / (scrollLength / length);
+
       updateScrollBarPosition(nextDelta);
     },
     resetScrollBarPosition: (forceDelta = 0) => {
