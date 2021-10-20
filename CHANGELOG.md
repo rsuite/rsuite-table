@@ -1,3 +1,18 @@
+## [5.0.1](https://github.com/rsuite/rsuite-table/compare/5.0.0...5.0.1) (2021-10-20)
+
+
+### Bug Fixes
+
+* 🐛 Add the `children` type definition for Column ([#254](https://github.com/rsuite/rsuite-table/issues/254)) ([6b7a69e](https://github.com/rsuite/rsuite-table/commit/6b7a69e2e6d267231b8848017abbfe98d5b0e08a))
+* 🐛 fix scrollbar is not updated after tree node is expanded ([#253](https://github.com/rsuite/rsuite-table/issues/253)) ([323110c](https://github.com/rsuite/rsuite-table/commit/323110c8b0779e245fa67de2f96a12fbc4ff8bb4)), closes [#249](https://github.com/rsuite/rsuite-table/issues/249)
+
+
+### Features
+
+* **a11y:** add aria-busy attribute to loading table ([#251](https://github.com/rsuite/rsuite-table/issues/251)) ([e41e2cf](https://github.com/rsuite/rsuite-table/commit/e41e2cf7a6814e7c1e32a5a6acc044d87aeb0b4b))
+
+
+
 # [5.0.0-beta.3](https://github.com/rsuite/rsuite-table/compare/5.0.0-beta.2...5.0.0-beta.3) (2021-09-17)
 
 
