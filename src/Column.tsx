@@ -34,6 +34,9 @@ export interface ColumnProps {
   /** When you use flexGrow, you can set a minimum width by  minwidth */
   minWidth?: number;
 
+  /** Configure the cells of the column */
+  children?: React.ReactNode;
+
   /** Callback function for resize the colum */
   onResize?: (columnWidth?: number, dataKey?: string) => void;
 }
@@ -55,7 +58,8 @@ const propTypes = {
   colSpan: PropTypes.number,
   rowSpan: PropTypes.func,
   treeCol: PropTypes.bool,
-  onResize: PropTypes.func
+  onResize: PropTypes.func,
+  children: PropTypes.node
 };
 
 Column.displayName = 'Table.Column';
