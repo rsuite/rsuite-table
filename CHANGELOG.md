@@ -1,3 +1,14 @@
+## [5.0.2](https://github.com/rsuite/rsuite-table/compare/5.0.1...5.0.2) (2021-10-28)
+
+
+### Bug Fixes
+
+* **scroll:** fix `resizable` will affect the scroll bar reset ([#258](https://github.com/rsuite/rsuite-table/issues/258)) ([8bf2ae6](https://github.com/rsuite/rsuite-table/commit/8bf2ae65c13b2b43336e2b0805e119af216aa9c5))
+* **Table:** fix scroll event not working ([#257](https://github.com/rsuite/rsuite-table/issues/257)) ([7212e66](https://github.com/rsuite/rsuite-table/commit/7212e66cd6c6f48fd1b114fb9b823b9b31045af6))
+* **Table:** remove default value of rowKey ([#259](https://github.com/rsuite/rsuite-table/issues/259)) ([191ffda](https://github.com/rsuite/rsuite-table/commit/191ffda3cba90a06c062d70737a46bfd4df537f9))
+
+
+
 ## [5.0.1](https://github.com/rsuite/rsuite-table/compare/5.0.0...5.0.1) (2021-10-20)
 
 
