@@ -8,18 +8,6 @@ import { getDOMNode, getInstance, render } from './utils';
 import HeaderCell from '../src/HeaderCell';
 import { getHeight } from 'dom-lib';
 
-let container;
-
-beforeEach(() => {
-  container = document.createElement('div');
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  document.body.removeChild(container);
-  container = null;
-});
-
 describe('Table', () => {
   it('Should output a table', () => {
     const instance = getDOMNode(<Table>test</Table>);
@@ -952,5 +940,45 @@ describe('Table', () => {
     assert.equal(rowspanRows[1].style.zIndex, 3);
     assert.equal(instance.querySelectorAll('.rs-table-cell-rowspan').length, 2);
     assert.equal(instance.querySelectorAll('.rs-table-row-rowspan').length, 2);
+  });
+
+  /**
+   * fix https://github.com/rsuite/rsuite/issues/2051
+   */
+  it('Should disable scroll events when loading', () => {
+    const onScrollSpy = sinon.spy();
+    const tableRef = React.createRef();
+    const data = [{ id: 1, name: 'a' }];
+    const App = React.forwardRef((props, ref) => {
+      const [loading, setLoading] = React.useState(true);
+      React.useImperativeHandle(ref, () => ({
+        setLoading: v => {
+          setLoading(v);
+        }
+      }));
+      return (
+        <Table {...props} onScroll={onScrollSpy} loading={loading} data={data} height={10}>
+          <Column>
+            <HeaderCell>11</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+        </Table>
+      );
+    });
+    let instance;
+
+    ReactTestUtils.act(() => {
+      instance = render(<App ref={tableRef} />);
+    });
+    ReactTestUtils.act(() => {
+      ReactTestUtils.Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
+    });
+    assert.isFalse(onScrollSpy.called);
+
+    ReactTestUtils.act(() => {
+      tableRef.current.setLoading(false);
+      ReactTestUtils.Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
+    });
+    assert.isTrue(onScrollSpy.called);
   });
 });

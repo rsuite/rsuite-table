@@ -2,6 +2,7 @@ import { useState, useCallback, useRef } from 'react';
 import { getHeight } from 'dom-lib';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import useMount from './useMount';
+import isEmpty from 'lodash/isEmpty';
 import { RowDataType } from '../@types/common';
 
 interface TableRowsProps {
@@ -48,7 +49,10 @@ const useTableRows = (props: TableRowsProps) => {
         }
       }
 
-      setTableRowsMaxHeight(nextTableRowsMaxHeight);
+      // Can't perform a React state update on an unmounted component
+      if (!isEmpty(tableRows.current)) {
+        setTableRowsMaxHeight(nextTableRowsMaxHeight);
+      }
     }
   }, [prefix, wordWrap]);
 

@@ -292,7 +292,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     setScrollY(nextScrollY);
     scrollbarYRef?.current?.resetScrollBarPosition?.(handleScrollY);
     forceUpdatePosition();
-    onScroll?.(Math.abs(scrollX.current), Math.abs(nextScrollY));
+    !loading && onScroll?.(Math.abs(scrollX.current), Math.abs(nextScrollY));
 
     /**
      * After calling `scrollTop`, a white screen will appear when `virtualized` is true.
@@ -308,7 +308,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
   const handleScrollLeft = (left = 0) => {
     const [nextScrollX, scrollbarX] = getControlledScrollLeftValue(left);
     setScrollX(nextScrollX);
-    onScroll?.(Math.abs(nextScrollX), Math.abs(scrollY.current));
+    !loading && onScroll?.(Math.abs(nextScrollX), Math.abs(scrollY.current));
     scrollbarXRef?.current?.resetScrollBarPosition?.(scrollbarX);
     forceUpdatePosition();
   };
@@ -333,10 +333,19 @@ const useScrollListener = (props: ScrollListenerProps) => {
     }
   }, [height, data]);
 
+  const releaseListeners = useCallback(() => {
+    wheelHandler.current = null;
+    wheelListener.current?.off();
+    touchStartListener.current?.off();
+    touchMoveListener.current?.off();
+  }, []);
+
   useEffect(() => {
     const options = { passive: false };
     const tableBody = tableBodyRef.current;
     if (tableBody) {
+      // Reset the listener after props is updated.
+      releaseListeners();
       wheelHandler.current = new WheelHandler(
         listenWheel,
         shouldHandleWheelX,
@@ -347,14 +356,16 @@ const useScrollListener = (props: ScrollListenerProps) => {
       touchStartListener.current = on(tableBody, 'touchstart', handleTouchStart, options);
       touchMoveListener.current = on(tableBody, 'touchmove', handleTouchMove, options);
     }
-    return () => {
-      wheelHandler.current = null;
-      wheelListener.current?.off();
-      touchStartListener.current?.off();
-      touchMoveListener.current?.off();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+    return releaseListeners;
+  }, [
+    handleTouchMove,
+    handleTouchStart,
+    listenWheel,
+    releaseListeners,
+    shouldHandleWheelX,
+    shouldHandleWheelY,
+    tableBodyRef
+  ]);
 
   useMount(() => {
     if (rtl) {
