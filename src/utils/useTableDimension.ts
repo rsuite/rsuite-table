@@ -62,6 +62,7 @@ const useTableDimension = (props: TableDimensionProps) => {
   const scrollX = useRef(0);
   const minScrollX = useRef(0);
   const tableWidth = useRef(widthProp || 0);
+  const columnCount = useRef(0);
 
   const headerOffset = useRef<ElementOffset>(null);
   const tableOffset = useRef<ElementOffset>(null);
@@ -132,18 +133,30 @@ const useTableDimension = (props: TableDimensionProps) => {
 
   const calculateTableContentWidth = useCallback(() => {
     const prevWidth = contentWidth.current;
+    const prevColumnCount = columnCount.current;
     const table = tableRef?.current;
     const row = table.querySelector(`.${prefix('row')}:not(.virtualized)`);
     const nextContentWidth = row ? getWidth(row) : 0;
 
     contentWidth.current = nextContentWidth;
+    columnCount.current = row?.querySelectorAll(`.${prefix('cell')}`).length || 0;
 
     // The value of SCROLLBAR_WIDTH is subtracted so that the scroll bar does not block the content part.
     // There is no vertical scroll bar after autoHeight.
     minScrollX.current =
       -(nextContentWidth - tableWidth.current) - (autoHeight ? 0 : SCROLLBAR_WIDTH);
 
-    if (prevWidth !== contentWidth.current) {
+    /**
+     * If the width of the content area and the number of columns change,
+     * the horizontal scroll bar is reset.
+     * fix: https://github.com/rsuite/rsuite/issues/2039
+     */
+    if (
+      prevWidth > 0 &&
+      prevWidth !== contentWidth.current &&
+      prevColumnCount > 0 &&
+      prevColumnCount !== columnCount.current
+    ) {
       onTableContentWidthChange(prevWidth);
     }
   }, [autoHeight, onTableContentWidthChange, prefix, tableRef]);

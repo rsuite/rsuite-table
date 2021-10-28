@@ -325,7 +325,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
   useUpdateEffect(() => {
     handleScrollLeft(0);
-  }, [children, contentWidth.current]);
+  }, [children]);
 
   useUpdateEffect(() => {
     if (scrollY.current !== 0) {
