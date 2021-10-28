@@ -970,7 +970,6 @@ Table.defaultProps = {
   rowExpandedHeight: 100,
   hover: true,
   showHeader: true,
-  rowKey: 'key',
   translate3d: true,
   shouldUpdateScroll: true,
   locale: {

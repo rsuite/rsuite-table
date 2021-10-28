@@ -226,6 +226,7 @@ describe('Table', () => {
       <Table
         isTree
         defaultExpandAllRows
+        rowKey="id"
         data={[
           {
             id: 1,
@@ -358,6 +359,7 @@ describe('Table', () => {
       <Table
         onExpandChange={doneOp}
         isTree
+        rowKey="id"
         data={[
           {
             id: 1,
