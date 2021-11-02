@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useImperativeHandle, useReducer } from 'react';
-import { getTranslateDOMPositionXY } from 'dom-lib/lib/transition/translateDOMPositionXY';
+import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 import PropTypes from 'prop-types';
 import isFunction from 'lodash/isFunction';
 import flatten from 'lodash/flatten';

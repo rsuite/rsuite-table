@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { addStyle, addClass, removeClass } from 'dom-lib';
+import addStyle from 'dom-lib/addStyle';
+import addClass from 'dom-lib/addClass';
+import removeClass from 'dom-lib/removeClass';
 import omit from 'lodash/omit';
 import merge from 'lodash/merge';
-
 import { SCROLLBAR_WIDTH, SORT_TYPE } from '../constants';
 import { SortType, RowDataType } from '../@types/common';
 import useControlled from './useControlled';

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useCallback, useEffect, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
-
-import { DOMMouseMoveTracker, addStyle, getOffset } from 'dom-lib';
+import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
+import addStyle from 'dom-lib/addStyle';
+import getOffset from 'dom-lib/getOffset';
 import { SCROLLBAR_MIN_WIDTH } from './constants';
 import { useMount, useClassNames, useUpdateEffect } from './utils';
 import TableContext from './TableContext';

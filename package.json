@@ -40,7 +40,7 @@
     "@babel/runtime": "^7.12.5",
     "@rsuite/icons": "^1.0.0",
     "classnames": "^2.2.5",
-    "dom-lib": "^2.0.3",
+    "dom-lib": "^3.0.0",
     "element-resize-event": "^3.0.6",
     "lodash": "^4.17.21"
   },

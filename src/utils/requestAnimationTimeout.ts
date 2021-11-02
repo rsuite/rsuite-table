@@ -1,5 +1,5 @@
-import requestAnimationFramePolyfill from 'dom-lib/lib/animation/requestAnimationFramePolyfill';
-import cancelAnimationFramePolyfill from 'dom-lib/lib/animation/cancelAnimationFramePolyfill';
+import requestAnimationFramePolyfill from 'dom-lib/requestAnimationFramePolyfill';
+import cancelAnimationFramePolyfill from 'dom-lib/cancelAnimationFramePolyfill';
 
 export const cancelAnimationTimeout = (frame: KeyframeAnimationOptions) =>
   cancelAnimationFramePolyfill(frame.id as any);

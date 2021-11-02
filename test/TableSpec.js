@@ -6,7 +6,7 @@ import ColumnGroup from '../src/ColumnGroup';
 import Cell from '../src/Cell';
 import { getDOMNode, getInstance, render } from './utils';
 import HeaderCell from '../src/HeaderCell';
-import { getHeight } from 'dom-lib';
+import getHeight from 'dom-lib/getHeight';
 
 describe('Table', () => {
   it('Should output a table', () => {

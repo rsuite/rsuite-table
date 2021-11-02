@@ -1,5 +1,7 @@
 import React, { useRef, useCallback, useEffect } from 'react';
-import { getWidth, getHeight, getOffset } from 'dom-lib';
+import getWidth from 'dom-lib/getWidth';
+import getHeight from 'dom-lib/getHeight';
+import getOffset from 'dom-lib/getOffset';
 import { SCROLLBAR_WIDTH } from '../constants';
 import debounce from 'lodash/debounce';
 import bindElementResize, { unbind as unbindElementResize } from 'element-resize-event';
