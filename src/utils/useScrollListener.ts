@@ -1,5 +1,8 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
-import { WheelHandler, scrollLeft, scrollTop, on } from 'dom-lib';
+import WheelHandler from 'dom-lib/WheelHandler';
+import scrollLeft from 'dom-lib/scrollLeft';
+import scrollTop from 'dom-lib/scrollTop';
+import on from 'dom-lib/on';
 import { requestAnimationTimeout, cancelAnimationTimeout } from './requestAnimationTimeout';
 import useUpdateEffect from './useUpdateEffect';
 import useMount from './useMount';
