@@ -22,6 +22,7 @@ const App = () => {
         virtualized
         minHeight={260}
         height={400}
+        rowKey="id"
         data={fakeTreeData}
         shouldUpdateScroll={false}
         defaultExpandedRowKeys={[0]}

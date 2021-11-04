@@ -1,4 +1,5 @@
-import { addClass, removeClass } from 'dom-lib';
+import addClass from 'dom-lib/addClass';
+import removeClass from 'dom-lib/removeClass';
 
 const toggleClass = (node: HTMLElement, className: string, condition: boolean) => {
   if (condition) {

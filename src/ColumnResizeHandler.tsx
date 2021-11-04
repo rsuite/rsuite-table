@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import clamp from 'lodash/clamp';
-import { DOMMouseMoveTracker } from 'dom-lib';
+import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
 import { useClassNames } from './utils';
 import TableContext from './TableContext';
 import { RESIZE_MIN_WIDTH } from './constants';

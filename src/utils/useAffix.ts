@@ -1,5 +1,8 @@
 import React, { useRef, useCallback, useEffect } from 'react';
-import { getHeight, addStyle, removeStyle, on } from 'dom-lib';
+import getHeight from 'dom-lib/getHeight';
+import addStyle from 'dom-lib/addStyle';
+import removeStyle from 'dom-lib/removeStyle';
+import on from 'dom-lib/on';
 import toggleClass from './toggleClass';
 import isNumberOrTrue from './isNumberOrTrue';
 import useUpdateEffect from './useUpdateEffect';

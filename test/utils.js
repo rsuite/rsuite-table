@@ -3,7 +3,9 @@
 import React from 'react';
 import ReactDOM, { findDOMNode, unmountComponentAtNode } from 'react-dom';
 import * as ReactTestUtils from 'react-dom/test-utils';
-export { getStyle } from 'dom-lib';
+import getStyle from 'dom-lib/getStyle';
+
+export { getStyle };
 
 /**
  * Check whether it is a DOM object?

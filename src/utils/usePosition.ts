@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { addStyle } from 'dom-lib';
+import addStyle from 'dom-lib/addStyle';
 import { SCROLLBAR_WIDTH } from '../constants';
 import toggleClass from './toggleClass';
 import useUpdateEffect from './useUpdateEffect';

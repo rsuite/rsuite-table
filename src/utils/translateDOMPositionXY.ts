@@ -1,4 +1,4 @@
-import { getTranslateDOMPositionXY } from 'dom-lib/lib/transition/translateDOMPositionXY';
+import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 
 const translateDOMPositionXY = getTranslateDOMPositionXY({ enable3DTransform: true });
 

@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { getHeight } from 'dom-lib';
+import getHeight from 'dom-lib/getHeight';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import useMount from './useMount';
 import isEmpty from 'lodash/isEmpty';
