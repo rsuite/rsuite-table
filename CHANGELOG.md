@@ -1,48 +1,39 @@
-## [5.0.2](https://github.com/rsuite/rsuite-table/compare/5.0.1...5.0.2) (2021-10-28)
+## 5.0.3
 
+-build(deps): bump dom-lib to 3.0.0 #260
+
+## [5.0.2](https://github.com/rsuite/rsuite-table/compare/5.0.1...5.0.2) (2021-10-28)
 
 ### Bug Fixes
 
-* **scroll:** fix `resizable` will affect the scroll bar reset ([#258](https://github.com/rsuite/rsuite-table/issues/258)) ([8bf2ae6](https://github.com/rsuite/rsuite-table/commit/8bf2ae65c13b2b43336e2b0805e119af216aa9c5))
-* **Table:** fix scroll event not working ([#257](https://github.com/rsuite/rsuite-table/issues/257)) ([7212e66](https://github.com/rsuite/rsuite-table/commit/7212e66cd6c6f48fd1b114fb9b823b9b31045af6))
-* **Table:** remove default value of rowKey ([#259](https://github.com/rsuite/rsuite-table/issues/259)) ([191ffda](https://github.com/rsuite/rsuite-table/commit/191ffda3cba90a06c062d70737a46bfd4df537f9))
-
-
+- **scroll:** fix `resizable` will affect the scroll bar reset ([#258](https://github.com/rsuite/rsuite-table/issues/258)) ([8bf2ae6](https://github.com/rsuite/rsuite-table/commit/8bf2ae65c13b2b43336e2b0805e119af216aa9c5))
+- **Table:** fix scroll event not working ([#257](https://github.com/rsuite/rsuite-table/issues/257)) ([7212e66](https://github.com/rsuite/rsuite-table/commit/7212e66cd6c6f48fd1b114fb9b823b9b31045af6))
+- **Table:** remove default value of rowKey ([#259](https://github.com/rsuite/rsuite-table/issues/259)) ([191ffda](https://github.com/rsuite/rsuite-table/commit/191ffda3cba90a06c062d70737a46bfd4df537f9))
 
 ## [5.0.1](https://github.com/rsuite/rsuite-table/compare/5.0.0...5.0.1) (2021-10-20)
 
-
 ### Bug Fixes
 
-* 🐛 Add the `children` type definition for Column ([#254](https://github.com/rsuite/rsuite-table/issues/254)) ([6b7a69e](https://github.com/rsuite/rsuite-table/commit/6b7a69e2e6d267231b8848017abbfe98d5b0e08a))
-* 🐛 fix scrollbar is not updated after tree node is expanded ([#253](https://github.com/rsuite/rsuite-table/issues/253)) ([323110c](https://github.com/rsuite/rsuite-table/commit/323110c8b0779e245fa67de2f96a12fbc4ff8bb4)), closes [#249](https://github.com/rsuite/rsuite-table/issues/249)
-
+- 🐛 Add the `children` type definition for Column ([#254](https://github.com/rsuite/rsuite-table/issues/254)) ([6b7a69e](https://github.com/rsuite/rsuite-table/commit/6b7a69e2e6d267231b8848017abbfe98d5b0e08a))
+- 🐛 fix scrollbar is not updated after tree node is expanded ([#253](https://github.com/rsuite/rsuite-table/issues/253)) ([323110c](https://github.com/rsuite/rsuite-table/commit/323110c8b0779e245fa67de2f96a12fbc4ff8bb4)), closes [#249](https://github.com/rsuite/rsuite-table/issues/249)
 
 ### Features
 
-* **a11y:** add aria-busy attribute to loading table ([#251](https://github.com/rsuite/rsuite-table/issues/251)) ([e41e2cf](https://github.com/rsuite/rsuite-table/commit/e41e2cf7a6814e7c1e32a5a6acc044d87aeb0b4b))
-
-
+- **a11y:** add aria-busy attribute to loading table ([#251](https://github.com/rsuite/rsuite-table/issues/251)) ([e41e2cf](https://github.com/rsuite/rsuite-table/commit/e41e2cf7a6814e7c1e32a5a6acc044d87aeb0b4b))
 
 # [5.0.0-beta.3](https://github.com/rsuite/rsuite-table/compare/5.0.0-beta.2...5.0.0-beta.3) (2021-09-17)
 
-
 ### Bug Fixes
 
-* **table:** fix cell text does not wrap when `wordWrap` ([#246](https://github.com/rsuite/rsuite-table/issues/246)) ([572b1cd](https://github.com/rsuite/rsuite-table/commit/572b1cd43f0dc56f61b51419ee1cbb34160b3cce))
-* **table:** fix that `flexGrow` and `wordWrap` cannot be used together ([#247](https://github.com/rsuite/rsuite-table/issues/247)) ([f91aa2b](https://github.com/rsuite/rsuite-table/commit/f91aa2bea9e5e1bd8bb4640b8e632a1655b7d4cd))
-* **table:** fix the redundant scroll bar height ([#248](https://github.com/rsuite/rsuite-table/issues/248)) ([26fa42f](https://github.com/rsuite/rsuite-table/commit/26fa42ff653a79b54e81051de52ae6d02356efc4))
-
-
+- **table:** fix cell text does not wrap when `wordWrap` ([#246](https://github.com/rsuite/rsuite-table/issues/246)) ([572b1cd](https://github.com/rsuite/rsuite-table/commit/572b1cd43f0dc56f61b51419ee1cbb34160b3cce))
+- **table:** fix that `flexGrow` and `wordWrap` cannot be used together ([#247](https://github.com/rsuite/rsuite-table/issues/247)) ([f91aa2b](https://github.com/rsuite/rsuite-table/commit/f91aa2bea9e5e1bd8bb4640b8e632a1655b7d4cd))
+- **table:** fix the redundant scroll bar height ([#248](https://github.com/rsuite/rsuite-table/issues/248)) ([26fa42f](https://github.com/rsuite/rsuite-table/commit/26fa42ff653a79b54e81051de52ae6d02356efc4))
 
 # [5.0.0-beta.2](https://github.com/rsuite/rsuite-table/compare/5.0.0-beta.1...5.0.0-beta.2) (2021-09-16)
 
-
 ### Bug Fixes
 
-* **column:** fix that `rowSpan` cannot be used in multiple Columns ([#245](https://github.com/rsuite/rsuite-table/issues/245)) ([5095062](https://github.com/rsuite/rsuite-table/commit/50950620e40ae8549761390aa40af30e114dbe65))
-
-
+- **column:** fix that `rowSpan` cannot be used in multiple Columns ([#245](https://github.com/rsuite/rsuite-table/issues/245)) ([5095062](https://github.com/rsuite/rsuite-table/commit/50950620e40ae8549761390aa40af30e114dbe65))
 
 # [5.0.0-beta.1](https://github.com/rsuite/rsuite-table/compare/5.0.0-alpha.6...5.0.0) (2021-09-16)
 
