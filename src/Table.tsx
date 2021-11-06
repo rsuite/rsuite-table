@@ -337,11 +337,15 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       }
     },
     onTableContentWidthChange: () => {
+      forceUpdate();
+
       if (shouldUpdateScroll) {
         handleScrollLeft(0);
       }
     },
     onTableWidthChange: () => {
+      forceUpdate();
+
       if (shouldUpdateScroll) {
         handleScrollLeft(0);
       }
