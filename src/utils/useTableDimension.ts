@@ -171,7 +171,7 @@ const useTableDimension = (props: TableDimensionProps) => {
       tableWidth.current = nextWidth;
     }
 
-    if (prevWidth !== tableWidth.current) {
+    if (prevWidth && prevWidth !== tableWidth.current) {
       scrollX.current = 0;
       onTableWidthChange?.(prevWidth);
     }

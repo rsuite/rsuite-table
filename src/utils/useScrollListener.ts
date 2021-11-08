@@ -316,7 +316,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     forceUpdatePosition();
   };
 
-  const handleScrollTo = (coord: { x: number; y: number }) => {
+  const handleScrollTo = (coord: { x?: number; y?: number }) => {
     const { x, y } = coord || {};
     if (typeof x === 'number') {
       handleScrollLeft(x);
