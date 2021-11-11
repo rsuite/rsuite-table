@@ -3,6 +3,7 @@ import WheelHandler from 'dom-lib/WheelHandler';
 import scrollLeft from 'dom-lib/scrollLeft';
 import scrollTop from 'dom-lib/scrollTop';
 import on from 'dom-lib/on';
+import removeStyle from 'dom-lib/removeStyle';
 import { requestAnimationTimeout, cancelAnimationTimeout } from './requestAnimationTimeout';
 import useUpdateEffect from './useUpdateEffect';
 import useMount from './useMount';
@@ -172,7 +173,11 @@ const useScrollListener = (props: ScrollListenerProps) => {
           cancelAnimationTimeout(disableEventsTimeoutId.current);
         }
 
-        disableEventsTimeoutId.current = requestAnimationTimeout(debounceScrollEndedCallback, 0);
+        disableEventsTimeoutId.current = requestAnimationTimeout(
+          debounceScrollEndedCallback,
+          // When momentum is enabled, set a delay of 50ms rendering.
+          momentumOptions?.duration ? 50 : 0
+        );
       }
     },
     [
@@ -204,54 +209,64 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
   const wheelHandler = useRef<WheelHandler>();
 
+  // Stop unending scrolling and remove transition
+  const stopScroll = useCallback(() => {
+    const wheelDOM = tableBodyRef.current.querySelector('.rs-table-body-wheel-area');
+    const matrix = window.getComputedStyle(wheelDOM).getPropertyValue('transform');
+    const offsetY = Math.round(+matrix.split(')')[0].split(', ')[5]);
+
+    setScrollY(offsetY);
+    removeStyle(wheelDOM, ['transition-duration', 'transition-timing-function']);
+  }, [setScrollY, tableBodyRef]);
+
   // Handle the Touch event and initialize it when touchstart is triggered.
   const handleTouchStart = useCallback(
     (event: React.TouchEvent) => {
-      if (event.touches) {
-        const { pageX, pageY } = event.touches[0];
-        touchX.current = pageX;
-        touchY.current = pageY;
-        touchStartTime.current = new Date().getTime();
-        momentumStartY.current = scrollY.current;
-      }
+      const { pageX, pageY } = event.touches[0];
+      touchX.current = pageX;
+      touchY.current = pageY;
+
+      touchStartTime.current = new Date().getTime();
+      momentumStartY.current = scrollY.current;
 
       onTouchStart?.(event);
+
+      // When Touch starts, stop unfinished scrolling.
+      stopScroll();
     },
-    [onTouchStart, scrollY]
+    [onTouchStart, scrollY, stopScroll]
   );
 
   // Handle the Touch event and update the scroll when touchmove is triggered.
   const handleTouchMove = useCallback(
     (event: React.TouchEvent) => {
-      if (event.touches) {
-        const { pageX, pageY } = event.touches[0];
-        const deltaX = touchX.current - pageX;
-        const deltaY = autoHeight ? 0 : touchY.current - pageY;
+      const { pageX, pageY } = event.touches[0];
+      const deltaX = touchX.current - pageX;
+      const deltaY = autoHeight ? 0 : touchY.current - pageY;
 
-        if (!shouldHandleWheelY(deltaY) && !shouldHandleWheelX(deltaX)) {
-          return;
-        }
+      if (!shouldHandleWheelY(deltaY) && !shouldHandleWheelX(deltaX)) {
+        return;
+      }
 
-        /**
-         * Prevent the default touch event when the table is scrollable.
-         * fix: https://github.com/rsuite/rsuite-table/commit/21785fc18f430519ab5885c44540d9ffc30de366#commitcomment-36236425
-         */
-        if (!autoHeight && shouldHandleWheelY(deltaY)) {
-          event.preventDefault?.();
-        }
+      /**
+       * Prevent the default touch event when the table is scrollable.
+       * fix: https://github.com/rsuite/rsuite-table/commit/21785fc18f430519ab5885c44540d9ffc30de366#commitcomment-36236425
+       */
+      if (!autoHeight && shouldHandleWheelY(deltaY)) {
+        event.preventDefault?.();
+      }
 
-        const now = new Date().getTime();
+      const now = new Date().getTime();
 
-        listenWheel(deltaX, deltaY);
+      listenWheel(deltaX, deltaY);
 
-        touchX.current = pageX;
-        touchY.current = pageY;
+      touchX.current = pageX;
+      touchY.current = pageY;
 
-        // Record the offset value and time under the condition of triggering inertial scrolling.
-        if (now - touchStartTime.current > momentumTimeThreshold.current) {
-          momentumStartY.current = scrollY.current;
-          touchStartTime.current = now;
-        }
+      // Record the offset value and time under the condition of triggering inertial scrolling.
+      if (now - touchStartTime.current > momentumTimeThreshold.current) {
+        momentumStartY.current = scrollY.current;
+        touchStartTime.current = now;
       }
 
       onTouchMove?.(event);
