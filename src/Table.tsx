@@ -863,7 +863,9 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
           visibleRows.current.push(renderRowData(bodyCells, rowData, rowProps, shouldRender));
         }
-      } else if (virtualized) {
+      } else {
+        /** virtualized */
+
         // If the row height of the Table is fixed, it is directly calculated by the row height and the number of rows,
         // thereby reducing the performance cost of traversing all data.
         const nextRowHeight = getRowHeight();
