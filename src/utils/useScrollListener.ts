@@ -163,8 +163,6 @@ const useScrollListener = (props: ScrollListenerProps) => {
       onScroll?.(Math.abs(x), Math.abs(y));
 
       forceUpdatePosition(momentumOptions?.duration, momentumOptions?.bezier);
-      scrollbarXRef.current?.onWheelScroll?.(deltaX);
-      scrollbarYRef.current?.onWheelScroll?.(deltaY, momentumOptions?.duration ? true : false);
 
       if (virtualized) {
         // Add a state to the table during virtualized scrolling.
@@ -188,8 +186,6 @@ const useScrollListener = (props: ScrollListenerProps) => {
       setScrollX,
       setScrollY,
       onScroll,
-      scrollbarXRef,
-      scrollbarYRef,
       forceUpdatePosition,
       virtualized,
       debounceScrollEndedCallback
@@ -197,10 +193,13 @@ const useScrollListener = (props: ScrollListenerProps) => {
   );
 
   const listenWheel = useCallback(
-    (deltaX: number, deltaY: number) => {
-      handleWheel(deltaX, deltaY);
+    (deltaX: number, deltaY: number, momentumOptions?: { duration: number; bezier: string }) => {
+      handleWheel(deltaX, deltaY, momentumOptions);
+
+      scrollbarXRef.current?.onWheelScroll?.(deltaX);
+      scrollbarYRef.current?.onWheelScroll?.(deltaY, momentumOptions?.duration ? true : false);
     },
-    [handleWheel]
+    [handleWheel, scrollbarXRef, scrollbarYRef]
   );
 
   const wheelHandler = useRef<WheelHandler>();
@@ -243,7 +242,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
         const now = new Date().getTime();
 
-        handleWheel(deltaX, deltaY);
+        listenWheel(deltaX, deltaY);
 
         touchX.current = pageX;
         touchY.current = pageY;
@@ -257,7 +256,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
       onTouchMove?.(event);
     },
-    [autoHeight, handleWheel, onTouchMove, scrollY, shouldHandleWheelX, shouldHandleWheelY]
+    [autoHeight, listenWheel, onTouchMove, scrollY, shouldHandleWheelX, shouldHandleWheelY]
   );
 
   const handleTouchEnd = useCallback(
@@ -276,26 +275,20 @@ const useScrollListener = (props: ScrollListenerProps) => {
           momentumDuration
         );
 
-        handleWheel(scrollX.current, destination, { duration, bezier });
+        listenWheel(scrollX.current, destination, { duration, bezier });
+
         onTouchEnd?.(event);
       }
     },
-    [handleWheel, onTouchEnd, scrollX, scrollY]
+    [listenWheel, onTouchEnd, scrollX, scrollY]
   );
 
   const handleHorizontalScroll = useCallback(
-    (delta: number) => {
-      handleWheel(delta, 0);
-    },
+    (delta: number) => handleWheel(delta, 0),
     [handleWheel]
   );
 
-  const handleVerticalScroll = useCallback(
-    (delta: number) => {
-      handleWheel(0, delta);
-    },
-    [handleWheel]
-  );
+  const handleVerticalScroll = useCallback((delta: number) => handleWheel(0, delta), [handleWheel]);
 
   /**
    * When the user uses the tab key in the Table, the onScroll event is triggered,
