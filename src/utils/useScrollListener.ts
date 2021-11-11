@@ -21,7 +21,6 @@ interface ScrollListenerProps {
   headerHeight: number;
   autoHeight: boolean;
   tableBodyRef: React.RefObject<HTMLDivElement>;
-  wheelWrapperRef: React.RefObject<HTMLDivElement>;
   scrollbarXRef: React.RefObject<ScrollbarInstance>;
   scrollbarYRef: React.RefObject<ScrollbarInstance>;
   disabledScroll: boolean;
@@ -73,7 +72,6 @@ const useScrollListener = (props: ScrollListenerProps) => {
     children,
     autoHeight,
     tableBodyRef,
-    wheelWrapperRef,
     scrollbarXRef,
     scrollbarYRef,
     disabledScroll,
@@ -440,7 +438,6 @@ const useScrollListener = (props: ScrollListenerProps) => {
     releaseListeners,
     shouldHandleWheelX,
     shouldHandleWheelY,
-    wheelWrapperRef,
     tableBodyRef
   ]);
 

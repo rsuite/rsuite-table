@@ -405,7 +405,6 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     headerHeight,
     autoHeight,
     tableBodyRef,
-    wheelWrapperRef,
     scrollbarXRef,
     scrollbarYRef,
     disabledScroll,
@@ -869,7 +868,10 @@ const Table = React.forwardRef((props: TableProps, ref) => {
         // thereby reducing the performance cost of traversing all data.
         const nextRowHeight = getRowHeight();
         let startIndex = Math.max(Math.floor(minTop / nextRowHeight), 0);
-        let endIndex = Math.min(startIndex + Math.ceil(bodyHeight / nextRowHeight), data.length);
+        let endIndex = Math.min(
+          startIndex + Math.ceil(bodyHeight / nextRowHeight) + 5,
+          data.length
+        );
 
         // Avoid white screens on the top and bottom of the table when touching and scrolling on the mobile terminal.
         // So supplement the display data row.
