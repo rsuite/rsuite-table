@@ -27,7 +27,8 @@ import {
   useTableRows,
   useAffix,
   useScrollListener,
-  usePosition
+  usePosition,
+  isSupportTouchEvent
 } from './utils';
 
 import type {
@@ -404,6 +405,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     headerHeight,
     autoHeight,
     tableBodyRef,
+    wheelWrapperRef,
     scrollbarXRef,
     scrollbarYRef,
     disabledScroll,
@@ -792,14 +794,22 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
     if (data) {
       let top = 0; // Row position
-      const minTop = Math.abs(scrollY.current);
-      const maxTop = minTop + height + rowExpandedHeight;
+      let minTop = Math.abs(scrollY.current);
+      let maxTop = minTop + height + rowExpandedHeight;
       const isCustomRowHeight = typeof rowHeight === 'function';
-      const isUncertainHeight = !!(renderRowExpanded || isCustomRowHeight || isTree);
+      const isUncertainHeight = !!(renderRowExpandedProp || isCustomRowHeight || isTree);
 
       // If virtualized is enabled and the row height in the Table is variable,
       // you need to loop through the data to get the height of each row.
       if ((isUncertainHeight && virtualized) || !virtualized) {
+        // Avoid white screens on the top and bottom of the table when touching and scrolling on the mobile terminal.
+        // So supplement the display data row.
+        if (isSupportTouchEvent()) {
+          const coveredHeight = height * 3;
+          minTop = Math.max(minTop - coveredHeight, 0);
+          maxTop = maxTop + coveredHeight;
+        }
+
         for (let index = 0; index < data.length; index++) {
           const rowData = data[index];
           const maxHeight = tableRowsMaxHeight[index];
@@ -854,12 +864,20 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
           visibleRows.current.push(renderRowData(bodyCells, rowData, rowProps, shouldRender));
         }
-      } else {
+      } else if (virtualized) {
         // If the row height of the Table is fixed, it is directly calculated by the row height and the number of rows,
         // thereby reducing the performance cost of traversing all data.
         const nextRowHeight = getRowHeight();
-        const startIndex = Math.max(Math.floor(minTop / nextRowHeight), 0);
-        const endIndex = Math.min(startIndex + Math.ceil(bodyHeight / nextRowHeight), data.length);
+        let startIndex = Math.max(Math.floor(minTop / nextRowHeight), 0);
+        let endIndex = Math.min(startIndex + Math.ceil(bodyHeight / nextRowHeight), data.length);
+
+        // Avoid white screens on the top and bottom of the table when touching and scrolling on the mobile terminal.
+        // So supplement the display data row.
+        if (isSupportTouchEvent()) {
+          const coveredCount = Math.floor((height / nextRowHeight) * 3);
+          startIndex = Math.max(startIndex - coveredCount, 0);
+          endIndex = Math.min(endIndex + coveredCount, data.length);
+        }
 
         contentHeight = data.length * nextRowHeight;
         topHideHeight = startIndex * nextRowHeight;

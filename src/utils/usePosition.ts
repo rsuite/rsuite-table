@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import addStyle from 'dom-lib/addStyle';
 import { SCROLLBAR_WIDTH } from '../constants';
 import toggleClass from './toggleClass';
 import useUpdateEffect from './useUpdateEffect';
 import type { RowDataType } from '../@types/common';
+import isSupportTouchEvent from './isSupportTouchEvent';
 
 interface PositionProps {
   data: RowDataType[];
@@ -45,6 +46,9 @@ const usePosition = (props: PositionProps) => {
     shouldFixedColumn
   } = props;
 
+  const duration = useRef(0);
+  const bezier = useRef('linear');
+
   const getScrollCellGroups = useCallback(() => {
     return tableRef.current?.querySelectorAll(`.${prefix('cell-group-scroll')}`);
   }, [prefix, tableRef]);
@@ -57,15 +61,33 @@ const usePosition = (props: PositionProps) => {
     return tableRef.current?.querySelectorAll(`.${prefix('cell-group-fixed-right')}`);
   }, [prefix, tableRef]);
 
+  const handleWheelWrapperCallback = useCallback(
+    (fixedCell?: boolean) => {
+      if (wheelWrapperRef?.current) {
+        const wheelStyle = isSupportTouchEvent()
+          ? {
+              'transition-duration': `${duration.current}ms`,
+              'transition-timing-function': bezier.current
+            }
+          : {};
+        translateDOMPositionXY.current(
+          wheelStyle,
+          fixedCell ? 0 : scrollX.current,
+          scrollY.current
+        );
+        addStyle(wheelWrapperRef.current, wheelStyle);
+      }
+    },
+    [scrollX, scrollY, translateDOMPositionXY, wheelWrapperRef]
+  );
+
   const updatePositionByFixedCell = useCallback(() => {
     const wheelGroupStyle = {};
-    const wheelStyle = {};
     const scrollGroups = getScrollCellGroups();
     const fixedLeftGroups = getFixedLeftCellGroups();
     const fixedRightGroups = getFixedRightCellGroups();
 
     translateDOMPositionXY.current(wheelGroupStyle as CSSStyleDeclaration, scrollX.current, 0);
-    translateDOMPositionXY.current(wheelStyle as CSSStyleDeclaration, 0, scrollY.current);
 
     const scrollArrayGroups = Array.from(scrollGroups);
 
@@ -74,9 +96,7 @@ const usePosition = (props: PositionProps) => {
       addStyle(group, wheelGroupStyle);
     }
 
-    if (wheelWrapperRef?.current) {
-      addStyle(wheelWrapperRef.current, wheelStyle);
-    }
+    handleWheelWrapperCallback(true);
 
     const leftShadowClassName = prefix('cell-group-left-shadow');
     const rightShadowClassName = prefix('cell-group-right-shadow');
@@ -95,56 +115,59 @@ const usePosition = (props: PositionProps) => {
     getFixedLeftCellGroups,
     getFixedRightCellGroups,
     getScrollCellGroups,
+    handleWheelWrapperCallback,
     prefix,
     scrollX,
-    scrollY,
     tableWidth,
-    translateDOMPositionXY,
-    wheelWrapperRef
+    translateDOMPositionXY
   ]);
 
-  const updatePosition = useCallback(() => {
-    // When there are fixed columns.
-    if (shouldFixedColumn) {
-      updatePositionByFixedCell();
-    } else {
-      const wheelStyle = {};
-      const headerStyle = {};
+  /**
+   * Update the position of the table according to the scrolling information of the table.
+   * @param nextDuration CSS transition-duration
+   * @param nextBezier CSS transition-timing-function
+   */
+  const updatePosition = useCallback(
+    (nextDuration?: number, nextBezier?: string) => {
+      duration.current = nextDuration;
+      bezier.current = nextBezier;
 
-      translateDOMPositionXY.current(
-        wheelStyle as CSSStyleDeclaration,
-        scrollX.current,
-        scrollY.current
-      );
-      translateDOMPositionXY.current(headerStyle as CSSStyleDeclaration, scrollX.current, 0);
+      // When there are fixed columns.
+      if (shouldFixedColumn) {
+        updatePositionByFixedCell();
+      } else {
+        const headerStyle = {};
 
-      const wheelElement = wheelWrapperRef?.current;
-      const headerElement = headerWrapperRef?.current;
-      const affixHeaderElement = affixHeaderWrapperRef?.current;
+        translateDOMPositionXY.current(headerStyle as CSSStyleDeclaration, scrollX.current, 0);
 
-      wheelElement && addStyle(wheelElement, wheelStyle);
-      headerElement && addStyle(headerElement, headerStyle);
+        const headerElement = headerWrapperRef?.current;
+        const affixHeaderElement = affixHeaderWrapperRef?.current;
 
-      if (affixHeaderElement?.hasChildNodes?.()) {
-        addStyle(affixHeaderElement?.firstChild as Element, headerStyle);
+        handleWheelWrapperCallback();
+        headerElement && addStyle(headerElement, headerStyle);
+
+        if (affixHeaderElement?.hasChildNodes?.()) {
+          addStyle(affixHeaderElement?.firstChild as Element, headerStyle);
+        }
       }
-    }
 
-    if (tableHeaderRef?.current) {
-      toggleClass(tableHeaderRef.current, prefix('cell-group-shadow'), scrollY.current < 0);
-    }
-  }, [
-    affixHeaderWrapperRef,
-    headerWrapperRef,
-    prefix,
-    scrollX,
-    scrollY,
-    shouldFixedColumn,
-    tableHeaderRef,
-    translateDOMPositionXY,
-    updatePositionByFixedCell,
-    wheelWrapperRef
-  ]);
+      if (tableHeaderRef?.current) {
+        toggleClass(tableHeaderRef.current, prefix('cell-group-shadow'), scrollY.current < 0);
+      }
+    },
+    [
+      affixHeaderWrapperRef,
+      handleWheelWrapperCallback,
+      headerWrapperRef,
+      prefix,
+      scrollX,
+      scrollY,
+      shouldFixedColumn,
+      tableHeaderRef,
+      translateDOMPositionXY,
+      updatePositionByFixedCell
+    ]
+  );
 
   useUpdateEffect(() => {
     if (scrollY.current !== 0) {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
 import addStyle from 'dom-lib/addStyle';
 import getOffset from 'dom-lib/getOffset';
-import { SCROLLBAR_MIN_WIDTH } from './constants';
+import { SCROLLBAR_MIN_WIDTH, TRANSITION_DURATION, BEZIER } from './constants';
 import { useMount, useClassNames, useUpdateEffect } from './utils';
 import TableContext from './TableContext';
 import type { StandardProps } from './@types/common';
@@ -19,7 +19,7 @@ export interface ScrollbarProps extends Omit<StandardProps, 'onScroll'> {
 
 export interface ScrollbarInstance {
   root: HTMLDivElement;
-  onWheelScroll: (delta: number) => void;
+  onWheelScroll: (delta: number, momentum?: boolean) => void;
   resetScrollBarPosition: (forceDelta?: number) => void;
 }
 
@@ -96,10 +96,10 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
     get handle() {
       return handleRef.current;
     },
-    onWheelScroll: (delta: number) => {
+    onWheelScroll: (delta: number, momentum?: boolean) => {
       const nextDelta = delta / (scrollLength / length);
 
-      updateScrollBarPosition(nextDelta);
+      updateScrollBarPosition(nextDelta, undefined, momentum);
     },
     resetScrollBarPosition: (forceDelta = 0) => {
       scrollOffset.current = 0;
@@ -108,12 +108,17 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
   }));
 
   const updateScrollBarPosition = useCallback(
-    (delta: number, forceDelta?: number) => {
+    (delta: number, forceDelta?: number, momentum?: boolean) => {
       const max =
         scrollLength && length
           ? length - Math.max((length / scrollLength) * length, SCROLLBAR_MIN_WIDTH + 2)
           : 0;
-      const styles = {};
+      const styles = momentum
+        ? {
+            'transition-duration': `${TRANSITION_DURATION}ms`,
+            'transition-timing-function': BEZIER
+          }
+        : {};
 
       if (typeof forceDelta === 'undefined') {
         scrollOffset.current += delta;
@@ -124,9 +129,9 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
       }
 
       if (vertical) {
-        translateDOMPositionXY?.(styles, 0, scrollOffset.current);
+        translateDOMPositionXY?.(styles as React.CSSProperties, 0, scrollOffset.current);
       } else {
-        translateDOMPositionXY?.(styles, scrollOffset.current, 0);
+        translateDOMPositionXY?.(styles as React.CSSProperties, scrollOffset.current, 0);
       }
 
       addStyle(handleRef.current, styles);

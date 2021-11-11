@@ -6,9 +6,10 @@ import on from 'dom-lib/on';
 import { requestAnimationTimeout, cancelAnimationTimeout } from './requestAnimationTimeout';
 import useUpdateEffect from './useUpdateEffect';
 import useMount from './useMount';
-import { SCROLLBAR_WIDTH } from '../constants';
+import { SCROLLBAR_WIDTH, TRANSITION_DURATION, BEZIER } from '../constants';
 import type { ScrollbarInstance } from '../Scrollbar';
 import type { ListenerCallback, RowDataType } from '../@types/common';
+import isSupportTouchEvent from './isSupportTouchEvent';
 
 interface ScrollListenerProps {
   rtl: boolean;
@@ -20,6 +21,7 @@ interface ScrollListenerProps {
   headerHeight: number;
   autoHeight: boolean;
   tableBodyRef: React.RefObject<HTMLDivElement>;
+  wheelWrapperRef: React.RefObject<HTMLDivElement>;
   scrollbarXRef: React.RefObject<ScrollbarInstance>;
   scrollbarYRef: React.RefObject<ScrollbarInstance>;
   disabledScroll: boolean;
@@ -34,11 +36,30 @@ interface ScrollListenerProps {
   setScrollX: (v: number) => void;
   setScrollY: (v: number) => void;
   virtualized: boolean;
-  forceUpdatePosition: () => void;
+  forceUpdatePosition: (extDuration?: number, nextBezier?: string) => void;
   onScroll: (scrollX: number, scrollY: number) => void;
   onTouchStart?: (event: React.TouchEvent) => void;
   onTouchMove?: (event: React.TouchEvent) => void;
+  onTouchEnd?: (event: React.TouchEvent) => void;
 }
+
+/**
+ * Calculate the distance of inertial sliding.
+ */
+const momentum = (current: number, start: number, duration: number) => {
+  // Inertial sliding acceleration.
+  const deceleration = 0.003;
+
+  const distance = current - start;
+  const speed = (2 * Math.abs(distance)) / duration;
+  const destination = current + (speed / deceleration) * (distance < 0 ? -1 : 1);
+
+  return {
+    destination: current - destination,
+    duration: TRANSITION_DURATION,
+    bezier: BEZIER
+  };
+};
 
 /**
  * Add scroll, touch, and wheel monitoring events to the table,
@@ -52,6 +73,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     children,
     autoHeight,
     tableBodyRef,
+    wheelWrapperRef,
     scrollbarXRef,
     scrollbarYRef,
     disabledScroll,
@@ -70,6 +92,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     onScroll,
     onTouchMove,
     onTouchStart,
+    onTouchEnd,
     height,
     getTableHeight,
     contentHeight,
@@ -80,11 +103,16 @@ const useScrollListener = (props: ScrollListenerProps) => {
   const wheelListener = useRef<ListenerCallback>();
   const touchStartListener = useRef<ListenerCallback>();
   const touchMoveListener = useRef<ListenerCallback>();
+  const touchEndListener = useRef<ListenerCallback>();
 
   const [isScrolling, setScrolling] = useState(false);
   const touchX = useRef(0);
   const touchY = useRef(0);
   const disableEventsTimeoutId = useRef(null);
+  const touchStartTime = useRef(0);
+  const momentumStartY = useRef(0);
+  const momentumTimeThreshold = useRef(300);
+  const momentumYThreshold = useRef(15);
 
   const shouldHandleWheelX = useCallback(
     (delta: number) => {
@@ -114,8 +142,14 @@ const useScrollListener = (props: ScrollListenerProps) => {
     setScrolling(false);
   }, []);
 
+  /**
+   * Triggered when scrolling, including: wheel/touch/scroll
+   * @param deltaX
+   * @param deltaY
+   * @param momentumOptions The configuration of inertial scrolling is used for the touch event.
+   */
   const handleWheel = useCallback(
-    (deltaX: number, deltaY: number) => {
+    (deltaX: number, deltaY: number, momentumOptions?: { duration: number; bezier: string }) => {
       if (!tableRef.current) {
         return;
       }
@@ -130,9 +164,13 @@ const useScrollListener = (props: ScrollListenerProps) => {
       setScrollY(y);
       onScroll?.(Math.abs(x), Math.abs(y));
 
-      forceUpdatePosition();
+      forceUpdatePosition(momentumOptions?.duration, momentumOptions?.bezier);
+      scrollbarXRef.current?.onWheelScroll?.(deltaX);
+      scrollbarYRef.current?.onWheelScroll?.(deltaY, momentumOptions?.duration ? true : false);
 
       if (virtualized) {
+        // Add a state to the table during virtualized scrolling.
+        // Make it set CSS `pointer-events:none` on the DOM to avoid wrong event interaction.
         setScrolling(true);
         if (disableEventsTimeoutId.current) {
           cancelAnimationTimeout(disableEventsTimeoutId.current);
@@ -142,49 +180,50 @@ const useScrollListener = (props: ScrollListenerProps) => {
       }
     },
     [
+      tableRef,
       contentWidth,
-      debounceScrollEndedCallback,
-      minScrollX,
-      minScrollY,
-      onScroll,
+      tableWidth,
       scrollX,
       scrollY,
+      minScrollY,
+      minScrollX,
       setScrollX,
       setScrollY,
-      tableRef,
-      tableWidth,
+      onScroll,
+      scrollbarXRef,
+      scrollbarYRef,
       forceUpdatePosition,
-      virtualized
+      virtualized,
+      debounceScrollEndedCallback
     ]
   );
 
   const listenWheel = useCallback(
     (deltaX: number, deltaY: number) => {
       handleWheel(deltaX, deltaY);
-
-      scrollbarXRef.current?.onWheelScroll?.(deltaX);
-      scrollbarYRef.current?.onWheelScroll?.(deltaY);
     },
-    [handleWheel, scrollbarXRef, scrollbarYRef]
+    [handleWheel]
   );
 
   const wheelHandler = useRef<WheelHandler>();
 
-  // When handling the Touch event on the mobile terminal, initialize x and y when Start.
+  // Handle the Touch event and initialize it when touchstart is triggered.
   const handleTouchStart = useCallback(
     (event: React.TouchEvent) => {
       if (event.touches) {
         const { pageX, pageY } = event.touches[0];
         touchX.current = pageX;
         touchY.current = pageY;
+        touchStartTime.current = new Date().getTime();
+        momentumStartY.current = scrollY.current;
       }
 
       onTouchStart?.(event);
     },
-    [onTouchStart]
+    [onTouchStart, scrollY]
   );
 
-  // Handle Touch events on the mobile terminal, initialize when Move, and update the scroll bar.
+  // Handle the Touch event and update the scroll when touchmove is triggered.
   const handleTouchMove = useCallback(
     (event: React.TouchEvent) => {
       if (event.touches) {
@@ -196,27 +235,54 @@ const useScrollListener = (props: ScrollListenerProps) => {
           return;
         }
 
-        event.preventDefault?.();
+        /**
+         * Prevent the default touch event when the table is scrollable.
+         * fix: https://github.com/rsuite/rsuite-table/commit/21785fc18f430519ab5885c44540d9ffc30de366#commitcomment-36236425
+         */
+        if (!autoHeight && shouldHandleWheelY(deltaY)) {
+          event.preventDefault?.();
+        }
+
+        const now = new Date().getTime();
 
         handleWheel(deltaX, deltaY);
-        scrollbarXRef.current?.onWheelScroll?.(deltaX);
-        scrollbarYRef.current?.onWheelScroll?.(deltaY);
 
         touchX.current = pageX;
         touchY.current = pageY;
+
+        // Record the offset value and time under the condition of triggering inertial scrolling.
+        if (now - touchStartTime.current > momentumTimeThreshold.current) {
+          momentumStartY.current = scrollY.current;
+          touchStartTime.current = now;
+        }
       }
 
       onTouchMove?.(event);
     },
-    [
-      autoHeight,
-      handleWheel,
-      onTouchMove,
-      scrollbarXRef,
-      scrollbarYRef,
-      shouldHandleWheelX,
-      shouldHandleWheelY
-    ]
+    [autoHeight, handleWheel, onTouchMove, scrollY, shouldHandleWheelX, shouldHandleWheelY]
+  );
+
+  const handleTouchEnd = useCallback(
+    (event: React.TouchEvent) => {
+      const momentumDuration = new Date().getTime() - touchStartTime.current;
+      const absDeltaY = Math.abs(scrollY.current - momentumStartY.current);
+
+      // Enable inertial sliding.
+      if (
+        momentumDuration < momentumTimeThreshold.current &&
+        absDeltaY > momentumYThreshold.current
+      ) {
+        const { destination, duration, bezier } = momentum(
+          scrollY.current,
+          momentumStartY.current,
+          momentumDuration
+        );
+
+        handleWheel(scrollX.current, destination, { duration, bezier });
+        onTouchEnd?.(event);
+      }
+    },
+    [handleWheel, onTouchEnd, scrollX, scrollY]
   );
 
   const handleHorizontalScroll = useCallback(
@@ -341,6 +407,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     wheelListener.current?.off();
     touchStartListener.current?.off();
     touchMoveListener.current?.off();
+    touchEndListener.current?.off();
   }, []);
 
   useEffect(() => {
@@ -355,18 +422,25 @@ const useScrollListener = (props: ScrollListenerProps) => {
         shouldHandleWheelY,
         false
       );
+
       wheelListener.current = on(tableBody, 'wheel', wheelHandler.current.onWheel, options);
-      touchStartListener.current = on(tableBody, 'touchstart', handleTouchStart, options);
-      touchMoveListener.current = on(tableBody, 'touchmove', handleTouchMove, options);
+
+      if (isSupportTouchEvent()) {
+        touchStartListener.current = on(tableBody, 'touchstart', handleTouchStart, options);
+        touchMoveListener.current = on(tableBody, 'touchmove', handleTouchMove, options);
+        touchEndListener.current = on(tableBody, 'touchend', handleTouchEnd, options);
+      }
     }
     return releaseListeners;
   }, [
+    handleTouchEnd,
     handleTouchMove,
     handleTouchStart,
     listenWheel,
     releaseListeners,
     shouldHandleWheelX,
     shouldHandleWheelY,
+    wheelWrapperRef,
     tableBodyRef
   ]);
 
