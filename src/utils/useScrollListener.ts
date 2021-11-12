@@ -197,7 +197,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     ]
   );
 
-  const listenWheel = useCallback(
+  const onWheel = useCallback(
     (deltaX: number, deltaY: number, momentumOptions?: { duration: number; bezier: string }) => {
       handleWheel(deltaX, deltaY, momentumOptions);
 
@@ -258,7 +258,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
       const now = new Date().getTime();
 
-      listenWheel(deltaX, deltaY);
+      onWheel(deltaX, deltaY);
 
       touchX.current = pageX;
       touchY.current = pageY;
@@ -271,7 +271,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
       onTouchMove?.(event);
     },
-    [autoHeight, listenWheel, onTouchMove, scrollY, shouldHandleWheelX, shouldHandleWheelY]
+    [autoHeight, onWheel, onTouchMove, scrollY, shouldHandleWheelX, shouldHandleWheelY]
   );
 
   const handleTouchEnd = useCallback(
@@ -290,27 +290,20 @@ const useScrollListener = (props: ScrollListenerProps) => {
           momentumDuration
         );
 
-        listenWheel(scrollX.current, destination, { duration, bezier });
+        onWheel(scrollX.current, destination, { duration, bezier });
 
         onTouchEnd?.(event);
       }
     },
-    [listenWheel, onTouchEnd, scrollX, scrollY]
+    [onWheel, onTouchEnd, scrollX, scrollY]
   );
-
-  const handleHorizontalScroll = useCallback(
-    (delta: number) => handleWheel(delta, 0),
-    [handleWheel]
-  );
-
-  const handleVerticalScroll = useCallback((delta: number) => handleWheel(0, delta), [handleWheel]);
 
   /**
    * When the user uses the tab key in the Table, the onScroll event is triggered,
    * and the scroll bar position should be updated at the same time.
    * https://github.com/rsuite/rsuite/issues/234
    */
-  const handleBodyScroll = useCallback(
+  const onScrollBody = useCallback(
     event => {
       if (event.target !== tableBodyRef.current) {
         return;
@@ -323,12 +316,12 @@ const useScrollListener = (props: ScrollListenerProps) => {
         return;
       }
 
-      listenWheel(left, top);
+      onWheel(left, top);
 
       scrollLeft(event.target, 0);
       scrollTop(event.target, 0);
     },
-    [listenWheel, tableBodyRef]
+    [onWheel, tableBodyRef]
   );
 
   const getControlledScrollTopValue = useCallback(
@@ -361,7 +354,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     return [-value, (value / contentWidth.current) * tableWidth.current];
   };
 
-  const handleScrollTop = (top = 0) => {
+  const onScrollTop = (top = 0) => {
     const [nextScrollY, handleScrollY] = getControlledScrollTopValue(top);
 
     setScrollY(nextScrollY);
@@ -380,7 +373,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     }
   };
 
-  const handleScrollLeft = (left = 0) => {
+  const onScrollLeft = (left = 0) => {
     const [nextScrollX, scrollbarX] = getControlledScrollLeftValue(left);
     setScrollX(nextScrollX);
     !loading && onScroll?.(Math.abs(nextScrollX), Math.abs(scrollY.current));
@@ -388,23 +381,23 @@ const useScrollListener = (props: ScrollListenerProps) => {
     forceUpdatePosition();
   };
 
-  const handleScrollTo = (coord: { x: number; y: number }) => {
+  const onScrollTo = (coord: { x: number; y: number }) => {
     const { x, y } = coord || {};
     if (typeof x === 'number') {
-      handleScrollLeft(x);
+      onScrollLeft(x);
     }
     if (typeof y === 'number') {
-      handleScrollTop(y);
+      onScrollTop(y);
     }
   };
 
   useUpdateEffect(() => {
-    handleScrollLeft(0);
+    onScrollLeft(0);
   }, [children]);
 
   useUpdateEffect(() => {
     if (scrollY.current !== 0) {
-      handleScrollTop(Math.abs(scrollY.current));
+      onScrollTop(Math.abs(scrollY.current));
     }
   }, [height, data]);
 
@@ -423,7 +416,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
       // Reset the listener after props is updated.
       releaseListeners();
       wheelHandler.current = new WheelHandler(
-        listenWheel,
+        onWheel,
         shouldHandleWheelX,
         shouldHandleWheelY,
         false
@@ -442,7 +435,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     handleTouchEnd,
     handleTouchMove,
     handleTouchStart,
-    listenWheel,
+    onWheel,
     releaseListeners,
     shouldHandleWheelX,
     shouldHandleWheelY,
@@ -458,14 +451,17 @@ const useScrollListener = (props: ScrollListenerProps) => {
     }
   });
 
+  const onScrollHorizontal = useCallback((delta: number) => handleWheel(delta, 0), [handleWheel]);
+  const onScrollVertical = useCallback((delta: number) => handleWheel(0, delta), [handleWheel]);
+
   return {
     isScrolling,
-    handleHorizontalScroll,
-    handleVerticalScroll,
-    handleBodyScroll,
-    handleScrollTop,
-    handleScrollLeft,
-    handleScrollTo
+    onScrollHorizontal,
+    onScrollVertical,
+    onScrollBody,
+    onScrollTop,
+    onScrollLeft,
+    onScrollTo
   };
 };
 

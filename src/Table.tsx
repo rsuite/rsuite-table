@@ -173,6 +173,9 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   /** Callback for the `touchmove` event. */
   onTouchMove?: (event: React.TouchEvent) => void;
 
+  /** Callback for the `touchend` event. */
+  onTouchEnd?: (event: React.TouchEvent) => void;
+
   /**
    * Callback after table data update.
    * @deprecated
@@ -245,6 +248,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     onExpandChange,
     onTouchStart,
     onTouchMove,
+    onTouchEnd,
     ...rest
   } = props;
 
@@ -329,22 +333,22 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     children,
     expandedRowKeys,
     onTableScroll: (coords: { x: number; y: number }) => {
-      handleScrollTo(coords);
+      onScrollTo(coords);
     },
     onTableContentHeightChange: () => {
       forceUpdate();
       if (shouldUpdateScroll) {
-        handleScrollTop(0);
+        onScrollTop(0);
       }
     },
     onTableContentWidthChange: () => {
       if (shouldUpdateScroll) {
-        handleScrollLeft(0);
+        onScrollLeft(0);
       }
     },
     onTableWidthChange: () => {
       if (shouldUpdateScroll) {
-        handleScrollLeft(0);
+        onScrollLeft(0);
       }
     }
   });
@@ -388,12 +392,12 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
   const {
     isScrolling,
-    handleHorizontalScroll,
-    handleVerticalScroll,
-    handleBodyScroll,
-    handleScrollTop,
-    handleScrollLeft,
-    handleScrollTo
+    onScrollHorizontal,
+    onScrollVertical,
+    onScrollBody,
+    onScrollTop,
+    onScrollLeft,
+    onScrollTo
   } = useScrollListener({
     rtl,
     data: dataProp,
@@ -420,8 +424,9 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     setScrollY,
     forceUpdatePosition,
     onScroll,
+    onTouchStart,
     onTouchMove,
-    onTouchStart
+    onTouchEnd
   });
 
   const { headerCells, bodyCells, allColumnsWidth, hasCustomTreeCol } = useCellDescriptor({
@@ -457,8 +462,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     get body() {
       return wheelWrapperRef.current;
     },
-    scrollTop: handleScrollTop,
-    scrollLeft: handleScrollLeft
+    scrollTop: onScrollTop,
+    scrollLeft: onScrollLeft
   }));
 
   const rowWidth = allColumnsWidth > tableWidth.current ? allColumnsWidth : tableWidth.current;
@@ -761,7 +766,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
         tableId={id}
         style={{ width: tableWidth.current }}
         length={tableWidth.current}
-        onScroll={handleHorizontalScroll}
+        onScroll={onScrollHorizontal}
         scrollLength={contentWidth.current}
         ref={scrollbarXRef}
       />,
@@ -771,7 +776,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
         tableId={id}
         length={height - headerHeight}
         scrollLength={contentHeight.current}
-        onScroll={handleVerticalScroll}
+        onScroll={onScrollVertical}
         ref={scrollbarYRef}
       />
     ];
@@ -915,7 +920,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
         role="rowgroup"
         className={prefix('body-row-wrapper')}
         style={bodyStyles}
-        onScroll={handleBodyScroll}
+        onScroll={onScrollBody}
       >
         <div style={wheelStyles} className={prefix('body-wheel-area')} ref={wheelWrapperRef}>
           {topHideHeight ? <Row style={topRowStyles} className="virtualized" /> : null}
@@ -1049,7 +1054,8 @@ Table.propTypes = {
   onSortColumn: PropTypes.func,
   onExpandChange: PropTypes.func,
   onTouchStart: PropTypes.func,
-  onTouchMove: PropTypes.func
+  onTouchMove: PropTypes.func,
+  onTouchEnd: PropTypes.func
 };
 
 export default Table;
