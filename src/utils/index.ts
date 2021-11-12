@@ -26,3 +26,4 @@ export { default as useTableRows } from './useTableRows';
 export { default as useAffix } from './useAffix';
 export { default as useScrollListener } from './useScrollListener';
 export { default as usePosition } from './usePosition';
+export { default as isSupportTouchEvent } from './isSupportTouchEvent';
