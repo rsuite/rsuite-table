@@ -322,9 +322,9 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     vertical: boolean
   ) => {
     if (typeof shouldUpdateScroll === 'function') {
-      handleScrollTo(shouldUpdateScroll(event));
+      onScrollTo(shouldUpdateScroll(event));
     } else if (shouldUpdateScroll) {
-      vertical ? handleScrollTop(0) : handleScrollLeft(0);
+      vertical ? onScrollTop(0) : onScrollLeft(0);
     }
   };
 
