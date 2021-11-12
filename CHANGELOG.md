@@ -1,3 +1,13 @@
+# [5.1.0](https://github.com/rsuite/rsuite-table/compare/5.0.3...5.1.0) (2021-11-12)
+
+
+### Features
+
+* **Table:** added support function type for shouldUpdateScroll ([#262](https://github.com/rsuite/rsuite-table/issues/262)) ([a05bf8e](https://github.com/rsuite/rsuite-table/commit/a05bf8e7b3d86b73cb79c1a7354ebfc08d90f376))
+* **Touch:** support momentum scroll when touch ([#263](https://github.com/rsuite/rsuite-table/issues/263)) ([23982ed](https://github.com/rsuite/rsuite-table/commit/23982ed093cfc8eab4ba32223e9439547a8dcd3d))
+
+
+
 ## 5.0.3
 
 -build(deps): bump dom-lib to 3.0.0 #260
