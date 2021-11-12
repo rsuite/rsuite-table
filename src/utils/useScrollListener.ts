@@ -55,7 +55,7 @@ const momentum = (current: number, start: number, duration: number) => {
   const destination = current + (speed / deceleration) * (distance < 0 ? -1 : 1);
 
   return {
-    destination: current - destination,
+    delta: current - destination,
     duration: TRANSITION_DURATION,
     bezier: BEZIER
   };
@@ -284,18 +284,17 @@ const useScrollListener = (props: ScrollListenerProps) => {
         momentumDuration < momentumTimeThreshold.current &&
         absDeltaY > momentumYThreshold.current
       ) {
-        const { destination, duration, bezier } = momentum(
+        const { delta, duration, bezier } = momentum(
           scrollY.current,
           momentumStartY.current,
           momentumDuration
         );
 
-        onWheel(scrollX.current, destination, { duration, bezier });
-
+        onWheel(0, delta, { duration, bezier });
         onTouchEnd?.(event);
       }
     },
-    [onWheel, onTouchEnd, scrollX, scrollY]
+    [onWheel, onTouchEnd, scrollY]
   );
 
   /**
