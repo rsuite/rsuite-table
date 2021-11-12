@@ -118,8 +118,16 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   /** Sort type */
   sortType?: SortType;
 
-  /** Whether to update the scroll bar after data update */
-  shouldUpdateScroll?: boolean;
+  /**
+   * Use the return value of `shouldUpdateScroll` to determine
+   * whether to update the scroll after the table size is updated.
+   */
+  shouldUpdateScroll?:
+    | boolean
+    | ((event: 'bodyHeightChanged' | 'bodyWidthChanged' | 'widthChanged') => {
+        x?: number;
+        y?: number;
+      });
 
   /** Enable 3D transition rendering to improve performance when scrolling. */
   translate3d?: boolean;
@@ -178,7 +186,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
 
   /**
    * Callback after table data update.
-   * @deprecated
+   * @deprecated use `shouldUpdateScroll` instead
    **/
   onDataUpdated?: (
     nextData: RowDataType[],
@@ -187,7 +195,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
 
   /**
    * A ref attached to the table body element
-   * @deprecated
+   * @deprecated use `ref` instead (see `ref.current.body`)
    **/
   bodyRef?: (ref: HTMLElement) => void;
 }
@@ -306,6 +314,20 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   const scrollbarXRef = useRef<ScrollbarInstance>();
   const scrollbarYRef = useRef<ScrollbarInstance>();
 
+  /**
+   * Reset the position of the scroll bar after the table size changes.
+   */
+  const resetScrollbar = (
+    event: 'bodyHeightChanged' | 'bodyWidthChanged' | 'widthChanged',
+    vertical: boolean
+  ) => {
+    if (typeof shouldUpdateScroll === 'function') {
+      onScrollTo(shouldUpdateScroll(event));
+    } else if (shouldUpdateScroll) {
+      vertical ? onScrollTop(0) : onScrollLeft(0);
+    }
+  };
+
   const {
     contentHeight,
     contentWidth,
@@ -337,19 +359,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     },
     onTableContentHeightChange: () => {
       forceUpdate();
-      if (shouldUpdateScroll) {
-        onScrollTop(0);
-      }
+      resetScrollbar('bodyHeightChanged', true);
     },
     onTableContentWidthChange: () => {
-      if (shouldUpdateScroll) {
-        onScrollLeft(0);
-      }
+      resetScrollbar('bodyWidthChanged', false);
     },
     onTableWidthChange: () => {
-      if (shouldUpdateScroll) {
-        onScrollLeft(0);
-      }
+      resetScrollbar('widthChanged', false);
     }
   });
 
@@ -1042,7 +1058,7 @@ Table.propTypes = {
   sortColumn: PropTypes.string,
   sortType: PropTypes.any,
   showHeader: PropTypes.bool,
-  shouldUpdateScroll: PropTypes.bool,
+  shouldUpdateScroll: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   translate3d: PropTypes.bool,
   wordWrap: PropTypes.bool,
   width: PropTypes.number,

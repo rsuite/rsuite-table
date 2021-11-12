@@ -983,4 +983,44 @@ describe('Table', () => {
     });
     assert.isTrue(onScrollSpy.called);
   });
+
+  it('Should update the scroll after the size changes', () => {
+    const onScrollSpy = sinon.spy();
+    const App = React.forwardRef((props, ref) => {
+      const data = [
+        {
+          id: 1,
+          name: 'a'
+        }
+      ];
+
+      const [width, setWidth] = React.useState(100);
+      React.useImperativeHandle(ref, () => ({
+        updateWidth: () => {
+          setWidth(50);
+        }
+      }));
+
+      return (
+        <Table shouldUpdateScroll={onScrollSpy} data={data} height={10} style={{ width }}>
+          <Column>
+            <HeaderCell>id</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+          <Column>
+            <HeaderCell>name</HeaderCell>
+            <Cell dataKey="name" />
+          </Column>
+        </Table>
+      );
+    });
+
+    const instance = getInstance(<App />);
+    expect(onScrollSpy.callCount).to.equal(1);
+    expect(onScrollSpy.firstCall.firstArg).to.equal('bodyHeightChanged');
+
+    instance.updateWidth();
+    expect(onScrollSpy.callCount).to.equal(2);
+    expect(onScrollSpy.secondCall.firstArg).to.equal('widthChanged');
+  });
 });

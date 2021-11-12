@@ -402,7 +402,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     forceUpdatePosition();
   };
 
-  const onScrollTo = (coord: { x: number; y: number }) => {
+  const onScrollTo = (coord: { x?: number; y?: number }) => {
     const { x, y } = coord || {};
     if (typeof x === 'number') {
       onScrollLeft(x);
