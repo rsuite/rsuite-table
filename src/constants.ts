@@ -7,5 +7,5 @@ export const SORT_TYPE = { DESC: 'desc', ASC: 'asc' };
 
 // transition-duration (ms)
 export const TRANSITION_DURATION = 1000;
-// transition-timing-function
-export const BEZIER = 'cubic-bezier(.17, .89, .45, 1)';
+// transition-timing-function (ease-out)
+export const BEZIER = 'cubic-bezier(0, 0, .58, 1)';
