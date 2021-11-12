@@ -19,6 +19,7 @@ export interface ScrollbarProps extends Omit<StandardProps, 'onScroll'> {
 
 export interface ScrollbarInstance {
   root: HTMLDivElement;
+  handle: HTMLDivElement;
   onWheelScroll: (delta: number, momentum?: boolean) => void;
   resetScrollBarPosition: (forceDelta?: number) => void;
 }

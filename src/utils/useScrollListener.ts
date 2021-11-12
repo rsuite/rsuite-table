@@ -12,6 +12,12 @@ import type { ScrollbarInstance } from '../Scrollbar';
 import type { ListenerCallback, RowDataType } from '../@types/common';
 import isSupportTouchEvent from './isSupportTouchEvent';
 
+// Inertial sliding start time threshold
+const momentumTimeThreshold = 300;
+
+// Inertial sliding start vertical distance threshold
+const momentumYThreshold = 15;
+
 interface ScrollListenerProps {
   rtl: boolean;
   data: RowDataType[];
@@ -108,10 +114,13 @@ const useScrollListener = (props: ScrollListenerProps) => {
   const touchX = useRef(0);
   const touchY = useRef(0);
   const disableEventsTimeoutId = useRef(null);
-  const touchStartTime = useRef(0);
+  const isTouching = useRef(false);
+
+  // The start time within the inertial sliding range.
+  const momentumStartTime = useRef(0);
+
+  // The vertical starting value within the inertial sliding range.
   const momentumStartY = useRef(0);
-  const momentumTimeThreshold = useRef(300);
-  const momentumYThreshold = useRef(15);
 
   const shouldHandleWheelX = useCallback(
     (delta: number) => {
@@ -211,13 +220,21 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
   // Stop unending scrolling and remove transition
   const stopScroll = useCallback(() => {
-    const wheelDOM = tableBodyRef.current.querySelector('.rs-table-body-wheel-area');
-    const matrix = window.getComputedStyle(wheelDOM).getPropertyValue('transform');
-    const offsetY = Math.round(+matrix.split(')')[0].split(', ')[5]);
+    const wheelElement = tableBodyRef.current.querySelector('.rs-table-body-wheel-area');
+    const handleElement = scrollbarYRef.current.handle;
+    const transitionCSS = ['transition-duration', 'transition-timing-function'];
 
-    setScrollY(offsetY);
-    removeStyle(wheelDOM, ['transition-duration', 'transition-timing-function']);
-  }, [setScrollY, tableBodyRef]);
+    if (!virtualized) {
+      // Get the current translate position.
+      const matrix = window.getComputedStyle(wheelElement).getPropertyValue('transform');
+      const offsetY = Math.round(+matrix.split(')')[0].split(', ')[5]);
+
+      setScrollY(offsetY);
+    }
+
+    removeStyle(wheelElement, transitionCSS);
+    removeStyle(handleElement, transitionCSS);
+  }, [scrollbarYRef, setScrollY, tableBodyRef, virtualized]);
 
   // Handle the Touch event and initialize it when touchstart is triggered.
   const handleTouchStart = useCallback(
@@ -226,12 +243,13 @@ const useScrollListener = (props: ScrollListenerProps) => {
       touchX.current = pageX;
       touchY.current = pageY;
 
-      touchStartTime.current = new Date().getTime();
+      momentumStartTime.current = new Date().getTime();
       momentumStartY.current = scrollY.current;
+      isTouching.current = true;
 
       onTouchStart?.(event);
 
-      // When Touch starts, stop unfinished scrolling.
+      // Stop unfinished scrolling when Touch starts.
       stopScroll();
     },
     [onTouchStart, scrollY, stopScroll]
@@ -240,6 +258,9 @@ const useScrollListener = (props: ScrollListenerProps) => {
   // Handle the Touch event and update the scroll when touchmove is triggered.
   const handleTouchMove = useCallback(
     (event: React.TouchEvent) => {
+      if (!isTouching.current) {
+        return;
+      }
       const { pageX, pageY } = event.touches[0];
       const deltaX = touchX.current - pageX;
       const deltaY = autoHeight ? 0 : touchY.current - pageY;
@@ -264,9 +285,9 @@ const useScrollListener = (props: ScrollListenerProps) => {
       touchY.current = pageY;
 
       // Record the offset value and time under the condition of triggering inertial scrolling.
-      if (now - touchStartTime.current > momentumTimeThreshold.current) {
+      if (now - momentumStartTime.current > momentumTimeThreshold) {
         momentumStartY.current = scrollY.current;
-        touchStartTime.current = now;
+        momentumStartTime.current = now;
       }
 
       onTouchMove?.(event);
@@ -276,18 +297,19 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
   const handleTouchEnd = useCallback(
     (event: React.TouchEvent) => {
-      const momentumDuration = new Date().getTime() - touchStartTime.current;
+      if (!isTouching.current) {
+        return;
+      }
+      isTouching.current = false;
+      const touchDuration = new Date().getTime() - momentumStartTime.current;
       const absDeltaY = Math.abs(scrollY.current - momentumStartY.current);
 
       // Enable inertial sliding.
-      if (
-        momentumDuration < momentumTimeThreshold.current &&
-        absDeltaY > momentumYThreshold.current
-      ) {
+      if (touchDuration < momentumTimeThreshold && absDeltaY > momentumYThreshold) {
         const { delta, duration, bezier } = momentum(
           scrollY.current,
           momentumStartY.current,
-          momentumDuration
+          touchDuration
         );
 
         onWheel(0, delta, { duration, bezier });

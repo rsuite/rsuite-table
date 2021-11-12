@@ -61,7 +61,7 @@ const usePosition = (props: PositionProps) => {
     return tableRef.current?.querySelectorAll(`.${prefix('cell-group-fixed-right')}`);
   }, [prefix, tableRef]);
 
-  const handleWheelWrapperCallback = useCallback(
+  const updateWheelElementPosition = useCallback(
     (fixedCell?: boolean) => {
       if (wheelWrapperRef?.current) {
         const wheelStyle = isSupportTouchEvent()
@@ -96,7 +96,7 @@ const usePosition = (props: PositionProps) => {
       addStyle(group, wheelGroupStyle);
     }
 
-    handleWheelWrapperCallback(true);
+    updateWheelElementPosition(true);
 
     const leftShadowClassName = prefix('cell-group-left-shadow');
     const rightShadowClassName = prefix('cell-group-right-shadow');
@@ -115,7 +115,7 @@ const usePosition = (props: PositionProps) => {
     getFixedLeftCellGroups,
     getFixedRightCellGroups,
     getScrollCellGroups,
-    handleWheelWrapperCallback,
+    updateWheelElementPosition,
     prefix,
     scrollX,
     tableWidth,
@@ -143,7 +143,7 @@ const usePosition = (props: PositionProps) => {
         const headerElement = headerWrapperRef?.current;
         const affixHeaderElement = affixHeaderWrapperRef?.current;
 
-        handleWheelWrapperCallback();
+        updateWheelElementPosition();
         headerElement && addStyle(headerElement, headerStyle);
 
         if (affixHeaderElement?.hasChildNodes?.()) {
@@ -157,7 +157,7 @@ const usePosition = (props: PositionProps) => {
     },
     [
       affixHeaderWrapperRef,
-      handleWheelWrapperCallback,
+      updateWheelElementPosition,
       headerWrapperRef,
       prefix,
       scrollX,
