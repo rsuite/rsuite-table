@@ -1,23 +1,31 @@
-function flattenData(data: any[]) {
+import { PARENT_KEY } from '../constants';
+import type { RowDataType } from '../@types/common';
+
+/**
+ * Flatten the data of a tree structure into a one-dimensional array.
+ * @param treeData
+ * @returns
+ */
+function flattenData(treeData: RowDataType[]) {
   const flattenItems = [];
 
-  function loop(data, _parent) {
-    if (!Array.isArray(data)) {
+  function loop(treeData, parentNode) {
+    if (!Array.isArray(treeData)) {
       return;
     }
 
-    data.forEach(item => {
-      item._parent = _parent;
+    treeData.forEach(rowData => {
+      rowData[PARENT_KEY] = parentNode;
       flattenItems.push({
-        ...item
+        ...rowData
       });
-      if (item.children) {
-        loop(item.children, item);
+      if (rowData.children) {
+        loop(rowData.children, rowData);
       }
     });
   }
 
-  loop(data, null);
+  loop(treeData, null);
   return flattenItems;
 }
 

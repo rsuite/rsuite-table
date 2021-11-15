@@ -9,3 +9,9 @@ export const SORT_TYPE = { DESC: 'desc', ASC: 'asc' };
 export const TRANSITION_DURATION = 1000;
 // transition-timing-function (ease-out)
 export const BEZIER = 'cubic-bezier(0, 0, .58, 1)';
+
+// An attribute value added to the data row to identify whether it is expanded, used in Tree.
+export const EXPANDED_KEY = Symbol('expanded');
+
+// An attribute value added for the data row, identifying the key of the parent node, used in Tree.
+export const PARENT_KEY = Symbol('parent');

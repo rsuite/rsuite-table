@@ -10,7 +10,7 @@ import MouseArea from './MouseArea';
 import Loader from './Loader';
 import EmptyMessage from './EmptyMessage';
 import TableContext from './TableContext';
-import { SCROLLBAR_WIDTH, CELL_PADDING_HEIGHT, SORT_TYPE } from './constants';
+import { SCROLLBAR_WIDTH, CELL_PADDING_HEIGHT, SORT_TYPE, EXPANDED_KEY } from './constants';
 import {
   mergeCells,
   flattenData,
@@ -38,6 +38,15 @@ import type {
   RowKeyType,
   TableLocaleType
 } from './@types/common';
+
+const filterTreeData = (data: any[], expandedRowKeys: (string | number)[], rowKey: RowKeyType) => {
+  return flattenData(data).filter(rowData => {
+    const parents = findAllParents(rowData, rowKey);
+    const expanded = shouldShowRowByExpanded(expandedRowKeys, parents);
+    rowData[EXPANDED_KEY] = expanded;
+    return expanded;
+  });
+};
 
 export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   /** Automatic Height */
@@ -286,7 +295,10 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       : defaultExpandedRowKeys || []
   );
 
-  const [data, setData] = useState(isTree ? flattenData(dataProp) : dataProp);
+  const [data, setData] = useState(() => {
+    return isTree ? filterTreeData(dataProp, expandedRowKeys, rowKey) : dataProp;
+  });
+
   const headerHeight = showHeader ? headerHeightProp : 0;
   const rtl = rtlProp || isRTL();
 
@@ -464,8 +476,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   });
 
   useUpdateEffect(() => {
-    setData(isTree ? flattenData(dataProp) : dataProp);
-  }, [dataProp, isTree]);
+    setData(isTree ? filterTreeData(dataProp, expandedRowKeys, rowKey) : dataProp);
+  }, [dataProp, expandedRowKeys, rowKey, isTree]);
 
   useUpdateEffect(() => {
     colCounts.current = flatten((children as any[]) || []).length;
@@ -685,13 +697,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   );
 
   const handleTreeToggle = useCallback(
-    (rowKey: any, _rowIndex: number, rowData: any) => {
+    (treeRowKey: any, _rowIndex: number, rowData: RowDataType) => {
       let open = false;
       const nextExpandedRowKeys = [];
 
       for (let i = 0; i < expandedRowKeys.length; i++) {
         const key = expandedRowKeys[i];
-        if (key === rowKey) {
+        if (key === treeRowKey) {
           open = true;
         } else {
           nextExpandedRowKeys.push(key);
@@ -699,11 +711,16 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       }
 
       if (!open) {
-        nextExpandedRowKeys.push(rowKey);
+        nextExpandedRowKeys.push(treeRowKey);
       }
 
       setExpandedRowKeys(nextExpandedRowKeys);
       onExpandChange?.(!open, rowData);
+
+      /**
+       * When the expanded state of the tree node is updated, the data is updated.
+       */
+      setData(filterTreeData(dataProp, nextExpandedRowKeys, rowKey));
     },
     [expandedRowKeys, onExpandChange, setExpandedRowKeys]
   );
@@ -817,7 +834,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       let minTop = Math.abs(scrollY.current);
       let maxTop = minTop + height + rowExpandedHeight;
       const isCustomRowHeight = typeof rowHeight === 'function';
-      const isUncertainHeight = !!(renderRowExpandedProp || isCustomRowHeight || isTree);
+      const isUncertainHeight = !!(renderRowExpandedProp || isCustomRowHeight);
 
       // If virtualized is enabled and the row height in the Table is variable,
       // you need to loop through the data to get the height of each row.
@@ -852,12 +869,6 @@ const Table = React.forwardRef((props: TableProps, ref) => {
           if (isTree) {
             const parents = findAllParents(rowData, rowKey);
             depth = parents.length;
-
-            // Determine whether the current line is expanded or collapsed,
-            // if it is collapsed, the line will not be displayed.
-            if (!shouldShowRowByExpanded(expandedRowKeys, parents)) {
-              continue;
-            }
           }
 
           contentHeight += nextRowHeight;
@@ -910,8 +921,14 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
         for (let index = startIndex; index < endIndex; index++) {
           const rowData = data[index];
+          let depth = 0;
+          if (isTree) {
+            const parents = findAllParents(rowData, rowKey);
+            depth = parents.length;
+          }
           const rowProps = {
             key: index,
+            depth,
             top: index * nextRowHeight,
             width: rowWidth,
             height: nextRowHeight
