@@ -10,6 +10,7 @@ import './less/index.less';
 import { Table, Column, Cell, HeaderCell, ColumnGroup } from '../src';
 import fakeData from './data/users';
 import fakeTreeData from './data/treeData';
+import fakeBigTreeData from './data/bigTreeData';
 import fakeDataForColSpan from './data/usersForColSpan';
 import fakeDataForRowSpan from './data/usersForRowSpan';
 import fakeLargeData from './data/fakeLargeData.json';
@@ -36,6 +37,7 @@ function App() {
           Toggle,
           fakeData,
           fakeTreeData,
+          fakeBigTreeData,
           fakeLargeData,
           fakeDataForColSpan,
           fakeDataForRowSpan,
@@ -101,6 +103,11 @@ function App() {
           {
             title: 'Tree',
             content: require('./md/TreeTable.md')
+          },
+
+          {
+            title: 'Big Tree',
+            content: require('./md/BigTreeTable.md')
           },
 
           {

@@ -1,4 +1,10 @@
-export default function findAllParents(rowData, rowKey) {
+import { PARENT_KEY } from '../constants';
+import type { RowKeyType } from '../@types/common';
+
+/**
+ * Find all parent nodes of a node
+ */
+export default function findAllParents(rowData: any, rowKey: RowKeyType) {
   const parents = [];
 
   if (!rowData) {
@@ -8,11 +14,11 @@ export default function findAllParents(rowData, rowKey) {
   function findParent(data) {
     if (data) {
       parents.push(data[rowKey]);
-      if (data._parent) {
-        findParent(data._parent);
+      if (data[PARENT_KEY]) {
+        findParent(data[PARENT_KEY]);
       }
     }
   }
-  findParent(rowData._parent);
+  findParent(rowData[PARENT_KEY]);
   return parents;
 }

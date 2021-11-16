@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
+import { act, Simulate } from 'react-dom/test-utils';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import ColumnGroup from '../src/ColumnGroup';
@@ -259,49 +259,57 @@ describe('Table', () => {
   });
 
   it('Should render custom tree toggle', () => {
-    const instance = getDOMNode(
-      <Table
-        isTree
-        expandedRowKeys={[1]}
-        rowKey="id"
-        renderTreeToggle={(expandButton, rowData, expanded) => {
-          if (expanded) {
-            return <div className="toggle-open">{rowData.name}</div>;
-          }
-          return <div className="toggle-close">{rowData.name}</div>;
-        }}
-        data={[
-          {
-            id: 1,
-            name: 'a',
-            children: [
-              {
-                id: 2,
-                name: 'b',
-                children: [
-                  {
-                    id: 3,
-                    name: 'c'
-                  }
-                ]
-              }
-            ]
-          }
-        ]}
-      >
-        <Column>
-          <HeaderCell>a</HeaderCell>
-          <Cell>a</Cell>
-        </Column>
-        <Column treeCol>
-          <HeaderCell>b</HeaderCell>
-          <Cell>b</Cell>
-        </Column>
-      </Table>
-    );
+    const ref = React.createRef();
+    act(() => {
+      render(
+        <Table
+          isTree
+          ref={ref}
+          expandedRowKeys={[1]}
+          rowKey="id"
+          renderTreeToggle={(expandButton, rowData, expanded) => {
+            if (expanded) {
+              return <div className="toggle-open">{rowData.name}</div>;
+            }
+            return <div className="toggle-close">{rowData.name}</div>;
+          }}
+          data={[
+            {
+              id: 1,
+              name: 'a',
+              children: [
+                {
+                  id: 2,
+                  name: 'b',
+                  children: [
+                    {
+                      id: 3,
+                      name: 'c'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]}
+        >
+          <Column>
+            <HeaderCell>a</HeaderCell>
+            <Cell>a</Cell>
+          </Column>
+          <Column treeCol>
+            <HeaderCell>b</HeaderCell>
+            <Cell>b</Cell>
+          </Column>
+        </Table>
+      );
+    });
 
-    assert.equal(instance.querySelector('.toggle-open').innerText, 'a');
-    assert.equal(instance.querySelector('.toggle-close').innerText, 'b');
+    const table = ref.current.root;
+    const openRows = table.querySelectorAll('.toggle-open');
+
+    assert.equal(openRows.length, 1);
+    assert.equal(openRows[0].innerText, 'a');
+    assert.equal(table.querySelector('.toggle-close').innerText, 'b');
   });
 
   it('Should call `rowHeight` callback', done => {
@@ -348,7 +356,7 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    ReactTestUtils.Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
+    Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
   });
 
   it('Should call `onExpandChange` callback', done => {
@@ -381,7 +389,7 @@ describe('Table', () => {
       </Table>
     );
 
-    ReactTestUtils.Simulate.click(instance.querySelector('.rs-table-cell-expand-icon'));
+    Simulate.click(instance.querySelector('.rs-table-cell-expand-icon'));
   });
 
   it('Should get the body DOM', () => {
@@ -485,7 +493,7 @@ describe('Table', () => {
 
   it('Should be fixed column', () => {
     const ref = React.createRef();
-    ReactTestUtils.act(() => {
+    act(() => {
       render(
         <div style={{ width: 300 }}>
           <Table
@@ -517,9 +525,7 @@ describe('Table', () => {
     assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
   });
 
-  /**
-   * https://github.com/rsuite/rsuite/issues/1307
-   */
+  // https://github.com/rsuite/rsuite/issues/1307
   it('Should be fixed column for array column', () => {
     const columns = [
       <Column width={200} fixed key={1}>
@@ -534,7 +540,7 @@ describe('Table', () => {
 
     const ref = React.createRef();
 
-    ReactTestUtils.act(() => {
+    act(() => {
       render(
         <div style={{ width: 300 }}>
           <Table
@@ -559,9 +565,7 @@ describe('Table', () => {
     assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
   });
 
-  /**
-   * https://github.com/rsuite/rsuite/issues/1257
-   */
+  //  https://github.com/rsuite/rsuite/issues/1257
   it('Should change data, after the isTree property is changed', () => {
     const data = [
       {
@@ -613,7 +617,7 @@ describe('Table', () => {
     });
     App.displayName = 'App';
     const ref = React.createRef();
-    ReactTestUtils.act(() => {
+    act(() => {
       render(<App ref={ref} />);
     });
 
@@ -621,7 +625,7 @@ describe('Table', () => {
 
     assert.equal(table.querySelectorAll('.rs-table-row').length, 3);
 
-    ReactTestUtils.act(() => {
+    act(() => {
       ref.current.setTree(false);
     });
 
@@ -679,17 +683,17 @@ describe('Table', () => {
     const table = ref.current.root;
     const expand = table.querySelector('.rs-table-cell-expand-icon');
 
-    // Tree 在展开前，显示 1 行，同时没有垂直滚动条。
+    // Before the Tree expands, it displays 1 row without vertical scroll bar.
     assert.equal(table.querySelectorAll('.rs-table-row').length, 1);
-    assert.ok(table.querySelector('.rs-table-scrollbar-vertical.rs-table-scrollbar-hide'));
+    assert.isNotNull(table.querySelector('.rs-table-scrollbar-vertical.rs-table-scrollbar-hide'));
 
-    ReactTestUtils.act(() => {
-      ReactTestUtils.Simulate.click(expand);
+    act(() => {
+      Simulate.click(expand);
     });
 
-    // Tree 在展开后，显示 10 行，同时显示垂直滚动条。
+    // After the Tree is expanded, 10 rows are displayed and a vertical scroll bar is displayed at the same time.
     assert.equal(table.querySelectorAll('.rs-table-row').length, 10);
-    assert.ok(!table.querySelector('.rs-table-scrollbar-vertical.rs-table-scrollbar-hide'));
+    assert.isNull(table.querySelector('.rs-table-scrollbar-vertical.rs-table-scrollbar-hide'));
   });
 
   it('Should render 2 ColumnGroup', () => {
@@ -704,7 +708,7 @@ describe('Table', () => {
         id: 2
       }
     ];
-    ReactTestUtils.act(() => {
+    act(() => {
       render(
         <div style={{ width: 300 }}>
           <Table data={[]} ref={ref}>
@@ -944,9 +948,7 @@ describe('Table', () => {
     assert.equal(instance.querySelectorAll('.rs-table-row-rowspan').length, 2);
   });
 
-  /**
-   * fix https://github.com/rsuite/rsuite/issues/2051
-   */
+  // fix https://github.com/rsuite/rsuite/issues/2051
   it('Should disable scroll events when loading', () => {
     const onScrollSpy = sinon.spy();
     const tableRef = React.createRef();
@@ -969,17 +971,17 @@ describe('Table', () => {
     });
     let instance;
 
-    ReactTestUtils.act(() => {
+    act(() => {
       instance = render(<App ref={tableRef} />);
     });
-    ReactTestUtils.act(() => {
-      ReactTestUtils.Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
+    act(() => {
+      Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
     });
     assert.isFalse(onScrollSpy.called);
 
-    ReactTestUtils.act(() => {
+    act(() => {
       tableRef.current.setLoading(false);
-      ReactTestUtils.Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
+      Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
     });
     assert.isTrue(onScrollSpy.called);
   });
