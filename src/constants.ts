@@ -15,3 +15,7 @@ export const EXPANDED_KEY = Symbol('expanded');
 
 // An attribute value added for the data row, identifying the key of the parent node, used in Tree.
 export const PARENT_KEY = Symbol('parent');
+
+// The attribute value added for the data row, which identifies the depth of the node (the number of parent nodes),
+// and is used in the Tree.
+export const TREE_DEPTH = Symbol('treeDepth');

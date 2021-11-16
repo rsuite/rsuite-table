@@ -10,7 +10,13 @@ import MouseArea from './MouseArea';
 import Loader from './Loader';
 import EmptyMessage from './EmptyMessage';
 import TableContext from './TableContext';
-import { SCROLLBAR_WIDTH, CELL_PADDING_HEIGHT, SORT_TYPE, EXPANDED_KEY } from './constants';
+import {
+  SCROLLBAR_WIDTH,
+  CELL_PADDING_HEIGHT,
+  SORT_TYPE,
+  EXPANDED_KEY,
+  TREE_DEPTH
+} from './constants';
 import {
   mergeCells,
   flattenData,
@@ -39,11 +45,21 @@ import type {
   TableLocaleType
 } from './@types/common';
 
-const filterTreeData = (data: any[], expandedRowKeys: (string | number)[], rowKey: RowKeyType) => {
+/**
+ * Filter those expanded nodes.
+ * @param data
+ * @param expandedRowKeys
+ * @param rowKey
+ * @returns
+ */
+const filterTreeData = (data: any[], expandedRowKeys: RowKeyType[], rowKey: RowKeyType) => {
   return flattenData(data).filter(rowData => {
     const parents = findAllParents(rowData, rowKey);
     const expanded = shouldShowRowByExpanded(expandedRowKeys, parents);
+
     rowData[EXPANDED_KEY] = expanded;
+    rowData[TREE_DEPTH] = parents.length;
+
     return expanded;
   });
 };
@@ -716,11 +732,6 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
       setExpandedRowKeys(nextExpandedRowKeys);
       onExpandChange?.(!open, rowData);
-
-      /**
-       * When the expanded state of the tree node is updated, the data is updated.
-       */
-      setData(filterTreeData(dataProp, nextExpandedRowKeys, rowKey));
     },
     [expandedRowKeys, onExpandChange, setExpandedRowKeys]
   );
@@ -853,7 +864,6 @@ const Table = React.forwardRef((props: TableProps, ref) => {
           const shouldRender = shouldRenderExpandedRow(rowData);
 
           let nextRowHeight = 0;
-          let depth = 0;
 
           if (typeof rowHeight === 'function') {
             nextRowHeight = rowHeight(rowData);
@@ -866,18 +876,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
             }
           }
 
-          if (isTree) {
-            const parents = findAllParents(rowData, rowKey);
-            depth = parents.length;
-          }
-
           contentHeight += nextRowHeight;
 
           const rowProps = {
             key: index,
             top,
             width: rowWidth,
-            depth,
+            depth: rowData[TREE_DEPTH],
             height: nextRowHeight
           };
 
@@ -921,14 +926,9 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
         for (let index = startIndex; index < endIndex; index++) {
           const rowData = data[index];
-          let depth = 0;
-          if (isTree) {
-            const parents = findAllParents(rowData, rowKey);
-            depth = parents.length;
-          }
           const rowProps = {
             key: index,
-            depth,
+            depth: rowData[TREE_DEPTH],
             top: index * nextRowHeight,
             width: rowWidth,
             height: nextRowHeight
