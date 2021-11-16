@@ -31,133 +31,106 @@ const CheckBoxCell = ({
   );
 };
 
-class DynamicTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: fakeObjectDataListStore(2),
-      columns: [],
-      checkValues: [],
-      paddingLeft: 0,
-      tableWidth: 'auto'
-    };
-    this.handleRowClick = this.handleRowClick.bind(this);
-    this.handleColumnClick = this.handleColumnClick.bind(this);
-    this.handleScrollTop = this.handleScrollTop.bind(this);
-    this.handleScrollLeft = this.handleScrollLeft.bind(this);
-    this.handleCheckCellChange = this.handleCheckCellChange.bind(this);
-    this.handleResizeWidth = this.handleResizeWidth.bind(this);
-    this.handleClearData = this.handleClearData.bind(this);
-    this.handleResetData = this.handleResetData.bind(this);
-  }
-  handleRowClick() {
-    const { data } = this.state;
-    const rowData = createFakeRowObjectData(data.length + 1);
-    //data.push(rowData);
+const App = () => {
+  const [data, setData] = React.useState(fakeObjectDataListStore(2));
+  const [columns, setColumns] = React.useState([]);
+  const [checkValues, setCheckValues] = React.useState([]);
+  const [tableWidth, setTableWidth] = React.useState('auto');
+  const [paddingLeft, setPaddingLeft] = React.useState(0);
+  const tableRef = React.useRef();
 
-    this.setState({
-      data: [...data, rowData]
-    });
-  }
-  handleColumnClick() {
-    const { columns } = this.state;
+  const handleResizeWidth = () => {
+    setTableWidth(tableWidth === 1000 ? 'auto' : 1000);
+  };
 
-    this.setState({
-      columns: [
-        ...columns,
-        <Column width={200} key={columns.length + 2}>
-          <HeaderCell>Email</HeaderCell>
-          <Cell dataKey="email" />
-        </Column>
-      ]
-    });
-  }
-
-  handleClearData() {
-    this.setState({ data: [] });
-  }
-  handleResetData() {
-    this.setState({ data: fakeObjectDataListStore(10) });
-  }
-  handleScrollTop() {
-    this.table.scrollTop(100);
-  }
-  handleScrollLeft() {
-    this.table.scrollLeft(100);
-  }
-
-  handleCheckCellChange(value) {
+  const handleCheckCellChange = value => {
     value = +value;
-    let checkValues = [...this.state.checkValues];
+    let nextCheckValues = [...checkValues];
 
-    if (checkValues.includes(value)) {
-      checkValues = without(checkValues, value);
+    if (nextCheckValues.includes(value)) {
+      nextCheckValues = without(nextCheckValues, value);
     } else {
-      checkValues.push(value);
+      nextCheckValues.push(value);
     }
-    this.setState({ checkValues });
-  }
 
-  handleResizeWidth() {
-    this.setState({
-      tableWidth: this.state.tableWidth === 1000 ? 'auto' : 1000
-    });
-  }
+    setCheckValues(nextCheckValues);
+  };
 
-  render() {
-    const { checkValues, tableWidth, paddingLeft } = this.state;
+  const handleScrollTop = () => {
+    tableRef.current.scrollTop(100);
+  };
+  const handleScrollLeft = () => {
+    tableRef.current.scrollLeft(100);
+  };
 
-    return (
-      <div style={{ paddingLeft, width: tableWidth, transition: 'padding .1s linear' }}>
-        <ButtonGroup>
-          <Button onClick={this.handleRowClick}>Add Row</Button>
-          <Button onClick={this.handleColumnClick}>Add Column</Button>
-          <Button onClick={this.handleScrollTop}>Scroll Top</Button>
-          <Button onClick={this.handleScrollLeft}>Scroll Left</Button>
-          <Button onClick={this.handleResizeWidth}>Update Width</Button>
-          <Button onClick={this.handleResetData}>Reset Data</Button>
-          <Button onClick={this.handleClearData}>Clear Data</Button>
-        </ButtonGroup>
-        <hr />
-        <Table
-          height={400}
-          data={this.state.data}
-          ref={ref => {
-            this.table = ref;
-          }}
-          shouldUpdateScroll={false}
-        >
-          <Column key="checkColumn" width={56} fixed>
-            <HeaderCell className="checkbox-cell">#</HeaderCell>
-            <CheckBoxCell
-              dataKey="id"
-              checked={value => checkValues.includes(value)}
-              onChange={this.handleCheckCellChange}
-            />
-          </Column>
-          <Column width={70} align="center" fixed>
-            <HeaderCell>Id</HeaderCell>
-            <Cell dataKey="id" />
-          </Column>
-          <Column width={130} fixed>
-            <HeaderCell>First Name</HeaderCell>
-            <Cell dataKey="firstName" />
-          </Column>
-          <Column width={130}>
-            <HeaderCell>Last Name</HeaderCell>
-            <Cell dataKey="lastName" />
-          </Column>
-          <Column width={200}>
-            <HeaderCell>City</HeaderCell>
-            <Cell dataKey="city" />
-          </Column>
-          {this.state.columns}
-        </Table>
-      </div>
+  const handleClearData = () => {
+    setData([]);
+  };
+  const handleResetData = () => {
+    setData(fakeObjectDataListStore(10));
+  };
+
+  const handleRowClick = () => {
+    const rowData = createFakeRowObjectData(data.length + 1);
+
+    setData([...data, rowData]);
+  };
+
+  const handleColumnClick = () => {
+    const newColumn = (
+      <Column width={200} key={columns.length + 2}>
+        <HeaderCell>Email</HeaderCell>
+        <Cell dataKey="email" />
+      </Column>
     );
-  }
-}
-ReactDOM.render(<DynamicTable />);
+
+    setColumns([...columns, newColumn]);
+  };
+
+  return (
+    <div style={{ paddingLeft, width: tableWidth, transition: 'padding .1s linear' }}>
+      <ButtonGroup>
+        <Button onClick={handleRowClick}>Add Row</Button>
+        <Button onClick={handleColumnClick}>Add Column</Button>
+        <Button onClick={handleScrollTop}>Scroll Top</Button>
+        <Button onClick={handleScrollLeft}>Scroll Left</Button>
+        <Button onClick={handleResizeWidth}>Update Width</Button>
+        <Button onClick={handleResetData}>Reset Data</Button>
+        <Button onClick={handleClearData}>Clear Data</Button>
+      </ButtonGroup>
+      <hr />
+      <Table height={400} data={data} ref={tableRef} shouldUpdateScroll={false}>
+        <Column key="checkColumn" width={56} fixed>
+          <HeaderCell className="checkbox-cell">#</HeaderCell>
+          <CheckBoxCell
+            dataKey="id"
+            checked={value => checkValues.includes(value)}
+            onChange={handleCheckCellChange}
+          />
+        </Column>
+        <Column width={70} align="center" fixed>
+          <HeaderCell>Id</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+        <Column width={130} fixed>
+          <HeaderCell>First Name</HeaderCell>
+          <Cell dataKey="firstName" />
+        </Column>
+        <Column width={130}>
+          <HeaderCell>Last Name</HeaderCell>
+          <Cell dataKey="lastName" />
+        </Column>
+        <Column width={200}>
+          <HeaderCell>City</HeaderCell>
+          <Cell dataKey="address.city" />
+        </Column>
+        {columns}
+      </Table>
+    </div>
+  );
+};
+
+ReactDOM.render(<App />);
 ```
 
 <!--end-code-->

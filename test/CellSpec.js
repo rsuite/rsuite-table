@@ -153,4 +153,17 @@ describe('Cell', () => {
     assert.ok(instance1.innerText, 1);
     assert.ok(instance2.innerText, 1);
   });
+
+  it('Should render nested values', () => {
+    const instance = getDOMNode(
+      <Cell rowData={{ user: { name: 'foobar' } }} dataKey="user.name" />
+    );
+
+    const instance2 = getDOMNode(
+      <Cell rowData={{ user: { name: ['foo', 'bar'] } }} dataKey="user.name.1" />
+    );
+
+    assert.equal(instance.innerText, 'foobar');
+    assert.equal(instance2.innerText, 'bar');
+  });
 });
