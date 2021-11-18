@@ -1025,4 +1025,53 @@ describe('Table', () => {
     expect(onScrollSpy.callCount).to.equal(2);
     expect(onScrollSpy.secondCall.firstArg).to.equal('widthChanged');
   });
+
+  it('Should update the scrollbar when resize', done => {
+    const data = [
+      {
+        id: 1,
+        name: 'a'
+      }
+    ];
+
+    const ref = React.createRef();
+
+    act(() => {
+      render(
+        <div ref={ref} style={{ width: 200 }}>
+          <Table
+            data={data}
+            height={10}
+            shouldUpdateScroll={event => {
+              if (event === 'widthChanged') {
+                assert.equal(scrollbar.style.width, '100px');
+                done();
+              }
+            }}
+          >
+            <Column width={100}>
+              <HeaderCell>id</HeaderCell>
+              <Cell dataKey="id" />
+            </Column>
+            <Column width={100}>
+              <HeaderCell>id</HeaderCell>
+              <Cell dataKey="id" />
+            </Column>
+            <Column width={100}>
+              <HeaderCell>id</HeaderCell>
+              <Cell dataKey="id" />
+            </Column>
+          </Table>
+        </div>
+      );
+    });
+
+    const scrollbar = ref.current.querySelector('.rs-table-scrollbar-horizontal');
+
+    assert.equal(scrollbar.style.width, '200px');
+
+    act(() => {
+      ref.current.style.width = '100px';
+    });
+  });
 });

@@ -3,8 +3,7 @@ import getWidth from 'dom-lib/getWidth';
 import getHeight from 'dom-lib/getHeight';
 import getOffset from 'dom-lib/getOffset';
 import { SCROLLBAR_WIDTH } from '../constants';
-import debounce from 'lodash/debounce';
-import bindElementResize, { unbind as unbindElementResize } from 'element-resize-event';
+import ResizeObserver from 'resize-observer-polyfill';
 import useMount from './useMount';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import isNumberOrTrue from './isNumberOrTrue';
@@ -65,6 +64,7 @@ const useTableDimension = (props: TableDimensionProps) => {
   const minScrollX = useRef(0);
   const tableWidth = useRef(widthProp || 0);
   const columnCount = useRef(0);
+  const resizeObserver = useRef<ResizeObserver>();
 
   const headerOffset = useRef<ElementOffset>(null);
   const tableOffset = useRef<ElementOffset>(null);
@@ -163,21 +163,23 @@ const useTableDimension = (props: TableDimensionProps) => {
     }
   }, [autoHeight, onTableContentWidthChange, prefix, tableRef]);
 
-  const calculateTableWidth = useCallback(() => {
-    const prevWidth = tableWidth.current;
+  const calculateTableWidth = useCallback(
+    (nextWidth?: number) => {
+      const prevWidth = tableWidth.current;
 
-    if (tableRef?.current) {
-      const nextWidth = getWidth(tableRef?.current);
-      tableWidth.current = nextWidth;
-    }
+      if (tableRef?.current) {
+        tableWidth.current = nextWidth || getWidth(tableRef?.current);
+      }
 
-    if (prevWidth && prevWidth !== tableWidth.current) {
-      scrollX.current = 0;
-      onTableWidthChange?.(prevWidth);
-    }
+      if (prevWidth && prevWidth !== tableWidth.current) {
+        scrollX.current = 0;
+        onTableWidthChange?.(prevWidth);
+      }
 
-    setOffsetByAffix();
-  }, [onTableWidthChange, setOffsetByAffix, tableRef]);
+      setOffsetByAffix();
+    },
+    [onTableWidthChange, setOffsetByAffix, tableRef]
+  );
 
   useMount(() => {
     calculateTableContextHeight();
@@ -185,7 +187,12 @@ const useTableDimension = (props: TableDimensionProps) => {
     calculateTableWidth();
     setOffsetByAffix();
 
-    bindElementResize(tableRef.current, debounce(calculateTableWidth, 400));
+    resizeObserver.current = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        calculateTableWidth(entry.contentRect.width);
+      }
+    });
+    resizeObserver.current.observe(tableRef.current);
   });
 
   useUpdateLayoutEffect(() => {
@@ -204,12 +211,8 @@ const useTableDimension = (props: TableDimensionProps) => {
 
   useEffect(() => {
     return () => {
-      if (tableRef.current) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        unbindElementResize(tableRef.current);
-      }
+      resizeObserver.current?.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setScrollY = useCallback((value: number) => {

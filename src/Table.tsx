@@ -345,13 +345,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   /**
    * Reset the position of the scroll bar after the table size changes.
    */
-  const resetScrollbar = (
-    event: 'bodyHeightChanged' | 'bodyWidthChanged' | 'widthChanged',
-    vertical: boolean
-  ) => {
+  const resetScrollbar = (event: 'bodyHeightChanged' | 'bodyWidthChanged' | 'widthChanged') => {
+    forceUpdate();
+
     if (typeof shouldUpdateScroll === 'function') {
       onScrollTo(shouldUpdateScroll(event));
     } else if (shouldUpdateScroll) {
+      const vertical = event === 'bodyHeightChanged';
       vertical ? onScrollTop(0) : onScrollLeft(0);
     }
   };
@@ -386,14 +386,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       onScrollTo(coords);
     },
     onTableContentHeightChange: () => {
-      forceUpdate();
-      resetScrollbar('bodyHeightChanged', true);
+      resetScrollbar('bodyHeightChanged');
     },
     onTableContentWidthChange: () => {
-      resetScrollbar('bodyWidthChanged', false);
+      resetScrollbar('bodyWidthChanged');
     },
     onTableWidthChange: () => {
-      resetScrollbar('widthChanged', false);
+      resetScrollbar('widthChanged');
     }
   });
 
