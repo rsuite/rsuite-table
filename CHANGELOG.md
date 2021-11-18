@@ -1,3 +1,22 @@
+# [5.2.0](https://github.com/rsuite/rsuite-table/compare/5.1.0...5.2.0) (2021-11-18)
+
+
+### Bug Fixes
+
+* **Table:** fix scroll bar not re-rendering after table resize ([#267](https://github.com/rsuite/rsuite-table/issues/267)) ([185f759](https://github.com/rsuite/rsuite-table/commit/185f759536b2686472995acb72e838827716ec21))
+
+
+### Features
+
+* **Column:** added support for nested values of dataKey on Column ([#268](https://github.com/rsuite/rsuite-table/issues/268)) ([50ec875](https://github.com/rsuite/rsuite-table/commit/50ec875891fa33fc677a7c9e2e07a4af060773a5))
+
+
+### Performance Improvements
+
+* **TreeTable:** improve the performance of tree table ([#266](https://github.com/rsuite/rsuite-table/issues/266)) ([25eeee6](https://github.com/rsuite/rsuite-table/commit/25eeee62c2c5539e956d4bcf3643b951002ae36f))
+
+
+
 # [5.1.0](https://github.com/rsuite/rsuite-table/compare/5.0.3...5.1.0) (2021-11-12)
 
 
