@@ -3,7 +3,7 @@ import getWidth from 'dom-lib/getWidth';
 import getHeight from 'dom-lib/getHeight';
 import getOffset from 'dom-lib/getOffset';
 import { SCROLLBAR_WIDTH } from '../constants';
-import ResizeObserver from 'resize-observer-polyfill';
+import { ResizeObserver } from '@juggle/resize-observer';
 import useMount from './useMount';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import isNumberOrTrue from './isNumberOrTrue';
