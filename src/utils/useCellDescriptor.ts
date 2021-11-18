@@ -207,7 +207,8 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
 
       if (showHeader && headerHeight) {
         const headerCellProps = {
-          // index 用于拖拽列宽时候（Resizable column），定义的序号
+          // Resizable column
+          // `index` is used to define the serial number when dragging the column width
           index,
           dataKey: columnChildren[1].props.dataKey,
           isHeaderCell: true,

@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
 import isNil from 'lodash/isNil';
+import get from 'lodash/get';
 import { LAYER_WIDTH } from './constants';
 import { useClassNames } from './utils';
 import TableContext from './TableContext';
@@ -137,7 +138,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     contentStyles.verticalAlign = verticalAlign;
   }
 
-  let cellContent = isNil(children) && rowData ? rowData[dataKey] : children;
+  let cellContent = isNil(children) && rowData ? get(rowData, dataKey) : children;
 
   if (typeof children === 'function') {
     cellContent = children(rowData, rowIndex);
