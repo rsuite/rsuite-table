@@ -30,6 +30,7 @@ interface CellDescriptorProps {
 }
 
 interface CellDescriptor {
+  columns: any[];
   headerCells: any[];
   bodyCells: any[];
   hasCustomTreeCol: boolean;
@@ -150,6 +151,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
 
   if (!children) {
     const cacheCell = {
+      columns: [],
       headerCells,
       bodyCells,
       hasCustomTreeCol,
@@ -241,6 +243,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
   });
 
   const cacheCell = {
+    columns,
     headerCells,
     bodyCells,
     allColumnsWidth: left,

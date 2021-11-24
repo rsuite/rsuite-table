@@ -330,7 +330,6 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     child => child?.props?.fixed
   );
 
-  const colCounts = useRef(flatten(children as any[]).length);
   const visibleRows = useRef([]);
   const mouseAreaRef = useRef<HTMLDivElement>();
   const tableRef = useRef<HTMLDivElement>();
@@ -471,7 +470,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     onTouchEnd
   });
 
-  const { headerCells, bodyCells, allColumnsWidth, hasCustomTreeCol } = useCellDescriptor({
+  const { columns, headerCells, bodyCells, allColumnsWidth, hasCustomTreeCol } = useCellDescriptor({
     children,
     rtl,
     mouseAreaRef,
@@ -489,17 +488,16 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     rowHeight
   });
 
+  const colCounts = useRef(columns?.length || 0);
+
   useUpdateEffect(() => {
     setData(isTree ? filterTreeData(dataProp, expandedRowKeys, rowKey) : dataProp);
   }, [dataProp, expandedRowKeys, rowKey, isTree]);
 
   useUpdateEffect(() => {
-    const nextCount = flatten(
-      (Array.isArray(children) ? children : [children]).filter(Boolean) || []
-    ).length;
-    if (nextCount !== colCounts.current) {
+    if (columns?.length !== colCounts.current) {
       onScrollLeft(0);
-      colCounts.current = nextCount;
+      colCounts.current = columns?.length;
     }
   }, [children]);
 
