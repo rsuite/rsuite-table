@@ -862,6 +862,70 @@ describe('Table', () => {
     instance.scrollLeft(10);
   });
 
+  it('Should call `onScroll` callback by change column', () => {
+    let xOffset = null;
+
+    const defaultData = [
+      {
+        id: 1,
+        name: 'a',
+        address: 'shanghai'
+      }
+    ];
+    const App = React.forwardRef((props, ref) => {
+      const tableRef = React.useRef();
+      const [showAddress, setShowAddress] = React.useState(false);
+      const [, forceUpdate] = React.useState();
+
+      const handleScroll = x => {
+        xOffset = x;
+      };
+
+      React.useImperativeHandle(
+        ref,
+        () => ({
+          update() {
+            forceUpdate({});
+          },
+          updateTable() {
+            setShowAddress(true);
+          },
+          scrollLeft(y) {
+            tableRef.current.scrollLeft(y);
+          }
+        }),
+        []
+      );
+
+      return (
+        <Table ref={tableRef} onScroll={handleScroll} data={defaultData} height={10} width={100}>
+          <Column width={80}>
+            <HeaderCell>11</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+          <Column width={40}>
+            <HeaderCell>name</HeaderCell>
+            <Cell dataKey="name" />
+          </Column>
+          {showAddress && (
+            <Column width={80}>
+              <HeaderCell>Address</HeaderCell>
+              <Cell dataKey="address" />
+            </Column>
+          )}
+        </Table>
+      );
+    });
+
+    const instance = getInstance(<App />);
+    instance.scrollLeft(20);
+    expect(xOffset).to.equal(20);
+    instance.update();
+    expect(xOffset).to.equal(20);
+    instance.updateTable();
+    expect(xOffset).to.equal(0);
+  });
+
   it('Should get the latest `data` in onScroll', done => {
     const App = React.forwardRef((props, ref) => {
       const [data, setData] = React.useState([]);

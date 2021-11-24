@@ -444,7 +444,6 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   } = useScrollListener({
     rtl,
     data: dataProp,
-    children,
     height,
     virtualized,
     getTableHeight,
@@ -495,7 +494,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   }, [dataProp, expandedRowKeys, rowKey, isTree]);
 
   useUpdateEffect(() => {
-    colCounts.current = flatten((children as any[]) || []).length;
+    const nextCount = flatten(
+      (Array.isArray(children) ? children : [children]).filter(Boolean) || []
+    ).length;
+    if (nextCount !== colCounts.current) {
+      onScrollLeft(0);
+      colCounts.current = nextCount;
+    }
   }, [children]);
 
   useImperativeHandle(ref, () => ({

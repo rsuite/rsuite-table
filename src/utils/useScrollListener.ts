@@ -21,7 +21,6 @@ const momentumYThreshold = 15;
 interface ScrollListenerProps {
   rtl: boolean;
   data: RowDataType[];
-  children: React.ReactNode;
   height: number;
   getTableHeight: () => number;
   contentHeight: React.RefObject<number>;
@@ -76,7 +75,6 @@ const momentum = (current: number, start: number, duration: number) => {
 const useScrollListener = (props: ScrollListenerProps) => {
   const {
     data,
-    children,
     autoHeight,
     tableBodyRef,
     scrollbarXRef,
@@ -411,10 +409,6 @@ const useScrollListener = (props: ScrollListenerProps) => {
       onScrollTop(y);
     }
   };
-
-  useUpdateEffect(() => {
-    onScrollLeft(0);
-  }, [children]);
 
   useUpdateEffect(() => {
     if (scrollY.current !== 0) {
