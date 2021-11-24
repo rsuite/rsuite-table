@@ -146,20 +146,52 @@ describe('Table', () => {
     assert.ok(instance.querySelectorAll('.rs-table-loader').length);
   });
 
-  it('Should be wordWrap', () => {
-    const instance = getDOMNode(
-      <Table wordWrap>
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
-        </Column>
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
+  it('Should be wordWrap', done => {
+    const data = [{ id: 1, country: 'South Georgia and the South Sandwich Islands' }];
+    const ref = React.createRef();
+
+    render(
+      <Table ref={ref} wordWrap data={data}>
+        <Column width={20}>
+          <HeaderCell>Country</HeaderCell>
+          <Cell dataKey="country" />
         </Column>
       </Table>
     );
-    assert.include(instance.className, 'rs-table-word-wrap');
+
+    const table = ref.current.root;
+    const cell = table.querySelectorAll('.rs-table-cell')[1];
+
+    assert.include(ref.current.root.className, 'rs-table-word-wrap');
+
+    setTimeout(() => {
+      assert.isTrue(getHeight(cell) > 46);
+      assert.equal(cell.innerText, 'South Georgia and the South Sandwich Islands');
+      done();
+    }, 1);
+  });
+
+  it('Should be wordWrap when isTree', done => {
+    const data = [{ id: 1, country: 'South Georgia and the South Sandwich Islands' }];
+    const ref = React.createRef();
+
+    render(
+      <Table ref={ref} wordWrap isTree data={data} rowKey="id">
+        <Column width={20}>
+          <HeaderCell>Country</HeaderCell>
+          <Cell dataKey="country" />
+        </Column>
+      </Table>
+    );
+
+    const table = ref.current.root;
+    const cell = table.querySelectorAll('.rs-table-cell')[1];
+
+    setTimeout(() => {
+      assert.isTrue(getHeight(cell) > 46);
+      assert.equal(cell.innerText, 'South Georgia and the South Sandwich Islands');
+      done();
+    }, 1);
   });
 
   it('Should be automatic height', () => {

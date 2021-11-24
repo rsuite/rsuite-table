@@ -844,7 +844,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       let minTop = Math.abs(scrollY.current);
       let maxTop = minTop + height + rowExpandedHeight;
       const isCustomRowHeight = typeof rowHeight === 'function';
-      const isUncertainHeight = !!(renderRowExpandedProp || isCustomRowHeight);
+      const isUncertainHeight = !!renderRowExpandedProp || isCustomRowHeight || wordWrap;
 
       // If virtualized is enabled and the row height in the Table is variable,
       // you need to loop through the data to get the height of each row.

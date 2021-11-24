@@ -18,8 +18,9 @@ const App = () => {
         isTree
       </label>
       <Table
-        isTree={tree}
+        wordWrap
         virtualized
+        isTree={tree}
         minHeight={260}
         height={400}
         rowKey="key"
@@ -40,17 +41,23 @@ const App = () => {
           <HeaderCell>Key</HeaderCell>
           <Cell dataKey="key" />
         </Column>
+
         <Column flexGrow={1} treeCol>
-          <HeaderCell>Label (Tree Col)</HeaderCell>
-          <Cell dataKey="labelName" />
+          <HeaderCell>Name (Tree Col)</HeaderCell>
+          <Cell dataKey="name" />
         </Column>
 
-        <Column width={100}>
+        <Column width={120}>
+          <HeaderCell>Country</HeaderCell>
+          <Cell dataKey="country" />
+        </Column>
+
+        <Column width={150}>
           <HeaderCell>Status</HeaderCell>
           <Cell dataKey="status" />
         </Column>
 
-        <Column width={100}>
+        <Column width={150}>
           <HeaderCell>Count</HeaderCell>
           <Cell dataKey="count" />
         </Column>
