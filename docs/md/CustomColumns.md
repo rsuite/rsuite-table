@@ -6,8 +6,6 @@
 const App = () => {
   const [showColumns, setShowColumns] = React.useState(false);
 
-  console.log(showColumns, 'showColumns');
-
   return (
     <Table
       classPrefix="rs-table"
