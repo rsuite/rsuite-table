@@ -194,6 +194,45 @@ describe('Table', () => {
     }, 1);
   });
 
+  it('Should be wordWrap when node is expanded', done => {
+    const data = [
+      {
+        id: 1,
+        country: 'Test',
+        children: [{ id: 2, country: 'South Georgia and the South Sandwich Islands' }]
+      }
+    ];
+    const ref = React.createRef();
+
+    act(() => {
+      render(
+        <Table ref={ref} wordWrap isTree data={data} rowKey="id">
+          <Column width={20}>
+            <HeaderCell>Country</HeaderCell>
+            <Cell dataKey="country" />
+          </Column>
+        </Table>
+      );
+    });
+
+    const table = ref.current.root;
+    const button = table.querySelector('.rs-table-cell-expand-wrapper');
+
+    assert.isUndefined(table.querySelectorAll('.rs-table-cell')[2]);
+
+    act(() => {
+      Simulate.click(button);
+    });
+
+    const cell = table.querySelectorAll('.rs-table-cell')[2];
+
+    setTimeout(() => {
+      assert.isTrue(getHeight(cell) > 46);
+      assert.equal(cell.innerText, 'South Georgia and the South Sandwich Islands');
+      done();
+    }, 1);
+  });
+
   it('Should be automatic height', () => {
     const instance = getDOMNode(
       <Table

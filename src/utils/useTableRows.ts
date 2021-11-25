@@ -3,12 +3,13 @@ import getHeight from 'dom-lib/getHeight';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import useMount from './useMount';
 import isEmpty from 'lodash/isEmpty';
-import { RowDataType } from '../@types/common';
+import { RowDataType, RowKeyType } from '../@types/common';
 
 interface TableRowsProps {
   prefix: (str: string) => string;
   wordWrap: boolean;
   data: RowDataType[];
+  expandedRowKeys: RowKeyType[];
 }
 
 /**
@@ -17,7 +18,7 @@ interface TableRowsProps {
  * @returns
  */
 const useTableRows = (props: TableRowsProps) => {
-  const { prefix, wordWrap, data } = props;
+  const { prefix, wordWrap, data, expandedRowKeys } = props;
   const [tableRowsMaxHeight, setTableRowsMaxHeight] = useState([]);
   const tableRows = useRef<{ [key: string]: [HTMLElement, any] }>({});
 
@@ -68,7 +69,7 @@ const useTableRows = (props: TableRowsProps) => {
      * TODO: To be improved
      */
     setTimeout(calculateRowMaxHeight, 1);
-  }, [data]);
+  }, [data, expandedRowKeys]);
 
   return {
     bindTableRowsRef,
