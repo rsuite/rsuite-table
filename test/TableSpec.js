@@ -1045,41 +1045,56 @@ describe('Table', () => {
   });
 
   // fix https://github.com/rsuite/rsuite/issues/2051
-  it('Should disable scroll events when loading', () => {
-    const onScrollSpy = sinon.spy();
-    const tableRef = React.createRef();
+  it('Should disable scroll events when loading', done => {
+    const appRef = React.createRef();
     const data = [{ id: 1, name: 'a' }];
+
     const App = React.forwardRef((props, ref) => {
       const [loading, setLoading] = React.useState(true);
+
       React.useImperativeHandle(ref, () => ({
         setLoading: v => {
           setLoading(v);
         }
       }));
+
       return (
-        <Table {...props} onScroll={onScrollSpy} loading={loading} data={data} height={10}>
-          <Column>
-            <HeaderCell>11</HeaderCell>
+        <Table
+          {...props}
+          onScroll={(x, y) => {
+            assert.equal(y, 20);
+            done();
+          }}
+          loading={loading}
+          data={data}
+          height={20}
+          width={100}
+        >
+          <Column width={100}>
+            <HeaderCell>ID</HeaderCell>
             <Cell dataKey="id" />
+          </Column>
+          <Column width={100}>
+            <HeaderCell>Name</HeaderCell>
+            <Cell dataKey="name" />
           </Column>
         </Table>
       );
     });
-    let instance;
+
+    const instance = render(<App ref={appRef} />);
+
+    const body = instance.querySelector('.rs-table-body-row-wrapper');
 
     act(() => {
-      instance = render(<App ref={tableRef} />);
+      body.dispatchEvent(new WheelEvent('wheel', { deltaY: 10 }));
     });
-    act(() => {
-      Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
-    });
-    assert.isFalse(onScrollSpy.called);
 
     act(() => {
-      tableRef.current.setLoading(false);
-      Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
+      appRef.current.setLoading(false);
     });
-    assert.isTrue(onScrollSpy.called);
+
+    body.dispatchEvent(new WheelEvent('wheel', { deltaY: 20 }));
   });
 
   it('Should update the scroll after the size changes', () => {
@@ -1169,5 +1184,59 @@ describe('Table', () => {
     act(() => {
       ref.current.style.width = '100px';
     });
+  });
+
+  it('Should support React.Fragment', () => {
+    const data = [
+      { id: 1, firstName: 'firstName', lastName: 'lastName', companyName: 'companyName' }
+    ];
+    const instance = getDOMNode(
+      <Table classPrefix="rs-table" height={400} data={data}>
+        <Column width={70} align="center" verticalAlign="middle" sortable>
+          <HeaderCell>Id</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+
+        <ColumnGroup
+          header={'Basic Info'}
+          align="center"
+          verticalAlign="middle"
+          groupHeaderHeight={40}
+        >
+          <React.Fragment>
+            <Column width={120} resizable sortable>
+              <HeaderCell>firstName</HeaderCell>
+              <Cell dataKey="firstName" />
+            </Column>
+
+            <Column width={120} resizable sortable>
+              <HeaderCell>lastName</HeaderCell>
+              <Cell dataKey="lastName" />
+            </Column>
+          </React.Fragment>
+        </ColumnGroup>
+
+        <React.Fragment>
+          <Column width={200} verticalAlign="middle" sortable>
+            <HeaderCell>Company Name</HeaderCell>
+            <Cell dataKey="companyName" />
+          </Column>
+
+          <Column width={200} verticalAlign="middle" sortable>
+            <HeaderCell>Company Name</HeaderCell>
+            <Cell dataKey="companyName" />
+          </Column>
+        </React.Fragment>
+
+        <Column width={200} verticalAlign="middle" sortable>
+          <HeaderCell>Company Name</HeaderCell>
+          <Cell dataKey="companyName" />
+        </Column>
+      </Table>
+    );
+
+    const body = instance.querySelector('.rs-table-body-row-wrapper');
+
+    assert.equal(body.querySelectorAll('.rs-table-cell-content').length, 6);
   });
 });

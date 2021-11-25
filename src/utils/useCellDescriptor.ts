@@ -30,6 +30,7 @@ interface CellDescriptorProps {
 }
 
 interface CellDescriptor {
+  columns: any[];
   headerCells: any[];
   bodyCells: any[];
   hasCustomTreeCol: boolean;
@@ -150,6 +151,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
 
   if (!children) {
     const cacheCell = {
+      columns: [],
       headerCells,
       bodyCells,
       hasCustomTreeCol,
@@ -161,6 +163,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
   }
 
   const columns = getTableColumns(children) as React.ReactNodeArray;
+  const count = columns.length;
 
   const { totalFlexGrow, totalWidth } = getTotalByColumns(columns);
 
@@ -202,7 +205,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
         width: cellWidth,
         height: typeof rowHeight === 'function' ? rowHeight() : rowHeight,
         firstColumn: index === 0,
-        lastColumn: index === columns.length - 1
+        lastColumn: index === count - 1
       };
 
       if (showHeader && headerHeight) {
@@ -241,6 +244,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
   });
 
   const cacheCell = {
+    columns,
     headerCells,
     bodyCells,
     allColumnsWidth: left,

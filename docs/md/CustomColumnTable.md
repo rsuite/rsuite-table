@@ -74,13 +74,12 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
   );
 };
 
-const data = [...fakeData, ...fakeData, ...fakeData, ...fakeData, ...fakeData];
+const data = [...fakeData];
 const App = () => {
   const [checkedKeys, setCheckedKeys] = React.useState([]);
 
   const handleCheckAll = event => {
     const checked = event.target.checked;
-
     const keys = checked ? data.map(item => item.id) : [];
 
     console.log(checked, keys);
@@ -91,11 +90,13 @@ const App = () => {
     const value = +event.target.value;
     const keys = checked ? [...checkedKeys, value] : checkedKeys.filter(item => item !== value);
 
+    console.log(checked, value, keys);
+
     setCheckedKeys(keys);
   };
 
   return (
-    <Table height={400} data={fakeLargeData} headerHeight={50} virtualized>
+    <Table height={400} data={data} headerHeight={50} virtualized>
       <Column width={50} align="center">
         <HeaderCell style={{ padding: 0 }}>
           <div style={{ lineHeight: '40px' }}>

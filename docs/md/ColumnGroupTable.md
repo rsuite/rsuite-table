@@ -3,7 +3,7 @@
 <!--start-code-->
 
 ```js
-const FixedColumnTable = () => {
+const App = () => {
   const [sortColumn, setSortColumn] = React.useState('id');
   const [sortType, setSortType] = React.useState('asc');
 
@@ -79,21 +79,7 @@ const FixedColumnTable = () => {
   );
 };
 
-ReactDOM.render(<FixedColumnTable />);
+ReactDOM.render(<App />);
 ```
 
 <!--end-code-->
-
-In some cases, you need to merge the relationships between columns to organize your data, and you can set a ColSpan attribute on the `<Column>` component, for example:
-
-```html
-<Column width="{130}" colSpan="{2}">
-  <HeaderCell>Name</HeaderCell>
-  <Cell dataKey="firstName" />
-</Column>
-
-<Column width="{130}">
-  <HeaderCell />
-  <Cell dataKey="lastName" />
-</Column>
-```
