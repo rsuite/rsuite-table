@@ -1,4 +1,5 @@
 import React from 'react';
+import * as ReactIs from 'react-is';
 import flatten from 'lodash/flatten';
 import ColumnGroup from '../ColumnGroup';
 
@@ -8,20 +9,24 @@ import ColumnGroup from '../ColumnGroup';
  * - Filter empty items in children.
  */
 function getTableColumns(children) {
-  if (!Array.isArray(children)) {
-    return children as React.ReactNodeArray;
-  }
+  const childrenArray = Array.isArray(children) ? children : [children];
 
-  const flattenColumns = flatten(children).map((column: React.ReactElement) => {
+  const flattenColumns = flatten(childrenArray).map((column: React.ReactElement) => {
+    // If the column is a group, we need to get the columns from the children.
     if (column?.type === ColumnGroup) {
       const {
         header,
-        children: childColumns,
+        children: groupChildren,
         align,
         fixed,
         verticalAlign,
         groupHeaderHeight
       } = column?.props;
+
+      const groupChildrenArray = Array.isArray(groupChildren) ? groupChildren : [groupChildren];
+      const childColumns = flatten(
+        groupChildrenArray.map(child => (ReactIs.isFragment(child) ? child.props.children : child))
+      ).filter(Boolean) as React.ReactElement[];
 
       return childColumns.map((childColumn, index) => {
         // Overwrite the props set by ColumnGroup to Column.
@@ -47,7 +52,12 @@ function getTableColumns(children) {
 
         return React.cloneElement(childColumn, groupCellProps);
       });
+    } else if (ReactIs.isFragment(column)) {
+      // If the column is a fragment, we need to get the columns from the children.
+      return column.props?.children || column;
     }
+
+    // If the column is not a group, we just return the column.
     return column;
   });
 

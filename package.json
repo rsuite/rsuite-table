@@ -42,7 +42,8 @@
     "@rsuite/icons": "^1.0.0",
     "classnames": "^2.2.5",
     "dom-lib": "^3.0.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "react-is": "^17.0.2"
   },
   "peerDependencies": {
     "react": "^0.14.9 || >=15.3.0",

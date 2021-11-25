@@ -134,6 +134,10 @@ function App() {
             title: 'Column Group',
             content: require('./md/ColumnGroupTable.md')
           },
+          {
+            title: 'Custom Columns',
+            content: require('./md/CustomColumns.md')
+          },
 
           {
             title: 'Hidden header',
