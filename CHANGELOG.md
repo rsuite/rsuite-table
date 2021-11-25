@@ -1,3 +1,15 @@
+## [5.2.1](https://github.com/rsuite/rsuite-table/compare/5.2.0...5.2.1) (2021-11-25)
+
+
+### Bug Fixes
+
+* **scrollbar:** enhanced verification of the number of columns ([#275](https://github.com/rsuite/rsuite-table/issues/275)) ([a666996](https://github.com/rsuite/rsuite-table/commit/a666996dbf68b1a12ad565911345af8b55a9398c))
+* **scrollbar:** fix scroll left reset ([#273](https://github.com/rsuite/rsuite-table/issues/273)) ([dab0f27](https://github.com/rsuite/rsuite-table/commit/dab0f2796c3168dc8fc0bc480b15f63cd04fe5af))
+* **tree:** fix unrecalculated row height after tree node is expanded ([#277](https://github.com/rsuite/rsuite-table/issues/277)) ([3788875](https://github.com/rsuite/rsuite-table/commit/378887509981db5cfc3a98e47c2751cc0559f3f8))
+* **wordWrap:** fix can't word wrap in tree table ([#274](https://github.com/rsuite/rsuite-table/issues/274)) ([58436e4](https://github.com/rsuite/rsuite-table/commit/58436e47e85d03dad274bc30f0052432a544b79d))
+
+
+
 # [5.2.0](https://github.com/rsuite/rsuite-table/compare/5.1.0...5.2.0) (2021-11-18)
 
 
