@@ -298,12 +298,6 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   // Use `forceUpdate` to force the component to re-render after manipulating the DOM.
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const { tableRowsMaxHeight, bindTableRowsRef } = useTableRows({
-    data: dataProp,
-    wordWrap,
-    prefix
-  });
-
   const [expandedRowKeys, setExpandedRowKeys] = useControlled(
     expandedRowKeysProp,
     defaultExpandAllRows
@@ -313,6 +307,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
   const [data, setData] = useState(() => {
     return isTree ? filterTreeData(dataProp, expandedRowKeys, rowKey) : dataProp;
+  });
+
+  const { tableRowsMaxHeight, bindTableRowsRef } = useTableRows({
+    data: dataProp,
+    expandedRowKeys,
+    wordWrap,
+    prefix
   });
 
   const headerHeight = showHeader ? headerHeightProp : 0;
