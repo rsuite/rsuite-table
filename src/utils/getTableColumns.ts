@@ -23,10 +23,7 @@ function getTableColumns(children) {
         groupHeaderHeight
       } = column?.props;
 
-      const groupChildrenArray = Array.isArray(groupChildren) ? groupChildren : [groupChildren];
-      const childColumns = flatten(
-        groupChildrenArray.map(child => (ReactIs.isFragment(child) ? child.props.children : child))
-      ).filter(Boolean) as React.ReactElement[];
+      const childColumns = getTableColumns(groupChildren);
 
       return childColumns.map((childColumn, index) => {
         // Overwrite the props set by ColumnGroup to Column.
@@ -54,7 +51,7 @@ function getTableColumns(children) {
       });
     } else if (ReactIs.isFragment(column)) {
       // If the column is a fragment, we need to get the columns from the children.
-      return column.props?.children || column;
+      return getTableColumns(column.props?.children);
     }
 
     // If the column is not a group, we just return the column.
@@ -62,7 +59,7 @@ function getTableColumns(children) {
   });
 
   // Flatten the array in Columns into a one-dimensional array, and calculate lastColumn and firstColumn.
-  return flatten(flattenColumns).filter(col => col);
+  return flatten(flattenColumns).filter(Boolean);
 }
 
 export default getTableColumns;

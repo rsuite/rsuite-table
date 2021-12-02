@@ -1256,10 +1256,22 @@ describe('Table', () => {
         </ColumnGroup>
 
         <React.Fragment>
-          <Column width={200} verticalAlign="middle" sortable>
-            <HeaderCell>Company Name</HeaderCell>
-            <Cell dataKey="companyName" />
-          </Column>
+          <ColumnGroup
+            header={'Basic Info'}
+            align="center"
+            verticalAlign="middle"
+            groupHeaderHeight={40}
+          >
+            <Column width={200} verticalAlign="middle" sortable>
+              <HeaderCell>Company Name</HeaderCell>
+              <Cell dataKey="companyName" />
+            </Column>
+
+            <Column width={200} verticalAlign="middle" sortable>
+              <HeaderCell>Company Name</HeaderCell>
+              <Cell dataKey="companyName" />
+            </Column>
+          </ColumnGroup>
 
           <Column width={200} verticalAlign="middle" sortable>
             <HeaderCell>Company Name</HeaderCell>
@@ -1276,6 +1288,6 @@ describe('Table', () => {
 
     const body = instance.querySelector('.rs-table-body-row-wrapper');
 
-    assert.equal(body.querySelectorAll('.rs-table-cell-content').length, 6);
+    assert.equal(body.querySelectorAll('.rs-table-cell-content').length, 7);
   });
 });
