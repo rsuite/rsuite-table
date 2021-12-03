@@ -17,9 +17,10 @@ function mergeCells(cells) {
       colSpan,
       groupCount,
       groupHeader,
+      groupAlign,
+      groupVerticalAlign,
       isHeaderCell,
       headerHeight,
-      verticalAlign,
       groupHeaderHeight
     } = cells[i].props;
 
@@ -38,7 +39,9 @@ function mergeCells(cells) {
           dataKey,
           onSortColumn,
           sortColumn,
-          sortType
+          sortType,
+          align,
+          verticalAlign
         } = nextCell.props;
 
         if (j !== 0) {
@@ -46,10 +49,13 @@ function mergeCells(cells) {
           left += cells[i + j - 1].props.width;
           cells[i + j] = cloneCell(nextCell, { removed: true });
         }
+
         groupChildren.push(
           <HeaderCell
             key={j}
             left={left}
+            align={align}
+            verticalAlign={verticalAlign}
             dataKey={dataKey}
             width={nextCellWidth}
             sortable={sortable}
@@ -69,7 +75,8 @@ function mergeCells(cells) {
               width={nextWidth}
               headerHeight={headerHeight}
               header={groupHeader}
-              verticalAlign={verticalAlign}
+              align={groupAlign}
+              verticalAlign={groupVerticalAlign}
               groupHeaderHeight={groupHeaderHeight}
             >
               {groupChildren}

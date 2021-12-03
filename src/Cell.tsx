@@ -58,6 +58,14 @@ export interface InnerCellProps extends CellProps {
   renderCell?: (contentChildren: any) => React.ReactNode;
 }
 
+const groupKeys = [
+  'groupCount',
+  'groupHeader',
+  'groupHeaderHeight',
+  'groupAlign',
+  'groupVerticalAlign'
+];
+
 const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElement>) => {
   const {
     width,
@@ -184,7 +192,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     <div
       ref={ref}
       role={isHeaderCell ? 'columnheader' : 'gridcell'}
-      {...omit(rest, ['groupCount', 'groupHeader', 'groupHeaderHeight', ...columnHandledProps])}
+      {...omit(rest, [...groupKeys, ...columnHandledProps])}
       onClick={onClick}
       className={classes}
       style={styles}
