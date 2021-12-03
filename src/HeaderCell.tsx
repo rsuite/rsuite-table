@@ -55,6 +55,8 @@ const HeaderCell = React.forwardRef((props: HeaderCellProps, ref: React.Ref<HTML
     minWidth,
     index,
     flexGrow,
+    align,
+    verticalAlign,
     onColumnResizeEnd,
     onResize,
     onColumnResizeStart,
@@ -127,6 +129,8 @@ const HeaderCell = React.forwardRef((props: HeaderCellProps, ref: React.Ref<HTML
         left={left}
         headerHeight={headerHeight}
         isHeaderCell={true}
+        align={!groupHeader ? align : null}
+        verticalAlign={!groupHeader ? verticalAlign : null}
         onClick={!groupHeader ? handleClick : null}
       >
         {children}

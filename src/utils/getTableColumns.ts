@@ -30,9 +30,11 @@ function getTableColumns(children) {
         const groupCellProps: any = {
           ...childColumn?.props,
           groupHeaderHeight,
-          align,
           fixed,
-          verticalAlign
+
+          // Column extends the properties of Group （align，verticalAlign）
+          align: childColumn?.props.align || align,
+          verticalAlign: childColumn?.props.verticalAlign || verticalAlign
         };
 
         /**
@@ -41,7 +43,10 @@ function getTableColumns(children) {
          * @field groupHeader: Group header title.
          * @field resizable: Set to not resizable.
          */
+
         if (index === 0) {
+          groupCellProps.groupAlign = align;
+          groupCellProps.groupVerticalAlign = verticalAlign;
           groupCellProps.groupCount = childColumns.length;
           groupCellProps.groupHeader = header;
           groupCellProps.resizable = false;

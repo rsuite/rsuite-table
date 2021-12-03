@@ -1290,4 +1290,69 @@ describe('Table', () => {
 
     assert.equal(body.querySelectorAll('.rs-table-cell-content').length, 7);
   });
+
+  it('Should be aligned in ColumnGroup', () => {
+    const ref = React.createRef();
+    const data = [
+      {
+        name: 'test name',
+        id: 1
+      }
+    ];
+    act(() => {
+      render(
+        <Table data={data} ref={ref}>
+          <ColumnGroup header={'Info'} align="right" verticalAlign="top">
+            <Column width={150} resizable sortable align="left" verticalAlign="bottom">
+              <HeaderCell>firstName</HeaderCell>
+              <Cell dataKey="name" />
+            </Column>
+
+            <Column width={150} resizable sortable>
+              <HeaderCell>lastName</HeaderCell>
+              <Cell dataKey="name" />
+            </Column>
+
+            <Column width={200} resizable sortable align="center" verticalAlign="middle">
+              <HeaderCell>Email</HeaderCell>
+              <Cell dataKey="name" />
+            </Column>
+          </ColumnGroup>
+        </Table>
+      );
+    });
+
+    const table = ref.current.root;
+
+    const groupHeader = table.querySelector('.rs-table-column-group-header-content');
+    const groupChildren = table.querySelectorAll(
+      '.rs-table-column-group .rs-table-column-group-cell .rs-table-cell-content'
+    );
+
+    assert.equal(groupHeader.style.textAlign, 'right');
+    assert.equal(groupHeader.style.verticalAlign, 'top');
+
+    assert.equal(groupChildren.length, 3);
+    assert.equal(groupChildren[0].textContent, 'firstName');
+    assert.equal(groupChildren[1].textContent, 'lastName');
+    assert.equal(groupChildren[2].textContent, 'Email');
+
+    assert.equal(groupChildren[0].style.textAlign, 'left');
+    assert.equal(groupChildren[0].style.verticalAlign, 'bottom');
+    assert.equal(groupChildren[1].style.textAlign, 'right');
+    assert.equal(groupChildren[1].style.verticalAlign, 'top');
+    assert.equal(groupChildren[2].style.textAlign, 'center');
+    assert.equal(groupChildren[2].style.verticalAlign, 'middle');
+
+    const groupBodyChildren = table.querySelectorAll(
+      '.rs-table-body-row-wrapper .rs-table-cell-content'
+    );
+
+    assert.equal(groupBodyChildren[0].style.textAlign, 'left');
+    assert.equal(groupBodyChildren[0].style.verticalAlign, 'bottom');
+    assert.equal(groupBodyChildren[1].style.textAlign, 'right');
+    assert.equal(groupBodyChildren[1].style.verticalAlign, 'top');
+    assert.equal(groupBodyChildren[2].style.textAlign, 'center');
+    assert.equal(groupBodyChildren[2].style.verticalAlign, 'middle');
+  });
 });

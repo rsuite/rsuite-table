@@ -14,7 +14,7 @@ export interface ColumnGroupProps extends StandardProps {
   /**
    * The height of the header of the merged cell group.
    * The default value is the square value of the table `headerHeight` value.
-   * */
+   **/
   groupHeaderHeight?: number;
 
   /** Group header */
@@ -31,6 +31,7 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
     classPrefix,
     headerHeight,
     verticalAlign,
+    align,
     width,
     groupHeaderHeight: groupHeightProp,
     ...rest
@@ -47,7 +48,7 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
 
   const { withClassPrefix, merge, prefix } = useClassNames(classPrefix);
   const classes = merge(className, withClassPrefix());
-  const contentStyles = { ...styles, verticalAlign };
+  const contentStyles = { ...styles, textAlign: align, verticalAlign };
 
   return (
     <div ref={ref} className={classes} {...rest}>
@@ -62,7 +63,7 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
           className: prefix('cell'),
           predefinedStyle: { height: restHeight, top: styles.height },
           headerHeight: restHeight,
-          verticalAlign,
+          verticalAlign: node.props.verticalAlign || verticalAlign,
           children: <span className={prefix('cell-content')}>{node.props.children}</span>
         });
       })}
