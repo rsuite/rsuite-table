@@ -1,3 +1,12 @@
+## [5.2.2](https://github.com/rsuite/rsuite-table/compare/5.2.1...5.2.2) (2021-12-03)
+
+
+### Bug Fixes
+
+* **Column:** fix alignment is overwritten in ColumnGroup ([#282](https://github.com/rsuite/rsuite-table/issues/282)) ([0ea6a71](https://github.com/rsuite/rsuite-table/commit/0ea6a7100360f80de820e4f53996a03ee3bf7c3e))
+
+
+
 ## [5.2.1](https://github.com/rsuite/rsuite-table/compare/5.2.0...5.2.1) (2021-11-25)
 
 
