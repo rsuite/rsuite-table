@@ -48,7 +48,7 @@ import { TableProps } from './Table.d';
 import { RowProps } from './Row.d';
 import { SortType } from './common.d';
 import ColumnGroup from './ColumnGroup';
-import { isFragment } from 'react-is'
+import { isFragment } from 'react-is';
 
 interface TableRowProps extends RowProps {
   key?: string | number;
@@ -429,11 +429,10 @@ class Table extends React.Component<TableProps, TableState> {
    * - 处理 children 中存在 <Column> 数组的情况
    * - 过滤 children 中的空项
    */
-  getTableColumns(children):React.ReactNodeArray {
-    
+  getTableColumns(children): React.ReactNodeArray {
     if (!Array.isArray(children)) {
-      if(isFragment(children)){
-        return this.getTableColumns(children.props.children)
+      if (isFragment(children)) {
+        return this.getTableColumns(children.props.children);
       }
       return children as React.ReactNodeArray;
     }

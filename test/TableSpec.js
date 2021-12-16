@@ -752,18 +752,18 @@ describe('Table', () => {
     const instanceDom = getDOMNode(
       <Table>
         <>
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
-        </Column>
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
-        </Column>
+          <Column>
+            <HeaderCell>11</HeaderCell>
+            <Cell>12</Cell>
+          </Column>
+          <Column>
+            <HeaderCell>11</HeaderCell>
+            <Cell>12</Cell>
+          </Column>
         </>
       </Table>
     );
 
     assert.equal(instanceDom.querySelectorAll('.rs-table-cell').length, 2);
-  })
+  });
 });
