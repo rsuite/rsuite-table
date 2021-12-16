@@ -1,3 +1,7 @@
+# 3.16.0
+
+- feat: supporting children is a fragment
+
 # 3.15.1
 
 - fix(babel): fix the problem that commonjs import default is undefined
