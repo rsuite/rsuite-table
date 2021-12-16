@@ -19,7 +19,7 @@
     "test": "npm run format:check && npm run lint && cross-env NODE_ENV=test karma start --single-run",
     "clean": "rm -rf node_modules/gh-pages/.cache",
     "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "npm run build"
   },
   "author": "simonguo.2009@gmail.com",
   "license": "MIT",
