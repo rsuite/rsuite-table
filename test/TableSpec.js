@@ -747,4 +747,23 @@ describe('Table', () => {
       4
     );
   });
+
+  it('when children is a react.Fragment should render success', () => {
+    const instanceDom = getDOMNode(
+      <Table>
+        <>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+        </>
+      </Table>
+    );
+
+    assert.equal(instanceDom.querySelectorAll('.rs-table-cell').length, 2);
+  })
 });

@@ -48,6 +48,7 @@ import { TableProps } from './Table.d';
 import { RowProps } from './Row.d';
 import { SortType } from './common.d';
 import ColumnGroup from './ColumnGroup';
+import { isFragment } from 'react-is'
 
 interface TableRowProps extends RowProps {
   key?: string | number;
@@ -428,10 +429,12 @@ class Table extends React.Component<TableProps, TableState> {
    * - 处理 children 中存在 <Column> 数组的情况
    * - 过滤 children 中的空项
    */
-  getTableColumns(): React.ReactNodeArray {
-    const { children } = this.props;
-
+  getTableColumns(children):React.ReactNodeArray {
+    
     if (!Array.isArray(children)) {
+      if(isFragment(children)){
+        return this.getTableColumns(children.props.children)
+      }
       return children as React.ReactNodeArray;
     }
 
@@ -489,7 +492,7 @@ class Table extends React.Component<TableProps, TableState> {
       return this._cacheCells;
     }
 
-    const columns = this.getTableColumns();
+    const columns = this.getTableColumns(children);
 
     const { width: tableWidth } = this.state;
     const { sortColumn, rowHeight, showHeader } = this.props;
