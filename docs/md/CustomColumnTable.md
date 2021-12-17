@@ -74,26 +74,47 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
   );
 };
 
-const data = [...fakeData];
+const InputCell = React.memo(({ rowData, data, value, onChange, ...props }) => {
+  function handleChange(event) {
+    onChange(rowData.id, event.target.value);
+  }
+
+  return (
+    <BaseCell {...props}>
+      <input value={data[rowData.id]} onChange={handleChange} />
+    </BaseCell>
+  );
+});
+
+const data = [...fakeLargeData];
 const App = () => {
   const [checkedKeys, setCheckedKeys] = React.useState([]);
+  const [emailList, setEmailList] = React.useState(data.map(item => item.email));
 
-  const handleCheckAll = event => {
+  const handleCheckAll = React.useCallback(event => {
     const checked = event.target.checked;
     const keys = checked ? data.map(item => item.id) : [];
-
-    console.log(checked, keys);
     setCheckedKeys(keys);
-  };
-  const handleCheck = event => {
-    const checked = event.target.checked;
-    const value = +event.target.value;
-    const keys = checked ? [...checkedKeys, value] : checkedKeys.filter(item => item !== value);
+  }, []);
 
-    console.log(checked, value, keys);
+  const handleCheck = React.useCallback(
+    event => {
+      const checked = event.target.checked;
+      const value = +event.target.value;
+      const keys = checked ? [...checkedKeys, value] : checkedKeys.filter(item => item !== value);
 
-    setCheckedKeys(keys);
-  };
+      setCheckedKeys(keys);
+    },
+    [checkedKeys]
+  );
+
+  const handleEmailChange = React.useCallback((id, value) => {
+    setEmailList(prevEmailList => {
+      const nextMailList = [...prevEmailList];
+      nextMailList[id] = value;
+      return nextMailList;
+    });
+  }, []);
 
   return (
     <Table height={400} data={data} headerHeight={50} virtualized>
@@ -117,7 +138,6 @@ const App = () => {
         <HeaderCell>First Name</HeaderCell>
         <NameCell dataKey="firstName" />
       </Column>
-
       <Column width={160}>
         <HeaderCell>Last Name</HeaderCell>
         <BaseCell dataKey="lastName" />
@@ -125,7 +145,7 @@ const App = () => {
 
       <Column width={300}>
         <HeaderCell>Email</HeaderCell>
-        <BaseCell>{rowData => <a href={`mailto:${rowData.email}`}>{rowData.email}</a>}</BaseCell>
+        <InputCell data={emailList} onChange={handleEmailChange} />
       </Column>
 
       <Column width={200}>

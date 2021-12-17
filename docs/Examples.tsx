@@ -3,7 +3,7 @@ import { Row, Col, Nav } from 'rsuite';
 import CodeView from 'react-code-view';
 
 const CustomCodeView = ({ ...props }) => (
-  <Col md={10}>
+  <Col md={20}>
     <CodeView {...props} />
   </Col>
 );
@@ -35,13 +35,14 @@ class Examples extends React.Component<ExamplesProps, ExamplesState> {
     return (
       <div>
         <Row>
-          <Col md={2}>
-            <Nav>
+          <Col md={4}>
+            <Nav vertical>
               {list.map((item, i) => {
                 return (
                   <Nav.Item
                     key={i}
                     href={`#${i}`}
+                    active={i === index}
                     onClick={() => {
                       this.setState({ index: i });
                     }}

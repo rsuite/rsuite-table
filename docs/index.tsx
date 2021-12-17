@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Profiler } from 'react';
 import ReactDOM from 'react-dom';
 import { Popover, Whisper, Toggle, Grid, Button, ButtonGroup, Checkbox } from 'rsuite';
 import clone from 'lodash/clone';
@@ -17,6 +17,7 @@ import fakeLargeData from './data/fakeLargeData.json';
 import fakeObjectDataListStore, { createFakeRowObjectData } from './data/fakeObjectDataListStore';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
+import GearIcon from '@rsuite/icons/Gear';
 
 function App() {
   return (
@@ -55,7 +56,9 @@ function App() {
           useDrag,
           useDrop,
           Backend,
-          DndProvider
+          DndProvider,
+          GearIcon,
+          Profiler
         }}
         list={[
           {
