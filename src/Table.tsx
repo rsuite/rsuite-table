@@ -179,6 +179,13 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   /** Customize what you can do to expand a zone */
   renderRowExpanded?: (rowData?: RowDataType) => React.ReactNode;
 
+  /** Custom row element */
+  renderRow?: (
+    children?: React.ReactNode,
+    rowData?: RowDataType,
+    rowIndex?: number
+  ) => React.ReactNode;
+
   /** Customized data is empty display content */
   renderEmpty?: (info: React.ReactNode) => React.ReactNode;
 
@@ -270,6 +277,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     affixHorizontalScrollbar,
     loadAnimation,
     shouldUpdateScroll,
+    renderRow: renderRowProp,
     renderRowExpanded: renderRowExpandedProp,
     renderLoading,
     renderEmpty,
@@ -573,6 +581,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       rowStyles.right = rowRight;
     }
 
+    let rowNode = null;
+
     // IF there are fixed columns, add a fixed group
     if (shouldFixedColumn && contentWidth.current > tableWidth.current) {
       const fixedLeftCells = [];
@@ -604,8 +614,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
         }
       }
 
-      return (
-        <Row {...restRowProps} data-depth={depth} style={rowStyles}>
+      rowNode = (
+        <>
           {fixedLeftCellGroupWidth ? (
             <CellGroup
               fixed="left"
@@ -637,14 +647,20 @@ const Table = React.forwardRef((props: TableProps, ref) => {
           ) : null}
 
           {shouldRenderExpandedRow && renderRowExpanded(rowData)}
-        </Row>
+        </>
+      );
+    } else {
+      rowNode = (
+        <>
+          <CellGroup>{mergeCells(cells)}</CellGroup>
+          {shouldRenderExpandedRow && renderRowExpanded(rowData)}
+        </>
       );
     }
 
     return (
       <Row {...restRowProps} data-depth={depth} style={rowStyles}>
-        <CellGroup>{mergeCells(cells)}</CellGroup>
-        {shouldRenderExpandedRow && renderRowExpanded(rowData)}
+        {renderRowProp ? renderRowProp(rowNode, rowData) : rowNode}
       </Row>
     );
   };
@@ -1069,6 +1085,7 @@ Table.propTypes = {
   rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   renderTreeToggle: PropTypes.func,
   renderRowExpanded: PropTypes.func,
+  renderRow: PropTypes.func,
   rowExpandedHeight: PropTypes.number,
   renderEmpty: PropTypes.func,
   renderLoading: PropTypes.func,

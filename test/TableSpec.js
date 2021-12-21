@@ -1355,4 +1355,35 @@ describe('Table', () => {
     assert.equal(groupBodyChildren[2].style.textAlign, 'center');
     assert.equal(groupBodyChildren[2].style.verticalAlign, 'middle');
   });
+
+  it('Should render a custom row', () => {
+    const instance = getDOMNode(
+      <Table
+        minHeight={500}
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          },
+          {
+            id: 2,
+            name: 'b'
+          }
+        ]}
+        renderRow={(children, rowData) =>
+          rowData && rowData.id === 1 ? <div className="custom-row">{children}</div> : children
+        }
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+    assert.equal(instance.querySelectorAll('.rs-table-row .custom-row').length, 1);
+  });
 });
