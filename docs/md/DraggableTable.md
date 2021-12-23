@@ -3,12 +3,6 @@
 <!--start-code-->
 
 ```js
-const style = {
-  border: '1px dashed gray',
-  padding: '0.5rem 1rem',
-  cursor: 'move'
-};
-
 const ItemTypes = {
   COLUMN: 'column',
   ROW: 'row'
@@ -40,9 +34,10 @@ function DraggableHeaderCell({ children, onDrag, id, ...rest }) {
   drag(drop(ref));
 
   const styles = {
-    ...style,
+    padding: '0.6rem 1rem',
+    cursor: 'grab',
     opacity: isDragging ? 0 : 1,
-    background: isActive ? '#ddd' : null
+    borderLeft: isActive ? '2px solid #2589f5' : null
   };
 
   return (
@@ -54,7 +49,7 @@ function DraggableHeaderCell({ children, onDrag, id, ...rest }) {
   );
 }
 
-function DraggableCell({ children, onDrag, id, rowData, ...rest }) {
+function Row({ children, onDrag, id, rowData, ...rest }) {
   const ref = React.useRef(null);
 
   const [{ canDrop, isOver }, drop] = useDrop({
@@ -80,17 +75,18 @@ function DraggableCell({ children, onDrag, id, rowData, ...rest }) {
   drag(drop(ref));
 
   const styles = {
-    ...style,
+    cursor: 'grab',
     opacity: isDragging ? 0.5 : 1,
-    background: isActive ? '#ddd' : null
+    background: isActive ? '#ddd' : null,
+    width: '100%',
+    height: '100%',
+    borderTop: isActive ? '2px solid #2589f5' : null
   };
 
   return (
-    <Cell {...rest} style={{ padding: 0 }}>
-      <div ref={ref} style={styles}>
-        {children}
-      </div>
-    </Cell>
+    <div ref={ref} style={styles}>
+      {children}
+    </div>
   );
 }
 
@@ -99,18 +95,17 @@ function sort(source, sourceId, targetId) {
   const dragItem = source.find(item => item.id === sourceId);
   const index = nextData.findIndex(item => item.id === targetId);
 
-  nextData.splice(index + 1, 0, dragItem);
+  nextData.splice(index, 0, dragItem);
   return nextData;
 }
 
 function DraggableTable() {
   const [data, setData] = React.useState(fakeData.filter((item, index) => index < 20));
   const [columns, setColumns] = React.useState([
-    { id: 'action', name: 'Action', width: 100 },
     { id: 'id', name: 'Id', width: 80 },
     { id: 'firstName', name: 'First Name', width: 200 },
     { id: 'lastName', name: 'Last Name', width: 200 },
-    { id: 'email', name: 'Email', width: 300 }
+    { id: 'email', name: 'Email', width: 300, flexGrow: 1 }
   ]);
 
   const handleDragColumn = (sourceId, targetId) => {
@@ -124,20 +119,26 @@ function DraggableTable() {
   return (
     <DndProvider backend={Backend}>
       <div>
-        <Table height={400} data={data}>
+        <Table
+          height={400}
+          data={data}
+          bordered
+          renderRow={(children, rowData) => {
+            return rowData ? (
+              <Row key={rowData.id} rowData={rowData} id={rowData.id} onDrag={handleDragRow}>
+                {children}
+              </Row>
+            ) : (
+              children
+            );
+          }}
+        >
           {columns.map(column => (
-            <Column width={column.width} key={column.id}>
+            <Column width={column.width} key={column.id} flexGrow={column.flexGrow}>
               <DraggableHeaderCell onDrag={handleDragColumn} id={column.id}>
                 {column.name}
               </DraggableHeaderCell>
-
-              {column.id === 'action' ? (
-                <DraggableCell id={column.id} onDrag={handleDragRow}>
-                  Drag me
-                </DraggableCell>
-              ) : (
-                <Cell dataKey={column.id} />
-              )}
+              <Cell dataKey={column.id} />
             </Column>
           ))}
         </Table>
