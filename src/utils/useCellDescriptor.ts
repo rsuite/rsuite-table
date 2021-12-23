@@ -10,6 +10,8 @@ import useControlled from './useControlled';
 import getTableColumns from './getTableColumns';
 import getTotalByColumns from './getTotalByColumns';
 import useUpdateEffect from './useUpdateEffect';
+import { ColumnProps } from '../Column';
+import { CellProps } from '../Cell';
 
 interface CellDescriptorProps {
   children: React.ReactNode;
@@ -162,14 +164,14 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
     return cacheCell;
   }
 
-  const columns = getTableColumns(children) as React.ReactNodeArray;
+  const columns = getTableColumns(children) as React.ReactNode[];
   const count = columns.length;
 
   const { totalFlexGrow, totalWidth } = getTotalByColumns(columns);
 
-  React.Children.forEach(columns, (column, index) => {
+  React.Children.forEach(columns, (column: React.ReactElement<ColumnProps>, index) => {
     if (React.isValidElement(column)) {
-      const columnChildren = column.props.children;
+      const columnChildren = column.props.children as React.ReactNode[];
       const { width, resizable, flexGrow, minWidth, onResize, treeCol } = column.props;
 
       if (treeCol) {
@@ -186,8 +188,10 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
         throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
       }
 
-      let cellWidth =
-        columnWidths.current?.[`${columnChildren[1].props.dataKey}_${index}_width`] || width || 0;
+      const headerCell = columnChildren[0] as React.ReactElement<CellProps>;
+      const cell = columnChildren[1] as React.ReactElement<CellProps>;
+
+      let cellWidth = columnWidths.current?.[`${cell.props.dataKey}_${index}_width`] || width || 0;
 
       if (tableWidth.current && flexGrow && totalFlexGrow) {
         cellWidth = Math.max(
@@ -213,7 +217,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
           // Resizable column
           // `index` is used to define the serial number when dragging the column width
           index,
-          dataKey: columnChildren[1].props.dataKey,
+          dataKey: cell.props.dataKey,
           isHeaderCell: true,
           minWidth: column.props.minWidth,
           sortable: column.props.sortable,
@@ -232,18 +236,16 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
           });
         }
 
-        headerCells.push(
-          React.cloneElement(columnChildren[0], { ...cellProps, ...headerCellProps })
-        );
+        headerCells.push(React.cloneElement(headerCell, { ...cellProps, ...headerCellProps }));
       }
 
-      bodyCells.push(React.cloneElement(columnChildren[1], cellProps));
+      bodyCells.push(React.cloneElement(cell, cellProps));
 
       left += cellWidth;
     }
   });
 
-  const cacheCell = {
+  const cacheCell: CellDescriptor = {
     columns,
     headerCells,
     bodyCells,

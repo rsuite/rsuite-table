@@ -17,7 +17,7 @@
     "tdd": "karma start",
     "lint:ts": "eslint src/**/*.{ts,tsx}",
     "lint": "npm run lint:ts",
-    "test": "npm run lint && cross-env NODE_ENV=test karma start --single-run",
+    "test": "npm run lint && cross-env NODE_ENV=test karma start --single-run && npm run build",
     "clean": "rm -rf node_modules/gh-pages/.cache",
     "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls",
     "prepublishOnly": "npm run build",
