@@ -1,3 +1,12 @@
+# [5.3.0](https://github.com/rsuite/rsuite-table/compare/5.2.2...5.3.0) (2021-12-23)
+
+
+### Features
+
+* **Table:** support renderRow on <Table> ([#287](https://github.com/rsuite/rsuite-table/issues/287)) ([732a35e](https://github.com/rsuite/rsuite-table/commit/732a35e5567048bdf6cc1a21d6887f0481913b46))
+
+
+
 ## [5.2.2](https://github.com/rsuite/rsuite-table/compare/5.2.1...5.2.2) (2021-12-03)
 
 

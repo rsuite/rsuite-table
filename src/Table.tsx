@@ -180,11 +180,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   renderRowExpanded?: (rowData?: RowDataType) => React.ReactNode;
 
   /** Custom row element */
-  renderRow?: (
-    children?: React.ReactNode,
-    rowData?: RowDataType,
-    rowIndex?: number
-  ) => React.ReactNode;
+  renderRow?: (children?: React.ReactNode, rowData?: RowDataType) => React.ReactNode;
 
   /** Customized data is empty display content */
   renderEmpty?: (info: React.ReactNode) => React.ReactNode;
