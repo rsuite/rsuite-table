@@ -786,7 +786,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
            * So `rowSpan` is used as the `zIndex` value.
            */
           zIndex: rowProps.style?.zIndex || rowSpan,
-          overflow: 'unset'
+          overflow: 'inherit'
         };
 
         // TODO: Do not render those cells merged by `rowSpan`
