@@ -1,3 +1,5 @@
+import canUseDOM from 'dom-lib/canUseDOM';
+
 export default function isSupportTouchEvent() {
-  return 'ontouchstart' in window;
+  return canUseDOM && 'ontouchstart' in window;
 }
