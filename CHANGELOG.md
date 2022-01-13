@@ -1,3 +1,12 @@
+## [5.3.2](https://github.com/rsuite/rsuite-table/compare/5.3.1...5.3.2) (2022-01-13)
+
+
+### Bug Fixes
+
+* **ssr:** fix `window` is not defined for Table Columns ([#294](https://github.com/rsuite/rsuite-table/issues/294)) ([42e1189](https://github.com/rsuite/rsuite-table/commit/42e1189671bfe1687c7894df7ba5e67aa8a0bc24))
+
+
+
 ## [5.3.1](https://github.com/rsuite/rsuite-table/compare/5.3.0...5.3.1) (2022-01-06)
 
 ### Bug Fixes
