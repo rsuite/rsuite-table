@@ -81,6 +81,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     children,
     rowData,
     dataKey,
+    dataFunc,
     rowIndex,
     removed,
     rowKey,
@@ -146,7 +147,13 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     contentStyles.verticalAlign = verticalAlign;
   }
 
-  let cellContent = isNil(children) && rowData ? get(rowData, dataKey) : children;
+  //let cellContent = isNil(children) && rowData ? get(rowData, dataKey) : children;
+  if(props.dataFunc){
+    var cellContent = isNil(children) && rowData ? props.dataFunc(dataKey.split(",").reduce((t,k,i,a)=>t[k],rowData))  : children;
+  }else{
+    var cellContent = isNil(children) && rowData ? dataKey.split(",").reduce((t,k,i,a)=>t[k],rowData) : children;
+  }
+
 
   if (typeof children === 'function') {
     cellContent = children(rowData, rowIndex);
