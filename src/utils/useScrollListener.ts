@@ -362,12 +362,12 @@ const useScrollListener = (props: ScrollListenerProps) => {
   );
 
   const rerender = () => {
-    if (!tableBodyRef.current) {
-      return;
-    }
-
     setScrolling(true);
-    setTimeout(() => setScrolling(false), 0);
+    setTimeout(() => {
+      if (tableBodyRef.current) {
+        setScrolling(false);
+      }
+    }, 0);
   };
 
   const getControlledScrollLeftValue = value => {
