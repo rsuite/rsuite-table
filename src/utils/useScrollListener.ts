@@ -362,6 +362,10 @@ const useScrollListener = (props: ScrollListenerProps) => {
   );
 
   const rerender = () => {
+    if (!tableBodyRef.current) {
+      return;
+    }
+
     setScrolling(true);
     setTimeout(() => setScrolling(false), 0);
   };
