@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import addStyle from 'dom-lib/addStyle';
+import addStyle, { CSSProperty } from 'dom-lib/addStyle';
 import { SCROLLBAR_WIDTH } from '../constants';
 import toggleClass from './toggleClass';
 import useUpdateEffect from './useUpdateEffect';
@@ -9,17 +9,17 @@ import isSupportTouchEvent from './isSupportTouchEvent';
 interface PositionProps {
   data: RowDataType[];
   height: number;
-  tableWidth: React.RefObject<number>;
+  tableWidth: React.MutableRefObject<number>;
   tableRef: React.RefObject<HTMLDivElement>;
   prefix: (str: string) => string;
-  translateDOMPositionXY: React.RefObject<any>;
+  translateDOMPositionXY: React.MutableRefObject<any>;
   wheelWrapperRef: React.RefObject<HTMLDivElement>;
   headerWrapperRef: React.RefObject<HTMLDivElement>;
   affixHeaderWrapperRef: React.RefObject<HTMLDivElement>;
   tableHeaderRef: React.RefObject<HTMLDivElement>;
-  scrollX: React.RefObject<number>;
-  scrollY: React.RefObject<number>;
-  contentWidth: React.RefObject<number>;
+  scrollX: React.MutableRefObject<number>;
+  scrollY: React.MutableRefObject<number>;
+  contentWidth: React.MutableRefObject<number>;
   shouldFixedColumn: boolean;
 }
 
@@ -46,11 +46,11 @@ const usePosition = (props: PositionProps) => {
     shouldFixedColumn
   } = props;
 
-  const duration = useRef(0);
-  const bezier = useRef('linear');
+  const duration = useRef<number>(0);
+  const bezier = useRef<string>('linear');
 
   const getScrollCellGroups = useCallback(() => {
-    return tableRef.current?.querySelectorAll(`.${prefix('cell-group-scroll')}`);
+    return tableRef.current?.querySelectorAll(`.${prefix('cell-group-scroll')}`) || [];
   }, [prefix, tableRef]);
 
   const getFixedLeftCellGroups = useCallback(() => {
@@ -64,7 +64,8 @@ const usePosition = (props: PositionProps) => {
   const updateWheelElementPosition = useCallback(
     (fixedCell?: boolean) => {
       if (wheelWrapperRef?.current) {
-        const wheelStyle = isSupportTouchEvent()
+        // The animation when the mobile device touches and scrolls.
+        const wheelStyle: CSSProperty = isSupportTouchEvent()
           ? {
               'transition-duration': `${duration.current}ms`,
               'transition-timing-function': bezier.current
@@ -129,8 +130,13 @@ const usePosition = (props: PositionProps) => {
    */
   const updatePosition = useCallback(
     (nextDuration?: number, nextBezier?: string) => {
-      duration.current = nextDuration;
-      bezier.current = nextBezier;
+      if (nextDuration) {
+        duration.current = nextDuration;
+      }
+
+      if (nextBezier) {
+        bezier.current = nextBezier;
+      }
 
       // When there are fixed columns.
       if (shouldFixedColumn) {

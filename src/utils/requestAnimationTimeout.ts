@@ -20,18 +20,18 @@ export const requestAnimationTimeout = (
     start = Date.now();
   });
 
-  let frame = null;
+  let frame: KeyframeAnimationOptions = {};
 
   const timeout = () => {
     if (Date.now() - start >= delay) {
       callback.call(null);
     } else {
-      frame.id = requestAnimationFramePolyfill(timeout);
+      frame.id = requestAnimationFramePolyfill(timeout) as unknown as string;
     }
   };
 
   frame = {
-    id: requestAnimationFramePolyfill(timeout)
+    id: requestAnimationFramePolyfill(timeout) as unknown as string
   };
 
   return frame;

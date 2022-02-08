@@ -23,26 +23,26 @@ interface ScrollListenerProps {
   data: RowDataType[];
   height: number;
   getTableHeight: () => number;
-  contentHeight: React.RefObject<number>;
+  contentHeight: React.MutableRefObject<number>;
   headerHeight: number;
-  autoHeight: boolean;
+  autoHeight?: boolean;
   tableBodyRef: React.RefObject<HTMLDivElement>;
   scrollbarXRef: React.RefObject<ScrollbarInstance>;
   scrollbarYRef: React.RefObject<ScrollbarInstance>;
-  disabledScroll: boolean;
-  loading: boolean;
+  disabledScroll?: boolean;
+  loading?: boolean;
   tableRef: React.RefObject<HTMLDivElement>;
-  contentWidth: React.RefObject<number>;
-  tableWidth: React.RefObject<number>;
-  scrollY: React.RefObject<number>;
-  minScrollY: React.RefObject<number>;
-  minScrollX: React.RefObject<number>;
-  scrollX: React.RefObject<number>;
+  contentWidth: React.MutableRefObject<number>;
+  tableWidth: React.MutableRefObject<number>;
+  scrollY: React.MutableRefObject<number>;
+  minScrollY: React.MutableRefObject<number>;
+  minScrollX: React.MutableRefObject<number>;
+  scrollX: React.MutableRefObject<number>;
   setScrollX: (v: number) => void;
   setScrollY: (v: number) => void;
-  virtualized: boolean;
+  virtualized?: boolean;
   forceUpdatePosition: (extDuration?: number, nextBezier?: string) => void;
-  onScroll: (scrollX: number, scrollY: number) => void;
+  onScroll?: (scrollX: number, scrollY: number) => void;
   onTouchStart?: (event: React.TouchEvent) => void;
   onTouchMove?: (event: React.TouchEvent) => void;
   onTouchEnd?: (event: React.TouchEvent) => void;
@@ -111,14 +111,14 @@ const useScrollListener = (props: ScrollListenerProps) => {
   const [isScrolling, setScrolling] = useState(false);
   const touchX = useRef(0);
   const touchY = useRef(0);
-  const disableEventsTimeoutId = useRef(null);
+  const disableEventsTimeoutId = useRef<KeyframeAnimationOptions | null>(null);
   const isTouching = useRef(false);
 
   // The start time within the inertial sliding range.
   const momentumStartTime = useRef(0);
 
   // The vertical starting value within the inertial sliding range.
-  const momentumStartY = useRef(0);
+  const momentumStartY = useRef<number>(0);
 
   const shouldHandleWheelX = useCallback(
     (delta: number) => {
@@ -136,9 +136,12 @@ const useScrollListener = (props: ScrollListenerProps) => {
       if (delta === 0 || disabledScroll || loading) {
         return false;
       }
-      return (
-        (delta >= 0 && scrollY.current > minScrollY.current) || (delta < 0 && scrollY.current < 0)
-      );
+
+      if (typeof scrollY.current === 'number' && typeof minScrollY.current === 'number') {
+        return (
+          (delta >= 0 && scrollY.current > minScrollY.current) || (delta < 0 && scrollY.current < 0)
+        );
+      }
     },
     [disabledScroll, loading, minScrollY, scrollY]
   );
@@ -214,15 +217,15 @@ const useScrollListener = (props: ScrollListenerProps) => {
     [handleWheel, scrollbarXRef, scrollbarYRef]
   );
 
-  const wheelHandler = useRef<WheelHandler>();
+  const wheelHandler = useRef<WheelHandler | null>();
 
   // Stop unending scrolling and remove transition
   const stopScroll = useCallback(() => {
-    const wheelElement = tableBodyRef.current.querySelector('.rs-table-body-wheel-area');
-    const handleElement = scrollbarYRef.current.handle;
+    const wheelElement = tableBodyRef.current?.querySelector('.rs-table-body-wheel-area');
+    const handleElement = scrollbarYRef.current?.handle;
     const transitionCSS = ['transition-duration', 'transition-timing-function'];
 
-    if (!virtualized) {
+    if (!virtualized && wheelElement) {
       // Get the current translate position.
       const matrix = window.getComputedStyle(wheelElement).getPropertyValue('transform');
       const offsetY = Math.round(+matrix.split(')')[0].split(', ')[5]);
@@ -230,8 +233,13 @@ const useScrollListener = (props: ScrollListenerProps) => {
       setScrollY(offsetY);
     }
 
-    removeStyle(wheelElement, transitionCSS);
-    removeStyle(handleElement, transitionCSS);
+    if (wheelElement) {
+      removeStyle(wheelElement, transitionCSS);
+    }
+
+    if (handleElement) {
+      removeStyle(handleElement, transitionCSS);
+    }
   }, [scrollbarYRef, setScrollY, tableBodyRef, virtualized]);
 
   // Handle the Touch event and initialize it when touchstart is triggered.

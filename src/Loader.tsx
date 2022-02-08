@@ -1,13 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { TableLocaleType } from './@types/common';
 
 interface LoaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  locale: TableLocaleType;
-  loadAnimation: boolean;
-  loading: boolean;
+  locale?: TableLocaleType;
+  loadAnimation?: boolean;
+  loading?: boolean;
   addPrefix: (...classes: any) => string;
-  renderLoading: (loading: React.ReactNode) => any;
+  renderLoading?: (loading: React.ReactNode) => any;
 }
 
 const Loader = React.forwardRef((props: LoaderProps, ref: React.Ref<HTMLDivElement>) => {
@@ -29,13 +28,6 @@ const Loader = React.forwardRef((props: LoaderProps, ref: React.Ref<HTMLDivEleme
   return renderLoading ? renderLoading(loadingElement) : loadingElement;
 });
 
-Loader.propTypes = {
-  locale: PropTypes.object,
-  loadAnimation: PropTypes.bool,
-  loading: PropTypes.bool,
-  addPrefix: PropTypes.func,
-  renderLoading: PropTypes.func
-};
 Loader.displayName = 'Table.Loader';
 
 export default Loader;

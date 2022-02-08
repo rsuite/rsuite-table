@@ -52,15 +52,17 @@ import type {
  * @param rowKey
  * @returns
  */
-const filterTreeData = (data: any[], expandedRowKeys: RowKeyType[], rowKey: RowKeyType) => {
+const filterTreeData = (data: any[], expandedRowKeys: RowKeyType[], rowKey?: RowKeyType) => {
   return flattenData(data).filter(rowData => {
-    const parents = findAllParents(rowData, rowKey);
-    const expanded = shouldShowRowByExpanded(expandedRowKeys, parents);
+    if (rowKey) {
+      const parents = findAllParents(rowData, rowKey);
+      const expanded = shouldShowRowByExpanded(expandedRowKeys, parents);
 
-    rowData[EXPANDED_KEY] = expanded;
-    rowData[TREE_DEPTH] = parents.length;
+      rowData[EXPANDED_KEY] = expanded;
+      rowData[TREE_DEPTH] = parents.length;
 
-    return expanded;
+      return expanded;
+    }
   });
 };
 
@@ -120,7 +122,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   loadAnimation?: boolean;
 
   /** The row height of the table */
-  rowHeight?: number | ((rowData: RowDataType) => number);
+  rowHeight?: number | ((rowData?: RowDataType) => number);
 
   /** Each row corresponds to the unique key in  data */
   rowKey?: RowKeyType;
@@ -239,7 +241,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     children,
     classPrefix,
     className,
-    data: dataProp,
+    data: dataProp = [],
+    defaultSortType = SORT_TYPE.DESC as SortType,
     width: widthProp,
     expandedRowKeys: expandedRowKeysProp,
     defaultExpandAllRows,
@@ -247,32 +250,33 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     style,
     id,
     isTree,
-    hover,
+    hover = true,
     bordered,
     cellBordered,
     wordWrap,
     loading,
-    locale,
-    showHeader,
+    locale = {
+      emptyMessage: 'No data found',
+      loading: 'Loading...'
+    },
+    showHeader = true,
     sortColumn,
-    rowHeight: rowHeightProp,
+    rowHeight = 46,
     sortType: sortTypeProp,
-    defaultSortType,
-    headerHeight: headerHeightProp,
-    minHeight,
-    height,
+    headerHeight: headerHeightProp = 40,
+    minHeight = 0,
+    height = 200,
     autoHeight,
     rtl: rtlProp,
-    translate3d,
+    translate3d = true,
     rowKey,
     virtualized,
-    rowHeight,
     rowClassName,
-    rowExpandedHeight,
+    rowExpandedHeight = 100,
     disabledScroll,
     affixHorizontalScrollbar,
     loadAnimation,
-    shouldUpdateScroll,
+    shouldUpdateScroll = true,
     renderRow: renderRowProp,
     renderRowExpanded: renderRowExpandedProp,
     renderLoading,
@@ -302,7 +306,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   // Use `forceUpdate` to force the component to re-render after manipulating the DOM.
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const [expandedRowKeys, setExpandedRowKeys] = useControlled(
+  const [expandedRowKeys, setExpandedRowKeys] = useControlled<RowKeyType[]>(
     expandedRowKeysProp,
     defaultExpandAllRows
       ? findRowKeys(dataProp, rowKey, isFunction(renderRowExpandedProp))
@@ -324,7 +328,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   const rtl = rtlProp || isRTL();
 
   const getRowHeight = (rowData = {}) => {
-    return typeof rowHeightProp === 'function' ? rowHeightProp(rowData) : rowHeightProp;
+    return typeof rowHeight === 'function' ? rowHeight(rowData) : rowHeight;
   };
 
   const translateDOMPositionXY = useRef(
@@ -335,16 +339,16 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     child => child?.props?.fixed
   );
 
-  const visibleRows = useRef([]);
-  const mouseAreaRef = useRef<HTMLDivElement>();
-  const tableRef = useRef<HTMLDivElement>();
-  const tableHeaderRef = useRef<HTMLDivElement>();
-  const affixHeaderWrapperRef = useRef<HTMLDivElement>();
-  const headerWrapperRef = useRef<HTMLDivElement>();
-  const tableBodyRef = useRef<HTMLDivElement>();
-  const wheelWrapperRef = useRef<HTMLDivElement>();
-  const scrollbarXRef = useRef<ScrollbarInstance>();
-  const scrollbarYRef = useRef<ScrollbarInstance>();
+  const visibleRows = useRef<React.ReactNode[]>([]);
+  const mouseAreaRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLDivElement>(null);
+  const tableHeaderRef = useRef<HTMLDivElement>(null);
+  const affixHeaderWrapperRef = useRef<HTMLDivElement>(null);
+  const headerWrapperRef = useRef<HTMLDivElement>(null);
+  const tableBodyRef = useRef<HTMLDivElement>(null);
+  const wheelWrapperRef = useRef<HTMLDivElement>(null);
+  const scrollbarXRef = useRef<ScrollbarInstance>(null);
+  const scrollbarYRef = useRef<ScrollbarInstance>(null);
 
   /**
    * Reset the position of the scroll bar after the table size changes.
@@ -386,7 +390,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     autoHeight,
     children,
     expandedRowKeys,
-    onTableScroll: (coords: { x: number; y: number }) => {
+    onTableScroll: (coords: { x?: number; y?: number }) => {
       onScrollTo(coords);
     },
     onTableContentHeightChange: () => {
@@ -577,13 +581,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       rowStyles.right = rowRight;
     }
 
-    let rowNode = null;
+    let rowNode: React.ReactNode = null;
 
     // IF there are fixed columns, add a fixed group
     if (shouldFixedColumn && contentWidth.current > tableWidth.current) {
-      const fixedLeftCells = [];
-      const fixedRightCells = [];
-      const scrollCells = [];
+      const fixedLeftCells: React.ReactNode[] = [];
+      const fixedRightCells: React.ReactNode[] = [];
+      const scrollCells: React.ReactNode[] = [];
       let fixedLeftCellGroupWidth = 0;
       let fixedRightCellGroupWidth = 0;
 
@@ -618,7 +622,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
               height={props.isHeaderRow ? props.headerHeight : props.height}
               width={fixedLeftCellGroupWidth}
               style={
-                rtl ? { right: tableWidth.current - fixedLeftCellGroupWidth - rowRight } : null
+                rtl ? { right: tableWidth.current - fixedLeftCellGroupWidth - rowRight } : undefined
               }
             >
               {mergeCells(resetLeftForCells(fixedLeftCells))}
@@ -700,11 +704,16 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
   const shouldRenderExpandedRow = useCallback(
     (rowData: RowDataType) => {
-      return (
+      if (
         isFunction(renderRowExpandedProp) &&
         !isTree &&
+        rowKey &&
         expandedRowKeys.some(key => key === rowData[rowKey])
-      );
+      ) {
+        return true;
+      }
+
+      return false;
     },
     [expandedRowKeys, isTree, renderRowExpandedProp, rowKey]
   );
@@ -730,7 +739,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   const handleTreeToggle = useCallback(
     (treeRowKey: any, _rowIndex: number, rowData: RowDataType) => {
       let open = false;
-      const nextExpandedRowKeys = [];
+      const nextExpandedRowKeys: RowKeyType[] = [];
 
       for (let i = 0; i < expandedRowKeys.length; i++) {
         const key = expandedRowKeys[i];
@@ -758,7 +767,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     shouldRenderExpandedRow?: boolean
   ) => {
     const hasChildren = isTree && rowData.children && Array.isArray(rowData.children);
-    const nextRowKey = typeof rowData[rowKey] !== 'undefined' ? rowData[rowKey] : props.key;
+    const nextRowKey =
+      rowKey && typeof rowData[rowKey] !== 'undefined' ? rowData[rowKey] : props.key;
 
     const rowProps: TableRowProps = {
       ...props,
@@ -769,13 +779,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       onContextMenu: bindRowContextMenu(rowData)
     };
 
-    const expanded = expandedRowKeys.some(key => key === rowData[rowKey]);
-    const cells = [];
+    const expanded = expandedRowKeys.some(key => rowKey && key === rowData[rowKey]);
+    const cells: React.ReactNode[] = [];
 
     for (let i = 0; i < bodyCells.length; i++) {
       const cell = bodyCells[i];
       const rowSpan: number = cell.props?.rowSpan?.(rowData);
-      const rowHeight = rowSpan ? rowSpan * props.height : props.height;
+      const rowHeight = rowSpan ? rowSpan * (props.height || 46) : props.height;
 
       if (rowSpan) {
         rowProps.rowSpan = rowSpan;
@@ -1035,24 +1045,6 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 });
 
 Table.displayName = 'Table';
-Table.defaultProps = {
-  data: [],
-  defaultSortType: SORT_TYPE.DESC as SortType,
-  height: 200,
-  rowHeight: 46,
-  headerHeight: 40,
-  minHeight: 0,
-  rowExpandedHeight: 100,
-  hover: true,
-  showHeader: true,
-  translate3d: true,
-  shouldUpdateScroll: true,
-  locale: {
-    emptyMessage: 'No data found',
-    loading: 'Loading...'
-  }
-};
-
 Table.propTypes = {
   autoHeight: PropTypes.bool,
   affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
@@ -1062,14 +1054,12 @@ Table.propTypes = {
   classPrefix: PropTypes.string,
   children: PropTypes.any,
   cellBordered: PropTypes.bool,
-  data: PropTypes.arrayOf(PropTypes.object),
+  data: PropTypes.array.isRequired,
   defaultExpandAllRows: PropTypes.bool,
-  defaultExpandedRowKeys: PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-  ),
+  defaultExpandedRowKeys: PropTypes.array,
   defaultSortType: PropTypes.any,
   disabledScroll: PropTypes.bool,
-  expandedRowKeys: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+  expandedRowKeys: PropTypes.array,
   hover: PropTypes.bool,
   height: PropTypes.number,
   headerHeight: PropTypes.number,

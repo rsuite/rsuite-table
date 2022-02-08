@@ -1,12 +1,18 @@
 import React, { useState, useRef, useCallback, useEffect, useImperativeHandle } from 'react';
-import PropTypes from 'prop-types';
 import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
-import addStyle from 'dom-lib/addStyle';
+import addStyle, { CSSProperty } from 'dom-lib/addStyle';
 import getOffset from 'dom-lib/getOffset';
 import { SCROLLBAR_MIN_WIDTH, TRANSITION_DURATION, BEZIER } from './constants';
 import { useMount, useClassNames, useUpdateEffect } from './utils';
 import TableContext from './TableContext';
 import type { StandardProps } from './@types/common';
+
+type Offset = {
+  top?: number;
+  left?: number;
+  height?: number;
+  width?: number;
+};
 
 export interface ScrollbarProps extends Omit<StandardProps, 'onScroll'> {
   vertical?: boolean;
@@ -26,10 +32,10 @@ export interface ScrollbarInstance {
 
 const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
   const {
+    length = 1,
+    scrollLength = 1,
+    classPrefix = 'scrollbar',
     vertical,
-    length,
-    scrollLength,
-    classPrefix,
     className,
     tableId,
     onMouseDown,
@@ -40,12 +46,12 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
   const { translateDOMPositionXY } = React.useContext(TableContext);
 
   const [handlePressed, setHandlePressed] = useState(false);
-  const [barOffset, setBarOffset] = useState({ top: 0, left: 0 });
+  const [barOffset, setBarOffset] = useState<Offset | null>({ top: 0, left: 0 });
   const scrollOffset = useRef(0);
   const scrollRange = useRef(scrollLength);
-  const barRef = useRef<HTMLDivElement>();
-  const handleRef = useRef<HTMLDivElement>();
-  const mouseMoveTracker = useRef<DOMMouseMoveTracker>();
+  const barRef = useRef<HTMLDivElement>(null);
+  const handleRef = useRef<HTMLDivElement>(null);
+  const mouseMoveTracker = useRef<DOMMouseMoveTracker | null>();
 
   const { withClassPrefix, merge, prefix } = useClassNames(classPrefix);
   const classes = merge(
@@ -130,12 +136,13 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
       }
 
       if (vertical) {
-        translateDOMPositionXY?.(styles as React.CSSProperties, 0, scrollOffset.current);
+        translateDOMPositionXY?.(styles as CSSStyleDeclaration, 0, scrollOffset.current);
       } else {
-        translateDOMPositionXY?.(styles as React.CSSProperties, scrollOffset.current, 0);
+        translateDOMPositionXY?.(styles as CSSStyleDeclaration, scrollOffset.current, 0);
       }
-
-      addStyle(handleRef.current, styles);
+      if (handleRef.current) {
+        addStyle(handleRef.current, styles as CSSProperty);
+      }
     },
     [length, scrollLength, translateDOMPositionXY, vertical]
   );
@@ -156,7 +163,11 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
         return;
       }
 
-      const offset = vertical ? event.pageY - barOffset.top : event.pageX - barOffset.left;
+      if (typeof barOffset?.top !== 'number' || typeof barOffset?.left !== 'number') {
+        return;
+      }
+
+      const offset = vertical ? event.pageY - barOffset?.top : event.pageX - barOffset.left;
 
       const handleWidth = (length / scrollLength) * length;
       const delta = offset - handleWidth;
@@ -167,7 +178,7 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
           : offset - scrollOffset.current;
       handleScroll(nextDelta, event);
     },
-    [barOffset.left, barOffset.top, handleScroll, length, scrollLength, vertical]
+    [barOffset, handleScroll, length, scrollLength, vertical]
   );
 
   const releaseMouseMoves = useCallback(() => {
@@ -240,20 +251,5 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
 });
 
 Scrollbar.displayName = 'Table.Scrollbar';
-Scrollbar.propTypes = {
-  tableId: PropTypes.string,
-  vertical: PropTypes.bool,
-  length: PropTypes.number,
-  scrollLength: PropTypes.number,
-  className: PropTypes.string,
-  classPrefix: PropTypes.string,
-  onScroll: PropTypes.func,
-  onMouseDown: PropTypes.func
-};
-Scrollbar.defaultProps = {
-  classPrefix: 'scrollbar',
-  scrollLength: 1,
-  length: 1
-};
 
 export default Scrollbar;

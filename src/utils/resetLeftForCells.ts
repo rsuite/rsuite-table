@@ -7,7 +7,7 @@ import React from 'react';
  */
 export default function resetLeftForCells(cells, extraWidth?: number) {
   let left = 0;
-  const nextCells = [];
+  const nextCells: React.ReactNode[] = [];
 
   for (let i = 0; i < cells.length; i++) {
     const cell = cells[i];

@@ -1,7 +1,12 @@
-import { RowKeyType } from '../@types/common';
+import { RowKeyType, RowDataType } from '../@types/common';
 
-export default function findRowKeys(rows: any[], rowKey: RowKeyType, expanded?: boolean) {
-  let keys = [];
+export default function findRowKeys(rows: RowDataType[], rowKey?: RowKeyType, expanded?: boolean) {
+  let keys: RowKeyType[] = [];
+
+  if (!rowKey) {
+    return keys;
+  }
+
   for (let i = 0; i < rows.length; i++) {
     const item = rows[i];
     if (item.children) {

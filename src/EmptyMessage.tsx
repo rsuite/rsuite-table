@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { TableLocaleType } from './@types/common';
 
 interface EmptyMessageProps extends React.HTMLAttributes<HTMLDivElement> {
   locale?: TableLocaleType;
   loading?: boolean;
-  addPrefix?: (...classes: any) => string;
+  addPrefix: (...classes: any) => string;
   renderEmpty?: (info: React.ReactNode) => any;
 }
 
@@ -27,11 +26,5 @@ const EmptyMessage = React.forwardRef(
   }
 );
 EmptyMessage.displayName = 'Table.EmptyMessage';
-EmptyMessage.propTypes = {
-  locale: PropTypes.object,
-  loading: PropTypes.bool,
-  addPrefix: PropTypes.func,
-  renderEmpty: PropTypes.func
-};
 
 export default EmptyMessage;

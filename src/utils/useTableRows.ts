@@ -7,7 +7,7 @@ import { RowDataType, RowKeyType } from '../@types/common';
 
 interface TableRowsProps {
   prefix: (str: string) => string;
-  wordWrap: boolean;
+  wordWrap: boolean | undefined;
   data: RowDataType[];
   expandedRowKeys: RowKeyType[];
 }
@@ -19,7 +19,7 @@ interface TableRowsProps {
  */
 const useTableRows = (props: TableRowsProps) => {
   const { prefix, wordWrap, data, expandedRowKeys } = props;
-  const [tableRowsMaxHeight, setTableRowsMaxHeight] = useState([]);
+  const [tableRowsMaxHeight, setTableRowsMaxHeight] = useState<number[]>([]);
   const tableRows = useRef<{ [key: string]: [HTMLElement, any] }>({});
 
   const bindTableRowsRef = (index: number | string, rowData: any) => (ref: HTMLElement) => {
@@ -30,7 +30,7 @@ const useTableRows = (props: TableRowsProps) => {
 
   const calculateRowMaxHeight = useCallback(() => {
     if (wordWrap) {
-      const nextTableRowsMaxHeight = [];
+      const nextTableRowsMaxHeight: number[] = [];
       const curTableRows = Object.values(tableRows.current);
 
       for (let i = 0; i < curTableRows.length; i++) {
