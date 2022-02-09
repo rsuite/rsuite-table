@@ -11,9 +11,9 @@ import type { ScrollbarInstance } from '../Scrollbar';
 
 interface AffixProps {
   tableHeight: () => number;
-  contentHeight: React.RefObject<number>;
-  affixHeader: boolean | number;
-  affixHorizontalScrollbar: boolean | number;
+  contentHeight: React.MutableRefObject<number>;
+  affixHeader?: boolean | number;
+  affixHorizontalScrollbar?: boolean | number;
   tableOffset: React.RefObject<ElementOffset>;
   headerOffset: React.RefObject<ElementOffset>;
   headerHeight: number;
@@ -41,10 +41,11 @@ const useAffix = (props: AffixProps) => {
     const height = tableHeight();
 
     const bottom = typeof affixHorizontalScrollbar === 'number' ? affixHorizontalScrollbar : 0;
+    const offsetTop = tableOffset.current?.top || 0;
 
     const fixedScrollbar =
-      scrollY + windowHeight < height + (tableOffset.current.top + bottom) &&
-      scrollY + windowHeight - headerHeight > tableOffset.current.top + bottom;
+      scrollY + windowHeight < height + (offsetTop + bottom) &&
+      scrollY + windowHeight - headerHeight > offsetTop + bottom;
 
     if (scrollbarXRef?.current?.root) {
       toggleClass(scrollbarXRef.current.root, 'fixed', fixedScrollbar);
@@ -60,9 +61,9 @@ const useAffix = (props: AffixProps) => {
   const handleAffixTableHeader = useCallback(() => {
     const top = typeof affixHeader === 'number' ? affixHeader : 0;
     const scrollY = window.scrollY || window.pageYOffset;
+    const offsetTop = headerOffset.current?.top || 0;
     const fixedHeader =
-      scrollY - (headerOffset.current.top - top) >= 0 &&
-      scrollY < headerOffset.current.top - top + contentHeight.current;
+      scrollY - (offsetTop - top) >= 0 && scrollY < offsetTop - top + contentHeight.current;
 
     if (affixHeaderWrapperRef.current) {
       toggleClass(affixHeaderWrapperRef.current, 'fixed', fixedHeader);

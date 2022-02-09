@@ -13,9 +13,11 @@ export interface StandardProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export type SortType = 'desc' | 'asc';
+
 export interface RowDataType {
   dataKey?: string;
-  [key: string]: any;
+  children?: RowDataType[];
+  [key: string | symbol]: any;
 }
 
 export type RowKeyType = string | number;
@@ -28,8 +30,8 @@ export interface TableLocaleType {
 export type ListenerCallback = { off: () => void };
 
 export type ElementOffset = {
-  top?: number;
-  left?: number;
-  width?: number;
-  height?: number;
+  top: number;
+  left: number;
+  width: number;
+  height: number;
 };

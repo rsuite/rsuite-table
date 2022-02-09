@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import clamp from 'lodash/clamp';
 import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
 import { useClassNames } from './utils';
@@ -28,8 +27,8 @@ export interface ColumnResizeHandlerProps extends StandardProps {
 const ColumnResizeHandler = React.forwardRef(
   (props: ColumnResizeHandlerProps, ref: React.Ref<HTMLDivElement>) => {
     const {
-      columnLeft,
-      classPrefix,
+      columnLeft = 0,
+      classPrefix = 'column-resize-spanner',
       height,
       className,
       style,
@@ -47,9 +46,9 @@ const ColumnResizeHandler = React.forwardRef(
     const classes = merge(className, withClassPrefix());
 
     const columnWidth = useRef(defaultColumnWidth || 0);
-    const mouseMoveTracker = useRef<DOMMouseMoveTracker>();
+    const mouseMoveTracker = useRef<DOMMouseMoveTracker | null>();
     const isKeyDown = useRef<boolean>();
-    const cursorDelta = useRef<number>();
+    const cursorDelta = useRef<number>(0);
 
     const handleMove = useCallback(
       (deltaX: number) => {
@@ -59,7 +58,7 @@ const ColumnResizeHandler = React.forwardRef(
 
         cursorDelta.current += deltaX;
         columnWidth.current = clamp(
-          defaultColumnWidth + (rtl ? -cursorDelta.current : cursorDelta.current),
+          (defaultColumnWidth || 0) + (rtl ? -cursorDelta.current : cursorDelta.current),
           minWidth ? Math.max(minWidth, RESIZE_MIN_WIDTH) : RESIZE_MIN_WIDTH,
           20000
         );
@@ -132,22 +131,5 @@ const ColumnResizeHandler = React.forwardRef(
 );
 
 ColumnResizeHandler.displayName = 'Table.ColumnResizeHandler';
-ColumnResizeHandler.defaultProps = {
-  columnLeft: 0,
-  classPrefix: 'column-resize-spanner'
-};
-ColumnResizeHandler.propTypes = {
-  height: PropTypes.number,
-  defaultColumnWidth: PropTypes.number,
-  columnLeft: PropTypes.number,
-  columnFixed: PropTypes.any,
-  className: PropTypes.string,
-  classPrefix: PropTypes.string,
-  minWidth: PropTypes.number,
-  style: PropTypes.object,
-  onColumnResizeStart: PropTypes.func,
-  onColumnResizeEnd: PropTypes.func,
-  onColumnResizeMove: PropTypes.func
-};
 
 export default ColumnResizeHandler;

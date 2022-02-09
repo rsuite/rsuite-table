@@ -34,7 +34,7 @@ export interface InnerCellProps extends CellProps {
   firstColumn?: boolean;
   lastColumn?: boolean;
   hasChildren?: boolean;
-  children?: React.ReactNode | ((rowData: RowDataType, rowIndex: number) => React.ReactNode);
+  children?: React.ReactNode | ((rowData: RowDataType, rowIndex?: number) => React.ReactNode);
   rowKey?: string | number;
   rowSpan?: number;
   depth?: number;
@@ -68,15 +68,17 @@ const groupKeys = [
 
 const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElement>) => {
   const {
-    width,
-    left,
+    classPrefix = 'cell',
+    width = 0,
+    left = 0,
+    headerHeight = 36,
+    depth = 0,
+    height = 36,
     style,
     className,
-    classPrefix,
     firstColumn,
     lastColumn,
     isHeaderCell,
-    headerHeight,
     align,
     children,
     rowData,
@@ -86,11 +88,9 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     rowKey,
     rowSpan,
     wordWrap,
-    depth,
     verticalAlign,
     expanded,
     treeCol,
-    height,
     hasChildren,
     predefinedStyle,
     renderCell,
@@ -146,7 +146,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     contentStyles.verticalAlign = verticalAlign;
   }
 
-  let cellContent = isNil(children) && rowData ? get(rowData, dataKey) : children;
+  let cellContent = isNil(children) && rowData && dataKey ? get(rowData, dataKey) : children;
 
   if (typeof children === 'function') {
     cellContent = children(rowData, rowIndex);
@@ -232,14 +232,6 @@ Cell.propTypes = {
   removed: PropTypes.bool,
   treeCol: PropTypes.bool,
   expanded: PropTypes.bool
-};
-Cell.defaultProps = {
-  classPrefix: 'cell',
-  headerHeight: 36,
-  depth: 0,
-  height: 36,
-  width: 0,
-  left: 0
 };
 
 export default Cell;

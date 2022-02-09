@@ -10,7 +10,8 @@ function cloneCell(Cell, props) {
 }
 
 function mergeCells(cells) {
-  const nextCells = [];
+  const nextCells: React.ReactNode[] = [];
+
   for (let i = 0; i < cells.length; i += 1) {
     const {
       width,
@@ -24,7 +25,7 @@ function mergeCells(cells) {
       groupHeaderHeight
     } = cells[i].props;
 
-    const groupChildren = [];
+    const groupChildren: React.ReactNode[] = [];
 
     // Add grouping to column headers.
     if (groupCount && isHeaderCell) {

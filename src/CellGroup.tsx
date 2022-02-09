@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { useClassNames } from './utils';
 import TableContext from './TableContext';
 
@@ -15,7 +14,17 @@ export interface CellGroupProps {
 }
 
 const CellGroup = React.forwardRef((props: CellGroupProps, ref: React.Ref<HTMLDivElement>) => {
-  const { fixed, width, left, height, style, classPrefix, className, children, ...rest } = props;
+  const {
+    fixed,
+    width,
+    left,
+    height,
+    style,
+    classPrefix = 'cell-group',
+    className,
+    children,
+    ...rest
+  } = props;
 
   const { translateDOMPositionXY } = useContext(TableContext);
   const { withClassPrefix, merge } = useClassNames(classPrefix);
@@ -27,7 +36,7 @@ const CellGroup = React.forwardRef((props: CellGroupProps, ref: React.Ref<HTMLDi
     ...style
   };
 
-  translateDOMPositionXY?.(styles, left, 0);
+  translateDOMPositionXY?.(styles as CSSStyleDeclaration, left, 0);
 
   return (
     <div {...rest} ref={ref} className={classes} style={styles}>
@@ -37,16 +46,5 @@ const CellGroup = React.forwardRef((props: CellGroupProps, ref: React.Ref<HTMLDi
 });
 
 CellGroup.displayName = 'Table.CellGroup';
-CellGroup.propTypes = {
-  fixed: PropTypes.oneOf(['left', 'right']),
-  width: PropTypes.number,
-  height: PropTypes.number,
-  left: PropTypes.number,
-  style: PropTypes.object,
-  className: PropTypes.string,
-  classPrefix: PropTypes.string
-};
-CellGroup.defaultProps = {
-  classPrefix: 'cell-group'
-};
+
 export default CellGroup;

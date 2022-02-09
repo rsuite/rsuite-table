@@ -28,8 +28,8 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
     header,
     className,
     children,
-    classPrefix,
-    headerHeight,
+    classPrefix = 'column-group',
+    headerHeight = 80,
     verticalAlign,
     align,
     width,
@@ -37,9 +37,9 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
     ...rest
   } = props;
 
-  const hasGroupHeight = typeof groupHeightProp !== 'undefined';
-  const groupHeight = hasGroupHeight ? groupHeightProp : headerHeight / 2;
-  const restHeight = hasGroupHeight ? headerHeight - groupHeightProp : headerHeight / 2;
+  const groupHeight = typeof groupHeightProp !== 'undefined' ? groupHeightProp : headerHeight / 2;
+  const restHeight =
+    typeof groupHeightProp !== 'undefined' ? headerHeight - groupHeightProp : headerHeight / 2;
 
   const styles: React.CSSProperties = {
     height: groupHeight,
@@ -58,25 +58,22 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
         </div>
       </div>
 
-      {React.Children.map(children, (node: React.ReactElement) => {
-        return React.cloneElement(node, {
-          className: prefix('cell'),
-          predefinedStyle: { height: restHeight, top: styles.height },
-          headerHeight: restHeight,
-          verticalAlign: node.props.verticalAlign || verticalAlign,
-          children: <span className={prefix('cell-content')}>{node.props.children}</span>
-        });
-      })}
+      {children
+        ? React.Children.map(children as React.ReactElement[], (node: React.ReactElement) => {
+            return React.cloneElement(node, {
+              className: prefix('cell'),
+              predefinedStyle: { height: restHeight, top: styles.height },
+              headerHeight: restHeight,
+              verticalAlign: node.props.verticalAlign || verticalAlign,
+              children: <span className={prefix('cell-content')}>{node.props.children}</span>
+            });
+          })
+        : null}
     </div>
   );
 });
 
 ColumnGroup.displayName = 'Table.ColumnGroup';
-ColumnGroup.defaultProps = {
-  headerHeight: 80,
-  classPrefix: 'column-group'
-};
-
 ColumnGroup.propTypes = {
   header: PropTypes.node,
   classPrefix: PropTypes.string,

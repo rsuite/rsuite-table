@@ -5,7 +5,7 @@ import isNil from 'lodash/isNil';
 import Sort from '@rsuite/icons/Sort';
 import SortUp from '@rsuite/icons/SortUp';
 import SortDown from '@rsuite/icons/SortDown';
-import ColumnResizeHandler from './ColumnResizeHandler';
+import ColumnResizeHandler, { FixedType } from './ColumnResizeHandler';
 import { useUpdateEffect, useClassNames } from './utils';
 import Cell, { InnerCellProps } from './Cell';
 
@@ -23,7 +23,7 @@ export interface HeaderCellProps extends InnerCellProps {
   onResize?: (columnWidth?: number, dataKey?: string) => void;
   onSortColumn?: (dataKey?: string) => void;
   onColumnResizeStart?: (columnWidth?: number, left?: number, fixed?: boolean) => void;
-  onColumnResizeMove?: (columnWidth?: number, columnLeft?: number, columnFixed?: boolean) => void;
+  onColumnResizeMove?: (columnWidth?: number, columnLeft?: number, columnFixed?: FixedType) => void;
   onColumnResizeEnd?: (
     columnWidth?: number,
     cursorDelta?: number,
@@ -40,7 +40,7 @@ const SORTED_ICON = {
 const HeaderCell = React.forwardRef((props: HeaderCellProps, ref: React.Ref<HTMLDivElement>) => {
   const {
     className,
-    classPrefix,
+    classPrefix = 'cell-header',
     width,
     dataKey,
     headerHeight,
@@ -96,7 +96,7 @@ const HeaderCell = React.forwardRef((props: HeaderCellProps, ref: React.Ref<HTML
   }, [columnWidth, fixed, left, onColumnResizeStart]);
 
   const handleColumnResizeEnd = useCallback(
-    (nextColumnWidth: number, cursorDelta?: number) => {
+    (nextColumnWidth?: number, cursorDelta?: number) => {
       setColumnWidth(nextColumnWidth);
       onColumnResizeEnd?.(nextColumnWidth, cursorDelta, dataKey, index);
       onResize?.(nextColumnWidth, dataKey);
@@ -129,9 +129,9 @@ const HeaderCell = React.forwardRef((props: HeaderCellProps, ref: React.Ref<HTML
         left={left}
         headerHeight={headerHeight}
         isHeaderCell={true}
-        align={!groupHeader ? align : null}
-        verticalAlign={!groupHeader ? verticalAlign : null}
-        onClick={!groupHeader ? handleClick : null}
+        align={!groupHeader ? align : undefined}
+        verticalAlign={!groupHeader ? verticalAlign : undefined}
+        onClick={!groupHeader ? handleClick : undefined}
       >
         {children}
         {renderSortColumn()}
@@ -155,9 +155,6 @@ const HeaderCell = React.forwardRef((props: HeaderCellProps, ref: React.Ref<HTML
 });
 
 HeaderCell.displayName = 'HeaderCell';
-HeaderCell.defaultProps = {
-  classPrefix: 'cell-header'
-};
 HeaderCell.propTypes = {
   index: PropTypes.number,
   sortColumn: PropTypes.string,

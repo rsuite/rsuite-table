@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { mergeRefs, useClassNames } from './utils';
 import TableContext from './TableContext';
 import { StandardProps } from './@types/common';
@@ -16,15 +15,15 @@ export interface RowProps extends StandardProps {
 
 const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) => {
   const {
+    classPrefix = 'row',
+    height = 46,
+    headerHeight = 40,
     className,
     width,
-    height,
     top,
     style,
     isHeaderRow,
-    headerHeight,
     rowRef,
-    classPrefix,
     children,
     rowSpan,
     ...rest
@@ -40,7 +39,7 @@ const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) =
     ...style
   };
 
-  translateDOMPositionXY?.(styles, 0, top);
+  translateDOMPositionXY?.(styles as CSSStyleDeclaration, 0, top);
 
   return (
     <div role="row" {...rest} ref={mergeRefs(rowRef, ref)} className={classes} style={styles}>
@@ -50,22 +49,5 @@ const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) =
 });
 
 Row.displayName = 'Table.Row';
-Row.defaultProps = {
-  classPrefix: 'row',
-  height: 46,
-  headerHeight: 40
-};
-Row.propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
-  headerHeight: PropTypes.number,
-  top: PropTypes.number,
-  isHeaderRow: PropTypes.bool,
-  rowRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  className: PropTypes.string,
-  classPrefix: PropTypes.string,
-  style: PropTypes.object,
-  rowSpan: PropTypes.number
-};
 
 export default Row;

@@ -7,7 +7,7 @@ import type { RowDataType } from '../@types/common';
  * @returns
  */
 function flattenData(treeData: RowDataType[]) {
-  const flattenItems = [];
+  const flattenItems: RowDataType[] = [];
 
   function loop(treeData, parentNode) {
     if (!Array.isArray(treeData)) {
