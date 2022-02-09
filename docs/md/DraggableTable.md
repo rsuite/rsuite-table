@@ -28,7 +28,6 @@ function DraggableHeaderCell({ children, onDrag, id, ...rest }) {
       isDragging: monitor.isDragging()
     })
   });
-  const opacity = isDragging ? 0 : 1;
   const isActive = canDrop && isOver;
 
   drag(drop(ref));
@@ -123,6 +122,7 @@ function DraggableTable() {
           height={400}
           data={data}
           bordered
+          rowKey="id"
           renderRow={(children, rowData) => {
             return rowData ? (
               <Row key={rowData.id} rowData={rowData} id={rowData.id} onDrag={handleDragRow}>
