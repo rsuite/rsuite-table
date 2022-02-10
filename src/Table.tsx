@@ -332,7 +332,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   };
 
   const translateDOMPositionXY = useRef(
-    getTranslateDOMPositionXY({ enable3DTransform: translate3d })
+    getTranslateDOMPositionXY({ forceUseTransform: true, enable3DTransform: translate3d })
   );
 
   const shouldFixedColumn = Array.from(flatten(children as any) as Iterable<any>).some(
