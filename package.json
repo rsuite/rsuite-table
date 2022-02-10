@@ -41,7 +41,7 @@
     "@juggle/resize-observer": "^3.3.1",
     "@rsuite/icons": "^1.0.0",
     "classnames": "^2.2.5",
-    "dom-lib": "^3.0.0",
+    "dom-lib": "^3.1.2",
     "dtslint": "^4.2.1",
     "lodash": "^4.17.21",
     "react-is": "^17.0.2"
