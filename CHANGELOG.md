@@ -1,3 +1,14 @@
+## [5.3.3](https://github.com/rsuite/rsuite-table/compare/5.3.2...5.3.3) (2022-02-10)
+
+
+### Bug Fixes
+
+* **ssr:** fix server-side rendering warning ([#310](https://github.com/rsuite/rsuite-table/issues/310)) ([e188ef7](https://github.com/rsuite/rsuite-table/commit/e188ef71f814f718e97b29320d377e8250f323b5))
+* **ts:** fix errors checked in typescript strict mode ([#305](https://github.com/rsuite/rsuite-table/issues/305)) ([ba059bd](https://github.com/rsuite/rsuite-table/commit/ba059bd4dc9bc09af99659416407ae42e99bb0b0))
+* **useScrollListener:** can't perform a React state update on an unmounted component ([#306](https://github.com/rsuite/rsuite-table/issues/306)) ([f2104f1](https://github.com/rsuite/rsuite-table/commit/f2104f111103d4229a2f7800a0f11641b0641703))
+
+
+
 ## [5.3.2](https://github.com/rsuite/rsuite-table/compare/5.3.1...5.3.2) (2022-01-13)
 
 
