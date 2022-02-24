@@ -1,3 +1,12 @@
+## [5.3.4](https://github.com/rsuite/rsuite-table/compare/5.3.3...5.3.4) (2022-02-24)
+
+
+### Bug Fixes
+
+* **rerender:** fix table infinite rerender ([#319](https://github.com/rsuite/rsuite-table/issues/319)) ([da4b36b](https://github.com/rsuite/rsuite-table/commit/da4b36b8f361fbcbcb4327fd093ef9a33cb9e06b))
+
+
+
 ## [5.3.3](https://github.com/rsuite/rsuite-table/compare/5.3.2...5.3.3) (2022-02-10)
 
 
