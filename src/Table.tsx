@@ -235,13 +235,15 @@ interface TableRowProps extends RowProps {
   depth?: number;
 }
 
+const DATA_PLACEHOLDER = [];
+
 const Table = React.forwardRef((props: TableProps, ref) => {
   const {
     affixHeader,
     children,
     classPrefix,
     className,
-    data: dataProp = [],
+    data: dataProp = DATA_PLACEHOLDER,
     defaultSortType = SORT_TYPE.DESC as SortType,
     width: widthProp,
     expandedRowKeys: expandedRowKeysProp,
