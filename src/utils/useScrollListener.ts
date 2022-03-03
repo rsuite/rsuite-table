@@ -158,7 +158,12 @@ const useScrollListener = (props: ScrollListenerProps) => {
    * @param momentumOptions The configuration of inertial scrolling is used for the touch event.
    */
   const handleWheel = useCallback(
-    (deltaX: number, deltaY: number, momentumOptions?: { duration: number; bezier: string }) => {
+    (
+      deltaX: number,
+      deltaY: number,
+      momentumOptions?: { duration: number; bezier: string },
+      event?: React.MouseEvent
+    ) => {
       if (!tableRef.current) {
         return;
       }
@@ -172,8 +177,6 @@ const useScrollListener = (props: ScrollListenerProps) => {
       setScrollX(x);
       setScrollY(y);
       onScroll?.(Math.abs(x), Math.abs(y));
-
-      forceUpdatePosition(momentumOptions?.duration, momentumOptions?.bezier);
 
       if (virtualized) {
         // Add a state to the table during virtualized scrolling.
@@ -189,6 +192,22 @@ const useScrollListener = (props: ScrollListenerProps) => {
           momentumOptions?.duration ? 50 : 0
         );
       }
+
+      // When the user clicks on the scrollbar, the scrollbar will be moved to the clicked position.
+      if (event?.type === 'click') {
+        /**
+         * With virtualized enabled, the list will be re-rendered on every scroll.
+         * Update the position of the rendered list with a delay.
+         * fix: https://github.com/rsuite/rsuite/issues/2378
+         */
+        setTimeout(
+          () => forceUpdatePosition(momentumOptions?.duration, momentumOptions?.bezier),
+          0
+        );
+
+        return;
+      }
+      forceUpdatePosition(momentumOptions?.duration, momentumOptions?.bezier);
     },
     [
       tableRef,
@@ -479,7 +498,10 @@ const useScrollListener = (props: ScrollListenerProps) => {
   });
 
   const onScrollHorizontal = useCallback((delta: number) => handleWheel(delta, 0), [handleWheel]);
-  const onScrollVertical = useCallback((delta: number) => handleWheel(0, delta), [handleWheel]);
+  const onScrollVertical = useCallback(
+    (delta: number, event) => handleWheel(0, delta, undefined, event),
+    [handleWheel]
+  );
 
   return {
     isScrolling,
