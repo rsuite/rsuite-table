@@ -1,3 +1,12 @@
+## [5.3.5](https://github.com/rsuite/rsuite-table/compare/5.3.4...5.3.5) (2022-03-03)
+
+
+### Bug Fixes
+
+* **scroll:** fix horizontal scroll position exception ([#323](https://github.com/rsuite/rsuite-table/issues/323)) ([aef4bd5](https://github.com/rsuite/rsuite-table/commit/aef4bd5ee12398aab225c026abd114bbe62c59ef))
+
+
+
 ## [5.3.4](https://github.com/rsuite/rsuite-table/compare/5.3.3...5.3.4) (2022-02-24)
 
 
