@@ -227,9 +227,9 @@ class Table extends React.Component<TableProps, TableState> {
       ? findRowKeys(data, rowKey, isFunction(renderRowExpanded))
       : defaultExpandedRowKeys || [];
 
-    const shouldFixedColumn = Array.from(flatten(children as any) as Iterable<any>).some(
-      (child: any) => child && child.props && child.props.fixed
-    );
+    const shouldFixedColumn = Array.from(
+      flatten(isFragment(children) ? children.props.children : (children as any)) as Iterable<any>
+    ).some((child: any) => child && child.props && child.props.fixed);
 
     if (isTree && !rowKey) {
       throw new Error('The `rowKey` is required when set isTree');
