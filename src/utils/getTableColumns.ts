@@ -57,6 +57,9 @@ function getTableColumns(children) {
     } else if (ReactIs.isFragment(column)) {
       // If the column is a fragment, we need to get the columns from the children.
       return getTableColumns(column.props?.children);
+    } else if (Array.isArray(column)) {
+      // If the column is an array, need check item in the array.
+      return getTableColumns(column);
     }
 
     // If the column is not a group, we just return the column.
