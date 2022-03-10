@@ -1278,7 +1278,20 @@ describe('Table', () => {
             <Cell dataKey="companyName" />
           </Column>
         </React.Fragment>
-
+        {[
+          <Column key="array-0" width={200} verticalAlign="middle" sortable>
+            <HeaderCell>Company Name</HeaderCell>
+            <Cell dataKey="companyName" />
+          </Column>,
+          [
+            <React.Fragment key="array-0">
+              <Column width={200} verticalAlign="middle" sortable>
+                <HeaderCell>Company Name</HeaderCell>
+                <Cell dataKey="companyName" />
+              </Column>
+            </React.Fragment>
+          ]
+        ]}
         <Column width={200} verticalAlign="middle" sortable>
           <HeaderCell>Company Name</HeaderCell>
           <Cell dataKey="companyName" />
@@ -1288,7 +1301,7 @@ describe('Table', () => {
 
     const body = instance.querySelector('.rs-table-body-row-wrapper');
 
-    assert.equal(body.querySelectorAll('.rs-table-cell-content').length, 7);
+    assert.equal(body.querySelectorAll('.rs-table-cell-content').length, 9);
   });
 
   it('Should be aligned in ColumnGroup', () => {
