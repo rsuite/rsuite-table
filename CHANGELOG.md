@@ -1,3 +1,7 @@
+# 3.16.1
+
+- fix when the Fragment is used, the fix fails #325
+
 # 3.16.0
 
 - feat: supporting children is a fragment
