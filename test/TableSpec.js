@@ -766,4 +766,23 @@ describe('Table', () => {
 
     assert.equal(instanceDom.querySelectorAll('.rs-table-cell').length, 2);
   });
+
+  it('when children is a react.Fragment should render fixed column success', () => {
+    const instanceDom = getDOMNode(
+      <Table>
+        <>
+          <Column fixed>
+            <HeaderCell>11</HeaderCell>
+            <Cell>12</Cell>
+          </Column>
+          <Column>
+            <HeaderCell>11</HeaderCell>
+            <Cell>12</Cell>
+          </Column>
+        </>
+      </Table>
+    );
+
+    assert.equal(instanceDom.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
+  });
 });
