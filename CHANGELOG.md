@@ -1,40 +1,34 @@
-## [5.3.5](https://github.com/rsuite/rsuite-table/compare/5.3.4...5.3.5) (2022-03-03)
-
+## [5.3.6](https://github.com/rsuite/rsuite-table/compare/5.3.5...5.3.6) (2022-03-10)
 
 ### Bug Fixes
 
-* **scroll:** fix horizontal scroll position exception ([#323](https://github.com/rsuite/rsuite-table/issues/323)) ([aef4bd5](https://github.com/rsuite/rsuite-table/commit/aef4bd5ee12398aab225c026abd114bbe62c59ef))
+- **Columns:** fix Fragment render in nested array ([#327](https://github.com/rsuite/rsuite-table/issues/327)) ([a29e38c](https://github.com/rsuite/rsuite-table/commit/a29e38ce565af662f8577ce8b32026fd4f15cda1))
 
+## [5.3.5](https://github.com/rsuite/rsuite-table/compare/5.3.4...5.3.5) (2022-03-03)
 
+### Bug Fixes
+
+- **scroll:** fix horizontal scroll position exception ([#323](https://github.com/rsuite/rsuite-table/issues/323)) ([aef4bd5](https://github.com/rsuite/rsuite-table/commit/aef4bd5ee12398aab225c026abd114bbe62c59ef))
 
 ## [5.3.4](https://github.com/rsuite/rsuite-table/compare/5.3.3...5.3.4) (2022-02-24)
 
-
 ### Bug Fixes
 
-* **rerender:** fix table infinite rerender ([#319](https://github.com/rsuite/rsuite-table/issues/319)) ([da4b36b](https://github.com/rsuite/rsuite-table/commit/da4b36b8f361fbcbcb4327fd093ef9a33cb9e06b))
-
-
+- **rerender:** fix table infinite rerender ([#319](https://github.com/rsuite/rsuite-table/issues/319)) ([da4b36b](https://github.com/rsuite/rsuite-table/commit/da4b36b8f361fbcbcb4327fd093ef9a33cb9e06b))
 
 ## [5.3.3](https://github.com/rsuite/rsuite-table/compare/5.3.2...5.3.3) (2022-02-10)
 
-
 ### Bug Fixes
 
-* **ssr:** fix server-side rendering warning ([#310](https://github.com/rsuite/rsuite-table/issues/310)) ([e188ef7](https://github.com/rsuite/rsuite-table/commit/e188ef71f814f718e97b29320d377e8250f323b5))
-* **ts:** fix errors checked in typescript strict mode ([#305](https://github.com/rsuite/rsuite-table/issues/305)) ([ba059bd](https://github.com/rsuite/rsuite-table/commit/ba059bd4dc9bc09af99659416407ae42e99bb0b0))
-* **useScrollListener:** can't perform a React state update on an unmounted component ([#306](https://github.com/rsuite/rsuite-table/issues/306)) ([f2104f1](https://github.com/rsuite/rsuite-table/commit/f2104f111103d4229a2f7800a0f11641b0641703))
-
-
+- **ssr:** fix server-side rendering warning ([#310](https://github.com/rsuite/rsuite-table/issues/310)) ([e188ef7](https://github.com/rsuite/rsuite-table/commit/e188ef71f814f718e97b29320d377e8250f323b5))
+- **ts:** fix errors checked in typescript strict mode ([#305](https://github.com/rsuite/rsuite-table/issues/305)) ([ba059bd](https://github.com/rsuite/rsuite-table/commit/ba059bd4dc9bc09af99659416407ae42e99bb0b0))
+- **useScrollListener:** can't perform a React state update on an unmounted component ([#306](https://github.com/rsuite/rsuite-table/issues/306)) ([f2104f1](https://github.com/rsuite/rsuite-table/commit/f2104f111103d4229a2f7800a0f11641b0641703))
 
 ## [5.3.2](https://github.com/rsuite/rsuite-table/compare/5.3.1...5.3.2) (2022-01-13)
 
-
 ### Bug Fixes
 
-* **ssr:** fix `window` is not defined for Table Columns ([#294](https://github.com/rsuite/rsuite-table/issues/294)) ([42e1189](https://github.com/rsuite/rsuite-table/commit/42e1189671bfe1687c7894df7ba5e67aa8a0bc24))
-
-
+- **ssr:** fix `window` is not defined for Table Columns ([#294](https://github.com/rsuite/rsuite-table/issues/294)) ([42e1189](https://github.com/rsuite/rsuite-table/commit/42e1189671bfe1687c7894df7ba5e67aa8a0bc24))
 
 ## [5.3.1](https://github.com/rsuite/rsuite-table/compare/5.3.0...5.3.1) (2022-01-06)
 
