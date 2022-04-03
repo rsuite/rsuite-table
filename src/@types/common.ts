@@ -17,7 +17,7 @@ export type SortType = 'desc' | 'asc';
 export interface RowDataType {
   dataKey?: string;
   children?: RowDataType[];
-  [key: string | symbol]: any;
+  [key: string]: any;
 }
 
 export type RowKeyType = string | number;
