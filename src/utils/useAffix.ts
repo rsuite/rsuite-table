@@ -10,7 +10,7 @@ import type { ListenerCallback, ElementOffset } from '../@types/common';
 import type { ScrollbarInstance } from '../Scrollbar';
 
 interface AffixProps {
-  tableHeight: () => number;
+  getTableHeight: () => number;
   contentHeight: React.MutableRefObject<number>;
   affixHeader?: boolean | number;
   affixHorizontalScrollbar?: boolean | number;
@@ -23,7 +23,7 @@ interface AffixProps {
 
 const useAffix = (props: AffixProps) => {
   const {
-    tableHeight,
+    getTableHeight,
     contentHeight,
     affixHorizontalScrollbar,
     affixHeader,
@@ -38,7 +38,7 @@ const useAffix = (props: AffixProps) => {
   const handleAffixHorizontalScrollbar = useCallback(() => {
     const scrollY = window.scrollY || window.pageYOffset;
     const windowHeight = getHeight(window);
-    const height = tableHeight();
+    const height = getTableHeight();
 
     const bottom = typeof affixHorizontalScrollbar === 'number' ? affixHorizontalScrollbar : 0;
     const offsetTop = tableOffset.current?.top || 0;
@@ -56,7 +56,7 @@ const useAffix = (props: AffixProps) => {
         removeStyle(scrollbarXRef.current.root, 'bottom');
       }
     }
-  }, [affixHorizontalScrollbar, headerHeight, scrollbarXRef, tableHeight, tableOffset]);
+  }, [affixHorizontalScrollbar, headerHeight, scrollbarXRef, getTableHeight, tableOffset]);
 
   const handleAffixTableHeader = useCallback(() => {
     const top = typeof affixHeader === 'number' ? affixHeader : 0;
@@ -88,7 +88,7 @@ const useAffix = (props: AffixProps) => {
    * Update the position of the fixed element after the height of the table changes.
    * fix: https://github.com/rsuite/rsuite/issues/1716
    */
-  useUpdateEffect(handleWindowScroll, [tableHeight]);
+  useUpdateEffect(handleWindowScroll, [getTableHeight]);
 
   useEffect(() => {
     if (isNumberOrTrue(affixHeader) || isNumberOrTrue(affixHorizontalScrollbar)) {

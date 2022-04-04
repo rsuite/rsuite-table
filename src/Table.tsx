@@ -44,7 +44,6 @@ import type {
   RowKeyType,
   TableLocaleType
 } from './@types/common';
-
 /**
  * Filter those expanded nodes.
  * @param data
@@ -67,8 +66,17 @@ const filterTreeData = (data: any[], expandedRowKeys: RowKeyType[], rowKey?: Row
 };
 
 export interface TableProps extends Omit<StandardProps, 'onScroll'> {
-  /** Automatic Height */
+  /**
+   * The height of the table will be automatically expanded according to the number of data rows,
+   * and no vertical scroll bar will appear
+   * */
   autoHeight?: boolean;
+
+  /**
+   * Force the height of the table to be equal to the height of its parent container.
+   * Cannot be used together with autoHeight.
+   */
+  fillHeight?: boolean;
 
   /** Affix the table header to the specified position on the page */
   affixHeader?: boolean | number;
@@ -95,7 +103,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   defaultExpandedRowKeys?: RowKeyType[];
 
   /** Table data */
-  data: RowDataType[];
+  data?: RowDataType[];
 
   /** Specify the default expanded row by  rowkey (Controlled) */
   expandedRowKeys?: RowKeyType[];
@@ -269,6 +277,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     minHeight = 0,
     height = 200,
     autoHeight,
+    fillHeight,
     rtl: rtlProp,
     translate3d = true,
     rowKey,
@@ -377,7 +386,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     tableOffset,
     headerOffset,
     setScrollY,
-    setScrollX
+    setScrollX,
+    getTableHeight
   } = useTableDimension({
     data: dataProp,
     width: widthProp,
@@ -389,7 +399,9 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     affixHorizontalScrollbar,
     headerHeight,
     height,
+    minHeight,
     autoHeight,
+    fillHeight,
     children,
     expandedRowKeys,
     onTableScroll: (coords: { x?: number; y?: number }) => {
@@ -406,16 +418,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     }
   });
 
-  const getTableHeight = useCallback(() => {
-    if (data.length === 0 && autoHeight) {
-      return height;
-    }
-
-    return autoHeight ? Math.max(headerHeight + contentHeight.current, minHeight) : height;
-  }, [autoHeight, contentHeight, data.length, headerHeight, height, minHeight]);
-
   useAffix({
-    tableHeight: getTableHeight,
+    getTableHeight,
     contentHeight,
     affixHorizontalScrollbar,
     affixHeader,
@@ -1049,6 +1053,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 Table.displayName = 'Table';
 Table.propTypes = {
   autoHeight: PropTypes.bool,
+  fillHeight: PropTypes.bool,
   affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   affixHorizontalScrollbar: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   bordered: PropTypes.bool,
@@ -1056,7 +1061,7 @@ Table.propTypes = {
   classPrefix: PropTypes.string,
   children: PropTypes.any,
   cellBordered: PropTypes.bool,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   defaultExpandAllRows: PropTypes.bool,
   defaultExpandedRowKeys: PropTypes.array,
   defaultSortType: PropTypes.any,

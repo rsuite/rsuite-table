@@ -1399,4 +1399,46 @@ describe('Table', () => {
     );
     assert.equal(instance.querySelectorAll('.rs-table-row .custom-row').length, 1);
   });
+
+  it('Should be fill height', done => {
+    const App = React.forwardRef((_props, ref) => {
+      const [height, setHeight] = React.useState(300);
+      const tableRef = React.useRef();
+
+      React.useImperativeHandle(ref, () => ({
+        get table() {
+          return tableRef.current.root;
+        },
+        setHeight
+      }));
+
+      return (
+        <div style={{ height }}>
+          <Table fillHeight height={200} ref={tableRef} data={[]}>
+            <Column>
+              <HeaderCell>11</HeaderCell>
+              <Cell>12</Cell>
+            </Column>
+            <Column>
+              <HeaderCell>11</HeaderCell>
+              <Cell>12</Cell>
+            </Column>
+          </Table>
+        </div>
+      );
+    });
+
+    const ref = React.createRef();
+
+    render(<App ref={ref} />);
+
+    assert.equal(ref.current.table.style.height, '300px');
+
+    ref.current.setHeight(500);
+
+    setTimeout(() => {
+      assert.equal(ref.current.table.style.height, '500px');
+      done();
+    }, 10);
+  });
 });
