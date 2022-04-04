@@ -1430,11 +1430,15 @@ describe('Table', () => {
 
     const ref = React.createRef();
 
-    render(<App ref={ref} />);
+    act(() => {
+      render(<App ref={ref} />);
+    });
 
     assert.equal(ref.current.table.style.height, '300px');
 
-    ref.current.setHeight(500);
+    act(() => {
+      ref.current.setHeight(500);
+    });
 
     setTimeout(() => {
       assert.equal(ref.current.table.style.height, '500px');
