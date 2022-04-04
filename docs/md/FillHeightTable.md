@@ -4,7 +4,7 @@
 
 ```js
 const App = () => {
-  const [height, setheight] = React.useState(500);
+  const [height, setheight] = React.useState(30);
   const handleChange = event => {
     const value = parseInt(event.target.value);
     setheight(value);
@@ -13,9 +13,9 @@ const App = () => {
   const data = fakeData.filter((item, index) => index < 50);
   return (
     <div>
-      container height: <input type="text" onChange={handleChange} value={height} />
+      container height: <input type="text" onChange={handleChange} value={height} /> rem
       <hr />
-      <div style={{ border: '1px solid red', height }}>
+      <div style={{ border: '1px solid red', height: `${height}rem` }}>
         <Table
           height={400}
           fillHeight

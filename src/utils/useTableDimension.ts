@@ -196,23 +196,20 @@ const useTableDimension = (props: TableDimensionProps) => {
     calculateTableWidth();
     setOffsetByAffix();
 
-    resizeObserver.current = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        calculateTableWidth(entry.contentRect.width);
-      }
-    });
-    resizeObserver.current.observe(tableRef?.current as Element);
-
     // When fillHeight is set, a resize listener is added to the table container.
     // And get the height of the container as the height of the table.
     if (fillHeight && tableRef?.current) {
       setTableHeight(getHeight(tableRef.current.parentNode as Element));
       containerResizeObserver.current = new ResizeObserver(entries => {
-        for (const entry of entries) {
-          setTableHeight(entry.contentRect.height);
-        }
+        setTableHeight(entries[0].contentRect.height);
+        calculateTableWidth(entries[0].contentRect.width);
       });
       containerResizeObserver.current.observe(tableRef?.current?.parentNode as Element);
+    } else {
+      resizeObserver.current = new ResizeObserver(entries => {
+        calculateTableWidth(entries[0].contentRect.width);
+      });
+      resizeObserver.current.observe(tableRef?.current as Element);
     }
   });
 
