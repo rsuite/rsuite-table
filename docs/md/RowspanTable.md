@@ -7,12 +7,17 @@ const App = () => {
   return (
     <Table
       bordered
+      cellBordered
       height={400}
       data={fakeDataForRowSpan}
       onRowClick={data => {
         console.log(data);
       }}
     >
+      <Column width={60} fixed>
+        <HeaderCell>id</HeaderCell>
+        <Cell dataKey="id" />
+      </Column>
       <Column
         width={200}
         verticalAlign="middle"
@@ -45,7 +50,15 @@ const App = () => {
         <Cell dataKey="lastName" />
       </Column>
 
-      <Column width={200} flexGrow={1}>
+      <Column width={200}>
+        <HeaderCell>Company Name</HeaderCell>
+        <Cell dataKey="companyName" />
+      </Column>
+      <Column width={200}>
+        <HeaderCell>Company Name</HeaderCell>
+        <Cell dataKey="companyName" />
+      </Column>
+      <Column width={200}>
         <HeaderCell>Company Name</HeaderCell>
         <Cell dataKey="companyName" />
       </Column>

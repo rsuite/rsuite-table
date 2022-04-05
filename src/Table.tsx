@@ -337,8 +337,14 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     getTranslateDOMPositionXY({ forceUseTransform: true, enable3DTransform: translate3d })
   );
 
+  // Check for the existence of fixed columns in all column properties.
   const shouldFixedColumn = Array.from(flatten(children as any) as Iterable<any>).some(
     child => child?.props?.fixed
+  );
+
+  // Check all column properties for the existence of rowSpan.
+  const shouldRowSpanColumn = Array.from(flatten(children as any) as Iterable<any>).some(
+    child => child?.props?.rowSpan
   );
 
   const visibleRows = useRef<React.ReactNode[]>([]);
@@ -529,7 +535,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     className,
     withClassPrefix({
       bordered,
-      hover,
+      hover: hover && !shouldRowSpanColumn,
       loading,
       treetable: isTree,
       'word-wrap': wordWrap,
@@ -762,6 +768,12 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     [expandedRowKeys, onExpandChange, setExpandedRowKeys]
   );
 
+  /**
+   * Records the status of merged rows.
+   * { cellKey: [count,index]}
+   */
+  const rowSpanState = useRef<{ [cellKey: string]: [number, number] }>({});
+
   const renderRowData = (
     bodyCells: any[],
     rowData: any,
@@ -788,21 +800,28 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       const cell = bodyCells[i];
       const rowSpan: number = cell.props?.rowSpan?.(rowData);
       const rowHeight = rowSpan ? rowSpan * (props.height || 46) : props.height;
+      const cellKey = cell.props.dataKey || i;
+
+      // Record the cell state of the merged row
+      if (rowSpanState.current[cellKey]?.[1] > 0) {
+        rowSpanState.current[cellKey][1] -= 1;
+
+        // Restart counting when merged to the last cell.
+        if (rowSpanState.current[cellKey][1] === 0) {
+          rowSpanState.current[cellKey][0] = 0;
+        }
+      }
 
       if (rowSpan) {
+        // The state of the initial merged cell
+        rowSpanState.current[cellKey] = [rowSpan, rowSpan];
         rowProps.rowSpan = rowSpan;
-        rowProps.style = {
-          /**
-           * In the case of multiple-column merged rows,
-           * the `zIndex` value of the previous row should be greater than the `zIndex` value of the following row.
-           * So `rowSpan` is used as the `zIndex` value.
-           */
-          zIndex: rowProps.style?.zIndex || rowSpan,
-          overflow: 'inherit'
-        };
-
-        // TODO: Do not render those cells merged by `rowSpan`
+        rowProps.style = { overflow: 'inherit' };
       }
+
+      // Cells marked as deleted when checking for merged cell.
+      const removedCell =
+        cell.props?.rowSpan && !rowSpan && rowSpanState.current[cellKey]?.[0] !== 0 ? true : false;
 
       cells.push(
         React.cloneElement(cell, {
@@ -816,7 +835,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
           onTreeToggle: handleTreeToggle,
           rowKey: nextRowKey,
           expanded,
-          rowSpan
+          rowSpan,
+          removed: removedCell
         })
       );
     }
