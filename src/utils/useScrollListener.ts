@@ -406,6 +406,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
   const onScrollTop = (top = 0) => {
     const [nextScrollY, handleScrollY] = getControlledScrollTopValue(top);
+    const height = getTableHeight();
 
     setScrollY(nextScrollY);
     scrollbarYRef?.current?.resetScrollBarPosition?.(handleScrollY);

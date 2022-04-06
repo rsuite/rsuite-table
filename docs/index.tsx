@@ -80,6 +80,10 @@ function App() {
             title: 'Automatic height',
             content: require('./md/AutoHeightTable.md')
           },
+          {
+            title: 'Fill height',
+            content: require('./md/FillHeightTable.md')
+          },
 
           {
             title: 'Affix Header',

@@ -1405,4 +1405,23 @@ describe('Table', () => {
     );
     assert.equal(instance.querySelectorAll('.rs-table-row .custom-row').length, 1);
   });
+
+  it('Should be fill height', () => {
+    const instance = getDOMNode(
+      <div style={{ height: 300 }}>
+        <Table fillHeight height={200} data={[]}>
+          <Column>
+            <HeaderCell>11</HeaderCell>
+            <Cell>12</Cell>
+          </Column>
+          <Column>
+            <HeaderCell>11</HeaderCell>
+            <Cell>12</Cell>
+          </Column>
+        </Table>
+      </div>
+    );
+
+    assert.equal(instance.querySelector('.rs-table').style.height, '300px');
+  });
 });
