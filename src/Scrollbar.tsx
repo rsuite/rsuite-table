@@ -61,7 +61,9 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
       horizontal: !vertical,
       hide: scrollLength <= length,
       pressed: handlePressed
-    })
+    }),
+    // keep the 'fixed' class name if it has already been given by useAffix hook
+    barRef.current?.classList.contains('fixed') && 'fixed'
   );
 
   const width = (length / scrollLength) * 100;
