@@ -11,6 +11,7 @@ const App = () => {
     <Table
       classPrefix="rs-table"
       bordered
+      cellBordered
       height={400}
       headerHeight={100}
       data={fakeDataForColSpan}

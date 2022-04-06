@@ -1074,13 +1074,19 @@ describe('Table', () => {
     );
 
     const rowspanCells = instance.querySelectorAll('.rs-table-cell-rowspan');
-    const rowspanRows = instance.querySelectorAll('.rs-table-row-rowspan');
+    const rows = instance.querySelectorAll('.rs-table-body-row-wrapper .rs-table-row');
     assert.equal(rowspanCells[0].style.height, `${40 * 2}px`);
     assert.equal(rowspanCells[1].style.height, `${40 * 3}px`);
-    assert.equal(rowspanRows[0].style.zIndex, 2);
-    assert.equal(rowspanRows[1].style.zIndex, 3);
+
     assert.equal(instance.querySelectorAll('.rs-table-cell-rowspan').length, 2);
     assert.equal(instance.querySelectorAll('.rs-table-row-rowspan').length, 2);
+
+    // Check if merged cells are removed.
+    assert.equal(rows[0].querySelectorAll('.rs-table-cell').length, 2);
+    assert.equal(rows[1].querySelectorAll('.rs-table-cell').length, 1);
+    assert.equal(rows[2].querySelectorAll('.rs-table-cell').length, 2);
+    assert.equal(rows[3].querySelectorAll('.rs-table-cell').length, 1);
+    assert.equal(rows[4].querySelectorAll('.rs-table-cell').length, 1);
   });
 
   // fix https://github.com/rsuite/rsuite/issues/2051

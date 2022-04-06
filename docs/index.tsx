@@ -18,6 +18,13 @@ import fakeObjectDataListStore, { createFakeRowObjectData } from './data/fakeObj
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import GearIcon from '@rsuite/icons/Gear';
+import 'rsuite/Popover/styles/index.less';
+import 'rsuite/Toggle/styles/index.less';
+import 'rsuite/Grid/styles/index.less';
+import 'rsuite/Button/styles/index.less';
+import 'rsuite/ButtonGroup/styles/index.less';
+import 'rsuite/Checkbox/styles/index.less';
+import 'rsuite/Nav/styles/index.less';
 
 function App() {
   return (
