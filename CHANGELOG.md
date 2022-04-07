@@ -1,3 +1,17 @@
+# [5.4.0](https://github.com/rsuite/rsuite-table/compare/5.3.6...5.4.0) (2022-04-07)
+
+### Bug Fixes
+
+- **Column:** fix rowSpan cell layer covering fixed columns ([#331](https://github.com/rsuite/rsuite-table/issues/331)) ([16fab36](https://github.com/rsuite/rsuite-table/commit/16fab369dd263c794624163e5b2fb666a59ee5c9))
+- fix lint error on typescript versions prior to 4.4 ([#329](https://github.com/rsuite/rsuite-table/issues/329)) ([991bc2f](https://github.com/rsuite/rsuite-table/commit/991bc2fe0ae4186cf3b2c144a5278cc870478542))
+- **Table:** fix `affixHorizontalScrollbar` to be shown when Table component was initially rendered with empty data ([21a3f07](https://github.com/rsuite/rsuite-table/commit/21a3f07b666f72b2f9361c464f70b8e54b638255))
+- **Table:** fix `affixHorizontalScrollbar` to stay when user drags it ([21a3f07](https://github.com/rsuite/rsuite-table/commit/21a3f07b666f72b2f9361c464f70b8e54b638255))
+- **Table:** fix horizontal scroll can not scroll to the end ([#336](https://github.com/rsuite/rsuite-table/issues/336)) ([ecd2494](https://github.com/rsuite/rsuite-table/commit/ecd249448269139f4882771133ffb68aa67bc68f))
+
+### Features
+
+- **Table:** add support for `fillHeight` on `<Table>` ([#330](https://github.com/rsuite/rsuite-table/issues/330)) ([7db9a13](https://github.com/rsuite/rsuite-table/commit/7db9a1303a7ac36abc291c697e9bffee22d0bd18))
+
 ## [5.3.6](https://github.com/rsuite/rsuite-table/compare/5.3.5...5.3.6) (2022-03-10)
 
 ### Bug Fixes
