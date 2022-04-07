@@ -11,11 +11,11 @@ export const TRANSITION_DURATION = 1000;
 export const BEZIER = 'cubic-bezier(0, 0, .58, 1)';
 
 // An attribute value added to the data row to identify whether it is expanded, used in Tree.
-export const EXPANDED_KEY = Symbol('expanded');
+export const EXPANDED_KEY: string = Symbol('expanded') as any;
 
 // An attribute value added for the data row, identifying the key of the parent node, used in Tree.
-export const PARENT_KEY = Symbol('parent');
+export const PARENT_KEY: string = Symbol('parent') as any;
 
 // The attribute value added for the data row, which identifies the depth of the node (the number of parent nodes),
 // and is used in the Tree.
-export const TREE_DEPTH = Symbol('treeDepth');
+export const TREE_DEPTH: string = Symbol('treeDepth') as any;
