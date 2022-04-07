@@ -22,7 +22,7 @@ const App = () => {
           console.log(data);
         }}
       >
-        <Column width={70} align="center">
+        <Column width={70} align="center" fixed>
           <HeaderCell>Id</HeaderCell>
           <Cell dataKey="id" />
         </Column>
@@ -67,7 +67,7 @@ const App = () => {
           <Cell dataKey="email" />
         </Column>
 
-        <Column width={200}>
+        <Column width={200} fixed="right">
           <HeaderCell>Email</HeaderCell>
           <Cell dataKey="email" />
         </Column>

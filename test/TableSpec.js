@@ -7,6 +7,7 @@ import Cell from '../src/Cell';
 import { getDOMNode, getInstance, render } from './utils';
 import HeaderCell from '../src/HeaderCell';
 import getHeight from 'dom-lib/getHeight';
+import getWidth from 'dom-lib/getWidth';
 
 describe('Table', () => {
   it('Should output a table', () => {
@@ -261,6 +262,58 @@ describe('Table', () => {
     // 2 rows + header row
     const height = 46 * 2 + 40;
     assert.equal(instance.style.height, `${height}px`);
+  });
+
+  // https://github.com/rsuite/rsuite-table/issues/300
+  it('Should be a full horizontal scrolling range', () => {
+    const instance = getDOMNode(
+      <Table
+        autoHeight
+        style={{ width: 200 }}
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          },
+          {
+            id: 2,
+            name: 'b'
+          }
+        ]}
+      >
+        <Column width={50} fixed>
+          <HeaderCell>id</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+        <Column width={100}>
+          <HeaderCell>name</HeaderCell>
+          <Cell dataKey="name" />
+        </Column>
+        <Column width={100}>
+          <HeaderCell>name</HeaderCell>
+          <Cell dataKey="name" />
+        </Column>
+        <Column width={100}>
+          <HeaderCell>name</HeaderCell>
+          <Cell dataKey="name" />
+        </Column>
+        <Column width={50} fixed="right">
+          <HeaderCell>name</HeaderCell>
+          <Cell dataKey="name" />
+        </Column>
+      </Table>
+    );
+
+    const SCROLLBAR_WIDTH = 10;
+    const tableWidth = 200;
+    const contextWidth = 400;
+    const width = Math.floor((tableWidth / (contextWidth - SCROLLBAR_WIDTH)) * tableWidth);
+
+    const scrollbarHandleWidth = Math.floor(
+      getWidth(instance.querySelector('.rs-table-scrollbar-handle'))
+    );
+
+    assert.equal(width, scrollbarHandleWidth);
   });
 
   it('Should be min height', () => {

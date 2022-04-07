@@ -149,7 +149,7 @@ const useTableDimension = (props: TableDimensionProps) => {
     const row = table?.querySelector(`.${prefix('row')}:not(.virtualized)`);
     const nextContentWidth = row ? getWidth(row) : 0;
 
-    contentWidth.current = nextContentWidth;
+    contentWidth.current = nextContentWidth - (autoHeight ? SCROLLBAR_WIDTH : 0);
     columnCount.current = row?.querySelectorAll(`.${prefix('cell')}`).length || 0;
 
     // The value of SCROLLBAR_WIDTH is subtracted so that the scroll bar does not block the content part.
