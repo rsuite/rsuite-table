@@ -97,8 +97,7 @@ const useAffix = (props: AffixProps) => {
     return () => {
       scrollListener.current?.off();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [affixHeader, affixHorizontalScrollbar, handleWindowScroll]);
 };
 
 export default useAffix;
