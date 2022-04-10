@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
+import React, { useRef, useCallback } from 'react';
 import getWidth from 'dom-lib/getWidth';
 import getHeight from 'dom-lib/getHeight';
 import getOffset from 'dom-lib/getOffset';
@@ -26,9 +26,10 @@ interface TableDimensionProps {
   children?: React.ReactNode;
   expandedRowKeys?: RowKeyType[];
   onTableScroll?: (coord: { x?: number; y?: number }) => void;
-  onTableContentHeightChange?: (prevHeight: number) => void;
-  onTableContentWidthChange?: (prevWidth: number) => void;
-  onTableWidthChange?: (prevWidth: number) => void;
+  onTableResizeChange?: (
+    prevSize: number,
+    event: 'bodyHeightChanged' | 'bodyWidthChanged' | 'widthChanged' | 'heightChanged'
+  ) => void;
 }
 
 /**
@@ -54,9 +55,7 @@ const useTableDimension = (props: TableDimensionProps) => {
     fillHeight,
     children,
     expandedRowKeys,
-    onTableWidthChange,
-    onTableContentWidthChange,
-    onTableContentHeightChange,
+    onTableResizeChange,
     onTableScroll
   } = props;
 
@@ -67,13 +66,12 @@ const useTableDimension = (props: TableDimensionProps) => {
   const scrollX = useRef(0);
   const minScrollX = useRef(0);
   const tableWidth = useRef(widthProp || 0);
+  const tableHeight = useRef(heightProp || 0);
   const columnCount = useRef(0);
   const resizeObserver = useRef<ResizeObserver>();
   const containerResizeObserver = useRef<ResizeObserver>();
   const headerOffset = useRef<ElementOffset | null>(null);
   const tableOffset = useRef<ElementOffset | null>(null);
-
-  const [tableHeight, setTableHeight] = useState(heightProp || 0);
 
   const calculateTableContextHeight = useCallback(() => {
     const prevContentHeight = contentHeight.current;
@@ -91,44 +89,44 @@ const useTableDimension = (props: TableDimensionProps) => {
       nextContentHeight - (affixHeader ? headerHeight * 2 : headerHeight)
     );
 
+    const height = fillHeight ? tableHeight.current : heightProp;
+
     if (!autoHeight) {
       /**
        *  The purpose of subtracting SCROLLBAR_WIDTH is to keep the scroll bar from blocking the content part.
        *  But it will only be calculated when there is a horizontal scroll bar (contentWidth > tableWidth).
        */
       minScrollY.current =
-        -(nextContentHeight - tableHeight) -
+        -(nextContentHeight - height) -
         (contentWidth.current > tableWidth.current ? SCROLLBAR_WIDTH : 0);
     }
 
     // If the height of the content area is less than the height of the table, the vertical scroll bar is reset.
-    if (nextContentHeight < tableHeight) {
+    if (nextContentHeight < height) {
       onTableScroll?.({ y: 0 });
     }
 
     // If the value of scrollTop is greater than the scrollable range, the vertical scroll bar is reset.
     // When Table is set to virtualized, the logic will be entered every time the wheel event is triggered
     // to avoid resetting the scroll bar after scrolling to the bottom, so add the SCROLLBAR_WIDTH value.
-    if (
-      Math.abs(scrollY.current) + tableHeight - headerHeight >
-      nextContentHeight + SCROLLBAR_WIDTH
-    ) {
+    if (Math.abs(scrollY.current) + height - headerHeight > nextContentHeight + SCROLLBAR_WIDTH) {
       onTableScroll?.({ y: scrollY.current });
     }
 
     if (prevContentHeight !== contentHeight.current) {
-      onTableContentHeightChange?.(prevContentHeight);
+      onTableResizeChange?.(prevContentHeight, 'bodyHeightChanged');
     }
   }, [
     tableRef,
     prefix,
     affixHeader,
     headerHeight,
+    fillHeight,
+    heightProp,
     autoHeight,
-    tableHeight,
     rowHeight,
     onTableScroll,
-    onTableContentHeightChange
+    onTableResizeChange
   ]);
 
   const setOffsetByAffix = useCallback(() => {
@@ -168,9 +166,9 @@ const useTableDimension = (props: TableDimensionProps) => {
       prevColumnCount > 0 &&
       prevColumnCount !== columnCount.current
     ) {
-      onTableContentWidthChange?.(prevWidth);
+      onTableResizeChange?.(prevWidth, 'bodyWidthChanged');
     }
-  }, [autoHeight, onTableContentWidthChange, prefix, tableRef]);
+  }, [autoHeight, onTableResizeChange, prefix, tableRef]);
 
   const calculateTableWidth = useCallback(
     (nextWidth?: number) => {
@@ -182,36 +180,58 @@ const useTableDimension = (props: TableDimensionProps) => {
 
       if (prevWidth && prevWidth !== tableWidth.current) {
         scrollX.current = 0;
-        onTableWidthChange?.(prevWidth);
+        onTableResizeChange?.(prevWidth, 'widthChanged');
       }
 
       setOffsetByAffix();
     },
-    [onTableWidthChange, setOffsetByAffix, tableRef]
+    [onTableResizeChange, setOffsetByAffix, tableRef]
+  );
+
+  const calculateTableHeight = useCallback(
+    (nextHeight?: number) => {
+      const prevHeight = tableHeight.current;
+
+      if (nextHeight) {
+        tableHeight.current = nextHeight;
+      } else if (tableRef?.current) {
+        tableHeight.current = getHeight(tableRef.current.parentNode as Element);
+      }
+
+      if (prevHeight && prevHeight !== tableHeight.current) {
+        onTableResizeChange?.(prevHeight, 'heightChanged');
+      }
+    },
+    [onTableResizeChange, tableRef]
   );
 
   useMount(() => {
     calculateTableContextHeight();
     calculateTableContentWidth();
     calculateTableWidth();
+    calculateTableHeight();
     setOffsetByAffix();
 
-    // When fillHeight is set, a resize listener is added to the table container.
-    // And get the height of the container as the height of the table.
-    if (fillHeight && tableRef?.current) {
-      setTableHeight(getHeight(tableRef.current.parentNode as Element));
-      containerResizeObserver.current = new ResizeObserver(entries => {
-        setTableHeight(entries[0].contentRect.height);
-        calculateTableWidth(entries[0].contentRect.width);
-      });
-      containerResizeObserver.current.observe(tableRef?.current?.parentNode as Element);
-    } else {
-      resizeObserver.current = new ResizeObserver(entries => {
-        calculateTableWidth(entries[0].contentRect.width);
-      });
-      resizeObserver.current.observe(tableRef?.current as Element);
-    }
+    containerResizeObserver.current = new ResizeObserver(entries => {
+      calculateTableHeight(entries[0].contentRect.height);
+    });
+    containerResizeObserver.current.observe(tableRef?.current?.parentNode as Element);
+
+    resizeObserver.current = new ResizeObserver(entries => {
+      calculateTableWidth(entries[0].contentRect.width);
+    });
+    resizeObserver.current.observe(tableRef?.current as Element);
+
+    return () => {
+      resizeObserver.current?.disconnect();
+      containerResizeObserver.current?.disconnect();
+    };
   });
+
+  useUpdateLayoutEffect(() => {
+    calculateTableHeight();
+    calculateTableContextHeight();
+  }, [fillHeight]);
 
   useUpdateLayoutEffect(() => {
     calculateTableWidth();
@@ -227,13 +247,6 @@ const useTableDimension = (props: TableDimensionProps) => {
     calculateTableContentWidth
   ]);
 
-  useEffect(() => {
-    return () => {
-      resizeObserver.current?.disconnect();
-      containerResizeObserver.current?.disconnect();
-    };
-  }, []);
-
   const setScrollY = useCallback((value: number) => {
     scrollY.current = value;
   }, []);
@@ -244,7 +257,7 @@ const useTableDimension = (props: TableDimensionProps) => {
 
   const getTableHeight = () => {
     if (fillHeight) {
-      return tableHeight;
+      return tableHeight.current;
     }
 
     if (data?.length === 0 && autoHeight) {

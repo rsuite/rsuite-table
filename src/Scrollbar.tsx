@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect, useImperativeHandle } from 'react';
+import React, { useState, useRef, useCallback, useImperativeHandle } from 'react';
 import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
 import addStyle, { CSSProperty } from 'dom-lib/addStyle';
 import getOffset from 'dom-lib/getOffset';
@@ -79,14 +79,11 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
         setBarOffset(getOffset(barRef.current));
       }
     }, 1);
-  });
 
-  useEffect(() => {
     return () => {
       releaseMouseMoves();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   useUpdateEffect(() => {
     if (scrollOffset.current) {

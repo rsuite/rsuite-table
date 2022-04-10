@@ -14,6 +14,12 @@ export interface StandardProps extends React.HTMLAttributes<HTMLElement> {
 
 export type SortType = 'desc' | 'asc';
 
+export type TableSizeChangeEventName =
+  | 'bodyHeightChanged'
+  | 'bodyWidthChanged'
+  | 'widthChanged'
+  | 'heightChanged';
+
 export interface RowDataType {
   dataKey?: string;
   children?: RowDataType[];

@@ -4,21 +4,40 @@
 
 ```js
 const App = () => {
-  const [height, setheight] = React.useState(30);
-  const handleChange = event => {
-    const value = parseInt(event.target.value);
-    setheight(value);
-  };
+  const [height, setHeight] = React.useState(30);
+  const [fillHeight, setFillHeight] = React.useState(false);
 
   const data = fakeData.filter((item, index) => index < 50);
   return (
     <div>
-      container height: <input type="text" onChange={handleChange} value={height} /> rem
+      <Stack spacing={10} divider={<Divider vertical />}>
+        <span>
+          <Checkbox
+            checked={fillHeight}
+            onChange={(_v, checked) => {
+              setFillHeight(checked);
+            }}
+          >
+            fillHeight
+          </Checkbox>
+        </span>
+
+        <span>
+          Container height:{' '}
+          <Input
+            type="text"
+            style={{ width: 100, display: 'inline-block' }}
+            onChange={setHeight}
+            value={height}
+          />{' '}
+          rem
+        </span>
+      </Stack>
       <hr />
       <div style={{ border: '1px solid red', height: `${height}rem` }}>
         <Table
           height={400}
-          fillHeight
+          fillHeight={fillHeight}
           data={data}
           onRowClick={data => {
             console.log(data);

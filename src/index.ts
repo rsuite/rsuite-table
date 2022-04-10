@@ -10,4 +10,10 @@ export type { ColumnProps } from './Column';
 export type { CellProps } from './Cell';
 export type { HeaderCellProps } from './HeaderCell';
 export type { ColumnGroupProps } from './ColumnGroup';
-export type { StandardProps, SortType, RowDataType, RowKeyType } from './@types/common';
+export type {
+  StandardProps,
+  SortType,
+  RowDataType,
+  RowKeyType,
+  TableSizeChangeEventName
+} from './@types/common';

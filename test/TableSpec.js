@@ -9,6 +9,8 @@ import HeaderCell from '../src/HeaderCell';
 import getHeight from 'dom-lib/getHeight';
 import getWidth from 'dom-lib/getWidth';
 
+import '../src/less/index.less';
+
 describe('Table', () => {
   it('Should output a table', () => {
     const instance = getDOMNode(<Table>test</Table>);
@@ -1227,10 +1229,12 @@ describe('Table', () => {
     });
 
     const instance = getInstance(<App />);
+
     expect(onScrollSpy.callCount).to.equal(1);
     expect(onScrollSpy.firstCall.firstArg).to.equal('bodyHeightChanged');
 
     instance.updateWidth();
+
     expect(onScrollSpy.callCount).to.equal(2);
     expect(onScrollSpy.secondCall.firstArg).to.equal('widthChanged');
   });
@@ -1476,5 +1480,62 @@ describe('Table', () => {
     );
 
     assert.equal(instance.querySelector('.rs-table').style.height, '300px');
+  });
+
+  it('Should call shouldUpdateScroll after the height of the table container is changed', done => {
+    const onScrollSpy = sinon.spy(a => {
+      if (a === 'heightChanged') {
+        done();
+      }
+    });
+    const data = [
+      {
+        id: 1,
+        name: 'a'
+      }
+    ];
+    const App = React.forwardRef((props, ref) => {
+      const [height, setHeight] = React.useState(300);
+      const tableRef = React.useRef();
+      React.useImperativeHandle(ref, () => ({
+        get table() {
+          return tableRef.current?.root;
+        },
+        updateTableHeight: () => {
+          setHeight(400);
+        }
+      }));
+
+      return (
+        <div style={{ height }}>
+          <Table
+            ref={tableRef}
+            fillHeight
+            height={200}
+            data={data}
+            shouldUpdateScroll={onScrollSpy}
+          >
+            <Column>
+              <HeaderCell>11</HeaderCell>
+              <Cell>12</Cell>
+            </Column>
+            <Column>
+              <HeaderCell>11</HeaderCell>
+              <Cell>12</Cell>
+            </Column>
+          </Table>
+        </div>
+      );
+    });
+
+    const instance = getInstance(<App />);
+
+    assert.equal(instance.table.style.height, '300px');
+
+    instance.updateTableHeight();
+
+    assert.equal(onScrollSpy.callCount, 2);
+    assert.equal(onScrollSpy.secondCall.firstArg, 'heightChanged');
+    assert.equal(instance.table.style.height, '400px');
   });
 });
