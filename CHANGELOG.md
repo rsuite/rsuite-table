@@ -1,3 +1,12 @@
+## [5.4.1](https://github.com/rsuite/rsuite-table/compare/5.4.0...5.4.1) (2022-04-14)
+
+
+### Bug Fixes
+
+* **Table:** fix table height not reset after fillHeight is changed ([#337](https://github.com/rsuite/rsuite-table/issues/337)) ([2156358](https://github.com/rsuite/rsuite-table/commit/215635882124441b261a84c70e44d861f482c0f5))
+
+
+
 # [5.4.0](https://github.com/rsuite/rsuite-table/compare/5.3.6...5.4.0) (2022-04-07)
 
 ### Bug Fixes
