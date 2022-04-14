@@ -42,7 +42,8 @@ import type {
   SortType,
   RowDataType,
   RowKeyType,
-  TableLocaleType
+  TableLocaleType,
+  TableSizeChangeEventName
 } from './@types/common';
 /**
  * Filter those expanded nodes.
@@ -159,7 +160,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
    */
   shouldUpdateScroll?:
     | boolean
-    | ((event: 'bodyHeightChanged' | 'bodyWidthChanged' | 'widthChanged') => {
+    | ((event: TableSizeChangeEventName) => {
         x?: number;
         y?: number;
       });
@@ -367,12 +368,12 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   const scrollbarXRef = useRef<ScrollbarInstance>(null);
   const scrollbarYRef = useRef<ScrollbarInstance>(null);
 
-  /**
-   * Reset the position of the scroll bar after the table size changes.
-   */
-  const resetScrollbar = (event: 'bodyHeightChanged' | 'bodyWidthChanged' | 'widthChanged') => {
+  const handleTableResizeChange = (_prevSize, event: TableSizeChangeEventName) => {
     forceUpdate();
 
+    /**
+     * Reset the position of the scroll bar after the table size changes.
+     */
     if (typeof shouldUpdateScroll === 'function') {
       onScrollTo(shouldUpdateScroll(event));
     } else if (shouldUpdateScroll) {
@@ -413,15 +414,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     onTableScroll: (coords: { x?: number; y?: number }) => {
       onScrollTo(coords);
     },
-    onTableContentHeightChange: () => {
-      resetScrollbar('bodyHeightChanged');
-    },
-    onTableContentWidthChange: () => {
-      resetScrollbar('bodyWidthChanged');
-    },
-    onTableWidthChange: () => {
-      resetScrollbar('widthChanged');
-    }
+    onTableResizeChange: handleTableResizeChange
   });
 
   useAffix({

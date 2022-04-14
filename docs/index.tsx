@@ -1,12 +1,22 @@
 import React, { Profiler } from 'react';
 import ReactDOM from 'react-dom';
-import { Popover, Whisper, Toggle, Grid, Button, ButtonGroup, Checkbox } from 'rsuite';
+import {
+  Popover,
+  Whisper,
+  Toggle,
+  Grid,
+  Button,
+  ButtonGroup,
+  Checkbox,
+  Stack,
+  Divider,
+  Input
+} from 'rsuite';
 import clone from 'lodash/clone';
 import isFunction from 'lodash/isFunction';
 import get from 'lodash/get';
 import without from 'lodash/without';
 import Examples from './Examples';
-import './less/index.less';
 import { Table, Column, Cell, HeaderCell, ColumnGroup } from '../src';
 import fakeData from './data/users';
 import fakeTreeData from './data/treeData';
@@ -18,6 +28,7 @@ import fakeObjectDataListStore, { createFakeRowObjectData } from './data/fakeObj
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import GearIcon from '@rsuite/icons/Gear';
+
 import 'rsuite/Popover/styles/index.less';
 import 'rsuite/Toggle/styles/index.less';
 import 'rsuite/Grid/styles/index.less';
@@ -25,6 +36,10 @@ import 'rsuite/Button/styles/index.less';
 import 'rsuite/ButtonGroup/styles/index.less';
 import 'rsuite/Checkbox/styles/index.less';
 import 'rsuite/Nav/styles/index.less';
+import 'rsuite/Input/styles/index.less';
+import 'rsuite/Stack/styles/index.less';
+import 'rsuite/Divider/styles/index.less';
+import './less/index.less';
 
 function App() {
   return (
@@ -65,7 +80,10 @@ function App() {
           Backend,
           DndProvider,
           GearIcon,
-          Profiler
+          Profiler,
+          Stack,
+          Divider,
+          Input
         }}
         list={[
           {
