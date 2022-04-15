@@ -56,12 +56,7 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
   const { withClassPrefix, merge, prefix } = useClassNames(classPrefix);
   const classes = merge(
     className,
-    withClassPrefix({
-      vertical,
-      horizontal: !vertical,
-      hide: scrollLength <= length,
-      pressed: handlePressed
-    }),
+    withClassPrefix({ vertical, horizontal: !vertical, pressed: handlePressed }),
     // keep the 'fixed' class name if it has already been given by useAffix hook
     barRef.current?.classList.contains('fixed') && 'fixed'
   );

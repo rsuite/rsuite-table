@@ -5,18 +5,40 @@
 ```js
 const App = () => {
   const [size, setSize] = React.useState(fakeData.length);
-  const handleChange = event => {
-    const value = event.target.value;
-    setSize(value);
-  };
+  const [autoHeight, setAutoHeight] = React.useState(false);
 
   const data = fakeData.filter((item, index) => index < size);
   return (
     <div>
-      size: <input type="text" onChange={handleChange} value={size} />
+      <Stack spacing={10} divider={<Divider vertical />}>
+        <span>
+          <Checkbox
+            checked={autoHeight}
+            onChange={(_v, checked) => {
+              setAutoHeight(checked);
+            }}
+          >
+            autoHeight
+          </Checkbox>
+        </span>
+
+        <span>
+          Size:{' '}
+          <Input
+            type="text"
+            style={{ width: 100, display: 'inline-block' }}
+            onChange={setSize}
+            value={size}
+          />{' '}
+          rem
+        </span>
+      </Stack>
+      <hr />
+
       <Table
         height={400}
-        autoHeight
+        autoHeight={autoHeight}
+        cellBordered
         data={data}
         onRowClick={data => {
           console.log(data);

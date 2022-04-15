@@ -528,6 +528,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
   const rowWidth = allColumnsWidth > tableWidth.current ? allColumnsWidth : tableWidth.current;
 
+  // Whether to show vertical scroll bar
+  const hasVerticalScrollbar =
+    !autoHeight && contentHeight.current > getTableHeight() - headerHeight;
+
+  // Whether to show the horizontal scroll bar
+  const hasHorizontalScrollbar = contentWidth.current > tableWidth.current;
+
   const classes = mergeCls(
     className,
     withClassPrefix({
@@ -619,6 +626,10 @@ const Table = React.forwardRef((props: TableProps, ref) => {
         }
       }
 
+      if (hasVerticalScrollbar && fixedRightCellGroupWidth) {
+        fixedRightCellGroupWidth += SCROLLBAR_WIDTH;
+      }
+
       rowNode = (
         <>
           {fixedLeftCellGroupWidth ? (
@@ -642,12 +653,14 @@ const Table = React.forwardRef((props: TableProps, ref) => {
               style={
                 rtl
                   ? { right: 0 - rowRight }
-                  : { left: tableWidth.current - fixedRightCellGroupWidth - SCROLLBAR_WIDTH }
+                  : { left: tableWidth.current - fixedRightCellGroupWidth }
               }
               height={props.isHeaderRow ? props.headerHeight : props.height}
-              width={fixedRightCellGroupWidth + SCROLLBAR_WIDTH}
+              width={fixedRightCellGroupWidth}
             >
-              {mergeCells(resetLeftForCells(fixedRightCells, SCROLLBAR_WIDTH))}
+              {mergeCells(
+                resetLeftForCells(fixedRightCells, hasVerticalScrollbar ? SCROLLBAR_WIDTH : 0)
+              )}
             </CellGroup>
           ) : null}
 
@@ -848,26 +861,37 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       return null;
     }
 
-    return [
-      <Scrollbar
-        key="scrollbar"
-        tableId={id}
-        style={{ width: tableWidth.current }}
-        length={tableWidth.current}
-        onScroll={onScrollHorizontal}
-        scrollLength={contentWidth.current}
-        ref={scrollbarXRef}
-      />,
-      <Scrollbar
-        key="vertical-scrollbar"
-        vertical
-        tableId={id}
-        length={height - headerHeight}
-        scrollLength={contentHeight.current}
-        onScroll={onScrollVertical}
-        ref={scrollbarYRef}
-      />
-    ];
+    const scrollbars: React.ReactNode[] = [];
+
+    if (hasHorizontalScrollbar) {
+      scrollbars.push(
+        <Scrollbar
+          key="scrollbar"
+          tableId={id}
+          style={{ width: tableWidth.current }}
+          length={tableWidth.current}
+          onScroll={onScrollHorizontal}
+          scrollLength={contentWidth.current}
+          ref={scrollbarXRef}
+        />
+      );
+    }
+
+    if (hasVerticalScrollbar) {
+      scrollbars.push(
+        <Scrollbar
+          vertical
+          key="vertical-scrollbar"
+          tableId={id}
+          length={height - headerHeight}
+          onScroll={onScrollVertical}
+          scrollLength={contentHeight.current}
+          ref={scrollbarYRef}
+        />
+      );
+    }
+
+    return scrollbars;
   };
 
   const renderTableBody = (bodyCells: any[], rowWidth: number) => {
