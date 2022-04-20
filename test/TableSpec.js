@@ -798,7 +798,7 @@ describe('Table', () => {
     const ref = React.createRef();
 
     render(
-      <Table ref={ref} isTree data={data} showHeader={false} rowKey="name">
+      <Table ref={ref} isTree data={data} showHeader={false} rowKey="name" height={100}>
         <Column>
           <HeaderCell>name</HeaderCell>
           <Cell dataKey="name" />
@@ -811,7 +811,7 @@ describe('Table', () => {
 
     // Before the Tree expands, it displays 1 row without vertical scroll bar.
     assert.equal(table.querySelectorAll('.rs-table-row').length, 1);
-    assert.isNotNull(table.querySelector('.rs-table-scrollbar-vertical.rs-table-scrollbar-hide'));
+    assert.isNull(table.querySelector('.rs-table-scrollbar-vertical'));
 
     act(() => {
       Simulate.click(expand);
@@ -819,7 +819,7 @@ describe('Table', () => {
 
     // After the Tree is expanded, 10 rows are displayed and a vertical scroll bar is displayed at the same time.
     assert.equal(table.querySelectorAll('.rs-table-row').length, 10);
-    assert.isNull(table.querySelector('.rs-table-scrollbar-vertical.rs-table-scrollbar-hide'));
+    assert.isNotNull(table.querySelector('.rs-table-scrollbar-vertical'));
   });
 
   it('Should render 2 ColumnGroup', () => {
@@ -1537,5 +1537,17 @@ describe('Table', () => {
     assert.equal(onScrollSpy.callCount, 2);
     assert.equal(onScrollSpy.secondCall.firstArg, 'heightChanged');
     assert.equal(instance.table.style.height, '400px');
+  });
+
+  it('Should not render scrollbars', () => {
+    const instance = getDOMNode(
+      <Table data={[{ name: 'name' }]} rowKey="name" height={100}>
+        <Column>
+          <HeaderCell>name</HeaderCell>
+          <Cell dataKey="name" />
+        </Column>
+      </Table>
+    );
+    assert.isNull(instance.querySelector('.rs-table-scrollbar'));
   });
 });

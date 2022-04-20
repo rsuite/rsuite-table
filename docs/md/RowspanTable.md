@@ -9,6 +9,7 @@ const App = () => {
       bordered
       cellBordered
       height={400}
+      autoHeight
       data={fakeDataForRowSpan}
       onRowClick={data => {
         console.log(data);
@@ -61,6 +62,10 @@ const App = () => {
       <Column width={200}>
         <HeaderCell>Company Name</HeaderCell>
         <Cell dataKey="companyName" />
+      </Column>
+      <Column width={60} fixed="right">
+        <HeaderCell>id</HeaderCell>
+        <Cell dataKey="id" />
       </Column>
     </Table>
   );

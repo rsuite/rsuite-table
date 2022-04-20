@@ -82,9 +82,7 @@
 
   &-cell {
     height: 36px;
-    border-style: solid;
-    border-width: 0;
-    border-color: @border-color;
+    border-bottom: 1px solid #eee;
     display: block;
     overflow: hidden;
     position: absolute;
@@ -105,7 +103,7 @@
     }
     &-content {
       padding: 8px;
-      border-bottom: 1px solid #eee;
+      
       .ellipsis();
     }
 
@@ -159,7 +157,7 @@
     z-index: 6;
   }
 
-  &-cell-bordered &-cell-content {
+  &-cell-bordered &-cell {
     border-right: 1px solid #eee;
   }
 
