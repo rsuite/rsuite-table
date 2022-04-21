@@ -1,3 +1,17 @@
+# [5.5.0](https://github.com/rsuite/rsuite-table/compare/5.4.1...5.5.0) (2022-04-21)
+
+
+### Features
+
+* **HeaderCell:** support renderSortIcon on `<HeaderCell>` ([#341](https://github.com/rsuite/rsuite-table/issues/341)) ([18d6567](https://github.com/rsuite/rsuite-table/commit/18d65673845daea6cd106d3121b2023de293d9b9))
+
+
+### Performance Improvements
+
+* **Table:** improved rendering of scrollbars ([#340](https://github.com/rsuite/rsuite-table/issues/340)) ([2b04ada](https://github.com/rsuite/rsuite-table/commit/2b04adad36f4df4c1224f87c4ab090031cc766b5))
+
+
+
 ## [5.4.1](https://github.com/rsuite/rsuite-table/compare/5.4.0...5.4.1) (2022-04-14)
 
 
