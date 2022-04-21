@@ -499,6 +499,9 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     sortColumn,
     prefix,
     onSortColumn,
+
+    // Force table update after column width change, so scrollbar re-renders.
+    onHeaderCellResize: forceUpdate,
     rowHeight
   });
 

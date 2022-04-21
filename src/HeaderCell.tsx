@@ -30,6 +30,7 @@ export interface HeaderCellProps extends InnerCellProps {
     dataKey?: any,
     index?: number
   ) => void;
+  renderSortIcon?: (sortType?: 'desc' | 'asc') => React.ReactNode;
 }
 
 const SORTED_ICON = {
@@ -62,6 +63,7 @@ const HeaderCell = React.forwardRef((props: HeaderCellProps, ref: React.Ref<HTML
     onColumnResizeStart,
     onColumnResizeMove,
     onSortColumn,
+    renderSortIcon,
     ...rest
   } = props;
 
@@ -110,11 +112,14 @@ const HeaderCell = React.forwardRef((props: HeaderCellProps, ref: React.Ref<HTML
       const iconClasses = classNames(prefix('icon-sort'), {
         [prefix(`icon-sort-${sortType}`)]: sortColumn === dataKey
       });
-      return (
-        <span className={prefix('sort-wrapper')}>
-          <SortIcon className={iconClasses} />
-        </span>
+
+      const sortIcon = renderSortIcon ? (
+        renderSortIcon(sortColumn === dataKey ? sortType : undefined)
+      ) : (
+        <SortIcon className={iconClasses} />
       );
+
+      return <span className={prefix('sort-wrapper')}>{sortIcon}</span>;
     }
     return null;
   };
@@ -169,7 +174,8 @@ HeaderCell.propTypes = {
   onSortColumn: PropTypes.func,
   flexGrow: PropTypes.number,
   fixed: PropTypes.any,
-  children: PropTypes.node
+  children: PropTypes.node,
+  renderSortIcon: PropTypes.func
 };
 
 export default HeaderCell;

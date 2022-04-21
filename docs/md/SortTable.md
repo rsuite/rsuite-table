@@ -70,7 +70,21 @@ class SortTable extends React.Component {
           </Column>
 
           <Column width={130} fixed sortable>
-            <HeaderCell>First Name</HeaderCell>
+            <HeaderCell
+              renderSortIcon={sortType => {
+                console.log(sortType);
+
+                if (sortType === 'asc') {
+                  return 1;
+                } else if (sortType === 'desc') {
+                  return 2;
+                }
+
+                return 3;
+              }}
+            >
+              First Name
+            </HeaderCell>
             <Cell dataKey="firstName" />
           </Column>
 

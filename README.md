@@ -166,6 +166,13 @@ const App = () => (
 | header            | React.ReactNode                 | Group header                                                                                            |
 | verticalAlign     | enum: 'top', 'middle', 'bottom' | Vertical alignment                                                                                      |
 
+### `<HeaderCell>`
+
+| Property       | Type `(Default)`              | Description                                  |
+| -------------- | ----------------------------- | -------------------------------------------- |
+| children       | React.ReactNode               | The table column header displays the content |
+| renderSortIcon | (sortType) => React.ReactNode | Custom render sort icons on column headers   |
+
 ### `<Cell>`
 
 | Property | Type `(Default)` | Description                                  |
