@@ -83,7 +83,7 @@ const useTableDimension = (props: TableDimensionProps) => {
     const rows = table?.querySelectorAll(`.${prefix?.('row')}`) || [];
 
     const nextContentHeight = rows.length
-      ? (Array.from(rows).map((row: Element, index: number) => getHeight(row) || getRowHeight(data?[index])) as number[]).reduce(
+      ? (Array.from(rows).map((row: Element, index: number) => getHeight(row) || getRowHeight(data?.[index])) as number[]).reduce(
           (x: number, y: number) => x + y
         )
       : 0;
