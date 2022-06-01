@@ -83,9 +83,11 @@ const useTableDimension = (props: TableDimensionProps) => {
     const rows = table?.querySelectorAll(`.${prefix?.('row')}`) || [];
 
     const nextContentHeight = rows.length
-      ? (Array.from(rows).map((row: Element, index: number) => getHeight(row) || getRowHeight(data?.[index])) as number[]).reduce(
-          (x: number, y: number) => x + y
-        )
+      ? (
+          Array.from(rows).map(
+            (row: Element, index: number) => getHeight(row) || getRowHeight(data?.[index])
+          ) as number[]
+        ).reduce((x: number, y: number) => x + y)
       : 0;
 
     // After setting the affixHeader property, the height of the two headers should be subtracted.
