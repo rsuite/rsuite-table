@@ -1,3 +1,12 @@
+## [5.5.1](https://github.com/rsuite/rsuite-table/compare/5.5.0...5.5.1) (2022-06-01)
+
+
+### Bug Fixes
+
+* rowHeight using is fixed in useTableDimension ([#343](https://github.com/rsuite/rsuite-table/issues/343)) ([6fb5a69](https://github.com/rsuite/rsuite-table/commit/6fb5a69c15e609d170f7b6edcee555d1b4f7379c))
+
+
+
 # [5.5.0](https://github.com/rsuite/rsuite-table/compare/5.4.1...5.5.0) (2022-04-21)
 
 
