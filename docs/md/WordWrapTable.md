@@ -5,6 +5,7 @@
 ```js
 const App = () => {
   const [data, setData] = React.useState(fakeData);
+  const [wordWrap, setWordWrap] = React.useState('break-all');
   return (
     <div>
       <button
@@ -22,9 +23,27 @@ const App = () => {
       >
         Reset
       </button>
+      <select
+        value={wordWrap}
+        onChange={e => {
+          let value = e.target.value;
+
+          if (value === '' || value == 'true') {
+            value = Boolean(value);
+          }
+
+          setWordWrap(value);
+        }}
+      >
+        <option value="">false</option>
+        <option value={true}>true</option>
+        <option value="break-all">break-all</option>
+        <option value="break-word">break-word</option>
+        <option value="keep-all">keep-all</option>
+      </select>
       <hr />
       <Table
-        wordWrap
+        wordWrap={wordWrap}
         height={400}
         data={data}
         onRowClick={data => {
@@ -36,7 +55,7 @@ const App = () => {
           <Cell dataKey="id" />
         </Column>
 
-        <Column width={130} fixed flexGrow={1}>
+        <Column width={140} fixed>
           <HeaderCell>First Name</HeaderCell>
           <Cell dataKey="firstName" />
         </Column>

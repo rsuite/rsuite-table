@@ -174,8 +174,11 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   /** The width of the table. When it is not set, it will adapt according to the container */
   width?: number;
 
-  /** The cell wraps automatically */
-  wordWrap?: boolean;
+  /**
+   * Whether to appear line breaks where text overflows its content box
+   * https://developer.mozilla.org/en-US/docs/Web/CSS/word-break
+   */
+  wordWrap?: boolean | 'break-all' | 'break-word' | 'keep-all';
 
   /** Effectively render large tabular data */
   virtualized?: boolean;
@@ -1130,7 +1133,7 @@ Table.propTypes = {
   showHeader: PropTypes.bool,
   shouldUpdateScroll: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   translate3d: PropTypes.bool,
-  wordWrap: PropTypes.bool,
+  wordWrap: PropTypes.any,
   width: PropTypes.number,
   virtualized: PropTypes.bool,
   isTree: PropTypes.bool,

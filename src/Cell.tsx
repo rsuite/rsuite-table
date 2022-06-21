@@ -38,7 +38,7 @@ export interface InnerCellProps extends CellProps {
   rowKey?: string | number;
   rowSpan?: number;
   depth?: number;
-  wordWrap?: boolean;
+  wordWrap?: boolean | 'break-all' | 'break-word' | 'keep-all';
   removed?: boolean;
   treeCol?: boolean;
   expanded?: boolean;
@@ -146,6 +146,11 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     contentStyles.verticalAlign = verticalAlign;
   }
 
+  if (wordWrap) {
+    contentStyles.wordBreak = typeof wordWrap === 'boolean' ? 'break-all' : wordWrap;
+    contentStyles.overflowWrap = wordWrap === 'break-word' ? wordWrap : undefined;
+  }
+
   let cellContent = isNil(children) && rowData && dataKey ? get(rowData, dataKey) : children;
 
   if (typeof children === 'function') {
@@ -228,7 +233,7 @@ Cell.propTypes = {
   onTreeToggle: PropTypes.func,
   renderTreeToggle: PropTypes.func,
   renderCell: PropTypes.func,
-  wordWrap: PropTypes.bool,
+  wordWrap: PropTypes.any,
   removed: PropTypes.bool,
   treeCol: PropTypes.bool,
   expanded: PropTypes.bool
