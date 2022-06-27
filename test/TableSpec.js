@@ -1606,4 +1606,34 @@ describe('Table', () => {
     );
     assert.isNull(instance.querySelector('.rs-table-scrollbar'));
   });
+
+  it('Should be to avoid nested classPrefix', () => {
+    const data = [{ id: 1, name: 'foobar' }];
+    const innerTable = React.createRef();
+
+    getDOMNode(
+      <Table
+        data={data}
+        rowKey="id"
+        expandedRowKeys={[1]}
+        renderRowExpanded={() => {
+          return (
+            <Table data={data} ref={innerTable}>
+              <Column width={130}>
+                <HeaderCell>inner name</HeaderCell>
+                <Cell dataKey="name" />
+              </Column>
+            </Table>
+          );
+        }}
+      >
+        <Column width={130}>
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" />
+        </Column>
+      </Table>
+    );
+
+    assert.equal(innerTable.current.root.className, 'rs-table rs-table-hover');
+  });
 });

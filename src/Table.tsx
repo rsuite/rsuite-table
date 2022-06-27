@@ -253,7 +253,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   const {
     affixHeader,
     children,
-    classPrefix,
+    classPrefix = 'rs-table',
     className,
     data: dataProp = DATA_PLACEHOLDER,
     defaultSortType = SORT_TYPE.DESC as SortType,
@@ -316,7 +316,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     withClassPrefix,
     merge: mergeCls,
     prefix
-  } = useClassNames(classPrefix || 'table', typeof classPrefix !== 'undefined');
+  } = useClassNames(classPrefix, typeof classPrefix !== 'undefined');
 
   // Use `forceUpdate` to force the component to re-render after manipulating the DOM.
   const [, forceUpdate] = useReducer(x => x + 1, 0);
@@ -1055,13 +1055,13 @@ const Table = React.forwardRef((props: TableProps, ref) => {
 
   const contextValue = React.useMemo(
     () => ({
-      classPrefix: withClassPrefix(),
+      classPrefix,
       translateDOMPositionXY: translateDOMPositionXY.current,
       rtl,
       isTree,
       hasCustomTreeCol
     }),
-    [hasCustomTreeCol, isTree, rtl, withClassPrefix]
+    [classPrefix, hasCustomTreeCol, isTree, rtl]
   );
 
   return (
