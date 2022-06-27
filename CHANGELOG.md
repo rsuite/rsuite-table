@@ -1,3 +1,17 @@
+# [5.6.0](https://github.com/rsuite/rsuite-table/compare/5.5.1...5.6.0) (2022-06-27)
+
+
+### Bug Fixes
+
+* **Table:** fix classPrefix bug due to context parameter ([#349](https://github.com/rsuite/rsuite-table/issues/349)) ([cf875f5](https://github.com/rsuite/rsuite-table/commit/cf875f5c715419e790fc0338c22f8804ded1b962))
+
+
+### Features
+
+* **Table:** add support for wordWrap property values ([#348](https://github.com/rsuite/rsuite-table/issues/348)) ([f6f65c1](https://github.com/rsuite/rsuite-table/commit/f6f65c1ef4682926f57e198127b3cb9b692b4ab8))
+
+
+
 ## [5.5.1](https://github.com/rsuite/rsuite-table/compare/5.5.0...5.5.1) (2022-06-01)
 
 
