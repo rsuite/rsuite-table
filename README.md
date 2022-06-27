@@ -135,6 +135,7 @@ const App = () => (
 | sortType                 | enum: 'desc', 'asc'                                                | Sort type (Controlled)                                                                                                              |
 | virtualized              | boolean                                                            | Effectively render large tabular data                                                                                               |
 | width                    | number                                                             | Table width                                                                                                                         |
+| wordWrap                 | boolean,'break-all','break-word','keep-all'                        | Whether to appear line breaks where text overflows its content box.                                                                 |
 
 ### `<Column>`
 

@@ -164,7 +164,9 @@ describe('Table', () => {
 
     const table = ref.current.root;
     const cell = table.querySelectorAll('.rs-table-cell')[1];
+    const cellContent = table.querySelectorAll('.rs-table-cell-content')[1];
 
+    assert.equal(cellContent.style.wordBreak, 'break-all');
     assert.include(ref.current.root.className, 'rs-table-word-wrap');
 
     setTimeout(() => {
@@ -172,6 +174,60 @@ describe('Table', () => {
       assert.equal(cell.innerText, 'South Georgia and the South Sandwich Islands');
       done();
     }, 1);
+  });
+
+  it('Should be wordWrap=break-all', () => {
+    const ref = React.createRef();
+    render(
+      <Table
+        wordWrap="break-all"
+        data={[{ id: 1, country: 'South Georgia and the South Sandwich Islands' }]}
+      >
+        <Column width={20}>
+          <HeaderCell>Country</HeaderCell>
+          <Cell dataKey="country" ref={ref} />
+        </Column>
+      </Table>
+    );
+
+    const cellContent = ref.current.querySelector('.rs-table-cell-content');
+    assert.equal(cellContent.style.wordBreak, 'break-all');
+  });
+
+  it('Should be wordWrap=break-word', () => {
+    const ref = React.createRef();
+    render(
+      <Table
+        wordWrap="break-word"
+        data={[{ id: 1, country: 'South Georgia and the South Sandwich Islands' }]}
+      >
+        <Column width={20}>
+          <HeaderCell>Country</HeaderCell>
+          <Cell dataKey="country" ref={ref} />
+        </Column>
+      </Table>
+    );
+
+    const cellContent = ref.current.querySelector('.rs-table-cell-content');
+    assert.equal(cellContent.style.wordBreak, 'break-word');
+  });
+
+  it('Should be wordWrap=keep-all', () => {
+    const ref = React.createRef();
+    render(
+      <Table
+        wordWrap="keep-all"
+        data={[{ id: 1, country: 'South Georgia and the South Sandwich Islands' }]}
+      >
+        <Column width={20}>
+          <HeaderCell>Country</HeaderCell>
+          <Cell dataKey="country" ref={ref} />
+        </Column>
+      </Table>
+    );
+
+    const cellContent = ref.current.querySelector('.rs-table-cell-content');
+    assert.equal(cellContent.style.wordBreak, 'keep-all');
   });
 
   it('Should be wordWrap when isTree', done => {

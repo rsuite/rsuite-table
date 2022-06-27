@@ -4,7 +4,8 @@ export default [
     avartar: 'https://s3.amazonaws.com/uifaces/faces/twitter/justinrob/128.jpg',
     city: 'New Amieshire',
     email: 'Leora13@yahoo.com',
-    firstName: 'Ernest Schuppe SchuppeSchuppeSchuppeSchuppeSchuppeSchuppe Schuppe',
+    firstName:
+      'Red Wacky League AntlezBroketheStereoNeon Kitching Josh Bennett Evolution Dreams 红色古怪联盟丹尼尔梅斯马修',
     lastName: 'Schuppe',
     street: 'Ratke Port',
     zipCode: '17026-3154',
