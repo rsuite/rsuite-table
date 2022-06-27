@@ -17,18 +17,10 @@ const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) =
   </Cell>
 );
 
-class ExpandedTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: fakeData,
-      expandedRowKeys: [0]
-    };
-    this.handleExpanded = this.handleExpanded.bind(this);
-  }
-  handleExpanded(rowData, dataKey) {
-    const { expandedRowKeys } = this.state;
+const ExpandedTable = () => {
+  const [expandedRowKeys, setExpandedRowKeys] = React.useState([0]);
 
+  const handleExpanded = (rowData, dataKey) => {
     let open = false;
     const nextExpandedRowKeys = [];
 
@@ -43,79 +35,73 @@ class ExpandedTable extends React.Component {
     if (!open) {
       nextExpandedRowKeys.push(rowData[rowKey]);
     }
-    this.setState({
-      expandedRowKeys: nextExpandedRowKeys
-    });
-  }
-  render() {
-    const { expandedRowKeys, data } = this.state;
-    return (
-      <Table
-        shouldUpdateScroll={false}
-        height={400}
-        data={data}
-        rowKey={rowKey}
-        expandedRowKeys={expandedRowKeys}
-        onRowClick={data => {
-          console.log(data);
-        }}
-        renderRowExpanded={rowData => {
-          return (
-            <div>
-              <div
-                style={{
-                  width: 60,
-                  height: 60,
-                  float: 'left',
-                  marginRight: 10,
-                  background: '#eee'
-                }}
-              >
-                <img src={rowData.avartar} style={{ width: 60 }} />
-              </div>
-              <p>{rowData.email}</p>
-              <p>{rowData.date}</p>
+
+    setExpandedRowKeys(nextExpandedRowKeys);
+  };
+
+  return (
+    <Table
+      shouldUpdateScroll={false}
+      height={400}
+      data={fakeData}
+      rowKey={rowKey}
+      expandedRowKeys={expandedRowKeys}
+      onRowClick={data => {
+        console.log(data);
+      }}
+      renderRowExpanded={rowData => {
+        return (
+          <div>
+            <div
+              style={{
+                width: 60,
+                height: 60,
+                float: 'left',
+                marginRight: 10,
+                background: '#eee'
+              }}
+            >
+              <img src={rowData.avartar} style={{ width: 60 }} />
             </div>
-          );
-        }}
-      >
-        <Column width={70} align="center">
-          <HeaderCell>#</HeaderCell>
-          <ExpandCell
-            dataKey="id"
-            expandedRowKeys={expandedRowKeys}
-            onChange={this.handleExpanded}
-          />
-        </Column>
+            <p>{rowData.email}</p>
+            <p>{rowData.date}</p>
+          </div>
+        );
+      }}
+    >
+      <Column width={70} align="center">
+        <HeaderCell>#</HeaderCell>
+        <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
+      </Column>
 
-        <Column width={130}>
-          <HeaderCell>First Name</HeaderCell>
-          <Cell dataKey="firstName" />
-        </Column>
+      <Column width={130}>
+        <HeaderCell>First Name</HeaderCell>
+        <Cell dataKey="firstName" />
+      </Column>
 
-        <Column width={130}>
-          <HeaderCell>Last Name</HeaderCell>
-          <Cell dataKey="lastName" />
-        </Column>
+      <Column width={130}>
+        <HeaderCell>Last Name</HeaderCell>
+        <Cell dataKey="lastName" />
+      </Column>
 
-        <Column width={200}>
-          <HeaderCell>City</HeaderCell>
-          <Cell dataKey="city" />
-        </Column>
+      <Column width={200}>
+        <HeaderCell>City</HeaderCell>
+        <Cell dataKey="city" />
+      </Column>
 
-        <Column width={200}>
-          <HeaderCell>Street</HeaderCell>
-          <Cell dataKey="street" />
-        </Column>
+      <Column width={200}>
+        <HeaderCell>Street</HeaderCell>
+        <Cell dataKey="street" />
+      </Column>
 
-        <Column width={300}>
-          <HeaderCell>Company Name</HeaderCell>
-          <Cell dataKey="companyName" />
-        </Column>
-      </Table>
-    );
-  }
-}
+      <Column width={300}>
+        <HeaderCell>Company Name</HeaderCell>
+        <Cell dataKey="companyName" />
+      </Column>
+    </Table>
+  );
+};
+
 ReactDOM.render(<ExpandedTable />);
 ```
 
