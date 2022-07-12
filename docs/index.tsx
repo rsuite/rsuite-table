@@ -184,8 +184,8 @@ function App() {
             content: require('./md/DynamicTable.md')
           },
           {
-            title: 'Scroll loading data',
-            content: require('./md/ScrollLoadingData.md')
+            title: 'Infinite Loader',
+            content: require('./md/InfiniteLoader.md')
           },
 
           {

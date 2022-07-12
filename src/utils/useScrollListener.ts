@@ -176,6 +176,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
       setScrollX(x);
       setScrollY(y);
+
       onScroll?.(Math.abs(x), Math.abs(y));
 
       if (virtualized) {
@@ -408,10 +409,13 @@ const useScrollListener = (props: ScrollListenerProps) => {
     const [nextScrollY, handleScrollY] = getControlledScrollTopValue(top);
     const height = getTableHeight();
 
+    if (!loading && nextScrollY !== scrollY.current) {
+      onScroll?.(Math.abs(scrollX.current), Math.abs(nextScrollY));
+    }
+
     setScrollY(nextScrollY);
     scrollbarYRef?.current?.resetScrollBarPosition?.(handleScrollY);
     forceUpdatePosition();
-    !loading && onScroll?.(Math.abs(scrollX.current), Math.abs(nextScrollY));
 
     /**
      * After calling `scrollTop`, a white screen will appear when `virtualized` is true.
