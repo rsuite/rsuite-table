@@ -3,6 +3,7 @@ import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 import PropTypes from 'prop-types';
 import isFunction from 'lodash/isFunction';
 import flatten from 'lodash/flatten';
+import debounce from 'lodash/debounce';
 import Row, { RowProps } from './Row';
 import CellGroup from './CellGroup';
 import Scrollbar, { ScrollbarInstance } from './Scrollbar';
@@ -414,9 +415,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     fillHeight,
     children,
     expandedRowKeys,
-    onTableScroll: (coords: { x?: number; y?: number }) => {
-      onScrollTo(coords);
-    },
+    onTableScroll: debounce((coords: { x?: number; y?: number }) => onScrollTo(coords), 100),
     onTableResizeChange: handleTableResizeChange
   });
 

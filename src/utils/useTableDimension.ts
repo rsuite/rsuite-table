@@ -73,9 +73,12 @@ const useTableDimension = (props: TableDimensionProps) => {
   const headerOffset = useRef<ElementOffset | null>(null);
   const tableOffset = useRef<ElementOffset | null>(null);
 
-  const getRowHeight = (rowData = {}) => {
-    return typeof rowHeight === 'function' ? rowHeight(rowData) : rowHeight;
-  };
+  const getRowHeight = useCallback(
+    (rowData = {}) => {
+      return typeof rowHeight === 'function' ? rowHeight(rowData) : rowHeight;
+    },
+    [rowHeight]
+  );
 
   const calculateTableContextHeight = useCallback(() => {
     const prevContentHeight = contentHeight.current;
@@ -130,7 +133,8 @@ const useTableDimension = (props: TableDimensionProps) => {
     fillHeight,
     heightProp,
     autoHeight,
-    rowHeight,
+    getRowHeight,
+    data,
     onTableScroll,
     onTableResizeChange
   ]);
