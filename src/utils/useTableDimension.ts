@@ -10,7 +10,7 @@ import isNumberOrTrue from './isNumberOrTrue';
 import { RowDataType, RowKeyType, ElementOffset } from '../@types/common';
 
 interface TableDimensionProps {
-  data?: RowDataType[];
+  data?: readonly RowDataType[];
   rowHeight?: number | ((rowData: RowDataType) => number);
   height: number;
   minHeight: number;

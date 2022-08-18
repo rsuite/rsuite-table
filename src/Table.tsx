@@ -53,7 +53,11 @@ import type {
  * @param rowKey
  * @returns
  */
-const filterTreeData = (data: any[], expandedRowKeys: RowKeyType[], rowKey?: RowKeyType) => {
+const filterTreeData = (
+  data: readonly any[],
+  expandedRowKeys: RowKeyType[],
+  rowKey?: RowKeyType
+) => {
   return flattenData(data).filter(rowData => {
     if (rowKey) {
       const parents = findAllParents(rowData, rowKey);
@@ -105,7 +109,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   defaultExpandedRowKeys?: RowKeyType[];
 
   /** Table data */
-  data?: RowDataType[];
+  data?: readonly RowDataType[];
 
   /** Specify the default expanded row by  rowkey (Controlled) */
   expandedRowKeys?: RowKeyType[];
