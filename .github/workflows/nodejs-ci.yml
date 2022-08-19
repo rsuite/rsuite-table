@@ -24,10 +24,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 12.x
+
+      - uses: pnpm/action-setup@v2.0.1
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7.3.0
+
+      - name: Use Node.js 16.x
         uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: '16.x'
       - name: Cache Node.js modules
         uses: actions/cache@v1
         with:
@@ -37,7 +44,7 @@ jobs:
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
       - name: Install dependencies
-        run: npm ci
+        run: pnpm i
       - name: Run headless tests
         run: xvfb-run --auto-servernum npm test
         env:

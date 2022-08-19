@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const markdownRenderer = require('react-markdown-reader').renderer;
 const { NODE_ENV } = process.env;
 
 const docsPath = NODE_ENV === 'development' ? './assets' : './';
@@ -65,18 +64,7 @@ module.exports = () => {
         },
         {
           test: /\.md$/,
-          use: [
-            {
-              loader: 'html-loader'
-            },
-            {
-              loader: 'markdown-loader',
-              options: {
-                pedantic: true,
-                renderer: markdownRenderer()
-              }
-            }
-          ]
+          loader: 'react-code-view/webpack-md-loader'
         },
         {
           test: /\.(woff|woff2|eot|ttf|svg)($|\?)/,
