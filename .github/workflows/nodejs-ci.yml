@@ -37,7 +37,7 @@ jobs:
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
       - name: Install dependencies
-        run: npm ci
+        run: pnpm i
       - name: Run headless tests
         run: xvfb-run --auto-servernum npm test
         env:
