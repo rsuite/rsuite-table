@@ -29,8 +29,8 @@ jobs:
         name: Install pnpm
         id: pnpm-install
         with:
-          version: 6.0.2
-          
+          version: 7.3.0
+
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         with:
