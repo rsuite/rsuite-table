@@ -84,6 +84,15 @@ module.exports = config => {
         }
       }
     },
+    plugins: [
+      'karma-webpack',
+      'karma-mocha',
+      'karma-mocha-reporter',
+      'karma-sinon-chai',
+      'karma-coverage',
+      'karma-chrome-launcher',
+      'karma-firefox-launcher'
+    ],
     coverageReporter: {
       dir: 'coverage',
       reporters: [
