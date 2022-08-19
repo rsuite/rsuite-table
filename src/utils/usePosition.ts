@@ -7,7 +7,7 @@ import type { RowDataType } from '../@types/common';
 import isSupportTouchEvent from './isSupportTouchEvent';
 
 interface PositionProps {
-  data: RowDataType[];
+  data: readonly RowDataType[];
   height: number;
   tableWidth: React.MutableRefObject<number>;
   tableRef: React.RefObject<HTMLDivElement>;

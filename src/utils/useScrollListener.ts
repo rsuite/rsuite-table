@@ -20,7 +20,7 @@ const momentumYThreshold = 15;
 
 interface ScrollListenerProps {
   rtl: boolean;
-  data: RowDataType[];
+  data: readonly RowDataType[];
   height: number;
   getTableHeight: () => number;
   contentHeight: React.MutableRefObject<number>;
