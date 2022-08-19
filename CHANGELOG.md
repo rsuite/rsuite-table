@@ -1,3 +1,12 @@
+## [5.6.1](https://github.com/rsuite/rsuite-table/compare/5.6.0...5.6.1) (2022-07-12)
+
+
+### Bug Fixes
+
+* add debounce to onScroll ([#352](https://github.com/rsuite/rsuite-table/issues/352)) ([793c830](https://github.com/rsuite/rsuite-table/commit/793c830d599a7844c18e635115bf45272baf5059))
+
+
+
 # [5.6.0](https://github.com/rsuite/rsuite-table/compare/5.5.1...5.6.0) (2022-06-27)
 
 

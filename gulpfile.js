@@ -36,10 +36,7 @@ function buildCSS() {
 }
 
 function buildLib() {
-  return gulp
-    .src(TS_SOURCE_DIR)
-    .pipe(babel(babelrc()))
-    .pipe(gulp.dest(LIB_DIR));
+  return gulp.src(TS_SOURCE_DIR).pipe(babel(babelrc())).pipe(gulp.dest(LIB_DIR));
 }
 
 function buildEsm() {
@@ -56,10 +53,7 @@ function buildEsm() {
 }
 
 function copyTypescriptDeclarationFiles() {
-  return gulp
-    .src('./src/**/*.d.ts')
-    .pipe(gulp.dest(LIB_DIR))
-    .pipe(gulp.dest(ESM_DIR));
+  return gulp.src('./src/**/*.d.ts').pipe(gulp.dest(LIB_DIR)).pipe(gulp.dest(ESM_DIR));
 }
 
 function copyLessFiles() {
