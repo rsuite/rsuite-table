@@ -5,7 +5,7 @@
 ```js
 const App = () => {
   const [size, setSize] = React.useState(fakeData.length);
-  const [autoHeight, setAutoHeight] = React.useState(false);
+  const [autoHeight, setAutoHeight] = React.useState(true);
 
   const data = fakeData.filter((item, index) => index < size);
   return (
