@@ -11,6 +11,7 @@ import { SCROLLBAR_WIDTH, TRANSITION_DURATION, BEZIER } from '../constants';
 import type { ScrollbarInstance } from '../Scrollbar';
 import type { ListenerCallback, RowDataType } from '../@types/common';
 import isSupportTouchEvent from './isSupportTouchEvent';
+import flushSync from './flushSync';
 
 // Inertial sliding start time threshold
 const momentumTimeThreshold = 300;
@@ -148,7 +149,10 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
   const debounceScrollEndedCallback = useCallback(() => {
     disableEventsTimeoutId.current = null;
-    setScrolling(false);
+
+    // Forces the end of scrolling to be prioritized so that virtualized long lists can update rendering.
+    // There will be no scrolling white screen.
+    flushSync(() => setScrolling(false));
   }, []);
 
   /**
@@ -182,7 +186,9 @@ const useScrollListener = (props: ScrollListenerProps) => {
       if (virtualized) {
         // Add a state to the table during virtualized scrolling.
         // Make it set CSS `pointer-events:none` on the DOM to avoid wrong event interaction.
+
         setScrolling(true);
+
         if (disableEventsTimeoutId.current) {
           cancelAnimationTimeout(disableEventsTimeoutId.current);
         }
@@ -208,6 +214,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
         return;
       }
+
       forceUpdatePosition(momentumOptions?.duration, momentumOptions?.bezier);
     },
     [

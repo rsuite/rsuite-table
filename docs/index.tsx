@@ -1,5 +1,5 @@
-import React, { Profiler } from 'react';
-import ReactDOM from 'react-dom';
+import React, { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
 import {
   Popover,
   Whisper,
@@ -80,7 +80,6 @@ function App() {
           Backend,
           DndProvider,
           GearIcon,
-          Profiler,
           Stack,
           Divider,
           Input
@@ -202,11 +201,10 @@ function App() {
   );
 }
 
-/*
-if (process.env.NODE_ENV !== 'production') {
-  const { whyDidYouUpdate } = require('why-did-you-update');
-  whyDidYouUpdate(React);
-}
-*/
+const root = ReactDOM.createRoot(document.getElementById('app'));
 
-ReactDOM.render(<App />, document.getElementById('app'));
+root.render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);

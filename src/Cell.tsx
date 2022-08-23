@@ -22,7 +22,7 @@ export interface CellProps extends StandardProps {
   rowData?: any;
 }
 
-export interface InnerCellProps extends CellProps {
+export interface InnerCellProps extends Omit<CellProps, 'children'> {
   align?: 'left' | 'center' | 'right';
   verticalAlign?: 'top' | 'middle' | 'bottom';
   isHeaderCell?: boolean;
