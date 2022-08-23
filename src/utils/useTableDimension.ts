@@ -98,6 +98,14 @@ const useTableDimension = (props: TableDimensionProps) => {
       nextContentHeight - (affixHeader ? headerHeight * 2 : headerHeight)
     );
 
+    // Whether to show the horizontal scroll bar
+    const hasHorizontalScrollbar = contentWidth.current > tableWidth.current;
+
+    // The height of the table content area should be added to the height occupied by the horizontal scroll bar when autoHeight is set.
+    if (autoHeight && hasHorizontalScrollbar) {
+      contentHeight.current += SCROLLBAR_WIDTH;
+    }
+
     const height = fillHeight ? tableHeight.current : heightProp;
 
     if (!autoHeight) {
@@ -106,8 +114,7 @@ const useTableDimension = (props: TableDimensionProps) => {
        *  But it will only be calculated when there is a horizontal scroll bar (contentWidth > tableWidth).
        */
       minScrollY.current =
-        -(nextContentHeight - height) -
-        (contentWidth.current > tableWidth.current ? SCROLLBAR_WIDTH : 0);
+        -(nextContentHeight - height) - (hasHorizontalScrollbar ? SCROLLBAR_WIDTH : 0);
     }
 
     // If the height of the content area is less than the height of the table, the vertical scroll bar is reset.
