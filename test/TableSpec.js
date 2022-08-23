@@ -297,29 +297,48 @@ describe('Table', () => {
       <Table
         autoHeight
         data={[
-          {
-            id: 1,
-            name: 'a'
-          },
-          {
-            id: 2,
-            name: 'b'
-          }
+          { id: 1, name: 'a' },
+          { id: 2, name: 'b' }
         ]}
       >
         <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
+          <HeaderCell>id</HeaderCell>
+          <Cell dataKey="id" />
         </Column>
         <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
+          <HeaderCell>name</HeaderCell>
+          <Cell dataKey="name" />
         </Column>
       </Table>
     );
     // 2 rows + header row
     const height = 46 * 2 + 40;
-    assert.equal(instance.style.height, `${height}px`);
+    expect(instance).to.style('height', height + 'px');
+  });
+
+  it('Should be automatic height when there is a horizontal scroll bar', () => {
+    const instance = getDOMNode(
+      <Table
+        autoHeight
+        width={100}
+        data={[
+          { id: 1, name: 'a' },
+          { id: 2, name: 'b' }
+        ]}
+      >
+        <Column>
+          <HeaderCell>id</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+        <Column>
+          <HeaderCell>name</HeaderCell>
+          <Cell dataKey="name" />
+        </Column>
+      </Table>
+    );
+    // 2 rows + header row + scrollbar
+    const height = 46 * 2 + 40 + 10;
+    expect(instance).to.style('height', height + 'px');
   });
 
   // https://github.com/rsuite/rsuite-table/issues/300

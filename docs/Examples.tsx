@@ -12,9 +12,14 @@ interface ExamplesProps {
   list: ItemType[];
 }
 
+const getDefaultIndex = () => {
+  const hash = document.location.hash.replace('#', '');
+  return hash ? parseInt(hash) : 0;
+};
+
 const Examples = (props: ExamplesProps) => {
   const { list, dependencies } = props;
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(getDefaultIndex());
 
   return (
     <div>
