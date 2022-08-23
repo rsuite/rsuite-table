@@ -105,6 +105,10 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
   const isTreeCol = treeCol || (!hasCustomTreeCol && firstColumn && isTree);
   const cellHeight = typeof height === 'function' ? height(rowData) : height;
 
+  if (isTreeCol && !isHeaderCell && !rowData) {
+    throw new Error('[Table.Cell]: `rowData` is required for tree column');
+  }
+
   const handleTreeToggle = useCallback(
     (event: React.MouseEvent) => {
       onTreeToggle?.(rowKey, rowIndex, rowData, event);

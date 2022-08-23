@@ -1636,4 +1636,26 @@ describe('Table', () => {
 
     assert.equal(innerTable.current.root.className, 'rs-table rs-table-hover');
   });
+
+  it('Should throw error for rowData check', () => {
+    expect(() => {
+      /**
+       * TODO:
+       * Should throw an error when rowData is not passed to Cell.
+       * But chai cannot catch errors inside React.
+       */
+      const TreeCell = ({ rowData, ...rest }) => {
+        return <Cell rowData={rowData} {...rest} />;
+      };
+
+      render(
+        <Table isTree rowKey="id" data={[{ id: 1, name: 'a' }]}>
+          <Column>
+            <HeaderCell>b</HeaderCell>
+            <TreeCell />
+          </Column>
+        </Table>
+      );
+    }).to.not.throw();
+  });
 });

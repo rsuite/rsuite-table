@@ -86,7 +86,7 @@ describe('Cell', () => {
     const instance = getDOMNode(
       <div>
         <TableContext.Provider value={{ isTree: true }}>
-          <Cell hasChildren firstColumn />
+          <Cell hasChildren firstColumn rowData={{}} />
         </TableContext.Provider>
       </div>
     );
@@ -97,7 +97,7 @@ describe('Cell', () => {
     const instance = getDOMNode(
       <div>
         <TableContext.Provider value={{ isTree: true }}>
-          <Cell hasChildren firstColumn expanded />
+          <Cell hasChildren firstColumn expanded rowData={{}} />
         </TableContext.Provider>
       </div>
     );
