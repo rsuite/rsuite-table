@@ -59,7 +59,7 @@ module.exports = config => {
   config.set({
     basePath: '',
     files: [testFile],
-    frameworks: ['mocha', 'sinon-chai', 'webpack'],
+    frameworks: ['mocha', 'chai-dom', 'sinon-chai', 'webpack'],
     colors: true,
     reporters: ['mocha', 'coverage'],
 
@@ -89,6 +89,7 @@ module.exports = config => {
       'karma-mocha',
       'karma-mocha-reporter',
       'karma-sinon-chai',
+      'karma-chai-dom',
       'karma-coverage',
       'karma-chrome-launcher',
       'karma-firefox-launcher'
