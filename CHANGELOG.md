@@ -1,3 +1,19 @@
+# [5.7.0](https://github.com/rsuite/rsuite-table/compare/5.6.1...5.7.0) (2022-08-23)
+
+
+### Bug Fixes
+
+* **autoHeight:** fix table height calculation error when autoHeight ([#362](https://github.com/rsuite/rsuite-table/issues/362)) ([9cca913](https://github.com/rsuite/rsuite-table/commit/9cca913cd5aaf394fd657d0eb4c5435ec73c66b3))
+* **autoHeight:** fixed scroll event not updating after autoHeight value changed ([#360](https://github.com/rsuite/rsuite-table/issues/360)) ([bb368bd](https://github.com/rsuite/rsuite-table/commit/bb368bd213c8c1dc61327889a57aad2f7c6d1028))
+* **Cell:** add rowData required validation for custom Cell ([#361](https://github.com/rsuite/rsuite-table/issues/361)) ([fcab314](https://github.com/rsuite/rsuite-table/commit/fcab3144d9fadd9b643f887c7a306a8c85649113))
+
+
+### Features
+
+* adapt to react 18 ([#359](https://github.com/rsuite/rsuite-table/issues/359)) ([433e8d3](https://github.com/rsuite/rsuite-table/commit/433e8d317f0343757d4157dad4ff48a909c51278))
+
+
+
 ## [5.6.1](https://github.com/rsuite/rsuite-table/compare/5.6.0...5.6.1) (2022-07-12)
 
 
