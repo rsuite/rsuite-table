@@ -133,7 +133,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
   const shouldHandleWheelY = useCallback(
     (delta: number) => {
-      if (delta === 0 || disabledScroll || loading) {
+      if (delta === 0 || disabledScroll || loading || autoHeight) {
         return false;
       }
 
@@ -143,7 +143,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
         );
       }
     },
-    [disabledScroll, loading, minScrollY, scrollY]
+    [autoHeight, disabledScroll, loading, minScrollY, scrollY]
   );
 
   const debounceScrollEndedCallback = useCallback(() => {
