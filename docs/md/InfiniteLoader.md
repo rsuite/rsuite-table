@@ -18,7 +18,7 @@ const InfiniteLoader = () => (
   </div>
 );
 
-const fakeData = (length, start) => {
+const mockData = (length, start) => {
   const result = [];
   for (let i = 1; i <= length; i++) {
     result.push({
@@ -42,7 +42,7 @@ const App = () => {
   const loading = React.useRef(false);
 
   React.useEffect(() => {
-    fakeData(50, 0).then(data => {
+    mockData(50, 0).then(data => {
       setData(data);
     });
   }, []);
@@ -55,7 +55,7 @@ const App = () => {
       loading.current = true;
       setShowLoader(true);
 
-      fakeData(50, data.length).then(data => {
+      mockData(50, data.length).then(data => {
         loading.current = false;
         setShowLoader(false);
         setData(prev => [...prev, ...data]);

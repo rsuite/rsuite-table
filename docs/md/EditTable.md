@@ -3,7 +3,7 @@
 <!--start-code-->
 
 ```js
-export const EditCell = ({ rowData, dataKey, onChange, ...props }) => {
+const EditCell = ({ rowData, dataKey, onChange, ...props }) => {
   return (
     <Cell {...props}>
       {rowData.status === 'EDIT' ? (

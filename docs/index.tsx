@@ -25,9 +25,9 @@ import fakeDataForColSpan from './data/usersForColSpan';
 import fakeDataForRowSpan from './data/usersForRowSpan';
 import fakeLargeData from './data/fakeLargeData.json';
 import fakeObjectDataListStore, { createFakeRowObjectData } from './data/fakeObjectDataListStore';
-import { useDrag, useDrop, DndProvider } from 'react-dnd';
-import Backend from 'react-dnd-html5-backend';
 import GearIcon from '@rsuite/icons/Gear';
+import { useDrag, useDrop, DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import 'rsuite/Popover/styles/index.less';
 import 'rsuite/Toggle/styles/index.less';
@@ -77,7 +77,7 @@ function App() {
           without,
           useDrag,
           useDrop,
-          Backend,
+          HTML5Backend,
           DndProvider,
           GearIcon,
           Stack,
@@ -201,7 +201,7 @@ function App() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('app'));
+const root = ReactDOM.createRoot(document.getElementById('app') as HTMLDivElement);
 
 root.render(
   <StrictMode>
