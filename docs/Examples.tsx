@@ -17,6 +17,10 @@ const getDefaultIndex = () => {
   return hash ? parseInt(hash) : 0;
 };
 
+const afterCompile = (code: string) => {
+  return code.replace(/import\ [\*\w\,\{\}\ \n]+\ from\ ?[\."'@/\w-]+;/gi, '');
+};
+
 const Examples = (props: ExamplesProps) => {
   const { list, dependencies } = props;
   const [index, setIndex] = React.useState(getDefaultIndex());
@@ -43,7 +47,7 @@ const Examples = (props: ExamplesProps) => {
           </Nav>
         </Col>
         <Col md={20}>
-          <CodeView key={index} dependencies={dependencies}>
+          <CodeView key={index} dependencies={dependencies} afterCompile={afterCompile}>
             {list[index]?.content}
           </CodeView>
         </Col>

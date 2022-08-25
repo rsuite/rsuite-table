@@ -3,6 +3,9 @@
 <!--start-code-->
 
 ```js
+import { useDrag, useDrop, DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
 const ItemTypes = {
   COLUMN: 'column',
   ROW: 'row'
@@ -11,23 +14,25 @@ const ItemTypes = {
 function DraggableHeaderCell({ children, onDrag, id, ...rest }) {
   const ref = React.useRef(null);
 
-  const [{ canDrop, isOver }, drop] = useDrop({
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.COLUMN,
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop()
     }),
     drop(item, monitor) {
-      onDrag(item.id, id);
+      onDrag?.(item.id, id);
     }
-  });
+  }));
 
-  const [{ isDragging }, drag] = useDrag({
-    item: { id, type: ItemTypes.COLUMN },
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: ItemTypes.COLUMN,
+    item: { id },
     collect: monitor => ({
-      isDragging: monitor.isDragging()
+      isDragging: monitor.isDragging(),
+      handlerId: monitor.getHandlerId()
     })
-  });
+  }));
   const isActive = canDrop && isOver;
 
   drag(drop(ref));
@@ -50,24 +55,25 @@ function DraggableHeaderCell({ children, onDrag, id, ...rest }) {
 
 function Row({ children, onDrag, id, rowData, ...rest }) {
   const ref = React.useRef(null);
-
-  const [{ canDrop, isOver }, drop] = useDrop({
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.ROW,
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop()
     }),
-    drop(item, monitor) {
-      onDrag && onDrag(item.id, rowData.id);
+    drop: (item, monitor) => {
+      onDrag?.(item.id, rowData.id);
     }
-  });
+  }));
 
-  const [{ isDragging }, drag] = useDrag({
-    item: { id: rowData.id, type: ItemTypes.ROW },
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: ItemTypes.ROW,
+    item: { id: rowData.id },
     collect: monitor => ({
-      isDragging: monitor.isDragging()
+      isDragging: monitor.isDragging(),
+      handlerId: monitor.getHandlerId()
     })
-  });
+  }));
   const opacity = isDragging ? 0 : 1;
   const isActive = canDrop && isOver;
 
@@ -116,7 +122,7 @@ function DraggableTable() {
   };
 
   return (
-    <DndProvider backend={Backend}>
+    <DndProvider backend={HTML5Backend}>
       <div>
         <Table
           height={400}
