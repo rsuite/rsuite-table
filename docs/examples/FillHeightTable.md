@@ -1,5 +1,7 @@
 ### Fill height
 
+Force the height of the table to be equal to the height of its parent container. Cannot be used together with `autoHeight`.
+
 <!--start-code-->
 
 ```js

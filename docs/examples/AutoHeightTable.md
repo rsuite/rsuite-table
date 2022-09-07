@@ -1,5 +1,7 @@
 ### Automatic height
 
+The height of the table will be automatically expanded according to the number of data rows, and no vertical scroll bar will appear.
+
 <!--start-code-->
 
 ```js

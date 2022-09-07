@@ -4,6 +4,7 @@ import CodeView from 'react-code-view';
 import Frame from './components/Frame';
 import TableIcon from '@rsuite/icons/Table';
 import GithubIcon from '@rsuite/icons/legacy/Github';
+import BookIcon from '@rsuite/icons/legacy/Book';
 
 interface ExampleType {
   title: React.ReactNode;
@@ -54,6 +55,14 @@ const App = (props: ExamplesProps) => {
               );
             })}
           </Nav.Menu>
+          <Nav.Item
+            eventKey="apis"
+            target="_blank"
+            icon={<BookIcon />}
+            href="https://github.com/rsuite/rsuite-table#api"
+          >
+            APIs
+          </Nav.Item>
           <Nav.Item
             eventKey="components"
             target="_blank"

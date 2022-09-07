@@ -77,113 +77,113 @@ const dependencies = {
 const examples = [
   {
     title: 'Virtualized',
-    content: require('./md/Virtualized.md')
+    content: require('./examples/Virtualized.md')
   },
   {
     title: 'Fixed Column',
-    content: require('./md/FixedColumnTable.md')
+    content: require('./examples/FixedColumnTable.md')
   },
   {
     title: 'Automatic height',
-    content: require('./md/AutoHeightTable.md')
+    content: require('./examples/AutoHeightTable.md')
   },
   {
     title: 'Fill height',
-    content: require('./md/FillHeightTable.md')
+    content: require('./examples/FillHeightTable.md')
   },
 
   {
     title: 'Affix Header',
-    content: require('./md/AffixTable.md')
+    content: require('./examples/AffixTable.md')
   },
 
   {
     title: 'Affix Horizontal Scrollbar',
-    content: require('./md/AffixHorizontalScrollbar.md')
+    content: require('./examples/AffixHorizontalScrollbar.md')
   },
   {
     title: 'Fluid',
-    content: require('./md/FluidColumnTable.md')
+    content: require('./examples/FluidColumnTable.md')
   },
   {
     title: 'Resizable',
-    content: require('./md/ResizableColumnTable.md')
+    content: require('./examples/ResizableColumnTable.md')
   },
   {
     title: 'Word wrap',
-    content: require('./md/WordWrapTable.md')
+    content: require('./examples/WordWrapTable.md')
   },
   {
     title: 'Custom Cell',
-    content: require('./md/CustomColumnTable.md')
+    content: require('./examples/CustomColumnTable.md')
   },
   {
     title: 'Sort',
-    content: require('./md/SortTable.md')
+    content: require('./examples/SortTable.md')
   },
   {
     title: 'Tree',
-    content: require('./md/TreeTable.md')
+    content: require('./examples/TreeTable.md')
   },
 
   {
     title: 'Big Tree',
-    content: require('./md/BigTreeTable.md')
+    content: require('./examples/BigTreeTable.md')
   },
 
   {
     title: 'Expandable',
-    content: require('./md/Expanded.md')
+    content: require('./examples/Expanded.md')
   },
   {
     title: 'Editable',
-    content: require('./md/EditTable.md')
+    content: require('./examples/EditTable.md')
   },
   {
     title: 'Loading',
-    content: require('./md/LoadingTable.md')
+    content: require('./examples/LoadingTable.md')
   },
   {
     title: 'Colspan Cell',
-    content: require('./md/ColspanTable.md')
+    content: require('./examples/ColspanTable.md')
   },
   {
     title: 'Rowspan Cell',
-    content: require('./md/RowspanTable.md')
+    content: require('./examples/RowspanTable.md')
   },
   {
     title: 'Column Group',
-    content: require('./md/ColumnGroupTable.md')
+    content: require('./examples/ColumnGroupTable.md')
   },
   {
     title: 'Custom Columns',
-    content: require('./md/CustomColumns.md')
+    content: require('./examples/CustomColumns.md')
   },
 
   {
     title: 'Hidden header',
-    content: require('./md/HideTableHeader.md')
+    content: require('./examples/HideTableHeader.md')
   },
   {
     title: 'Empty',
-    content: require('./md/EmptyDataTable.md')
+    content: require('./examples/EmptyDataTable.md')
   },
   {
     title: 'Dynamic',
-    content: require('./md/DynamicTable.md')
+    content: require('./examples/DynamicTable.md')
   },
   {
     title: 'Infinite Loader',
-    content: require('./md/InfiniteLoader.md')
+    content: require('./examples/InfiniteLoader.md')
   },
 
   {
     title: 'Draggable Example',
-    content: require('./md/DraggableTable.md')
+    content: require('./examples/DraggableTable.md')
   },
   {
     title: 'Update Data',
-    content: require('./md/UpdateData.md')
+    content: require('./examples/UpdateData.md')
   }
 ];
 
