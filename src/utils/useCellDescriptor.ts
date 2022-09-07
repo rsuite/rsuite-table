@@ -92,6 +92,10 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
     clearCache();
   }, [children, sortColumn, sortType, tableWidth.current, scrollX.current, minScrollX.current]);
 
+  useUpdateEffect(() => {
+    columnWidths.current = {};
+  }, [children]);
+
   const handleColumnResizeEnd = useCallback(
     (columnWidth: number, _cursorDelta: number, dataKey: any, index: number) => {
       columnWidths.current[`${dataKey}_${index}_width`] = columnWidth;
