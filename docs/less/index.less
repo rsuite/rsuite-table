@@ -1,4 +1,9 @@
+@import '~rsuite/styles/index.less';
 @import '~react-code-view/styles/react-code-view.css';
+
+@import '../components/Frame/styles.less';
+@import '../components/Logo/styles.less';
+
 @import '../../src/less/index.less';
 
 .btn-toolbar {
@@ -6,4 +11,45 @@
 }
 .icon-code:before {
   content: '';
+}
+
+//rewrite base color
+@base-color: #34c3ff;
+
+body {
+  background: #f5f8fa;
+}
+
+.text-muted {
+  color: @B700;
+}
+
+.rs-sidebar {
+  position: fixed;
+  height: 100vh;
+  z-index: 3;
+}
+
+.page-container {
+  padding-left: 260px;
+  transition: padding 0.5s;
+  &.container-full {
+    padding-left: 60px;
+  }
+}
+
+.bg-gradient-orange {
+  background: linear-gradient(87deg, #fb6340 0, #fbb140 100%);
+}
+
+.bg-gradient-red {
+  background: linear-gradient(87deg, #f5365c 0, #f56036 100%);
+}
+
+.bg-gradient-green {
+  background: linear-gradient(87deg, #2dce89 0, #2dcecc 100%);
+}
+
+.bg-gradient-blue {
+  background: linear-gradient(87deg, #11cdef 0, #1171ef 100%);
 }

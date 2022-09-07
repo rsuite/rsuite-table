@@ -4,7 +4,6 @@ import {
   Popover,
   Whisper,
   Toggle,
-  Grid,
   Button,
   ButtonGroup,
   Checkbox,
@@ -16,7 +15,7 @@ import clone from 'lodash/clone';
 import isFunction from 'lodash/isFunction';
 import get from 'lodash/get';
 import without from 'lodash/without';
-import Examples from './Examples';
+import App from './App';
 import { Table, Column, Cell, HeaderCell, ColumnGroup } from '../src';
 import fakeData from './data/users';
 import fakeTreeData from './data/treeData';
@@ -41,170 +40,157 @@ import 'rsuite/Stack/styles/index.less';
 import 'rsuite/Divider/styles/index.less';
 import './less/index.less';
 
-function App() {
-  return (
-    <Grid>
-      <h1>rsuite-table</h1>
-      <p>A React table component</p>
-      <p>
-        <a href="https://github.com/rsuite/rsuite-table">https://github.com/rsuite/rsuite-table</a>
-      </p>
-      <hr />
-      <Examples
-        dependencies={{
-          Checkbox,
-          Button,
-          ButtonGroup,
-          Popover,
-          Whisper,
-          Toggle,
-          fakeData,
-          fakeTreeData,
-          fakeBigTreeData,
-          fakeLargeData,
-          fakeDataForColSpan,
-          fakeDataForRowSpan,
-          Table,
-          Column,
-          ColumnGroup,
-          Cell,
-          HeaderCell,
-          clone,
-          createFakeRowObjectData,
-          fakeObjectDataListStore,
-          isFunction,
-          get,
-          without,
-          useDrag,
-          useDrop,
-          HTML5Backend,
-          DndProvider,
-          GearIcon,
-          Stack,
-          Divider,
-          Input
-        }}
-        list={[
-          {
-            title: 'Virtualized',
-            content: require('./md/Virtualized.md')
-          },
-          {
-            title: 'Fixed Column',
-            content: require('./md/FixedColumnTable.md')
-          },
-          {
-            title: 'Automatic height',
-            content: require('./md/AutoHeightTable.md')
-          },
-          {
-            title: 'Fill height',
-            content: require('./md/FillHeightTable.md')
-          },
+const dependencies = {
+  Checkbox,
+  Button,
+  ButtonGroup,
+  Popover,
+  Whisper,
+  Toggle,
+  fakeData,
+  fakeTreeData,
+  fakeBigTreeData,
+  fakeLargeData,
+  fakeDataForColSpan,
+  fakeDataForRowSpan,
+  Table,
+  Column,
+  ColumnGroup,
+  Cell,
+  HeaderCell,
+  clone,
+  createFakeRowObjectData,
+  fakeObjectDataListStore,
+  isFunction,
+  get,
+  without,
+  useDrag,
+  useDrop,
+  HTML5Backend,
+  DndProvider,
+  GearIcon,
+  Stack,
+  Divider,
+  Input
+};
 
-          {
-            title: 'Affix Header',
-            content: require('./md/AffixTable.md')
-          },
+const examples = [
+  {
+    title: 'Virtualized',
+    content: require('./md/Virtualized.md')
+  },
+  {
+    title: 'Fixed Column',
+    content: require('./md/FixedColumnTable.md')
+  },
+  {
+    title: 'Automatic height',
+    content: require('./md/AutoHeightTable.md')
+  },
+  {
+    title: 'Fill height',
+    content: require('./md/FillHeightTable.md')
+  },
 
-          {
-            title: 'Affix Horizontal Scrollbar',
-            content: require('./md/AffixHorizontalScrollbar.md')
-          },
-          {
-            title: 'Fluid',
-            content: require('./md/FluidColumnTable.md')
-          },
-          {
-            title: 'Resizable',
-            content: require('./md/ResizableColumnTable.md')
-          },
-          {
-            title: 'Word wrap',
-            content: require('./md/WordWrapTable.md')
-          },
-          {
-            title: 'Custom Cell',
-            content: require('./md/CustomColumnTable.md')
-          },
-          {
-            title: 'Sort',
-            content: require('./md/SortTable.md')
-          },
-          {
-            title: 'Tree',
-            content: require('./md/TreeTable.md')
-          },
+  {
+    title: 'Affix Header',
+    content: require('./md/AffixTable.md')
+  },
 
-          {
-            title: 'Big Tree',
-            content: require('./md/BigTreeTable.md')
-          },
+  {
+    title: 'Affix Horizontal Scrollbar',
+    content: require('./md/AffixHorizontalScrollbar.md')
+  },
+  {
+    title: 'Fluid',
+    content: require('./md/FluidColumnTable.md')
+  },
+  {
+    title: 'Resizable',
+    content: require('./md/ResizableColumnTable.md')
+  },
+  {
+    title: 'Word wrap',
+    content: require('./md/WordWrapTable.md')
+  },
+  {
+    title: 'Custom Cell',
+    content: require('./md/CustomColumnTable.md')
+  },
+  {
+    title: 'Sort',
+    content: require('./md/SortTable.md')
+  },
+  {
+    title: 'Tree',
+    content: require('./md/TreeTable.md')
+  },
 
-          {
-            title: 'Expandable',
-            content: require('./md/Expanded.md')
-          },
-          {
-            title: 'Editable',
-            content: require('./md/EditTable.md')
-          },
-          {
-            title: 'Loading',
-            content: require('./md/LoadingTable.md')
-          },
-          {
-            title: 'Colspan Cell',
-            content: require('./md/ColspanTable.md')
-          },
-          {
-            title: 'Rowspan Cell',
-            content: require('./md/RowspanTable.md')
-          },
-          {
-            title: 'Column Group',
-            content: require('./md/ColumnGroupTable.md')
-          },
-          {
-            title: 'Custom Columns',
-            content: require('./md/CustomColumns.md')
-          },
+  {
+    title: 'Big Tree',
+    content: require('./md/BigTreeTable.md')
+  },
 
-          {
-            title: 'Hidden header',
-            content: require('./md/HideTableHeader.md')
-          },
-          {
-            title: 'Empty',
-            content: require('./md/EmptyDataTable.md')
-          },
-          {
-            title: 'Dynamic',
-            content: require('./md/DynamicTable.md')
-          },
-          {
-            title: 'Infinite Loader',
-            content: require('./md/InfiniteLoader.md')
-          },
+  {
+    title: 'Expandable',
+    content: require('./md/Expanded.md')
+  },
+  {
+    title: 'Editable',
+    content: require('./md/EditTable.md')
+  },
+  {
+    title: 'Loading',
+    content: require('./md/LoadingTable.md')
+  },
+  {
+    title: 'Colspan Cell',
+    content: require('./md/ColspanTable.md')
+  },
+  {
+    title: 'Rowspan Cell',
+    content: require('./md/RowspanTable.md')
+  },
+  {
+    title: 'Column Group',
+    content: require('./md/ColumnGroupTable.md')
+  },
+  {
+    title: 'Custom Columns',
+    content: require('./md/CustomColumns.md')
+  },
 
-          {
-            title: 'Draggable Example',
-            content: require('./md/DraggableTable.md')
-          },
-          {
-            title: 'Update Data',
-            content: require('./md/UpdateData.md')
-          }
-        ]}
-      />
-    </Grid>
-  );
-}
+  {
+    title: 'Hidden header',
+    content: require('./md/HideTableHeader.md')
+  },
+  {
+    title: 'Empty',
+    content: require('./md/EmptyDataTable.md')
+  },
+  {
+    title: 'Dynamic',
+    content: require('./md/DynamicTable.md')
+  },
+  {
+    title: 'Infinite Loader',
+    content: require('./md/InfiniteLoader.md')
+  },
+
+  {
+    title: 'Draggable Example',
+    content: require('./md/DraggableTable.md')
+  },
+  {
+    title: 'Update Data',
+    content: require('./md/UpdateData.md')
+  }
+];
 
 const root = ReactDOM.createRoot(document.getElementById('app') as HTMLDivElement);
 
 root.render(
   <StrictMode>
-    <App />
+    <App dependencies={dependencies} examples={examples} />
   </StrictMode>
 );
