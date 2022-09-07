@@ -11,7 +11,7 @@ import { RowDataType, RowKeyType, ElementOffset } from '../@types/common';
 
 interface TableDimensionProps {
   data?: readonly RowDataType[];
-  rowHeight?: number | ((rowData: RowDataType) => number);
+  rowHeight: number | ((rowData: RowDataType) => number);
   height: number;
   minHeight: number;
   tableRef?: React.RefObject<HTMLDivElement>;
@@ -25,6 +25,7 @@ interface TableDimensionProps {
   fillHeight?: boolean;
   children?: React.ReactNode;
   expandedRowKeys?: RowKeyType[];
+  showHeader?: boolean;
   onTableScroll?: (coord: { x?: number; y?: number }) => void;
   onTableResizeChange?: (
     prevSize: number,
@@ -55,6 +56,7 @@ const useTableDimension = (props: TableDimensionProps) => {
     fillHeight,
     children,
     expandedRowKeys,
+    showHeader,
     onTableResizeChange,
     onTableScroll
   } = props;
@@ -82,8 +84,9 @@ const useTableDimension = (props: TableDimensionProps) => {
 
   const calculateTableContextHeight = useCallback(() => {
     const prevContentHeight = contentHeight.current;
-    const table = tableRef?.current;
+    const table = tableRef?.current as HTMLDivElement;
     const rows = table?.querySelectorAll(`.${prefix?.('row')}`) || [];
+    const virtualized = table?.querySelectorAll('.virtualized')?.length > 0;
 
     const nextContentHeight = rows.length
       ? (
@@ -107,6 +110,7 @@ const useTableDimension = (props: TableDimensionProps) => {
     }
 
     const height = fillHeight ? tableHeight.current : heightProp;
+    const tableBodyHeight = showHeader ? height - headerHeight : height;
 
     if (!autoHeight) {
       /**
@@ -122,11 +126,20 @@ const useTableDimension = (props: TableDimensionProps) => {
       onTableScroll?.({ y: 0 });
     }
 
-    // If the value of scrollTop is greater than the scrollable range, the vertical scroll bar is reset.
-    // When Table is set to virtualized, the logic will be entered every time the wheel event is triggered
-    // to avoid resetting the scroll bar after scrolling to the bottom, so add the SCROLLBAR_WIDTH value.
-    if (Math.abs(scrollY.current) + height - headerHeight > nextContentHeight + SCROLLBAR_WIDTH) {
-      onTableScroll?.({ y: scrollY.current });
+    const currentScrollTop = Math.abs(scrollY.current);
+
+    // When Table is set to virtualized, the logic will be entered every time the wheel event is
+    // triggered to avoid resetting the scroll bar after scrolling to the bottom, so add the SCROLLBAR_WIDTH value.
+    const maxScrollTop = nextContentHeight + SCROLLBAR_WIDTH - tableBodyHeight;
+
+    // If the top value of the current scroll is greater than the scrollable range,
+    // keep the vertical scroll bar at the bottom.
+    if (maxScrollTop > 0 && currentScrollTop > maxScrollTop) {
+      if (virtualized) {
+        onTableScroll?.({ y: (data?.length || 0) * getRowHeight() - tableBodyHeight });
+      } else {
+        onTableScroll?.({ y: maxScrollTop });
+      }
     }
 
     if (prevContentHeight !== contentHeight.current) {
@@ -137,9 +150,10 @@ const useTableDimension = (props: TableDimensionProps) => {
     prefix,
     affixHeader,
     headerHeight,
+    autoHeight,
     fillHeight,
     heightProp,
-    autoHeight,
+    showHeader,
     getRowHeight,
     data,
     onTableScroll,
@@ -252,12 +266,12 @@ const useTableDimension = (props: TableDimensionProps) => {
 
   useUpdateLayoutEffect(() => {
     calculateTableWidth();
-    calculateTableContextHeight();
     calculateTableContentWidth();
+    calculateTableContextHeight();
   }, [
     data,
     heightProp,
-    contentHeight,
+    contentHeight.current,
     expandedRowKeys,
     children,
     calculateTableContextHeight,
