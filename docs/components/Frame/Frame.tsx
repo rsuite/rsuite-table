@@ -4,6 +4,7 @@ import { Container, Sidebar, Sidenav, Content, DOMHelper } from 'rsuite';
 import NavToggle from './NavToggle';
 import Brand from '../Brand';
 import Copyright from '../Copyright';
+import Header from '../Header';
 
 const { getHeight, on } = DOMHelper;
 
@@ -60,6 +61,7 @@ const Frame = (props: FrameProps) => {
       </Sidebar>
 
       <Container className={containerClasses}>
+        <Header />
         <Content>{children}</Content>
         <Copyright />
       </Container>
