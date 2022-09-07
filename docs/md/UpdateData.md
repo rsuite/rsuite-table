@@ -13,21 +13,13 @@ const mockData = (length, start) => {
 };
 
 const App = () => {
-  const [dataNum, setDataNum] = React.useState(9000);
+  const [dataNum, setDataNum] = React.useState(1000);
   const data = React.useMemo(() => mockData(dataNum, 0), [dataNum]);
   console.log('currentDataLen', data.length, dataNum);
 
   return (
     <div>
-      <Table
-        width={300}
-        height={400}
-        data={data}
-        virtualized={true}
-        shouldUpdateScroll={false}
-        showHeader={false}
-        bordered
-      >
+      <Table width={300} height={400} data={data} virtualized shouldUpdateScroll={false} bordered>
         <Column width={200} align="center" flexGrow={1}>
           <HeaderCell>ID</HeaderCell>
           <Cell dataKey="index" />

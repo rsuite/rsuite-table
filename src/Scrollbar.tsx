@@ -121,12 +121,15 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
           }
         : {};
 
+      const getSafeValue = (value = 0) => {
+        return Math.min(Math.max(value, 0), max);
+      };
+
       if (typeof forceDelta === 'undefined') {
         scrollOffset.current += delta;
-        scrollOffset.current = Math.max(scrollOffset.current, 0);
-        scrollOffset.current = Math.min(scrollOffset.current, max);
+        scrollOffset.current = getSafeValue(scrollOffset.current);
       } else {
-        scrollOffset.current = forceDelta || 0;
+        scrollOffset.current = getSafeValue(forceDelta);
       }
 
       if (vertical) {
