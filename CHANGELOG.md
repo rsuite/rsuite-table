@@ -1,3 +1,13 @@
+## [5.7.1](https://github.com/rsuite/rsuite-table/compare/5.7.0...5.7.1) (2022-09-07)
+
+
+### Bug Fixes
+
+* fixes an issue where the width of cells outputted from useCellDescriptor does not always update as columns in input change.' ([#364](https://github.com/rsuite/rsuite-table/issues/364)) ([cf1682d](https://github.com/rsuite/rsuite-table/commit/cf1682d836f1e5657db93e9ce4d8975dce760786))
+* **Table:** fix virtualized table scrolling exception ([#366](https://github.com/rsuite/rsuite-table/issues/366)) ([a0c1696](https://github.com/rsuite/rsuite-table/commit/a0c1696baf75f092d7b3c40368e9e7e0db61bbaa))
+
+
+
 # [5.7.0](https://github.com/rsuite/rsuite-table/compare/5.6.1...5.7.0) (2022-08-23)
 
 
