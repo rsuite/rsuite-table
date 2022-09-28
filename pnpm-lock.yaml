@@ -38,7 +38,7 @@ specifiers:
   cssnano: ^4.1.10
   cz-conventional-changelog: ^3.3.0
   del: ^5.1.0
-  dom-lib: ^3.1.2
+  dom-lib: ^3.1.3
   eslint: ^7.30.0
   eslint-config-prettier: ^8.3.0
   eslint-plugin-babel: ^5.3.1
@@ -96,7 +96,7 @@ dependencies:
   '@juggle/resize-observer': 3.4.0
   '@rsuite/icons': 1.0.2_biqbaboplfbrettd7655fr4n2y
   classnames: 2.3.1
-  dom-lib: 3.1.2
+  dom-lib: 3.1.3
   lodash: 4.17.21
   react-is: 17.0.2
 
@@ -4102,8 +4102,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      is-text-path: 1.0.1
       JSONStream: 1.3.5
+      is-text-path: 1.0.1
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2
@@ -4916,8 +4916,8 @@ packages:
       csstype: 3.1.0
     dev: true
 
-  /dom-lib/3.1.2:
-    resolution: {integrity: sha512-FKw/w51guhTwiSnyCQKTxEwglnZG7Q1qJO62asKwedcqCCHwrwQP8DnMPBTXL9y3JTePFDaPS95GLha/Q9nd/w==}
+  /dom-lib/3.1.3:
+    resolution: {integrity: sha512-66NzehAJZM5HrH/2FW6C0tgaMIywDF5I9n7PWgvdSciohlYQbCFcSf5XA6hhIqQdFbfrnZDD8NGLo9pDRzO5hQ==}
     dependencies:
       '@babel/runtime': 7.18.9
 
@@ -10810,7 +10810,7 @@ packages:
       '@juggle/resize-observer': 3.4.0
       '@rsuite/icons': 1.0.2_biqbaboplfbrettd7655fr4n2y
       classnames: 2.3.1
-      dom-lib: 3.1.2
+      dom-lib: 3.1.3
       lodash: 4.17.21
       prop-types: 15.8.1
       react: 18.2.0
@@ -10833,7 +10833,7 @@ packages:
       '@types/react-virtualized': 9.21.21
       classnames: 2.3.1
       date-fns: 2.29.2
-      dom-lib: 3.1.2
+      dom-lib: 3.1.3
       lodash: 4.17.21
       prop-types: 15.8.1
       react: 18.2.0
