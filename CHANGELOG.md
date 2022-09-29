@@ -1,3 +1,12 @@
+## [5.7.2](https://github.com/rsuite/rsuite-table/compare/5.7.1...5.7.2) (2022-09-29)
+
+
+### Bug Fixes
+
+* **Loader:** fix custom loader always showing ([#370](https://github.com/rsuite/rsuite-table/issues/370)) ([1774eee](https://github.com/rsuite/rsuite-table/commit/1774eeef38b4195f1797e960ffdeb2592609629e))
+
+
+
 ## [5.7.1](https://github.com/rsuite/rsuite-table/compare/5.7.0...5.7.1) (2022-09-07)
 
 
