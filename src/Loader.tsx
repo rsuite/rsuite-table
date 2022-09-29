@@ -12,10 +12,6 @@ interface LoaderProps extends React.HTMLAttributes<HTMLDivElement> {
 const Loader = React.forwardRef((props: LoaderProps, ref: React.Ref<HTMLDivElement>) => {
   const { loadAnimation, loading, locale, addPrefix, renderLoading } = props;
 
-  if (!loadAnimation && !loading) {
-    return null;
-  }
-
   const loadingElement = (
     <div ref={ref} className={addPrefix('loader-wrapper')}>
       <div className={addPrefix('loader')}>
@@ -25,7 +21,14 @@ const Loader = React.forwardRef((props: LoaderProps, ref: React.Ref<HTMLDivEleme
     </div>
   );
 
-  return renderLoading ? renderLoading(loadingElement) : loadingElement;
+  // Custom render a loader
+  if (typeof renderLoading === 'function') {
+    return loading ? renderLoading(loadingElement) : null;
+  }
+
+  // If loadAnimation is true , it returns the DOM element,
+  // and controls whether the loader is displayed through CSS to achieve animation effect.
+  return loading || loadAnimation ? loadingElement : null;
 });
 
 Loader.displayName = 'Table.Loader';
