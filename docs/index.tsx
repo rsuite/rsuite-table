@@ -9,7 +9,8 @@ import {
   Checkbox,
   Stack,
   Divider,
-  Input
+  Input,
+  Loader
 } from 'rsuite';
 import clone from 'lodash/clone';
 import isFunction from 'lodash/isFunction';
@@ -71,7 +72,8 @@ const dependencies = {
   GearIcon,
   Stack,
   Divider,
-  Input
+  Input,
+  Loader
 };
 
 const examples = [

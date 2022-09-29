@@ -66,7 +66,7 @@ describe('Table', () => {
     assert.equal(instance.getAttribute('aria-busy'), 'true');
   });
 
-  it('Should render custom loading', () => {
+  it('Should render custom loader', () => {
     const instance = getDOMNode(
       <Table
         loading
@@ -81,6 +81,23 @@ describe('Table', () => {
       </Table>
     );
     assert.equal(instance.querySelector('.my-loading').innerText, 'loading');
+  });
+
+  it('Should not render custom loader', () => {
+    const instance = getDOMNode(
+      <Table
+        loading={false}
+        renderLoading={() => {
+          return <p className="my-loading">loading</p>;
+        }}
+      >
+        <Column>
+          <HeaderCell>11</HeaderCell>
+          <Cell>12</Cell>
+        </Column>
+      </Table>
+    );
+    assert.isNull(instance.querySelector('.my-loading'));
   });
 
   it('Should render custom empty info', () => {

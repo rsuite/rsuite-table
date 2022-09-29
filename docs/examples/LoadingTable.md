@@ -6,17 +6,47 @@
 const App = () => {
   const [data, setData] = React.useState(fakeData);
   const [loading, setLoading] = React.useState(true);
+  const [customLoader, setCustomLoader] = React.useState(false);
+  const [loadAnimation, setLoadAnimation] = React.useState(false);
+  const renderLoading = () => {
+    return <Loader center backdrop content="Custom Loader" />;
+  };
   return (
     <div>
-      <input
-        type="checkbox"
+      <Checkbox
         checked={loading}
         onChange={() => {
           setLoading(!loading);
         }}
-      />{' '}
-      loading
-      <Table loading={loading} height={400} data={data}>
+      >
+        loading
+      </Checkbox>
+
+      <Checkbox
+        checked={customLoader}
+        onChange={() => {
+          setCustomLoader(!customLoader);
+        }}
+      >
+        Use a custom loader
+      </Checkbox>
+
+      <Checkbox
+        checked={loadAnimation}
+        onChange={() => {
+          setLoadAnimation(!loadAnimation);
+        }}
+      >
+        loadAnimation
+      </Checkbox>
+
+      <Table
+        loading={loading}
+        height={500}
+        data={data}
+        loadAnimation={loadAnimation}
+        renderLoading={customLoader ? renderLoading : null}
+      >
         <Column width={70} align="center" fixed>
           <HeaderCell>Id</HeaderCell>
           <Cell dataKey="id" />
@@ -75,5 +105,3 @@ ReactDOM.render(<App />);
 ```
 
 <!--end-code-->
-
-> 当数据在异步获取中，需要在显示一个 `loading` 状态, 只需要在 `<Table>` 上设置 `loading` 属性就行
