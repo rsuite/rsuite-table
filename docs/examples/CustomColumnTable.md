@@ -116,6 +116,21 @@ const App = () => {
     });
   }, []);
 
+  const [columnWidths, setColumnWidths] = React.useState({
+    id: 80,
+    firstName: 150,
+    lastName: 150,
+    email: 300
+  });
+
+  const handleColumnResize = (columnWidth, dataKey) => {
+    setColumnWidths(prevColumnWidths => {
+      const nextColumnWidths = { ...prevColumnWidths };
+      nextColumnWidths[dataKey] = columnWidth;
+      return nextColumnWidths;
+    });
+  };
+
   return (
     <Table height={400} data={data} headerHeight={50} virtualized>
       <Column width={50} align="center">
@@ -130,22 +145,22 @@ const App = () => {
         </HeaderCell>
         <CheckCell dataKey="id" checkedKeys={checkedKeys} onChange={handleCheck} />
       </Column>
-      <Column width={80} align="center">
+      <Column width={columnWidths.id} align="center" resizable onResize={handleColumnResize}>
         <HeaderCell>Id</HeaderCell>
-        <NameCell dataKey="id" />
+        <Cell dataKey="id" />
       </Column>
-      <Column width={160}>
+      <Column width={columnWidths.firstName} resizable onResize={handleColumnResize}>
         <HeaderCell>First Name</HeaderCell>
         <NameCell dataKey="firstName" />
       </Column>
-      <Column width={160}>
+      <Column width={columnWidths.lastName} resizable onResize={handleColumnResize}>
         <HeaderCell>Last Name</HeaderCell>
         <BaseCell dataKey="lastName" />
       </Column>
 
-      <Column width={300}>
+      <Column width={columnWidths.email} resizable onResize={handleColumnResize}>
         <HeaderCell>Email</HeaderCell>
-        <InputCell data={emailList} onChange={handleEmailChange} />
+        <InputCell dataKey="email" data={emailList} onChange={handleEmailChange} />
       </Column>
 
       <Column width={200}>
