@@ -47,7 +47,6 @@ specifiers:
   eslint-plugin-prettier: ^3.4.0
   eslint-plugin-react: ^7.24.0
   eslint-plugin-react-hooks: ^4.2.0
-  faker: ^5.5.3
   file-loader: ^0.10.1
   gh-pages: ^0.12.0
   gulp: ^4.0.2
@@ -94,7 +93,6 @@ specifiers:
 
 dependencies:
   '@babel/runtime': 7.18.9
-  '@faker-js/faker': 7.6.0
   '@juggle/resize-observer': 3.4.0
   '@rsuite/icons': 1.0.2_biqbaboplfbrettd7655fr4n2y
   classnames: 2.3.1
@@ -117,6 +115,7 @@ devDependencies:
   '@babel/preset-typescript': 7.18.6_@babel+core@7.18.10
   '@commitlint/cli': 13.2.1
   '@commitlint/config-conventional': 13.2.0
+  '@faker-js/faker': 7.6.0
   '@types/lodash': 4.14.183
   '@types/prop-types': 15.7.5
   '@types/react': 18.0.17
@@ -143,7 +142,6 @@ devDependencies:
   eslint-plugin-prettier: 3.4.1_7gsvg5lgwpfdww3i7smtqxamuy
   eslint-plugin-react: 7.30.1_eslint@7.32.0
   eslint-plugin-react-hooks: 4.6.0_eslint@7.32.0
-  faker: 5.5.3
   file-loader: 0.10.1
   gh-pages: 0.12.0
   gulp: 4.0.2
@@ -1782,7 +1780,7 @@ packages:
   /@faker-js/faker/7.6.0:
     resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
     engines: {node: '>=14.0.0', npm: '>=6.0.0'}
-    dev: false
+    dev: true
 
   /@gulp-sourcemaps/identity-map/1.0.2:
     resolution: {integrity: sha512-ciiioYMLdo16ShmfHBXJBOFm3xPC4AuwO4xeRpFeHz7WK9PYsWCmigagG2XyzZpubK4a3qNKoUBDhbzHfa50LQ==}
@@ -5721,10 +5719,6 @@ packages:
   /extsprintf/1.3.0:
     resolution: {integrity: sha512-11Ndz7Nv+mvAC1j0ktTa7fAb0vLyGGX+rMHNBYQviQDGU0Hw7lhctJANqbPhu9nV9/izT/IntTgZ7Im/9LJs9g==}
     engines: {'0': node >=0.6.0}
-    dev: true
-
-  /faker/5.5.3:
-    resolution: {integrity: sha512-wLTv2a28wjUyWkbnX7u/ABZBkUkIF2fCd73V6P2oFqEGEktDfzWx4UxrSqtPRw0xPRAcjeAOIiJWqZm3pP4u3g==}
     dev: true
 
   /fancy-log/1.3.3:
