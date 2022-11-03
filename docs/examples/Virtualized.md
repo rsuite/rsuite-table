@@ -5,14 +5,16 @@ Virtualize Long Lists
 <!--start-code-->
 
 ```js
+const data = mockUsers(10000);
+
 const LargeListsTable = () => {
-  const tableRef = React.createRef();
+  const tableRef = React.useRef();
   return (
     <div>
       <Table
         virtualized
         height={400}
-        data={fakeLargeData}
+        data={data}
         ref={tableRef}
         onRowClick={data => {
           console.log(data);
@@ -44,8 +46,8 @@ const LargeListsTable = () => {
         </Column>
 
         <Column width={200}>
-          <HeaderCell>Company Name</HeaderCell>
-          <Cell dataKey="companyName" />
+          <HeaderCell>Company</HeaderCell>
+          <Cell dataKey="company" />
         </Column>
       </Table>
       <button

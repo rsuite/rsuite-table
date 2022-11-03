@@ -15,6 +15,7 @@ class FixedColumnTable extends React.Component {
       <div>
         <Table
           bordered
+          cellBordered
           height={400}
           data={this.state.data}
           onRowClick={data => {
@@ -47,8 +48,8 @@ class FixedColumnTable extends React.Component {
           </Column>
 
           <Column width={200}>
-            <HeaderCell>Company Name</HeaderCell>
-            <Cell dataKey="companyName" />
+            <HeaderCell>Company</HeaderCell>
+            <Cell dataKey="company" />
           </Column>
 
           <Column width={200}>

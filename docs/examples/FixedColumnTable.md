@@ -3,6 +3,8 @@
 <!--start-code-->
 
 ```js
+const fakeData = mockUsers(20);
+
 const App = () => {
   // data is empty initially
   const [data, setData] = React.useState([]);
@@ -53,8 +55,8 @@ const App = () => {
       </Column>
 
       <Column width={200}>
-        <HeaderCell>Company Name</HeaderCell>
-        <Cell dataKey="companyName" />
+        <HeaderCell>Company</HeaderCell>
+        <Cell dataKey="company" />
       </Column>
 
       <Column width={200}>

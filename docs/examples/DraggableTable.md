@@ -104,8 +104,10 @@ function sort(source, sourceId, targetId) {
   return nextData;
 }
 
+const fakeData = mockUsers(20);
+
 function DraggableTable() {
-  const [data, setData] = React.useState(fakeData.filter((item, index) => index < 20));
+  const [data, setData] = React.useState(fakeData);
   const [columns, setColumns] = React.useState([
     { id: 'id', name: 'Id', width: 80 },
     { id: 'firstName', name: 'First Name', width: 200 },

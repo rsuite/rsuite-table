@@ -17,6 +17,8 @@ const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) =
   </Cell>
 );
 
+const data = mockUsers(20);
+
 const ExpandedTable = () => {
   const [expandedRowKeys, setExpandedRowKeys] = React.useState([0]);
 
@@ -43,7 +45,7 @@ const ExpandedTable = () => {
     <Table
       shouldUpdateScroll={false}
       height={400}
-      data={fakeData}
+      data={data}
       rowKey={rowKey}
       expandedRowKeys={expandedRowKeys}
       onRowClick={data => {
@@ -95,8 +97,8 @@ const ExpandedTable = () => {
       </Column>
 
       <Column width={300}>
-        <HeaderCell>Company Name</HeaderCell>
-        <Cell dataKey="companyName" />
+        <HeaderCell>Company</HeaderCell>
+        <Cell dataKey="company" />
       </Column>
     </Table>
   );

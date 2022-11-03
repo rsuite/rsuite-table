@@ -38,8 +38,8 @@ const App = () => {
       </Column>
 
       <Column width={200}>
-        <HeaderCell>Company Name</HeaderCell>
-        <Cell dataKey="companyName" />
+        <HeaderCell>Company</HeaderCell>
+        <Cell dataKey="company" />
       </Column>
 
       <Column width={200}>

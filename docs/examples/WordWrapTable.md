@@ -3,6 +3,8 @@
 <!--start-code-->
 
 ```js
+const fakeData = mockUsers(20);
+
 const App = () => {
   const [data, setData] = React.useState(fakeData);
   const [wordWrap, setWordWrap] = React.useState('break-all');
@@ -76,8 +78,8 @@ const App = () => {
         </Column>
 
         <Column width={130}>
-          <HeaderCell>Company Name</HeaderCell>
-          <Cell dataKey="companyName" />
+          <HeaderCell>Company</HeaderCell>
+          <Cell dataKey="company" />
         </Column>
 
         <Column width={100}>

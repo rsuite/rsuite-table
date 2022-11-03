@@ -5,11 +5,12 @@ Force the height of the table to be equal to the height of its parent container.
 <!--start-code-->
 
 ```js
+const data = mockUsers(50);
+
 const App = () => {
   const [height, setHeight] = React.useState(30);
   const [fillHeight, setFillHeight] = React.useState(false);
 
-  const data = fakeData.filter((item, index) => index < 50);
   return (
     <div>
       <Stack spacing={10} divider={<Divider vertical />}>
@@ -71,8 +72,8 @@ const App = () => {
           </Column>
 
           <Column width={200}>
-            <HeaderCell>Company Name</HeaderCell>
-            <Cell dataKey="companyName" />
+            <HeaderCell>Company</HeaderCell>
+            <Cell dataKey="company" />
           </Column>
 
           <Column width={200}>

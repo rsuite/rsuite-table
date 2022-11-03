@@ -54,17 +54,17 @@ const App = () => {
         </Column>
       </ColumnGroup>
       <Column width={200} verticalAlign="middle" sortable>
-        <HeaderCell>Company Name</HeaderCell>
-        <Cell dataKey="companyName" />
+        <HeaderCell>Company</HeaderCell>
+        <Cell dataKey="company" />
       </Column>
 
       <Column width={200} verticalAlign="middle" sortable>
-        <HeaderCell>Company Name</HeaderCell>
-        <Cell dataKey="companyName" />
+        <HeaderCell>Company</HeaderCell>
+        <Cell dataKey="company" />
       </Column>
       <Column width={200} verticalAlign="middle" sortable>
-        <HeaderCell>Company Name</HeaderCell>
-        <Cell dataKey="companyName" />
+        <HeaderCell>Company</HeaderCell>
+        <Cell dataKey="company" />
       </Column>
 
       <Column width={100} resizable colSpan={2} verticalAlign="middle" sortable>

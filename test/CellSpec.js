@@ -166,4 +166,15 @@ describe('Cell', () => {
     assert.equal(instance.innerText, 'foobar');
     assert.equal(instance2.innerText, 'bar');
   });
+
+  it('Should show full text', () => {
+    const instance = getDOMNode(
+      <Cell rowData={{ name: 'foobar' }} dataKey="name" fullText width={100} />
+    );
+
+    expect(instance).to.have.class('rs-cell-full-text');
+    expect(instance).to.style('min-width', '100px');
+    expect(instance.style.width).to.equal('');
+    expect(instance.querySelector('.rs-cell-content')).to.style('width', '99px');
+  });
 });

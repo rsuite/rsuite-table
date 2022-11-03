@@ -11,7 +11,7 @@ export default [
     date: '2016-09-23T07:57:40.195Z',
     bs: 'global drive functionalities',
     catchPhrase: 'Intuitive impactful software',
-    companyName: 'Lebsack - Nicolas',
+    company: 'Lebsack - Nicolas',
     words: 'saepe et omnis',
     sentence: 'Quos aut sunt id nihil qui.'
   },
@@ -27,7 +27,7 @@ export default [
     date: '2017-03-06T09:59:12.551Z',
     bs: 'e-business maximize bandwidth',
     catchPhrase: 'De-engineered discrete secured line',
-    companyName: 'Glover - Hermiston',
+    company: 'Glover - Hermiston',
     words: 'deleniti dolor nihil',
     sentence: 'Illo quidem libero corporis laborum.'
   },
@@ -43,7 +43,7 @@ export default [
     date: '2016-12-08T13:44:26.557Z',
     bs: 'plug-and-play e-enable content',
     catchPhrase: 'Ergonomic 6th generation challenge',
-    companyName: 'Williamson - Kassulke',
+    company: 'Williamson - Kassulke',
     words: 'quidem earum magnam',
     sentence: 'Nam qui perferendis ut rem vitae saepe.'
   },
@@ -59,7 +59,7 @@ export default [
     date: '2016-07-19T12:54:30.994Z',
     bs: 'extensible innovate e-business',
     catchPhrase: 'Upgradable local model',
-    companyName: 'Hilpert, Eichmann and Brown',
+    company: 'Hilpert, Eichmann and Brown',
     words: 'exercitationem rerum sit',
     sentence: 'Qui rerum ipsa atque qui.'
   },
@@ -75,7 +75,7 @@ export default [
     date: '2017-02-23T17:11:53.875Z',
     bs: 'back-end orchestrate networks',
     catchPhrase: 'Exclusive human-resource knowledge base',
-    companyName: 'Mayer - Considine',
+    company: 'Mayer - Considine',
     words: 'voluptatum tempore at',
     sentence: 'Enim quia deleniti molestiae aut.'
   },
@@ -91,7 +91,7 @@ export default [
     date: '2016-06-30T05:23:18.734Z',
     bs: 'sexy evolve technologies',
     catchPhrase: 'Virtual hybrid throughput',
-    companyName: 'Nikolaus and Sons',
+    company: 'Nikolaus and Sons',
     words: 'alias minus repudiandae',
     sentence: 'Sed qui eius excepturi sunt voluptates.'
   },
@@ -107,7 +107,7 @@ export default [
     date: '2017-03-13T21:09:47.253Z',
     bs: 'wireless morph synergies',
     catchPhrase: 'Profit-focused radical help-desk',
-    companyName: 'Corwin, Maggio and Wintheiser',
+    company: 'Corwin, Maggio and Wintheiser',
     words: 'temporibus possimus neque',
     sentence: 'Eum amet ea non natus qui assumenda illo officia qui.'
   },
@@ -123,7 +123,7 @@ export default [
     date: '2016-03-27T07:26:57.345Z',
     bs: 'customized integrate e-tailers',
     catchPhrase: 'Total system-worthy contingency',
-    companyName: 'Gulgowski - Botsford',
+    company: 'Gulgowski - Botsford',
     words: 'deleniti ipsa hic',
     sentence: 'Ducimus id quaerat neque.'
   },
@@ -139,7 +139,7 @@ export default [
     date: '2017-01-24T22:11:53.835Z',
     bs: 'extensible repurpose action-items',
     catchPhrase: 'Virtual dedicated definition',
-    companyName: 'Maggio LLC',
+    company: 'Maggio LLC',
     words: 'libero unde est',
     sentence: 'Non adipisci hic laboriosam et qui laudantium aspernatur.'
   },
@@ -155,7 +155,7 @@ export default [
     date: '2016-07-20T05:59:45.630Z',
     bs: 'cutting-edge expedite partnerships',
     catchPhrase: 'Organic user-facing functionalities',
-    companyName: 'Leffler, Cummerata and Price',
+    company: 'Leffler, Cummerata and Price',
     words: 'sed exercitationem quas',
     sentence: 'Voluptas dolorem quasi aspernatur.'
   }
