@@ -5,19 +5,13 @@
 ```js
 const fakeData = mockUsers(20);
 
-class SortTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sortColumn: 'id',
-      data: fakeData
-    };
-    this.handleSortColumn = this.handleSortColumn.bind(this);
-  }
+const App = () => {
+  const [data, setData] = React.useState(fakeData);
+  const [sortColumn, setSortColumn] = React.useState('id');
+  const [sortType, setSortType] = React.useState('asc');
+  const [loading, setLoading] = React.useState(false);
 
-  getData() {
-    const { data, sortColumn, sortType } = this.state;
-
+  const sortData = () => {
     if (sortColumn && sortType) {
       return data.sort((a, b) => {
         let x = a[sortColumn];
@@ -36,91 +30,82 @@ class SortTable extends React.Component {
       });
     }
     return data;
-  }
+  };
 
-  handleSortColumn(sortColumn, sortType) {
-    this.setState({
-      loading: true
-    });
+  const handleSortColumn = (sortColumn, sortType) => {
+    setLoading(true);
 
     setTimeout(() => {
-      console.log(sortColumn);
-      this.setState({
-        sortColumn,
-        sortType,
-        loading: false
-      });
+      setLoading(false);
+      setSortColumn(sortColumn);
+      setSortType(sortType);
     }, 500);
-  }
-  render() {
-    return (
-      <div>
-        <Table
-          height={400}
-          data={this.getData()}
-          sortColumn={this.state.sortColumn}
-          sortType={this.state.sortType}
-          onSortColumn={this.handleSortColumn}
-          loading={this.state.loading}
-          onRowClick={data => {
-            console.log(data);
+  };
+
+  return (
+    <Table
+      height={400}
+      data={sortData()}
+      sortColumn={sortColumn}
+      sortType={sortType}
+      onSortColumn={handleSortColumn}
+      loading={loading}
+      onRowClick={data => {
+        console.log(data);
+      }}
+    >
+      <Column width={70} align="center" fixed sortable>
+        <HeaderCell>Id</HeaderCell>
+        <Cell dataKey="id" />
+      </Column>
+
+      <Column width={130} fixed sortable>
+        <HeaderCell
+          renderSortIcon={sortType => {
+            console.log(sortType);
+
+            if (sortType === 'asc') {
+              return 1;
+            } else if (sortType === 'desc') {
+              return 2;
+            }
+
+            return 3;
           }}
         >
-          <Column width={70} align="center" fixed sortable>
-            <HeaderCell>Id</HeaderCell>
-            <Cell dataKey="id" />
-          </Column>
+          First Name
+        </HeaderCell>
+        <Cell dataKey="firstName" />
+      </Column>
+      <Column width={130} sortable>
+        <HeaderCell>Last Name</HeaderCell>
+        <Cell dataKey="lastName" />
+      </Column>
 
-          <Column width={130} fixed sortable>
-            <HeaderCell
-              renderSortIcon={sortType => {
-                console.log(sortType);
+      <Column width={200} sortable>
+        <HeaderCell>City</HeaderCell>
+        <Cell dataKey="city" />
+      </Column>
 
-                if (sortType === 'asc') {
-                  return 1;
-                } else if (sortType === 'desc') {
-                  return 2;
-                }
+      <Column width={200} sortable>
+        <HeaderCell>Street</HeaderCell>
+        <Cell dataKey="street" />
+      </Column>
 
-                return 3;
-              }}
-            >
-              First Name
-            </HeaderCell>
-            <Cell dataKey="firstName" />
-          </Column>
+      <Column width={200} sortable>
+        <HeaderCell>Company</HeaderCell>
+        <Cell dataKey="company" />
+      </Column>
 
-          <Column width={130} sortable>
-            <HeaderCell>Last Name</HeaderCell>
-            <Cell dataKey="lastName" />
-          </Column>
+      <Column width={200}>
+        <HeaderCell>Email</HeaderCell>
+        <Cell dataKey="email" />
+      </Column>
+    </Table>
+  );
+};
 
-          <Column width={200} sortable>
-            <HeaderCell>City</HeaderCell>
-            <Cell dataKey="city" />
-          </Column>
-
-          <Column width={200} sortable>
-            <HeaderCell>Street</HeaderCell>
-            <Cell dataKey="street" />
-          </Column>
-
-          <Column width={200} sortable>
-            <HeaderCell>Company</HeaderCell>
-            <Cell dataKey="company" />
-          </Column>
-
-          <Column width={200}>
-            <HeaderCell>Email</HeaderCell>
-            <Cell dataKey="email" />
-          </Column>
-        </Table>
-      </div>
-    );
-  }
-}
-
-ReactDOM.render(<SortTable />);
+ReactDOM.render(<App />);
 ```
 
 <!--end-code-->
