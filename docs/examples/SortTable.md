@@ -3,10 +3,9 @@
 <!--start-code-->
 
 ```js
-const fakeData = mockUsers(20);
+const data = mockUsers(20);
 
 const App = () => {
-  const [data, setData] = React.useState(fakeData);
   const [sortColumn, setSortColumn] = React.useState('id');
   const [sortType, setSortType] = React.useState('asc');
   const [loading, setLoading] = React.useState(false);
