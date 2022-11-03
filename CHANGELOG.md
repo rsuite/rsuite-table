@@ -1,3 +1,12 @@
+# [5.8.0](https://github.com/rsuite/rsuite-table/compare/5.7.2...5.8.0) (2022-11-03)
+
+
+### Features
+
+* **Column:** support for show  full text when hovering over a cell ([#376](https://github.com/rsuite/rsuite-table/issues/376)) ([2d5066a](https://github.com/rsuite/rsuite-table/commit/2d5066a73e4660ca69437afd3bc9fdc2927bdfb8))
+
+
+
 ## [5.7.2](https://github.com/rsuite/rsuite-table/compare/5.7.1...5.7.2) (2022-09-29)
 
 
