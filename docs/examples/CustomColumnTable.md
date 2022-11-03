@@ -44,7 +44,7 @@ const NameCell = ({ rowData, dataKey, ...props }) => {
         <b>Email:</b> {rowData.email}{' '}
       </p>
       <p>
-        <b>Company:</b> {rowData.companyName}{' '}
+        <b>Company:</b> {rowData.company}{' '}
       </p>
       <p>
         <b>Sentence:</b> {rowData.sentence}{' '}
@@ -86,7 +86,7 @@ const InputCell = React.memo(({ rowData, data, value, onChange, ...props }) => {
   );
 });
 
-const data = [...fakeLargeData];
+const data = mockUsers(1000);
 const App = () => {
   const [checkedKeys, setCheckedKeys] = React.useState([]);
   const [emailList, setEmailList] = React.useState(data.map(item => item.email));

@@ -3,6 +3,8 @@
 <!--start-code-->
 
 ```js
+const fakeData = mockUsers(20);
+
 class SortTable extends React.Component {
   constructor(props) {
     super(props);
@@ -104,8 +106,8 @@ class SortTable extends React.Component {
           </Column>
 
           <Column width={200} sortable>
-            <HeaderCell>Company Name</HeaderCell>
-            <Cell dataKey="companyName" />
+            <HeaderCell>Company</HeaderCell>
+            <Cell dataKey="company" />
           </Column>
 
           <Column width={200}>

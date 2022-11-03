@@ -3,6 +3,22 @@
 <!--start-code-->
 
 ```js
+const data = mockTreeData({
+  limits: [2, 3, 3],
+  labels: layer => {
+    if (layer === 0) {
+      return faker.vehicle.manufacturer();
+    } else if (layer === 1) {
+      return faker.vehicle.fuel();
+    }
+    return faker.vehicle.vehicle();
+  },
+  getRowData: () => ({
+    price: faker.commerce.price(10000, 1000000, 0, '$', true),
+    rating: faker.finance.amount(2, 5)
+  })
+});
+
 const App = () => {
   const [tree, setTree] = React.useState(true);
   return (
@@ -18,48 +34,41 @@ const App = () => {
         isTree
       </label>
       <Table
-        wordWrap
         virtualized
         isTree={tree}
-        minHeight={260}
+        defaultExpandAllRows
+        bordered
+        cellBordered
+        rowKey="value"
         height={400}
-        rowKey="key"
-        data={fakeTreeData}
+        data={data}
+        /** shouldUpdateScroll: whether to update the scroll bar after data update **/
         shouldUpdateScroll={false}
-        defaultExpandedRowKeys={[0]}
-        onExpandChange={(expanded, rowData) => {
-          console.log(expanded, rowData);
+        onExpandChange={(isOpen, rowData) => {
+          console.log(isOpen, rowData);
         }}
-        renderTreeToggle={(icon, rowData, expanded) => {
-          if (rowData.labelName === '手机') {
-            return <i className="icon icon-spin icon-spinner" />;
+        renderTreeToggle={(icon, rowData) => {
+          if (rowData.children && rowData.children.length === 0) {
+            return <SpinnerIcon spin />;
           }
           return icon;
         }}
       >
+        <Column flexGrow={1}>
+          <HeaderCell>Vehicle 🚗</HeaderCell>
+          <Cell dataKey="label" />
+        </Column>
+        <Column width={180}>
+          <HeaderCell>Rating ⭐️</HeaderCell>
+          <Cell>
+            {rowData =>
+              Array.from({ length: rowData.rating }).map((_, i) => <span key={i}>⭐️</span>)
+            }
+          </Cell>
+        </Column>
         <Column width={100}>
-          <HeaderCell>Key</HeaderCell>
-          <Cell dataKey="key" />
-        </Column>
-
-        <Column flexGrow={1} treeCol>
-          <HeaderCell>Name (Tree Col)</HeaderCell>
-          <Cell dataKey="name" />
-        </Column>
-
-        <Column width={120}>
-          <HeaderCell>Country</HeaderCell>
-          <Cell dataKey="country" />
-        </Column>
-
-        <Column width={150}>
-          <HeaderCell>Status</HeaderCell>
-          <Cell dataKey="status" />
-        </Column>
-
-        <Column width={150}>
-          <HeaderCell>Count</HeaderCell>
-          <Cell dataKey="count" />
+          <HeaderCell>Price 💰</HeaderCell>
+          <Cell dataKey="price" />
         </Column>
       </Table>
     </div>

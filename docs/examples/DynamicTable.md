@@ -32,7 +32,7 @@ const CheckBoxCell = ({
 };
 
 const App = () => {
-  const [data, setData] = React.useState(fakeObjectDataListStore(2));
+  const [data, setData] = React.useState(mockUsers(2));
   const [columns, setColumns] = React.useState([]);
   const [checkValues, setCheckValues] = React.useState([]);
   const [tableWidth, setTableWidth] = React.useState('auto');
@@ -67,11 +67,11 @@ const App = () => {
     setData([]);
   };
   const handleResetData = () => {
-    setData(fakeObjectDataListStore(10));
+    setData(mockUsers(10));
   };
 
   const handleRowClick = () => {
-    const rowData = createFakeRowObjectData(data.length + 1);
+    const rowData = createUser(data.length + 1);
 
     setData([...data, rowData]);
   };
@@ -122,7 +122,7 @@ const App = () => {
         </Column>
         <Column width={200}>
           <HeaderCell>City</HeaderCell>
-          <Cell dataKey="address.city" />
+          <Cell dataKey="city" />
         </Column>
         {columns}
       </Table>

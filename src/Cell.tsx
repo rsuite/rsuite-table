@@ -31,6 +31,7 @@ export interface InnerCellProps extends Omit<CellProps, 'children'> {
   left?: number;
   headerHeight?: number;
   style?: React.CSSProperties;
+  fullText?: boolean;
   firstColumn?: boolean;
   lastColumn?: boolean;
   hasChildren?: boolean;
@@ -76,6 +77,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     height = 36,
     style,
     className,
+    fullText,
     firstColumn,
     lastColumn,
     isHeaderCell,
@@ -123,14 +125,15 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
       expanded: expanded && isTreeCol,
       first: firstColumn,
       last: lastColumn,
-      rowspan: rowSpan && !isHeaderCell
+      rowspan: rowSpan && !isHeaderCell,
+      'full-text': fullText
     })
   );
 
   const nextHeight = isHeaderCell ? headerHeight : cellHeight;
   const styles = {
     ...predefinedStyle,
-    width,
+    [fullText ? 'minWidth' : 'width']: width,
     height: nextHeight,
     zIndex: depth,
     [rtl ? 'right' : 'left']: left
@@ -139,7 +142,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
   const paddingKey = rtl ? 'paddingRight' : 'paddingLeft';
   const contentStyles: React.CSSProperties = {
     ...style,
-    width,
+    width: fullText ? width - 1 : width,
     height: nextHeight,
     textAlign: align,
     [paddingKey]: isTreeCol ? depth * LAYER_WIDTH + 10 : style?.[paddingKey] || style?.padding
@@ -240,7 +243,8 @@ Cell.propTypes = {
   wordWrap: PropTypes.any,
   removed: PropTypes.bool,
   treeCol: PropTypes.bool,
-  expanded: PropTypes.bool
+  expanded: PropTypes.bool,
+  fullText: PropTypes.bool
 };
 
 export default Cell;

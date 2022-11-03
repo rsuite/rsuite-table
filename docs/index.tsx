@@ -18,16 +18,13 @@ import get from 'lodash/get';
 import without from 'lodash/without';
 import App from './App';
 import { Table, Column, Cell, HeaderCell, ColumnGroup } from '../src';
-import fakeData from './data/users';
-import fakeTreeData from './data/treeData';
-import fakeBigTreeData from './data/bigTreeData';
 import fakeDataForColSpan from './data/usersForColSpan';
 import fakeDataForRowSpan from './data/usersForRowSpan';
-import fakeLargeData from './data/fakeLargeData.json';
-import fakeObjectDataListStore, { createFakeRowObjectData } from './data/fakeObjectDataListStore';
+import { createUser, mockUsers, mockTreeData } from './data/mock';
 import GearIcon from '@rsuite/icons/Gear';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { faker } from '@faker-js/faker';
 
 import 'rsuite/Popover/styles/index.less';
 import 'rsuite/Toggle/styles/index.less';
@@ -48,10 +45,6 @@ const dependencies = {
   Popover,
   Whisper,
   Toggle,
-  fakeData,
-  fakeTreeData,
-  fakeBigTreeData,
-  fakeLargeData,
   fakeDataForColSpan,
   fakeDataForRowSpan,
   Table,
@@ -60,8 +53,6 @@ const dependencies = {
   Cell,
   HeaderCell,
   clone,
-  createFakeRowObjectData,
-  fakeObjectDataListStore,
   isFunction,
   get,
   without,
@@ -73,7 +64,11 @@ const dependencies = {
   Stack,
   Divider,
   Input,
-  Loader
+  Loader,
+  faker,
+  createUser,
+  mockUsers,
+  mockTreeData
 };
 
 const examples = [
@@ -186,6 +181,10 @@ const examples = [
   {
     title: 'Update Data',
     content: require('./examples/UpdateData.md')
+  },
+  {
+    title: 'Show full text',
+    content: require('./examples/fullText.md')
   }
 ];
 

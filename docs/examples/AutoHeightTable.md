@@ -5,11 +5,12 @@ The height of the table will be automatically expanded according to the number o
 <!--start-code-->
 
 ```js
+const data = mockUsers(20);
 const App = () => {
-  const [size, setSize] = React.useState(fakeData.length);
+  const [size, setSize] = React.useState(data.length);
   const [autoHeight, setAutoHeight] = React.useState(true);
 
-  const data = fakeData.filter((item, index) => index < size);
+  const filterData = data.filter((item, index) => index < size);
   return (
     <div>
       <Stack spacing={10} divider={<Divider vertical />}>
@@ -41,7 +42,7 @@ const App = () => {
         height={400}
         autoHeight={autoHeight}
         cellBordered
-        data={data}
+        data={filterData}
         onRowClick={data => {
           console.log(data);
         }}
@@ -72,8 +73,8 @@ const App = () => {
         </Column>
 
         <Column width={200}>
-          <HeaderCell>Company Name</HeaderCell>
-          <Cell dataKey="companyName" />
+          <HeaderCell>Company</HeaderCell>
+          <Cell dataKey="company" />
         </Column>
 
         <Column width={200}>

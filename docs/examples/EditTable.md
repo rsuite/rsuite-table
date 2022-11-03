@@ -35,8 +35,10 @@ const ActionCell = ({ rowData, dataKey, onClick, ...props }) => {
   );
 };
 
+const fakeData = mockUsers(20);
+
 const App = () => {
-  const [data, setData] = React.useState(fakeData.filter((item, index) => index < 20));
+  const [data, setData] = React.useState(fakeData);
   const handleChange = (id, key, value) => {
     const nextData = clone(data);
     nextData.find(item => item.id === id)[key] = value;

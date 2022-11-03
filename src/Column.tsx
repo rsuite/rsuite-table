@@ -13,6 +13,9 @@ export interface ColumnProps {
   /** Fixed column */
   fixed?: boolean | 'left' | 'right';
 
+  /** Whether to display the full text of the cell content when the mouse is hovered */
+  fullText?: boolean;
+
   /** Vertical alignment */
   verticalAlign?: 'top' | 'middle' | 'bottom';
 
@@ -59,7 +62,8 @@ const propTypes = {
   rowSpan: PropTypes.func,
   treeCol: PropTypes.bool,
   onResize: PropTypes.func,
-  children: PropTypes.node
+  children: PropTypes.node,
+  fullText: PropTypes.bool
 };
 
 Column.displayName = 'Table.Column';
