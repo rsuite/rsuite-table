@@ -5,9 +5,10 @@ import Frame from './components/Frame';
 import TableIcon from '@rsuite/icons/Table';
 import GithubIcon from '@rsuite/icons/legacy/Github';
 import BookIcon from '@rsuite/icons/legacy/Book';
+import kebabCase from 'lodash/kebabCase';
 
 interface ExampleType {
-  title: React.ReactNode;
+  title: string;
   content: React.ReactNode;
 }
 
@@ -18,7 +19,7 @@ interface ExamplesProps {
 
 const getDefaultIndex = () => {
   const hash = document.location.hash.replace('#', '');
-  return hash ? parseInt(hash) : 0;
+  return hash || 'virtualized';
 };
 
 const afterCompile = (code: string) => {
@@ -28,6 +29,8 @@ const afterCompile = (code: string) => {
 const App = (props: ExamplesProps) => {
   const { examples, dependencies } = props;
   const [index, setIndex] = React.useState(getDefaultIndex());
+
+  const content = examples.find(item => kebabCase(item.title) === index)?.content;
 
   return (
     <Frame
@@ -41,13 +44,15 @@ const App = (props: ExamplesProps) => {
             icon={<TableIcon />}
           >
             {examples.map((item, i) => {
+              const navKey = kebabCase(item.title);
+
               return (
                 <Nav.Item
                   key={i}
-                  href={`#${i}`}
-                  active={i === index}
+                  href={`#${navKey}`}
+                  active={navKey === index}
                   onClick={() => {
-                    setIndex(i);
+                    setIndex(navKey);
                   }}
                 >
                   {item.title}
@@ -75,7 +80,7 @@ const App = (props: ExamplesProps) => {
       }
     >
       <CodeView key={index} dependencies={dependencies} afterCompile={afterCompile}>
-        {examples[index]?.content}
+        {content}
       </CodeView>
     </Frame>
   );
