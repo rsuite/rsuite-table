@@ -19,7 +19,7 @@ interface ExamplesProps {
 
 const getDefaultIndex = () => {
   const hash = document.location.hash.replace('#', '');
-  return hash || '';
+  return hash || 'virtualized';
 };
 
 const afterCompile = (code: string) => {
