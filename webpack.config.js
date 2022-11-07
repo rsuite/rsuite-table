@@ -25,7 +25,6 @@ module.exports = () => {
     },
     plugins: [
       new HtmlwebpackPlugin({
-        title: 'Responsive Nav',
         filename: 'index.html',
         template: 'docs/index.html',
         inject: true,

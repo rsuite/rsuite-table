@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>RSUITE Table</title>
+    <title>Table - React Suite</title>
+    <meta name="description" content="A React table component" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
@@ -12,27 +13,17 @@
 
     <script>
       (function (i, d, t, o, u, h, s, f) {
-        (i[t] = i[t] || []), i[t].push(h);
-        i[h] =
-          i[h] ||
-          function () {
-            return (i[h].q = i[h].q || []).push(arguments);
-          };
-        s = d.createElement(o);
-        s.src = u;
-        s.async = 1;
-        f = d.getElementsByTagName(o)[0];
-        f.parentNode.insertBefore(s, f);
-      })(
-        window,
-        document,
-        'HyperAnalyticsObject',
-        'script',
-        '//t.hypers.com.cn/hwt.js?v=1.6',
-        '_ha'
-      );
-      _ha('create', '5156');
-      _ha('send', 'pageview');
-    </script>
+          i[t] = i[t] || [], i[t].push(h); i[h] = i[h] || function () {
+              return (i[h].q = i[h].q || []).push(arguments)
+          }; s = d.createElement(o); s.src = u;
+          s.async = 1; f = d.getElementsByTagName(o)[0]; f.parentNode.insertBefore(s, f);
+      })(window, document, "HyperAnalyticsObject", "script", "//t.hypers.com.cn/hwt.js", "_ha");
+      _ha("create", "21972", {
+          auto_track: true,
+          env: { inst: "saas" },
+          api_url:"//t.hypers.com.cn"
+      });
+      _ha("send", "pageview");
+  </script>
   </body>
 </html>
