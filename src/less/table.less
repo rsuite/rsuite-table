@@ -16,15 +16,15 @@
     transition: none;
   }
 
-  &-hover &-row:hover {
+  &-hover &-body-row-wrapper &-row:hover {
     background: @row-hover-color;
   }
 
-  &-hover &-row:hover &-cell-group {
+  &-hover &-body-row-wrapper &-row:hover &-cell-group {
     background: @row-hover-color;
   }
 
-  &-hover &-row:hover &-cell {
+  &-hover &-body-row-wrapper &-row:hover &-cell {
     background: @row-hover-color;
   }
 
@@ -82,7 +82,7 @@
     white-space: normal;
     background: @body-background;
     transition: none;
-    
+
     &.first {
       border-left-width: 0;
     }
