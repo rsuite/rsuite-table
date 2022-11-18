@@ -6,28 +6,12 @@
 const data = mockUsers(20);
 
 const CustomColumn = React.forwardRef((props, ref) => {
-  return (
-    <Column
-      ref={ref}
-      sortable
-      align="center"
-      flexGrow={1}
-      fullText
-      style={{ fontSize: 16, color: 'red' }}
-      {...props}
-    />
-  );
+  return <Column ref={ref} sortable align="center" flexGrow={1} fullText {...props} />;
 });
 
 const App = () => {
   return (
-    <Table
-      height={400}
-      data={data}
-      onSortColumn={(sortColumn, sortType) => {
-        console.log(sortColumn, sortType);
-      }}
-    >
+    <Table height={400} data={data}>
       <CustomColumn align="left">
         <HeaderCell>Id</HeaderCell>
         <Cell dataKey="id" />
