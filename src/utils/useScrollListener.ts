@@ -187,7 +187,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
         // Add a state to the table during virtualized scrolling.
         // Make it set CSS `pointer-events:none` on the DOM to avoid wrong event interaction.
 
-        setScrolling(true);
+        flushSync(() => setScrolling(true));
 
         if (disableEventsTimeoutId.current) {
           cancelAnimationTimeout(disableEventsTimeoutId.current);
