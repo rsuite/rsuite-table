@@ -1,3 +1,14 @@
+## [5.8.1](https://github.com/rsuite/rsuite-table/compare/5.8.0...5.8.1) (2022-11-21)
+
+
+### Bug Fixes
+
+* **Column:** fix cannot customize columns ([#388](https://github.com/rsuite/rsuite-table/issues/388)) ([7cfb8f9](https://github.com/rsuite/rsuite-table/commit/7cfb8f910dba08322426760bfaa92073180343b4))
+* **Row:** fix the style error of header hover ([#386](https://github.com/rsuite/rsuite-table/issues/386)) ([9238a34](https://github.com/rsuite/rsuite-table/commit/9238a3494873cda209f893440bcd63af89f2596d))
+* **Table:** fix virtualized table white screen issue in react 18 ([#387](https://github.com/rsuite/rsuite-table/issues/387)) ([f10f92b](https://github.com/rsuite/rsuite-table/commit/f10f92bd3192759f89418c323485c55d62b1af6b))
+
+
+
 # [5.8.0](https://github.com/rsuite/rsuite-table/compare/5.7.2...5.8.0) (2022-11-03)
 
 
