@@ -33073,20 +33073,20 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   top: 0;
   transition: none;
 }
-.rs-table-hover .rs-table-row:hover {
+.rs-table-hover .rs-table-body-row-wrapper .rs-table-row:hover {
   background: #f2faff;
 }
-.rs-table-hover .rs-table-row:hover .rs-table-cell-group {
+.rs-table-hover .rs-table-body-row-wrapper .rs-table-row:hover .rs-table-cell-group {
   background: #f2faff;
 }
-.rs-table-hover .rs-table-row:hover .rs-table-cell {
+.rs-table-hover .rs-table-body-row-wrapper .rs-table-row:hover .rs-table-cell {
   background: #f2faff;
 }
 .rs-table-row-header {
-  background: #f5f5f5;
+  background: #fff;
 }
 .rs-table-row-header .rs-table-cell {
-  background: #f5f5f5;
+  background: #fff;
 }
 .rs-table-row-header .rs-table-cell-group-shadow {
   -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.28);
