@@ -9,6 +9,7 @@ import { SortType, RowDataType } from '../@types/common';
 import useControlled from './useControlled';
 import getTableColumns from './getTableColumns';
 import getTotalByColumns from './getTotalByColumns';
+import getColumnProps from './getColumnProps';
 import useUpdateEffect from './useUpdateEffect';
 import { ColumnProps } from '../Column';
 import { CellProps } from '../Cell';
@@ -180,13 +181,14 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
 
   const columns = getTableColumns(children) as React.ReactElement[];
   const count = columns.length;
-
   const { totalFlexGrow, totalWidth } = getTotalByColumns(columns);
 
   React.Children.forEach(columns, (column: React.ReactElement<ColumnProps>, index) => {
     if (React.isValidElement(column)) {
       const columnChildren = column.props.children as React.ReactNode[];
-      const { width, resizable, flexGrow, minWidth, onResize, treeCol } = column.props;
+      const columnProps = getColumnProps(column);
+
+      const { width, resizable, flexGrow, minWidth, onResize, treeCol } = columnProps;
 
       if (treeCol) {
         hasCustomTreeCol = true;
@@ -215,7 +217,7 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
       }
 
       const cellProps = {
-        ...omit(column.props, ['children']),
+        ...omit(columnProps, ['children']),
         'aria-colindex': index + 1,
         left,
         headerHeight,
@@ -233,8 +235,8 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
           index,
           dataKey: cell.props.dataKey,
           isHeaderCell: true,
-          minWidth: column.props.minWidth,
-          sortable: column.props.sortable,
+          minWidth: columnProps.minWidth,
+          sortable: columnProps.sortable,
           onSortColumn: handleSortColumn,
           sortType,
           sortColumn,

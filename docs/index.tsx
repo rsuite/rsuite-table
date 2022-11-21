@@ -112,6 +112,10 @@ const examples = [
   },
   {
     title: 'Custom Cell',
+    content: require('./examples/CustomCellTable.md')
+  },
+  {
+    title: 'Custom Column',
     content: require('./examples/CustomColumnTable.md')
   },
   {

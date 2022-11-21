@@ -1694,4 +1694,29 @@ describe('Table', () => {
       );
     }).to.not.throw();
   });
+
+  it('Should render custom column', () => {
+    const CustomColumn = React.forwardRef((props, ref) => {
+      return <Column ref={ref} sortable align="center" flexGrow={1} fullText {...props} />;
+    });
+
+    const instance = getDOMNode(
+      <Table
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          }
+        ]}
+      >
+        <CustomColumn fullText={false}>
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" />
+        </CustomColumn>
+      </Table>
+    );
+
+    expect(instance.querySelector('.rs-table-cell-header-sortable')).to.exist;
+    expect(instance.querySelector('.rs-table-cell-full-text')).to.not.exist;
+  });
 });
