@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
+import { fireEvent } from '@testing-library/react';
 
 import { getDOMNode, getInstance } from './utils';
 import Scrollbar from '../src/Scrollbar';
@@ -24,12 +24,13 @@ describe('Scrollbar', () => {
     assert.equal(instance.handle.style.width, `${scrollLength / length}%`);
   });
 
-  it('Should call onMouseDown callback', done => {
-    const doneOp = () => {
-      done();
-    };
-    const instance = getInstance(<Scrollbar onMouseDown={doneOp} />);
-    ReactTestUtils.Simulate.mouseDown(instance.handle);
+  it('Should call onMouseDown callback', () => {
+    const onMouseDownSpy = sinon.spy();
+    const instance = getInstance(<Scrollbar onMouseDown={onMouseDownSpy} />);
+
+    fireEvent.mouseDown(instance.handle);
+
+    expect(onMouseDownSpy).to.have.been.calledOnce;
   });
 
   it('Should have a custom style', () => {

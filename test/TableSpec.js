@@ -1,20 +1,19 @@
 import React from 'react';
-import { act, Simulate } from 'react-dom/test-utils';
+import { render, waitFor, act, fireEvent } from '@testing-library/react';
+import getHeight from 'dom-lib/getHeight';
+import getWidth from 'dom-lib/getWidth';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import ColumnGroup from '../src/ColumnGroup';
 import Cell from '../src/Cell';
-import { getDOMNode, getInstance, render } from './utils';
+import { getDOMNode, getInstance } from './utils';
 import HeaderCell from '../src/HeaderCell';
-import getHeight from 'dom-lib/getHeight';
-import getWidth from 'dom-lib/getWidth';
-
 import '../src/less/index.less';
 
 describe('Table', () => {
   it('Should output a table', () => {
     const instance = getDOMNode(<Table>test</Table>);
-    assert.include(instance.className, 'rs-table');
+    expect(instance).to.have.class('rs-table');
   });
 
   it('Should output 2 cell', () => {
@@ -31,7 +30,7 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.equal(instance.querySelectorAll('.rs-table-cell').length, 2);
+    expect(instance.querySelectorAll('.rs-table-cell')).to.be.length(2);
   });
 
   it('Should be disabled scroll', () => {
@@ -48,7 +47,7 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.equal(instance.querySelectorAll('.rs-table-scrollbar-handle').length, 0);
+    expect(instance.querySelectorAll('.rs-table-scrollbar-handle')).to.be.length(0);
   });
 
   it('Should be loading', () => {
@@ -61,9 +60,9 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.include(instance.className, 'rs-table-loading');
-    assert.ok(instance.querySelectorAll('.rs-table-loader').length);
-    assert.equal(instance.getAttribute('aria-busy'), 'true');
+    expect(instance).to.have.class('rs-table-loading');
+    expect(instance.querySelectorAll('.rs-table-loader')).to.be.length(1);
+    expect(instance.getAttribute('aria-busy')).to.equal('true');
   });
 
   it('Should render custom loader', () => {
@@ -80,7 +79,8 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instance.querySelector('.my-loading').innerText, 'loading');
+
+    expect(instance.querySelector('.my-loading')).to.text('loading');
   });
 
   it('Should not render custom loader', () => {
@@ -97,7 +97,8 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.isNull(instance.querySelector('.my-loading'));
+
+    expect(instance.querySelector('.my-loading')).to.not.exist;
   });
 
   it('Should render custom empty info', () => {
@@ -114,7 +115,8 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instance.querySelector('.my-info').innerText, 'empty');
+
+    expect(instance.querySelector('.my-info')).to.text('empty');
   });
 
   it('Should be bordered', () => {
@@ -127,7 +129,7 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.include(instance.className, 'rs-table-bordered');
+    expect(instance).to.have.class('rs-table-bordered');
   });
 
   it('Should be virtualized. Check: Maximum update depth exceeded', () => {
@@ -151,7 +153,7 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.include(instance.className, 'rs-table-cell-bordered');
+    expect(instance).to.have.class('rs-table-cell-bordered');
   });
 
   it('Should render loader dom element when set `loadAnimation`', () => {
@@ -163,10 +165,11 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.ok(instance.querySelectorAll('.rs-table-loader').length);
+
+    expect(instance.querySelectorAll('.rs-table-loader')).to.be.exist;
   });
 
-  it('Should be wordWrap', done => {
+  it('Should be wordWrap', async () => {
     const data = [{ id: 1, country: 'South Georgia and the South Sandwich Islands' }];
     const ref = React.createRef();
 
@@ -183,14 +186,13 @@ describe('Table', () => {
     const cell = table.querySelectorAll('.rs-table-cell')[1];
     const cellContent = table.querySelectorAll('.rs-table-cell-content')[1];
 
-    assert.equal(cellContent.style.wordBreak, 'break-all');
-    assert.include(ref.current.root.className, 'rs-table-word-wrap');
+    expect(cellContent.style.wordBreak).to.equal('break-all');
+    expect(ref.current.root).to.have.class('rs-table-word-wrap');
+    expect(cell.innerText).to.equal('South Georgia and the South Sandwich Islands');
 
-    setTimeout(() => {
+    await waitFor(() => {
       assert.isTrue(getHeight(cell) > 46);
-      assert.equal(cell.innerText, 'South Georgia and the South Sandwich Islands');
-      done();
-    }, 1);
+    });
   });
 
   it('Should be wordWrap=break-all', () => {
@@ -208,7 +210,8 @@ describe('Table', () => {
     );
 
     const cellContent = ref.current.querySelector('.rs-table-cell-content');
-    assert.equal(cellContent.style.wordBreak, 'break-all');
+
+    expect(cellContent.style.wordBreak).to.equal('break-all');
   });
 
   it('Should be wordWrap=break-word', () => {
@@ -226,7 +229,8 @@ describe('Table', () => {
     );
 
     const cellContent = ref.current.querySelector('.rs-table-cell-content');
-    assert.equal(cellContent.style.wordBreak, 'break-word');
+
+    expect(cellContent.style.wordBreak).to.equal('break-word');
   });
 
   it('Should be wordWrap=keep-all', () => {
@@ -244,10 +248,11 @@ describe('Table', () => {
     );
 
     const cellContent = ref.current.querySelector('.rs-table-cell-content');
-    assert.equal(cellContent.style.wordBreak, 'keep-all');
+
+    expect(cellContent.style.wordBreak).to.equal('keep-all');
   });
 
-  it('Should be wordWrap when isTree', done => {
+  it('Should be wordWrap when isTree', async () => {
     const data = [{ id: 1, country: 'South Georgia and the South Sandwich Islands' }];
     const ref = React.createRef();
 
@@ -263,14 +268,14 @@ describe('Table', () => {
     const table = ref.current.root;
     const cell = table.querySelectorAll('.rs-table-cell')[1];
 
-    setTimeout(() => {
-      assert.isTrue(getHeight(cell) > 46);
-      assert.equal(cell.innerText, 'South Georgia and the South Sandwich Islands');
-      done();
-    }, 1);
+    expect(cell).to.text('South Georgia and the South Sandwich Islands');
+
+    await waitFor(() => {
+      expect(getHeight(cell)).to.be.gt(46);
+    });
   });
 
-  it('Should be wordWrap when node is expanded', done => {
+  it('Should be wordWrap when node is expanded', async () => {
     const data = [
       {
         id: 1,
@@ -294,19 +299,17 @@ describe('Table', () => {
     const table = ref.current.root;
     const button = table.querySelector('.rs-table-cell-expand-wrapper');
 
-    assert.isUndefined(table.querySelectorAll('.rs-table-cell')[2]);
+    expect(table.querySelectorAll('.rs-table-cell')[2]).to.be.not.exist;
 
-    act(() => {
-      Simulate.click(button);
-    });
+    fireEvent.click(button);
 
     const cell = table.querySelectorAll('.rs-table-cell')[2];
 
-    setTimeout(() => {
-      assert.isTrue(getHeight(cell) > 46);
-      assert.equal(cell.innerText, 'South Georgia and the South Sandwich Islands');
-      done();
-    }, 1);
+    expect(cell).to.text('South Georgia and the South Sandwich Islands');
+
+    await waitFor(() => {
+      expect(getHeight(cell)).to.be.gt(46);
+    });
   });
 
   it('Should be automatic height', () => {
@@ -407,7 +410,7 @@ describe('Table', () => {
       getWidth(instance.querySelector('.rs-table-scrollbar-handle'))
     );
 
-    assert.equal(width, scrollbarHandleWidth);
+    expect(width).to.equal(scrollbarHandleWidth);
   });
 
   it('Should be min height', () => {
@@ -436,7 +439,7 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instance.style.height, `${500}px`);
+    expect(instance).to.style('height', '500px');
   });
 
   it('Should render custom tree columns', () => {
@@ -469,11 +472,9 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.equal(
+    expect(
       instance.querySelector('.rs-table-body-row-wrapper .rs-table-cell-expand-wrapper').parentNode
-        .innerText,
-      'b'
-    );
+    ).to.be.text('b');
   });
 
   it('Should render custom tree toggle', () => {
@@ -525,9 +526,9 @@ describe('Table', () => {
     const table = ref.current.root;
     const openRows = table.querySelectorAll('.toggle-open');
 
-    assert.equal(openRows.length, 1);
-    assert.equal(openRows[0].innerText, 'a');
-    assert.equal(table.querySelector('.toggle-close').innerText, 'b');
+    expect(openRows).to.be.length(1);
+    expect(openRows[0]).to.be.text('a');
+    expect(table.querySelector('.toggle-close')).to.be.text('b');
   });
 
   it('Should call `rowHeight` callback', done => {
@@ -553,37 +554,27 @@ describe('Table', () => {
     );
   });
 
-  it('Should call `onWheel` callback', done => {
-    const doneOp = () => {
-      done();
-    };
+  it('Should call `onWheel` callback', () => {
+    const onWheelSpy = sinon.spy();
     const instance = getDOMNode(
-      <Table
-        onWheel={doneOp}
-        data={[
-          {
-            id: 1,
-            name: 'a'
-          }
-        ]}
-        height={10}
-      >
+      <Table onWheel={onWheelSpy} data={[{ id: 1, name: 'a' }]} height={10}>
         <Column>
           <HeaderCell>11</HeaderCell>
           <Cell dataKey="id" />
         </Column>
       </Table>
     );
-    Simulate.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
+
+    fireEvent.wheel(instance.querySelector('.rs-table-body-row-wrapper'));
+
+    expect(onWheelSpy).to.have.been.calledOnce;
   });
 
-  it('Should call `onExpandChange` callback', done => {
-    const doneOp = () => {
-      done();
-    };
+  it('Should call `onExpandChange` callback', () => {
+    const onExpandChangeSpy = sinon.spy();
     const instance = getDOMNode(
       <Table
-        onExpandChange={doneOp}
+        onExpandChange={onExpandChangeSpy}
         isTree
         rowKey="id"
         data={[
@@ -607,7 +598,8 @@ describe('Table', () => {
       </Table>
     );
 
-    Simulate.click(instance.querySelector('.rs-table-cell-expand-icon'));
+    fireEvent.click(instance.querySelector('.rs-table-cell-expand-icon'));
+    expect(onExpandChangeSpy).to.have.been.calledOnce;
   });
 
   it('Should get the body DOM', () => {
@@ -626,7 +618,8 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instance.body.style.height, `${data.length * 46}px`);
+
+    expect(instance.body.style.height).to.be.equal(`${data.length * 46}px`);
   });
 
   it('Should not be displayed header', () => {
@@ -905,9 +898,7 @@ describe('Table', () => {
     assert.equal(table.querySelectorAll('.rs-table-row').length, 1);
     assert.isNull(table.querySelector('.rs-table-scrollbar-vertical'));
 
-    act(() => {
-      Simulate.click(expand);
-    });
+    fireEvent.click(expand);
 
     // After the Tree is expanded, 10 rows are displayed and a vertical scroll bar is displayed at the same time.
     assert.equal(table.querySelectorAll('.rs-table-row').length, 10);
@@ -1136,11 +1127,19 @@ describe('Table', () => {
     });
 
     const instance = getInstance(<App />);
-    instance.scrollLeft(20);
+
+    act(() => {
+      instance.scrollLeft(20);
+    });
+
     expect(xOffset).to.equal(20);
-    instance.update();
+    act(() => {
+      instance.update();
+    });
     expect(xOffset).to.equal(20);
-    instance.updateTable();
+    act(() => {
+      instance.updateTable();
+    });
     expect(xOffset).to.equal(0);
   });
 
@@ -1274,9 +1273,9 @@ describe('Table', () => {
       );
     });
 
-    const instance = render(<App ref={appRef} />);
+    const { container } = render(<App ref={appRef} />);
 
-    const body = instance.querySelector('.rs-table-body-row-wrapper');
+    const body = container.querySelector('.rs-table-body-row-wrapper');
 
     act(() => {
       body.dispatchEvent(new WheelEvent('wheel', { deltaY: 10 }));
@@ -1325,35 +1324,23 @@ describe('Table', () => {
     expect(onScrollSpy.callCount).to.equal(1);
     expect(onScrollSpy.firstCall.firstArg).to.equal('bodyHeightChanged');
 
-    instance.updateWidth();
+    act(() => {
+      instance.updateWidth();
+    });
 
     expect(onScrollSpy.callCount).to.equal(2);
     expect(onScrollSpy.secondCall.firstArg).to.equal('widthChanged');
   });
 
-  it('Should update the scrollbar when resize', done => {
-    const data = [
-      {
-        id: 1,
-        name: 'a'
-      }
-    ];
-
+  it('Should update the scrollbar when resize', async () => {
+    const data = [{ id: 1, name: 'a' }];
     const ref = React.createRef();
+    const shouldUpdateScrolSpy = sinon.spy();
 
     act(() => {
       render(
         <div ref={ref} style={{ width: 200 }}>
-          <Table
-            data={data}
-            height={10}
-            shouldUpdateScroll={event => {
-              if (event === 'widthChanged') {
-                assert.equal(scrollbar.style.width, '100px');
-                done();
-              }
-            }}
-          >
+          <Table data={data} height={10} shouldUpdateScroll={shouldUpdateScrolSpy}>
             <Column width={100}>
               <HeaderCell>id</HeaderCell>
               <Cell dataKey="id" />
@@ -1373,10 +1360,14 @@ describe('Table', () => {
 
     const scrollbar = ref.current.querySelector('.rs-table-scrollbar-horizontal');
 
-    assert.equal(scrollbar.style.width, '200px');
+    expect(scrollbar.style.width).to.equal('200px');
 
-    act(() => {
-      ref.current.style.width = '100px';
+    ref.current.style.width = '100px';
+
+    await waitFor(() => {
+      expect(shouldUpdateScrolSpy).to.be.callCount(2);
+      expect(shouldUpdateScrolSpy).to.be.calledWith('widthChanged');
+      expect(scrollbar.style.width).to.equal('100px');
     });
   });
 
@@ -1574,12 +1565,8 @@ describe('Table', () => {
     assert.equal(instance.querySelector('.rs-table').style.height, '300px');
   });
 
-  it('Should call shouldUpdateScroll after the height of the table container is changed', done => {
-    const onScrollSpy = sinon.spy(a => {
-      if (a === 'heightChanged') {
-        done();
-      }
-    });
+  it('Should call shouldUpdateScroll after the height of the table container is changed', async () => {
+    const onScrollSpy = sinon.spy();
     const data = [
       {
         id: 1,
@@ -1622,13 +1609,17 @@ describe('Table', () => {
 
     const instance = getInstance(<App />);
 
-    assert.equal(instance.table.style.height, '300px');
+    expect(instance.table.style.height).to.equal('300px');
 
-    instance.updateTableHeight();
+    act(() => {
+      instance.updateTableHeight();
+    });
 
-    assert.equal(onScrollSpy.callCount, 2);
-    assert.equal(onScrollSpy.secondCall.firstArg, 'heightChanged');
-    assert.equal(instance.table.style.height, '400px');
+    await waitFor(() => {
+      expect(onScrollSpy).to.be.callCount(3);
+      expect(onScrollSpy).to.be.calledWith('heightChanged');
+      expect(instance.table.style.height).to.equal('400px');
+    });
   });
 
   it('Should not render scrollbars', () => {
@@ -1640,7 +1631,7 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.isNull(instance.querySelector('.rs-table-scrollbar'));
+    expect(instance.querySelector('.rs-table-scrollbar-vertical')).to.not.exist;
   });
 
   it('Should be to avoid nested classPrefix', () => {
@@ -1670,7 +1661,8 @@ describe('Table', () => {
       </Table>
     );
 
-    assert.equal(innerTable.current.root.className, 'rs-table rs-table-hover');
+    expect(innerTable.current.root).to.have.class('rs-table');
+    expect(innerTable.current.root).to.have.class('rs-table-hover');
   });
 
   it('Should throw error for rowData check', () => {

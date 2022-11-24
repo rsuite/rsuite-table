@@ -1,11 +1,19 @@
 /* eslint-disable react/no-find-dom-node */
 
 import React from 'react';
-import ReactDOM, { findDOMNode, unmountComponentAtNode } from 'react-dom';
+import * as ReactDOM from 'react-dom';
+import { findDOMNode, unmountComponentAtNode } from 'react-dom';
 import * as ReactTestUtils from 'react-dom/test-utils';
+import { render as testRender, act } from '@testing-library/react';
 import getStyle from 'dom-lib/getStyle';
 
 export { getStyle };
+
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+
+const majorVersion = parseInt(React.version);
+
+console.log('React version:', React.version);
 
 /**
  * Check whether it is a DOM object?
@@ -18,13 +26,35 @@ function isDOMElement(node) {
   );
 }
 
+function guid() {
+  return '_' + Math.random().toString(36).substr(2, 12);
+}
+
 // Record every container created for rendering
 // Useful for doing a cleanup after each test case
 // Ref: https://github.com/testing-library/react-testing-library/blob/main/src/pure.js
 const mountedContainers = new Set();
+const mountedRoots = new Set();
 
 export function render(children) {
   const container = createTestContainer();
+
+  if (majorVersion >= 18) {
+    /**
+     * Fix react 18 warnings
+     * Error: Warning: You are importing createRoot from "react-dom" which is not supported. You should instead import it from "react-dom/client".
+     */
+    ReactDOM['__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED'].usingClientEntryPoint = true;
+
+    const { createRoot } = ReactDOM;
+
+    const root = createRoot(container);
+    root.render(children);
+
+    mountedRoots.add(root);
+
+    return container;
+  }
 
   ReactDOM.render(children, container);
 
@@ -33,6 +63,11 @@ export function render(children) {
 
 export function cleanup() {
   mountedContainers.forEach(cleanupAtContainer);
+  mountedRoots.forEach(root => {
+    act(() => {
+      root.unmount();
+    });
+  });
 }
 
 afterEach(() => {
@@ -42,8 +77,10 @@ afterEach(() => {
 // maybe one day we'll expose this (perhaps even as a utility returned by render).
 // but let's wait until someone asks for it.
 function cleanupAtContainer(container) {
-  ReactTestUtils.act(() => {
-    unmountComponentAtNode(container);
+  act(() => {
+    if (majorVersion < 18) {
+      unmountComponentAtNode(container);
+    }
   });
   if (container.parentNode === document.body) {
     document.body.removeChild(container);
@@ -52,43 +89,24 @@ function cleanupAtContainer(container) {
 }
 
 export function getInstance(children, waitForDidMount = true) {
-  // isReactComponent is only defined if children is of React.Component class
-  // so we can test against this to verify this is a functional component
-  if (!(children.type.prototype && children.type.prototype.isReactComponent)) {
-    const instanceRef = React.createRef();
+  const instanceRef = React.createRef();
 
-    if (waitForDidMount) {
-      // Use act() to make sure componentDidMount/useEffect is done
-      ReactTestUtils.act(() => {
-        /**
-         * https://stackoverflow.com/questions/36682241/testing-functional-components-with-renderintodocument
-         */
-        render(React.cloneElement(children, { ref: instanceRef }));
-      });
-    } else {
-      render(React.cloneElement(children, { ref: instanceRef }));
-    }
-    return instanceRef.current;
-  }
-
-  let instance;
-
-  // Only use renderIntoDocument on class components
   if (waitForDidMount) {
-    ReactTestUtils.act(() => {
-      instance = ReactTestUtils.renderIntoDocument(children);
+    // Use act() to make sure componentDidMount/useEffect is done
+    act(() => {
+      render(React.cloneElement(children, { ref: instanceRef }));
     });
   } else {
-    instance = ReactTestUtils.renderIntoDocument(children);
+    render(React.cloneElement(children, { ref: instanceRef }));
   }
 
-  return instance;
+  return instanceRef.current;
 }
 
 /**
  * @return {HTMLElement}
  */
-export function getDOMNode(children, waitForDidMount = true) {
+export function getDOMNode(children) {
   if (isDOMElement(children)) {
     return children;
   }
@@ -101,21 +119,21 @@ export function getDOMNode(children, waitForDidMount = true) {
     return findDOMNode(children);
   }
 
-  const instance = getInstance(children, waitForDidMount);
+  return getTestDOMNode(children);
+}
 
-  if (isDOMElement(instance)) {
-    return instance;
+export function getTestDOMNode(children) {
+  const testId = guid();
+  const childTestId = guid();
+  const { getByTestId } = testRender(
+    <div data-testid={testId}>{React.cloneElement(children, { 'data-testid': childTestId })}</div>
+  );
+
+  try {
+    return getByTestId(testId).firstChild || getByTestId(childTestId);
+  } catch (e) {
+    return null;
   }
-
-  if (instance && isDOMElement(instance.root)) {
-    return instance.root;
-  }
-
-  if (instance && isDOMElement(instance.child)) {
-    return instance.child;
-  }
-
-  return findDOMNode(instance);
 }
 
 /**
