@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import ReactTestUtils, { act } from 'react-dom/test-utils';
+import { render, act } from '@testing-library/react';
 import useCellDescriptor from '../src/utils/useCellDescriptor';
 import Column from '../src/Column';
 import HeaderCell from '../src/HeaderCell';
@@ -48,7 +48,7 @@ describe('useCellDescriptor', () => {
   };
 
   it('Should output expected vars', () => {
-    act(() => ReactTestUtils.renderIntoDocument(<TestComponent />));
+    render(<TestComponent />);
 
     assert.containsAllKeys(cellDescriptor, [
       'columns',
@@ -60,7 +60,7 @@ describe('useCellDescriptor', () => {
   });
 
   it('Should set widths on cells', () => {
-    act(() => ReactTestUtils.renderIntoDocument(<TestComponent />));
+    render(<TestComponent />);
 
     const { headerCells, bodyCells } = cellDescriptor;
 
@@ -71,7 +71,7 @@ describe('useCellDescriptor', () => {
   });
 
   it('Should update cell width on column resize', () => {
-    act(() => ReactTestUtils.renderIntoDocument(<TestComponent />));
+    render(<TestComponent />);
 
     const { headerCells } = cellDescriptor;
     const { onColumnResizeEnd } = headerCells[0].props;
@@ -83,7 +83,7 @@ describe('useCellDescriptor', () => {
   });
 
   it('Should set proper cell width on column resize followed by column width change', () => {
-    act(() => ReactTestUtils.renderIntoDocument(<TestComponent />));
+    render(<TestComponent />);
 
     const { headerCells } = cellDescriptor;
     const { onColumnResizeEnd } = headerCells[0].props;

@@ -34,11 +34,11 @@ const App = () => {
         isTree
       </label>
       <Table
-        isTree
+        isTree={tree}
         virtualized
         minHeight={260}
         height={400}
-        rowKey="id"
+        rowKey="value"
         data={data}
         shouldUpdateScroll={false}
         defaultExpandAllRows

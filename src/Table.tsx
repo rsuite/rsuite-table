@@ -313,10 +313,6 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     ...rest
   } = props;
 
-  if (isTree && !rowKey) {
-    throw new Error('The `rowKey` is required when set isTree');
-  }
-
   const {
     withClassPrefix,
     merge: mergeCls,
@@ -336,6 +332,16 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   const [data, setData] = useState(() => {
     return isTree ? filterTreeData(dataProp, expandedRowKeys, rowKey) : dataProp;
   });
+
+  if (isTree) {
+    if (!rowKey) {
+      throw new Error('The `rowKey` is required when set isTree');
+    } else if (data.length > 0) {
+      if (!data[0].hasOwnProperty(rowKey)) {
+        throw new Error('The `rowKey` is not found in data');
+      }
+    }
+  }
 
   const { tableRowsMaxHeight, bindTableRowsRef } = useTableRows({
     data: dataProp,

@@ -1,13 +1,11 @@
 import React from 'react';
-import { findDOMNode } from 'react-dom';
-import ReactTestUtils from 'react-dom/test-utils';
 import Column from '../src/Column';
+import { render } from '@testing-library/react';
 
 describe('Column', () => {
   it('Should output a null', () => {
-    const instance = ReactTestUtils.renderIntoDocument(<Column />);
+    const { container } = render(<Column />);
 
-    const instanceDom = findDOMNode(instance);
-    assert.equal(instanceDom, null);
+    expect(container.innerHTML).to.be.equal('');
   });
 });
