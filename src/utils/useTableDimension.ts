@@ -7,8 +7,8 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import useMount from './useMount';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import isNumberOrTrue from './isNumberOrTrue';
-import { RowDataType, ElementOffset } from '../@types/common';
-import debounce from 'lodash/debounce';
+import { RowDataType, RowKeyType, ElementOffset } from '../@types/common';
+import _ from 'lodash';
 
 interface TableDimensionProps<Row, Key> {
   data?: readonly Row[];
@@ -257,12 +257,8 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
       calculateTableHeight(entries[0].contentRect.height);
     });
     containerResizeObserver.current.observe(tableRef?.current?.parentNode as Element);
-    const changeTableWidthWhenResize = debounce(entries => {
-      const { width } = entries[0].contentRect;
-      // bordered table width is 1px larger than the container width. fix: #405 #404
-      const widthWithBorder = width + 2;
-
-      calculateTableWidth(bordered ? widthWithBorder : width);
+    const changeTableWidthWhenResize = _.debounce(entries => {
+      calculateTableWidth(entries[0].contentRect.width);
     }, 20);
     resizeObserver.current = new ResizeObserver(changeTableWidthWhenResize);
     resizeObserver.current.observe(tableRef?.current as Element);
