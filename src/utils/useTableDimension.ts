@@ -8,6 +8,7 @@ import useMount from './useMount';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import isNumberOrTrue from './isNumberOrTrue';
 import { RowDataType, RowKeyType, ElementOffset } from '../@types/common';
+import debounce from 'lodash/debounce';
 
 interface TableDimensionProps {
   data?: readonly RowDataType[];
@@ -247,10 +248,10 @@ const useTableDimension = (props: TableDimensionProps) => {
       calculateTableHeight(entries[0].contentRect.height);
     });
     containerResizeObserver.current.observe(tableRef?.current?.parentNode as Element);
-
-    resizeObserver.current = new ResizeObserver(entries => {
+    const changeTableWidthWhenResize = debounce(entries => {
       calculateTableWidth(entries[0].contentRect.width);
-    });
+    }, 20);
+    resizeObserver.current = new ResizeObserver(changeTableWidthWhenResize);
     resizeObserver.current.observe(tableRef?.current as Element);
 
     return () => {
