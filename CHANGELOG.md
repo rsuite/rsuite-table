@@ -1,3 +1,12 @@
+## [5.8.2](https://github.com/rsuite/rsuite-table/compare/5.8.1...5.8.2) (2023-01-11)
+
+
+### Bug Fixes
+
+* change table width function wrap debounce ([#392](https://github.com/rsuite/rsuite-table/issues/392)) ([a79dd36](https://github.com/rsuite/rsuite-table/commit/a79dd36dd26486831bc4c68373f21efae4218cc7))
+
+
+
 ## [5.8.1](https://github.com/rsuite/rsuite-table/compare/5.8.0...5.8.1) (2022-11-21)
 
 
