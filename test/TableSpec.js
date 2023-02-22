@@ -668,14 +668,18 @@ describe('Table', () => {
   });
 
   it('Should hava row className by rowClassName()', () => {
+    const rowClassNameSpy = sinon.spy((rowData, rowIndex) => {
+      if (rowIndex === 0) {
+        return 'custom-row';
+      } else if (rowIndex === -1) {
+        return 'header-row';
+      }
+      return 'default-row';
+    });
+
     const instance = getDOMNode(
       <Table
-        rowClassName={rowData => {
-          if (rowData && rowData.id === 1) {
-            return 'custom-row';
-          }
-          return 'default-row';
-        }}
+        rowClassName={rowClassNameSpy}
         minHeight={500}
         data={[
           {
@@ -689,17 +693,20 @@ describe('Table', () => {
         ]}
       >
         <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
+          <HeaderCell>ID</HeaderCell>
+          <Cell dataKey="id" />
         </Column>
         <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" />
         </Column>
       </Table>
     );
-    assert.equal(instance.querySelectorAll('.rs-table-row.custom-row').length, 1);
-    assert.equal(instance.querySelectorAll('.rs-table-row.default-row').length, 2);
+
+    expect(rowClassNameSpy).to.have.been.called;
+    expect(instance.querySelector('.rs-table-row.header-row')).to.have.text('IDName');
+    expect(instance.querySelector('.rs-table-row.custom-row')).to.have.text('1a');
+    expect(instance.querySelector('.rs-table-row.default-row')).to.have.text('2b');
   });
 
   it('Should be fixed column', () => {

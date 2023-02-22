@@ -148,7 +148,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   rowExpandedHeight?: number;
 
   /** Add an optional extra class name to row */
-  rowClassName?: string | ((rowData: RowDataType) => string);
+  rowClassName?: string | ((rowData: RowDataType, rowIndex: number) => string);
 
   /** Whether to display the header of the table */
   showHeader?: boolean;
@@ -249,6 +249,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
 
 interface TableRowProps extends RowProps {
   key?: string | number;
+  rowIndex: number;
   depth?: number;
 }
 
@@ -591,10 +592,10 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     shouldRenderExpandedRow?: boolean,
     rowData?: any
   ) => {
-    const { depth, ...restRowProps } = props;
+    const { depth, rowIndex, ...restRowProps } = props;
 
     if (typeof rowClassName === 'function') {
-      restRowProps.className = rowClassName(rowData);
+      restRowProps.className = rowClassName(rowData, rowIndex);
     } else {
       restRowProps.className = rowClassName;
     }
@@ -708,7 +709,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       height: getRowHeight(),
       headerHeight,
       isHeaderRow: true,
-      top: 0
+      top: 0,
+      rowIndex: -1
     };
 
     const fixedStyle: React.CSSProperties = {
@@ -853,9 +855,9 @@ const Table = React.forwardRef((props: TableProps, ref) => {
         React.cloneElement(cell, {
           hasChildren,
           rowData,
+          rowIndex: props.rowIndex,
           wordWrap,
           height: rowHeight,
-          rowIndex: props.key,
           depth: props.depth,
           renderTreeToggle,
           onTreeToggle: handleTreeToggle,
@@ -965,6 +967,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
           const rowProps = {
             key: index,
             top,
+            rowIndex: index,
             width: rowWidth,
             depth: rowData[TREE_DEPTH],
             height: nextRowHeight
@@ -1012,6 +1015,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
           const rowData = data[index];
           const rowProps = {
             key: index,
+            rowIndex: index,
             depth: rowData[TREE_DEPTH],
             top: index * nextRowHeight,
             width: rowWidth,
