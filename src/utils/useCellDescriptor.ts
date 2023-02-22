@@ -13,6 +13,7 @@ import getColumnProps from './getColumnProps';
 import useUpdateEffect from './useUpdateEffect';
 import { ColumnProps } from '../Column';
 import { CellProps } from '../Cell';
+import flushSync from './flushSync';
 
 interface CellDescriptorProps {
   children: React.ReactNode;
@@ -107,7 +108,8 @@ const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
         addStyle(mouseAreaRef.current, { display: 'none' });
       }
 
-      clearCache();
+      // fix: https://github.com/rsuite/rsuite-table/issues/398
+      flushSync(() => clearCache());
       onHeaderCellResize?.(columnWidth, dataKey);
     },
     [clearCache, mouseAreaRef, onHeaderCellResize, setColumnResizing]
