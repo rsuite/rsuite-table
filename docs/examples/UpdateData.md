@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <div>
-      <Table width={300} height={400} data={data} shouldUpdateScroll={false} bordered>
+      <Table width={300} height={400} data={data} virtualized shouldUpdateScroll={false} bordered>
         <Column width={100} align="center">
           <HeaderCell>ID</HeaderCell>
           <Cell dataKey="index" />
