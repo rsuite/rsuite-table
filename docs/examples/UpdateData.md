@@ -24,11 +24,15 @@ const App = () => {
   return (
     <div>
       <Table width={300} height={400} data={data} virtualized shouldUpdateScroll={false} bordered>
-        <Column width={200} align="center" flexGrow={1}>
+        <Column width={100} align="center">
           <HeaderCell>ID</HeaderCell>
           <Cell dataKey="index" />
         </Column>
-        <Column width={200} align="center" flexGrow={1}>
+        <Column width={200} align="center">
+          <HeaderCell>Time</HeaderCell>
+          <Cell dataKey="time" />
+        </Column>
+        <Column width={200} align="center">
           <HeaderCell>Time</HeaderCell>
           <Cell dataKey="time" />
         </Column>
