@@ -1,3 +1,17 @@
+# [5.9.0](https://github.com/rsuite/rsuite-table/compare/5.8.2...5.9.0) (2023-02-23)
+
+
+### Bug Fixes
+
+* **resizable:** fix scrollbar not showing after resizing column width ([#399](https://github.com/rsuite/rsuite-table/issues/399)) ([19c1370](https://github.com/rsuite/rsuite-table/commit/19c137037176a4f46b27506022ddb9d3df509440))
+
+
+### Features
+
+* **Table:** add support for `rowIndex` on `rowClassName` ([#400](https://github.com/rsuite/rsuite-table/issues/400)) ([c97ed46](https://github.com/rsuite/rsuite-table/commit/c97ed4618fe592005aa6c67942159caf63da2e28))
+
+
+
 ## [5.8.2](https://github.com/rsuite/rsuite-table/compare/5.8.1...5.8.2) (2023-01-11)
 
 
