@@ -1,6 +1,3 @@
 {
-  "publishDirectory": {
-    "rsuite": "lib"
-  },
-  "sandboxes": ["rsuite-tp-ci-bdiu7"]
+  "sandboxes": ["new", "vanilla"]
 }
