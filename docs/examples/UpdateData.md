@@ -23,8 +23,8 @@ const App = () => {
 
   return (
     <div>
-      <Table width={300} height={400} data={data} virtualized shouldUpdateScroll={false} bordered>
-        <Column width={100} align="center">
+      <Table width={500} height={400} data={data} virtualized bordered shouldUpdateScroll={false}>
+        <Column width={100} align="center" fixed>
           <HeaderCell>ID</HeaderCell>
           <Cell dataKey="index" />
         </Column>
@@ -36,15 +36,40 @@ const App = () => {
           <HeaderCell>Time</HeaderCell>
           <Cell dataKey="time" />
         </Column>
+        <Column width={200} align="center">
+          <HeaderCell>Time</HeaderCell>
+          <Cell dataKey="time" />
+        </Column>
+        <Column width={200} align="center">
+          <HeaderCell>Time</HeaderCell>
+          <Cell dataKey="time" />
+        </Column>
+        <Column width={200} align="center">
+          <HeaderCell>Time</HeaderCell>
+          <Cell dataKey="time" />
+        </Column>
       </Table>
-      <Button
-        appearance="primary"
-        onClick={() => {
-          setDataNum(Math.round(dataNum / 2));
-        }}
-      >
-        Change Data
-      </Button>
+
+      <hr />
+      <Stack spacing={10}>
+        <Button
+          appearance="primary"
+          onClick={() => {
+            setDataNum(dataNum + 100);
+          }}
+        >
+          Add
+        </Button>
+
+        <Button
+          appearance="primary"
+          onClick={() => {
+            setDataNum(Math.round(dataNum / 2));
+          }}
+        >
+          Remove
+        </Button>
+      </Stack>
     </div>
   );
 };

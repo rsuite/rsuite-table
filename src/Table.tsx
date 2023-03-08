@@ -443,7 +443,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     affixHeaderWrapperRef
   });
 
-  const { forceUpdatePosition } = usePosition({
+  const { forceUpdatePosition, deferUpdatePosition } = usePosition({
     data: dataProp,
     height,
     tableWidth,
@@ -492,6 +492,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     setScrollX,
     setScrollY,
     forceUpdatePosition,
+    deferUpdatePosition,
     onScroll,
     onTouchStart,
     onTouchMove,
