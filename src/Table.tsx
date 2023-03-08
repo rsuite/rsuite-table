@@ -395,6 +395,11 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       const vertical = event === 'bodyHeightChanged';
       vertical ? onScrollTop(0) : onScrollLeft(0);
     }
+
+    if (event === 'bodyHeightChanged') {
+      // fix: #405 #404
+      deferUpdatePosition();
+    }
   };
 
   const {

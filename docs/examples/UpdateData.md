@@ -17,13 +17,13 @@ const mockData = (length, start) => {
 };
 
 const App = () => {
-  const [dataNum, setDataNum] = React.useState(1000);
+  const [dataNum, setDataNum] = React.useState(20);
   const data = React.useMemo(() => mockData(dataNum, 0), [dataNum]);
   console.log('currentDataLen', data.length, dataNum);
 
   return (
     <div>
-      <Table width={500} height={400} data={data} virtualized bordered shouldUpdateScroll={false}>
+      <Table width={500} height={400} data={data} autoHeight bordered shouldUpdateScroll={false}>
         <Column width={100} align="center" fixed>
           <HeaderCell>ID</HeaderCell>
           <Cell dataKey="index" />
@@ -55,7 +55,7 @@ const App = () => {
         <Button
           appearance="primary"
           onClick={() => {
-            setDataNum(dataNum + 100);
+            setDataNum(dataNum * 1.2);
           }}
         >
           Add
@@ -64,7 +64,7 @@ const App = () => {
         <Button
           appearance="primary"
           onClick={() => {
-            setDataNum(Math.round(dataNum / 2));
+            setDataNum(dataNum * 0.8);
           }}
         >
           Remove
