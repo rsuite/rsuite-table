@@ -17,15 +17,24 @@ const mockData = (length, start) => {
 };
 
 const App = () => {
-  const [dataNum, setDataNum] = React.useState(20);
-  const data = React.useMemo(() => mockData(dataNum, 0), [dataNum]);
-  console.log('currentDataLen', data.length, dataNum);
+  const [dataNum, setDataNum] = React.useState(10);
+  const [autoHeight, setAutoHeight] = React.useState(true);
+  const [startIndex, setStartIndex] = React.useState(0);
+
+  const data = React.useMemo(() => mockData(dataNum, startIndex), [dataNum, startIndex]);
 
   return (
     <div>
-      <Table width={500} height={400} data={data} autoHeight bordered shouldUpdateScroll={false}>
+      <Table
+        width={500}
+        height={400}
+        data={data}
+        autoHeight={autoHeight}
+        bordered
+        shouldUpdateScroll={false}
+      >
         <Column width={100} align="center" fixed>
-          <HeaderCell>ID</HeaderCell>
+          <HeaderCell>Index</HeaderCell>
           <Cell dataKey="index" />
         </Column>
         <Column width={200} align="center">
@@ -49,13 +58,15 @@ const App = () => {
           <Cell dataKey="time" />
         </Column>
       </Table>
-
       <hr />
+      autoHeight: <Toggle checked={autoHeight} onChange={setAutoHeight} />
+      <hr />
+      <p>Simulate data update actions:</p>
       <Stack spacing={10}>
         <Button
           appearance="primary"
           onClick={() => {
-            setDataNum(dataNum * 1.2);
+            setDataNum(dataNum + 1);
           }}
         >
           Add
@@ -64,10 +75,29 @@ const App = () => {
         <Button
           appearance="primary"
           onClick={() => {
-            setDataNum(dataNum * 0.8);
+            setDataNum(dataNum - 1);
           }}
         >
           Remove
+        </Button>
+
+        <Button
+          appearance="primary"
+          onClick={() => {
+            setStartIndex(startIndex + dataNum);
+          }}
+        >
+          Next Page
+        </Button>
+
+        <Button
+          appearance="primary"
+          onClick={() => {
+            setDataNum(dataNum * 0.8);
+            setStartIndex(startIndex + dataNum);
+          }}
+        >
+          Last Page
         </Button>
       </Stack>
     </div>

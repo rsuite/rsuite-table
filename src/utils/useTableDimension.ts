@@ -27,6 +27,7 @@ interface TableDimensionProps {
   children?: React.ReactNode;
   expandedRowKeys?: RowKeyType[];
   showHeader?: boolean;
+  bordered?: boolean;
   onTableScroll?: (coord: { x?: number; y?: number }) => void;
   onTableResizeChange?: (
     prevSize: number,
@@ -58,6 +59,7 @@ const useTableDimension = (props: TableDimensionProps) => {
     children,
     expandedRowKeys,
     showHeader,
+    bordered,
     onTableResizeChange,
     onTableScroll
   } = props;
@@ -249,7 +251,11 @@ const useTableDimension = (props: TableDimensionProps) => {
     });
     containerResizeObserver.current.observe(tableRef?.current?.parentNode as Element);
     const changeTableWidthWhenResize = debounce(entries => {
-      calculateTableWidth(entries[0].contentRect.width);
+      const { width } = entries[0].contentRect;
+      // bordered table width is 1px larger than the container width. fix: #405 #404
+      const widthWithBorder = width + 2;
+
+      calculateTableWidth(bordered ? widthWithBorder : width);
     }, 20);
     resizeObserver.current = new ResizeObserver(changeTableWidthWhenResize);
     resizeObserver.current.observe(tableRef?.current as Element);

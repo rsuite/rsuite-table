@@ -432,6 +432,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     children,
     expandedRowKeys,
     showHeader,
+    bordered,
     onTableScroll: debounce((coords: { x?: number; y?: number }) => onScrollTo(coords), 100),
     onTableResizeChange: handleTableResizeChange
   });
