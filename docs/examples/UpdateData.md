@@ -102,3 +102,81 @@ ReactDOM.render(<App />);
 ```
 
 <!--end-code-->
+
+### Update data with fixed columns
+
+<!--start-code-->
+
+```js
+const data = mockUsers(18).map((item, index) => ({
+  ...item,
+  index: index + 1
+}));
+
+const App = () => {
+  const [page, setPage] = React.useState(1);
+
+  const curPageData = React.useMemo(() => {
+    const start = (page - 1) * 5;
+    return data.slice(start, start + 5);
+  }, [page]);
+
+  console.log(curPageData);
+
+  return (
+    <div>
+      <Table
+        data={curPageData}
+        rowKey="id"
+        autoHeight
+        bordered
+        width={700}
+        rowClassName={rowData => {
+          if (!rowData?.index) return '';
+          return rowData?.index % 2 === 0 ? 'even' : 'odd';
+        }}
+        shouldUpdateScroll={false}
+      >
+        <Column width={80} align="center" fixed>
+          <HeaderCell>Id</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+
+        <Column width={150} fixed resizable>
+          <HeaderCell>First Name</HeaderCell>
+          <Cell dataKey="firstName" />
+        </Column>
+
+        <Column width={150}>
+          <HeaderCell>Last Name</HeaderCell>
+          <Cell dataKey="lastName" />
+        </Column>
+
+        <Column width={200}>
+          <HeaderCell>City</HeaderCell>
+          <Cell dataKey="city" />
+        </Column>
+        <Column width={300}>
+          <HeaderCell>Email</HeaderCell>
+          <Cell dataKey="email" />
+        </Column>
+      </Table>
+      <hr />
+      <Stack spacing={10}>
+        <Button
+          appearance="primary"
+          onClick={() => {
+            setPage(page + 1);
+          }}
+        >
+          Next Page
+        </Button>
+      </Stack>
+    </div>
+  );
+};
+
+ReactDOM.render(<App />);
+```
+
+<!--end-code-->

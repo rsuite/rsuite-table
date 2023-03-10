@@ -458,6 +458,9 @@ const useScrollListener = (props: ScrollListenerProps) => {
     if (scrollY.current !== 0) {
       onScrollTop(Math.abs(scrollY.current));
     }
+
+    // fix: #405 #404
+    deferUpdatePosition();
   }, [height, data]);
 
   const releaseListeners = useCallback(() => {
