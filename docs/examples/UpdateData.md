@@ -20,41 +20,35 @@ const App = () => {
   const [dataNum, setDataNum] = React.useState(10);
   const [autoHeight, setAutoHeight] = React.useState(true);
   const [startIndex, setStartIndex] = React.useState(0);
+  const [columnWidth, setColumnWidth] = React.useState(200);
 
   const data = React.useMemo(() => mockData(dataNum, startIndex), [dataNum, startIndex]);
 
   return (
     <div>
-      <Table
-        width={500}
-        height={400}
-        data={data}
-        autoHeight={autoHeight}
-        bordered
-        shouldUpdateScroll={false}
-      >
+      <Table height={400} data={data} autoHeight={autoHeight} bordered shouldUpdateScroll={false}>
         <Column width={100} align="center" fixed>
           <HeaderCell>Index</HeaderCell>
           <Cell dataKey="index" />
         </Column>
-        <Column width={200} align="center">
-          <HeaderCell>Time</HeaderCell>
+        <Column width={columnWidth} align="center" resizable onResize={setColumnWidth}>
+          <HeaderCell>Resizable Column</HeaderCell>
           <Cell dataKey="time" />
         </Column>
         <Column width={200} align="center">
-          <HeaderCell>Time</HeaderCell>
+          <HeaderCell>Time 1</HeaderCell>
           <Cell dataKey="time" />
         </Column>
         <Column width={200} align="center">
-          <HeaderCell>Time</HeaderCell>
+          <HeaderCell>Time 2</HeaderCell>
           <Cell dataKey="time" />
         </Column>
         <Column width={200} align="center">
-          <HeaderCell>Time</HeaderCell>
+          <HeaderCell>Time 3</HeaderCell>
           <Cell dataKey="time" />
         </Column>
-        <Column width={200} align="center">
-          <HeaderCell>Time</HeaderCell>
+        <Column minWidth={200} fixed="right" flexGrow={1}>
+          <HeaderCell>Time 4</HeaderCell>
           <Cell dataKey="time" />
         </Column>
       </Table>
