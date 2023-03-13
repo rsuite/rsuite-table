@@ -7,12 +7,12 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import useMount from './useMount';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import isNumberOrTrue from './isNumberOrTrue';
-import { RowDataType, RowKeyType, ElementOffset } from '../@types/common';
+import { RowDataType, ElementOffset } from '../@types/common';
 import debounce from 'lodash/debounce';
 
-interface TableDimensionProps {
-  data?: readonly RowDataType[];
-  rowHeight: number | ((rowData: RowDataType) => number);
+interface TableDimensionProps<Row, Key> {
+  data?: readonly Row[];
+  rowHeight: number | ((rowData?: Row) => number);
   height: number;
   minHeight: number;
   tableRef?: React.RefObject<HTMLDivElement>;
@@ -25,7 +25,7 @@ interface TableDimensionProps {
   autoHeight?: boolean;
   fillHeight?: boolean;
   children?: React.ReactNode;
-  expandedRowKeys?: RowKeyType[];
+  expandedRowKeys?: readonly Key[];
   showHeader?: boolean;
   onTableScroll?: (coord: { x?: number; y?: number }) => void;
   onTableResizeChange?: (
@@ -40,7 +40,7 @@ interface TableDimensionProps {
  * @param props
  * @returns
  */
-const useTableDimension = (props: TableDimensionProps) => {
+const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionProps<Row, Key>) => {
   const {
     data,
     rowHeight,
@@ -77,7 +77,7 @@ const useTableDimension = (props: TableDimensionProps) => {
   const tableOffset = useRef<ElementOffset | null>(null);
 
   const getRowHeight = useCallback(
-    (rowData = {}) => {
+    (rowData?: Row) => {
       return typeof rowHeight === 'function' ? rowHeight(rowData) : rowHeight;
     },
     [rowHeight]

@@ -4,8 +4,11 @@ import type { RowKeyType, RowDataType } from '../@types/common';
 /**
  * Find all parent nodes of a node
  */
-export default function findAllParents(rowData: RowDataType, rowKey: RowKeyType) {
-  const parents: RowKeyType[] = [];
+export default function findAllParents<Row extends RowDataType, Key>(
+  rowData: Row,
+  rowKey: RowKeyType
+): Key[] {
+  const parents: Key[] = [];
 
   if (!rowData) {
     return parents;

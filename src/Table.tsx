@@ -41,10 +41,10 @@ import {
 import type {
   StandardProps,
   SortType,
-  RowDataType,
   RowKeyType,
   TableLocaleType,
-  TableSizeChangeEventName
+  TableSizeChangeEventName,
+  RowDataType
 } from './@types/common';
 /**
  * Filter those expanded nodes.
@@ -53,9 +53,9 @@ import type {
  * @param rowKey
  * @returns
  */
-const filterTreeData = (
-  data: readonly any[],
-  expandedRowKeys: RowKeyType[],
+const filterTreeData = <Row extends RowDataType, Key>(
+  data: readonly Row[],
+  expandedRowKeys: readonly Key[],
   rowKey?: RowKeyType
 ) => {
   return flattenData(data).filter(rowData => {
@@ -63,15 +63,17 @@ const filterTreeData = (
       const parents = findAllParents(rowData, rowKey);
       const expanded = shouldShowRowByExpanded(expandedRowKeys, parents);
 
-      rowData[EXPANDED_KEY] = expanded;
-      rowData[TREE_DEPTH] = parents.length;
+      // FIXME This function is supposed to be pure.
+      //       Don't mutate rowData in-place!
+      (rowData as Record<string, unknown>)[EXPANDED_KEY] = expanded;
+      (rowData as Record<string, unknown>)[TREE_DEPTH] = parents.length;
 
       return expanded;
     }
   });
 };
 
-export interface TableProps extends Omit<StandardProps, 'onScroll'> {
+export interface TableProps<Row, Key> extends Omit<StandardProps, 'onScroll'> {
   /**
    * The height of the table will be automatically expanded according to the number of data rows,
    * and no vertical scroll bar will appear
@@ -106,13 +108,13 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   defaultExpandAllRows?: boolean;
 
   /** Specify the default expanded row by  rowkey */
-  defaultExpandedRowKeys?: RowKeyType[];
+  defaultExpandedRowKeys?: readonly Key[];
 
   /** Table data */
-  data?: readonly RowDataType[];
+  data?: readonly Row[];
 
   /** Specify the default expanded row by  rowkey (Controlled) */
-  expandedRowKeys?: RowKeyType[];
+  expandedRowKeys?: readonly Key[];
 
   /** The visible height of the table (the height of the scrollable container). */
   height?: number;
@@ -136,7 +138,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   loadAnimation?: boolean;
 
   /** The row height of the table */
-  rowHeight?: number | ((rowData?: RowDataType) => number);
+  rowHeight?: number | ((rowData?: Row) => number);
 
   /** Each row corresponds to the unique key in  data */
   rowKey?: RowKeyType;
@@ -148,7 +150,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   rowExpandedHeight?: number;
 
   /** Add an optional extra class name to row */
-  rowClassName?: string | ((rowData: RowDataType, rowIndex: number) => string);
+  rowClassName?: string | ((rowData: Row, rowIndex: number) => string);
 
   /** Whether to display the header of the table */
   showHeader?: boolean;
@@ -191,15 +193,15 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   /** Tree table, the callback function in the expanded node */
   renderTreeToggle?: (
     expandButton: React.ReactNode,
-    rowData?: RowDataType,
+    rowData?: Row,
     expanded?: boolean
   ) => React.ReactNode;
 
   /** Customize what you can do to expand a zone */
-  renderRowExpanded?: (rowData?: RowDataType) => React.ReactNode;
+  renderRowExpanded?: (rowData?: Row) => React.ReactNode;
 
   /** Custom row element */
-  renderRow?: (children?: React.ReactNode, rowData?: RowDataType) => React.ReactNode;
+  renderRow?: (children?: React.ReactNode, rowData?: Row) => React.ReactNode;
 
   /** Customized data is empty display content */
   renderEmpty?: (info: React.ReactNode) => React.ReactNode;
@@ -208,10 +210,10 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   renderLoading?: (loading: React.ReactNode) => React.ReactNode;
 
   /** Click the callback function after the row and return to rowDate */
-  onRowClick?: (rowData: RowDataType, event: React.MouseEvent) => void;
+  onRowClick?: (rowData: Row, event: React.MouseEvent) => void;
 
   /** Callback after right-click row */
-  onRowContextMenu?: (rowData: RowDataType, event: React.MouseEvent) => void;
+  onRowContextMenu?: (rowData: Row, event: React.MouseEvent) => void;
 
   /** Callback function for scroll bar scrolling */
   onScroll?: (scrollX: number, scrollY: number) => void;
@@ -220,7 +222,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
   onSortColumn?: (dataKey: string, sortType?: SortType) => void;
 
   /** Tree table, the callback function in the expanded node */
-  onExpandChange?: (expanded: boolean, rowData: RowDataType) => void;
+  onExpandChange?: (expanded: boolean, rowData: Row) => void;
 
   /** Callback for the `touchstart` event. */
   onTouchStart?: (event: React.TouchEvent) => void;
@@ -235,10 +237,7 @@ export interface TableProps extends Omit<StandardProps, 'onScroll'> {
    * Callback after table data update.
    * @deprecated use `shouldUpdateScroll` instead
    **/
-  onDataUpdated?: (
-    nextData: RowDataType[],
-    scrollTo: (coord: { x: number; y: number }) => void
-  ) => void;
+  onDataUpdated?: (nextData: Row[], scrollTo: (coord: { x: number; y: number }) => void) => void;
 
   /**
    * A ref attached to the table body element
@@ -255,7 +254,7 @@ interface TableRowProps extends RowProps {
 
 const DATA_PLACEHOLDER = [];
 
-const Table = React.forwardRef((props: TableProps, ref) => {
+const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<Row, Key>, ref) => {
   const {
     affixHeader,
     children,
@@ -323,7 +322,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   // Use `forceUpdate` to force the component to re-render after manipulating the DOM.
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const [expandedRowKeys, setExpandedRowKeys] = useControlled<RowKeyType[]>(
+  const [expandedRowKeys, setExpandedRowKeys] = useControlled(
     expandedRowKeysProp,
     defaultExpandAllRows
       ? findRowKeys(dataProp, rowKey, isFunction(renderRowExpandedProp))
@@ -354,8 +353,8 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   const headerHeight = showHeader ? headerHeightProp : 0;
   const rtl = rtlProp || isRTL();
 
-  const getRowHeight = (rowData = {}) => {
-    return typeof rowHeight === 'function' ? rowHeight(rowData) : rowHeight;
+  const getRowHeight = () => {
+    return typeof rowHeight === 'function' ? rowHeight() : rowHeight;
   };
 
   const translateDOMPositionXY = useRef(
@@ -571,7 +570,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   };
 
   const renderRowExpanded = useCallback(
-    (rowData?: RowDataType) => {
+    (rowData?: Row) => {
       const styles = { height: rowExpandedHeight };
 
       if (typeof renderRowExpandedProp === 'function') {
@@ -739,7 +738,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   };
 
   const shouldRenderExpandedRow = useCallback(
-    (rowData: RowDataType) => {
+    (rowData: Row) => {
       if (
         isFunction(renderRowExpandedProp) &&
         !isTree &&
@@ -755,7 +754,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   );
 
   const bindRowClick = useCallback(
-    (rowData: RowDataType) => {
+    (rowData: Row) => {
       return (event: React.MouseEvent) => {
         onRowClick?.(rowData, event);
       };
@@ -764,7 +763,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   );
 
   const bindRowContextMenu = useCallback(
-    (rowData: RowDataType) => {
+    (rowData: Row) => {
       return (event: React.MouseEvent) => {
         onRowContextMenu?.(rowData, event);
       };
@@ -773,9 +772,9 @@ const Table = React.forwardRef((props: TableProps, ref) => {
   );
 
   const handleTreeToggle = useCallback(
-    (treeRowKey: any, _rowIndex: number, rowData: RowDataType) => {
+    (treeRowKey: any, _rowIndex: number, rowData: Row) => {
       let open = false;
-      const nextExpandedRowKeys: RowKeyType[] = [];
+      const nextExpandedRowKeys: Key[] = [];
 
       for (let i = 0; i < expandedRowKeys.length; i++) {
         const key = expandedRowKeys[i];
@@ -1161,4 +1160,6 @@ Table.propTypes = {
   onTouchEnd: PropTypes.func
 };
 
-export default Table;
+export default Table as <Row extends RowDataType, Key>(
+  props: TableProps<Row, Key>
+) => React.ReactElement;

@@ -15,7 +15,7 @@ import { ColumnProps } from '../Column';
 import { CellProps } from '../Cell';
 import flushSync from './flushSync';
 
-interface CellDescriptorProps {
+interface CellDescriptorProps<Row> {
   children: React.ReactNode;
   rtl: boolean;
   minScrollX: React.MutableRefObject<number>;
@@ -29,7 +29,7 @@ interface CellDescriptorProps {
   prefix: (str: string) => string;
   onSortColumn?: (dataKey: string, sortType?: SortType) => void;
   onHeaderCellResize?: (width: number, dataKey: string) => void;
-  rowHeight?: number | ((rowData?: RowDataType) => number);
+  rowHeight?: number | ((rowData?: Row) => number);
   mouseAreaRef: React.RefObject<HTMLDivElement>;
   tableRef: React.RefObject<HTMLDivElement>;
 }
@@ -47,7 +47,9 @@ interface CellDescriptor {
  * @param props
  * @returns
  */
-const useCellDescriptor = (props: CellDescriptorProps): CellDescriptor => {
+const useCellDescriptor = <Row extends RowDataType>(
+  props: CellDescriptorProps<Row>
+): CellDescriptor => {
   const {
     children,
     rtl,
