@@ -121,8 +121,6 @@ const App = () => {
     return data.slice(start, start + 5);
   }, [page]);
 
-  console.log(curPageData);
-
   return (
     <div>
       <Table
