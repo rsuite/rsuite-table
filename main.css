@@ -33054,7 +33054,6 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   }
 }
 .rs-table {
-  border: 1px solid #eee;
   position: relative;
   overflow: hidden;
 }
@@ -33064,6 +33063,9 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+.rs-table-bordered {
+  border: 1px solid #eee;
 }
 .rs-table-row {
   overflow: hidden;
