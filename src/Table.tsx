@@ -395,6 +395,10 @@ const Table = React.forwardRef((props: TableProps, ref) => {
       const vertical = event === 'bodyHeightChanged';
       vertical ? onScrollTop(0) : onScrollLeft(0);
     }
+
+    if (event === 'bodyWidthChanged') {
+      deferUpdatePosition();
+    }
   };
 
   const {
@@ -427,6 +431,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     children,
     expandedRowKeys,
     showHeader,
+    bordered,
     onTableScroll: debounce((coords: { x?: number; y?: number }) => onScrollTo(coords), 100),
     onTableResizeChange: handleTableResizeChange
   });
@@ -443,7 +448,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     affixHeaderWrapperRef
   });
 
-  const { forceUpdatePosition } = usePosition({
+  const { forceUpdatePosition, deferUpdatePosition } = usePosition({
     data: dataProp,
     height,
     tableWidth,
@@ -492,6 +497,7 @@ const Table = React.forwardRef((props: TableProps, ref) => {
     setScrollX,
     setScrollY,
     forceUpdatePosition,
+    deferUpdatePosition,
     onScroll,
     onTouchStart,
     onTouchMove,

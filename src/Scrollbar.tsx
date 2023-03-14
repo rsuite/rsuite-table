@@ -3,7 +3,7 @@ import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
 import addStyle, { CSSProperty } from 'dom-lib/addStyle';
 import getOffset from 'dom-lib/getOffset';
 import { SCROLLBAR_MIN_WIDTH, TRANSITION_DURATION, BEZIER } from './constants';
-import { useMount, useClassNames, useUpdateEffect } from './utils';
+import { useMount, useClassNames, useUpdateEffect, defer } from './utils';
 import TableContext from './TableContext';
 import type { StandardProps } from './@types/common';
 
@@ -69,11 +69,11 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
   const valuenow = (scrollOffset.current / length) * 100 + width;
 
   useMount(() => {
-    setTimeout(() => {
+    defer(() => {
       if (barRef.current) {
         setBarOffset(getOffset(barRef.current));
       }
-    }, 1);
+    });
 
     return () => {
       releaseMouseMoves();

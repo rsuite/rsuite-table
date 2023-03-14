@@ -5,6 +5,7 @@ import toggleClass from './toggleClass';
 import useUpdateEffect from './useUpdateEffect';
 import type { RowDataType } from '../@types/common';
 import isSupportTouchEvent from './isSupportTouchEvent';
+import defer from './defer';
 
 interface PositionProps {
   data: readonly RowDataType[];
@@ -182,7 +183,12 @@ const usePosition = (props: PositionProps) => {
   }, [height, data]);
 
   return {
-    forceUpdatePosition: updatePosition
+    forceUpdatePosition: updatePosition,
+    deferUpdatePosition: (nextDuration?: number, nextBezier?: string) => {
+      defer(() => {
+        updatePosition(nextDuration, nextBezier);
+      });
+    }
   };
 };
 
