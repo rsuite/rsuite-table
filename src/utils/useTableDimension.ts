@@ -186,8 +186,17 @@ const useTableDimension = (props: TableDimensionProps) => {
 
     // The value of SCROLLBAR_WIDTH is subtracted so that the scroll bar does not block the content part.
     // There is no vertical scroll bar after autoHeight.
-    minScrollX.current =
+    const minScrollWidth =
       -(nextContentWidth - tableWidth.current) - (autoHeight ? 0 : SCROLLBAR_WIDTH);
+
+    if (minScrollX.current !== minScrollWidth) {
+      minScrollX.current = minScrollWidth;
+
+      if (scrollX.current < minScrollWidth) {
+        // fix: 405#issuecomment-1464831646
+        scrollX.current = minScrollWidth;
+      }
+    }
 
     /**
      * If the width of the content area and the number of columns change,
@@ -195,10 +204,8 @@ const useTableDimension = (props: TableDimensionProps) => {
      * fix: https://github.com/rsuite/rsuite/issues/2039
      */
     if (
-      prevWidth > 0 &&
-      prevWidth !== contentWidth.current &&
-      prevColumnCount > 0 &&
-      prevColumnCount !== columnCount.current
+      (prevWidth > 0 && prevWidth !== contentWidth.current) ||
+      (prevColumnCount > 0 && prevColumnCount !== columnCount.current)
     ) {
       onTableResizeChange?.(prevWidth, 'bodyWidthChanged');
     }
