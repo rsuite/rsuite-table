@@ -4,6 +4,7 @@ import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import useMount from './useMount';
 import isEmpty from 'lodash/isEmpty';
 import { RowDataType } from '../@types/common';
+import defer from './defer';
 
 interface TableRowsProps<Row, Key> {
   prefix: (str: string) => string;
@@ -58,17 +59,17 @@ const useTableRows = <Row extends RowDataType, Key>(props: TableRowsProps<Row, K
   }, [prefix, wordWrap]);
 
   useMount(() => {
-    setTimeout(calculateRowMaxHeight, 1);
+    defer(calculateRowMaxHeight);
   });
 
   useUpdateLayoutEffect(() => {
     /**
      * After the data is updated, the height of the cell DOM needs to be re-acquired,
      * and what is often obtained is not the latest DOM that has been rendered.
-     * So use `setTimeout` to delay obtaining the height of the cell DOM.
+     * So use `defer` to delay obtaining the height of the cell DOM.
      * TODO: To be improved
      */
-    setTimeout(calculateRowMaxHeight, 1);
+    defer(calculateRowMaxHeight);
   }, [data, expandedRowKeys]);
 
   return {

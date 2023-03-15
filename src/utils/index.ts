@@ -27,3 +27,4 @@ export { default as useAffix } from './useAffix';
 export { default as useScrollListener } from './useScrollListener';
 export { default as usePosition } from './usePosition';
 export { default as isSupportTouchEvent } from './isSupportTouchEvent';
+export { default as defer } from './defer';

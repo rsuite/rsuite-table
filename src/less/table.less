@@ -1,10 +1,13 @@
 &-table {
-  border: 1px solid @border-color;
   position: relative;
   overflow: hidden;
   &-column-resizing {
     cursor: ew-resize;
     .user-select();
+  }
+
+  &-bordered {
+    border: 1px solid @border-color;
   }
 
   &-row {

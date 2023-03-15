@@ -27,6 +27,7 @@ interface TableDimensionProps<Row, Key> {
   children?: React.ReactNode;
   expandedRowKeys?: readonly Key[];
   showHeader?: boolean;
+  bordered?: boolean;
   onTableScroll?: (coord: { x?: number; y?: number }) => void;
   onTableResizeChange?: (
     prevSize: number,
@@ -58,6 +59,7 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
     children,
     expandedRowKeys,
     showHeader,
+    bordered,
     onTableResizeChange,
     onTableScroll
   } = props;
@@ -184,8 +186,17 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
 
     // The value of SCROLLBAR_WIDTH is subtracted so that the scroll bar does not block the content part.
     // There is no vertical scroll bar after autoHeight.
-    minScrollX.current =
+    const minScrollWidth =
       -(nextContentWidth - tableWidth.current) - (autoHeight ? 0 : SCROLLBAR_WIDTH);
+
+    if (minScrollX.current !== minScrollWidth) {
+      minScrollX.current = minScrollWidth;
+
+      if (scrollX.current < minScrollWidth) {
+        // fix: 405#issuecomment-1464831646
+        scrollX.current = minScrollWidth;
+      }
+    }
 
     /**
      * If the width of the content area and the number of columns change,
@@ -193,10 +204,8 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
      * fix: https://github.com/rsuite/rsuite/issues/2039
      */
     if (
-      prevWidth > 0 &&
-      prevWidth !== contentWidth.current &&
-      prevColumnCount > 0 &&
-      prevColumnCount !== columnCount.current
+      (prevWidth > 0 && prevWidth !== contentWidth.current) ||
+      (prevColumnCount > 0 && prevColumnCount !== columnCount.current)
     ) {
       onTableResizeChange?.(prevWidth, 'bodyWidthChanged');
     }
@@ -249,7 +258,11 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
     });
     containerResizeObserver.current.observe(tableRef?.current?.parentNode as Element);
     const changeTableWidthWhenResize = debounce(entries => {
-      calculateTableWidth(entries[0].contentRect.width);
+      const { width } = entries[0].contentRect;
+      // bordered table width is 1px larger than the container width. fix: #405 #404
+      const widthWithBorder = width + 2;
+
+      calculateTableWidth(bordered ? widthWithBorder : width);
     }, 20);
     resizeObserver.current = new ResizeObserver(changeTableWidthWhenResize);
     resizeObserver.current.observe(tableRef?.current as Element);

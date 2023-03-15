@@ -53,6 +53,9 @@ const App = () => {
           }
           return icon;
         }}
+        onRowClick={rowData => {
+          console.log(rowData);
+        }}
       >
         <Column flexGrow={1}>
           <HeaderCell>Vehicle 🚗</HeaderCell>

@@ -12,6 +12,7 @@ import type { ScrollbarInstance } from '../Scrollbar';
 import type { ListenerCallback, RowDataType } from '../@types/common';
 import isSupportTouchEvent from './isSupportTouchEvent';
 import flushSync from './flushSync';
+import defer from './defer';
 
 // Inertial sliding start time threshold
 const momentumTimeThreshold = 300;
@@ -43,6 +44,7 @@ interface ScrollListenerProps {
   setScrollY: (v: number) => void;
   virtualized?: boolean;
   forceUpdatePosition: (extDuration?: number, nextBezier?: string) => void;
+  deferUpdatePosition: (extDuration?: number, nextBezier?: string) => void;
   onScroll?: (scrollX: number, scrollY: number) => void;
   onTouchStart?: (event: React.TouchEvent) => void;
   onTouchMove?: (event: React.TouchEvent) => void;
@@ -93,6 +95,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     setScrollY,
     virtualized,
     forceUpdatePosition,
+    deferUpdatePosition,
     onScroll,
     onTouchMove,
     onTouchStart,
@@ -207,11 +210,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
          * Update the position of the rendered list with a delay.
          * fix: https://github.com/rsuite/rsuite/issues/2378
          */
-        setTimeout(
-          () => forceUpdatePosition(momentumOptions?.duration, momentumOptions?.bezier),
-          0
-        );
-
+        deferUpdatePosition(momentumOptions?.duration, momentumOptions?.bezier);
         return;
       }
 
@@ -229,6 +228,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
       setScrollY,
       onScroll,
       forceUpdatePosition,
+      deferUpdatePosition,
       virtualized,
       debounceScrollEndedCallback
     ]
@@ -398,11 +398,11 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
   const rerender = () => {
     setScrolling(true);
-    setTimeout(() => {
+    defer(() => {
       if (tableBodyRef.current) {
         setScrolling(false);
       }
-    }, 0);
+    });
   };
 
   const getControlledScrollLeftValue = value => {
@@ -422,7 +422,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
     setScrollY(nextScrollY);
     scrollbarYRef?.current?.resetScrollBarPosition?.(handleScrollY);
-    forceUpdatePosition();
+    deferUpdatePosition();
 
     /**
      * After calling `scrollTop`, a white screen will appear when `virtualized` is true.
@@ -440,7 +440,8 @@ const useScrollListener = (props: ScrollListenerProps) => {
     setScrollX(nextScrollX);
     !loading && onScroll?.(Math.abs(nextScrollX), Math.abs(scrollY.current));
     scrollbarXRef?.current?.resetScrollBarPosition?.(scrollbarX);
-    forceUpdatePosition();
+
+    deferUpdatePosition();
   };
 
   const onScrollTo = (coord: { x?: number; y?: number }) => {
@@ -457,6 +458,9 @@ const useScrollListener = (props: ScrollListenerProps) => {
     if (scrollY.current !== 0) {
       onScrollTop(Math.abs(scrollY.current));
     }
+
+    // fix: #405 #404
+    deferUpdatePosition();
   }, [height, data]);
 
   const releaseListeners = useCallback(() => {
