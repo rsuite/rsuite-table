@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noUnusedParameters": false
+  },
+  "include": ["./test/*.test.tsx"]
+}
