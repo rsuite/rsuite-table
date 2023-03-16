@@ -1,3 +1,17 @@
+# [5.10.0](https://github.com/rsuite/rsuite-table/compare/5.9.0...5.10.0) (2023-03-16)
+
+
+### Bug Fixes
+
+* **Table:** fix column misalignment after data update ([#409](https://github.com/rsuite/rsuite-table/issues/409)) ([e3bdb00](https://github.com/rsuite/rsuite-table/commit/e3bdb00a8a237139c5eb955c4acc13fc1a72a4f6))
+
+
+### Features
+
+* **Table:** support generic props ([#410](https://github.com/rsuite/rsuite-table/issues/410)) ([d774c74](https://github.com/rsuite/rsuite-table/commit/d774c74d7b40d29693f0086a3fe592ada51a4b4c))
+
+
+
 # [5.9.0](https://github.com/rsuite/rsuite-table/compare/5.8.2...5.9.0) (2023-02-23)
 
 
