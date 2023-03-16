@@ -1,3 +1,12 @@
+## [5.10.1](https://github.com/rsuite/rsuite-table/compare/5.10.0...5.10.1) (2023-03-16)
+
+
+### Bug Fixes
+
+* **Table:** fix missing `ref` in type definition ([#411](https://github.com/rsuite/rsuite-table/issues/411)) ([28338ee](https://github.com/rsuite/rsuite-table/commit/28338ee30ad3a75d0c95fc216aab67116c5bd9c6))
+
+
+
 # [5.10.0](https://github.com/rsuite/rsuite-table/compare/5.9.0...5.10.0) (2023-03-16)
 
 
