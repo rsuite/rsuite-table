@@ -1,6 +1,6 @@
 import React from 'react';
 import { expectType } from 'ts-expect';
-import Table from '../src/Table';
+import Table, { TableInstance } from '../src/Table';
 
 type Row = {
   id: number;
@@ -55,3 +55,13 @@ const data: Row[] = [
     expectType<Row>(row);
   }}
 />;
+
+// It should be possible to call instance methods via ref
+const ref = React.createRef<TableInstance<Row, string>>();
+
+<Table ref={ref} />;
+
+ref.current?.body;
+ref.current?.root;
+ref.current?.scrollLeft(100);
+ref.current?.scrollTop(100);
