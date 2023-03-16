@@ -1166,6 +1166,19 @@ Table.propTypes = {
   onTouchEnd: PropTypes.func
 };
 
+export interface TableInstance<Row, Key> extends React.FunctionComponent<TableProps<Row, Key>> {
+  /** The table body element */
+  readonly body: HTMLDivElement;
+  /** The table root element */
+  readonly root: HTMLDivElement;
+
+  /** Scroll the table to the specified vertical position */
+  scrollTop: (top: number) => void;
+
+  /** Scroll the table to the specified horizontal position */
+  scrollLeft: (left: number) => void;
+}
+
 export default Table as <Row extends RowDataType, Key>(
-  props: TableProps<Row, Key>
+  props: TableProps<Row, Key> & React.RefAttributes<TableInstance<Row, Key>>
 ) => React.ReactElement;

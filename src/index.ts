@@ -5,7 +5,7 @@ export { default as HeaderCell } from './HeaderCell';
 export { default as ColumnGroup } from './ColumnGroup';
 
 export type { TableLocaleType } from './@types/common';
-export type { TableProps } from './Table';
+export type { TableProps, TableInstance } from './Table';
 export type { ColumnProps } from './Column';
 export type { CellProps } from './Cell';
 export type { HeaderCellProps } from './HeaderCell';
