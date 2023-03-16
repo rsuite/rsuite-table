@@ -6,8 +6,8 @@ import type { RowDataType } from '../@types/common';
  * @param treeData
  * @returns
  */
-function flattenData(treeData: readonly RowDataType[]) {
-  const flattenItems: RowDataType[] = [];
+function flattenData<Row extends RowDataType>(treeData: readonly Row[]) {
+  const flattenItems: Row[] = [];
 
   function loop(treeData, parentNode) {
     if (!Array.isArray(treeData)) {

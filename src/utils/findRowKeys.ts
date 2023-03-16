@@ -1,11 +1,11 @@
-import { RowKeyType, RowDataType } from '../@types/common';
+import { RowDataType, RowKeyType } from '../@types/common';
 
-export default function findRowKeys(
-  rows: readonly RowDataType[],
+export default function findRowKeys<Row extends RowDataType, Key>(
+  rows: readonly Row[],
   rowKey?: RowKeyType,
   expanded?: boolean
-) {
-  let keys: RowKeyType[] = [];
+): Key[] {
+  let keys: Key[] = [];
 
   if (!rowKey) {
     return keys;
@@ -15,7 +15,7 @@ export default function findRowKeys(
     const item = rows[i];
     if (item.children) {
       keys.push(item[rowKey]);
-      keys = [...keys, ...findRowKeys(item.children, rowKey)];
+      keys = [...keys, ...findRowKeys<Row, Key>(item.children as Row[], rowKey)];
     } else if (expanded) {
       keys.push(item[rowKey]);
     }
