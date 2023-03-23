@@ -1,3 +1,13 @@
+## [5.10.2](https://github.com/rsuite/rsuite-table/compare/5.10.1...5.10.2) (2023-03-23)
+
+
+### Bug Fixes
+
+* **Table:** fix flattenData function ([#413](https://github.com/rsuite/rsuite-table/issues/413)) ([7606bc9](https://github.com/rsuite/rsuite-table/commit/7606bc92bef33cd0241db5f043d1a74c10e8b180))
+* **Table:** translate3d disabled by default ([#412](https://github.com/rsuite/rsuite-table/issues/412)) ([ba98958](https://github.com/rsuite/rsuite-table/commit/ba9895842d3665e5bcd29025e46eae3ee7f6ed05))
+
+
+
 ## [5.10.1](https://github.com/rsuite/rsuite-table/compare/5.10.0...5.10.1) (2023-03-16)
 
 
