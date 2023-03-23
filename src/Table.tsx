@@ -288,7 +288,7 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
     autoHeight,
     fillHeight,
     rtl: rtlProp,
-    translate3d = true,
+    translate3d,
     rowKey,
     virtualized,
     rowClassName,
