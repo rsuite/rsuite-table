@@ -9,15 +9,15 @@ import type { RowDataType } from '../@types/common';
 function flattenData<Row extends RowDataType>(treeData: readonly Row[]) {
   const flattenItems: Row[] = [];
 
-  function loop(treeData: readonly Row[], parentNode: Row | null) {
+  function loop(treeData, parentNode) {
     if (!Array.isArray(treeData)) {
       return;
     }
 
     treeData.forEach(rowData => {
+      rowData[PARENT_KEY] = parentNode;
       flattenItems.push({
-        ...rowData,
-        [PARENT_KEY]: parentNode
+        ...rowData
       });
       if (rowData.children) {
         loop(rowData.children, rowData);
