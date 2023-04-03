@@ -20,9 +20,9 @@ export type TableSizeChangeEventName =
   | 'widthChanged'
   | 'heightChanged';
 
-export interface RowDataType {
+export interface RowDataType<T = never> {
   dataKey?: string;
-  children?: RowDataType[];
+  children?: T[];
   [key: string]: any;
 }
 

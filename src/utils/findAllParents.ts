@@ -1,29 +1,20 @@
 import { PARENT_KEY } from '../constants';
-import type { RowKeyType, RowDataType } from '../@types/common';
+import type { RowDataType, RowKeyType } from '../@types/common';
 
 /**
- * Find all parent nodes of a node
+ * Get all parent nodes of the given node in the flattened data
+ * @param node target node
  */
-export default function findAllParents<Row extends RowDataType, Key>(
-  rowData: Row,
-  rowKey: RowKeyType
-): Key[] {
+function findAllParents<Row extends RowDataType, Key>(node: Row, rowKey: RowKeyType): Key[] {
   const parents: Key[] = [];
+  let current = node[PARENT_KEY];
 
-  if (!rowData) {
-    return parents;
+  // Iterate up through the parent chain and add each parent to the result array
+  while (current) {
+    parents.push(current[rowKey]);
+    current = current[PARENT_KEY];
   }
-
-  function findParent(data) {
-    if (data) {
-      parents.push(data[rowKey]);
-
-      if (data[PARENT_KEY]) {
-        findParent(data[PARENT_KEY]);
-      }
-    }
-  }
-  findParent(rowData[PARENT_KEY]);
-
   return parents;
 }
+
+export default findAllParents;
