@@ -1,3 +1,17 @@
+## [5.10.3](https://github.com/rsuite/rsuite-table/compare/5.10.2...5.10.3) (2023-04-04)
+
+
+### Bug Fixes
+
+* **Table:** fix cell border not showing ([#420](https://github.com/rsuite/rsuite-table/issues/420)) ([09de858](https://github.com/rsuite/rsuite-table/commit/09de8584077fbc6b68860b5a09384f83ff2b8a9b))
+
+
+### Reverts
+
+* Revert "fix(Table): fix flattenData function (#413)" (#417) ([eac4b0a](https://github.com/rsuite/rsuite-table/commit/eac4b0a004877128c2e881f9acb6ce1cd3fbf256)), closes [#413](https://github.com/rsuite/rsuite-table/issues/413) [#417](https://github.com/rsuite/rsuite-table/issues/417)
+
+
+
 ## [5.10.2](https://github.com/rsuite/rsuite-table/compare/5.10.1...5.10.2) (2023-03-23)
 
 
