@@ -2,31 +2,21 @@ import { PARENT_KEY } from '../constants';
 import type { RowDataType } from '../@types/common';
 
 /**
- * Flatten the data of a tree structure into a one-dimensional array.
- * @param treeData
- * @returns
+ * Flatten the tree data with parent association recorded on each node
+ * @param tree tree data
  */
-function flattenData<Row extends RowDataType>(treeData: readonly Row[]) {
-  const flattenItems: Row[] = [];
+function flattenData<Row extends RowDataType<Row>>(tree: readonly Row[], parent?: Row): Row[] {
+  return tree.reduce<Row[]>((acc, node) => {
+    // Create a new flattened node with parent association
+    const flattened = {
+      ...node,
+      [PARENT_KEY]: parent
+    };
 
-  function loop(treeData, parentNode) {
-    if (!Array.isArray(treeData)) {
-      return;
-    }
-
-    treeData.forEach(rowData => {
-      rowData[PARENT_KEY] = parentNode;
-      flattenItems.push({
-        ...rowData
-      });
-      if (rowData.children) {
-        loop(rowData.children, rowData);
-      }
-    });
-  }
-
-  loop(treeData, null);
-  return flattenItems;
+    // Add the flattened node and its flattened children (if any) to the result array
+    acc.push(flattened, ...(node.children ? flattenData(node.children, flattened) : []));
+    return acc;
+  }, []);
 }
 
 export default flattenData;
