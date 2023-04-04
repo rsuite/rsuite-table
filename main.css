@@ -33135,6 +33135,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   white-space: normal;
   background: #fff;
   transition: none;
+  box-sizing: border-box;
 }
 .rs-table-cell.first {
   border-left-width: 0;
@@ -33151,6 +33152,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 }
 .rs-table-cell-content {
   padding: 8px;
+  box-sizing: border-box;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
