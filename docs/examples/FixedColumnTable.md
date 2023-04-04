@@ -25,6 +25,7 @@ const App = () => {
       data={data}
       onScroll={handleScroll}
       cellBordered
+      bordered
       onRowClick={data => {
         console.log(data);
       }}
