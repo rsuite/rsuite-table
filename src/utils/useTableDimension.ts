@@ -257,9 +257,21 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
       calculateTableHeight(entries[0].contentRect.height);
     });
     containerResizeObserver.current.observe(tableRef?.current?.parentNode as Element);
-    const changeTableWidthWhenResize = _.debounce(entries => {
-      calculateTableWidth(entries[0].contentRect.width);
-    }, 20);
+    let idleCallbackId: null | number = null;
+    const changeTableWidthWhenResize = function (entries) {
+      if (idleCallbackId) {
+        window.cancelIdleCallback(idleCallbackId);
+      }
+      idleCallbackId = window.requestIdleCallback(deadline => {
+        // if idle time >= 10ms, then we can judge other tasks have completed
+        if (deadline.timeRemaining() >= 10) {
+          idleCallbackId = null;
+          calculateTableWidth(entries[0].contentRect.width);
+        } else {
+          changeTableWidthWhenResize(entries);
+        }
+      });
+    };
     resizeObserver.current = new ResizeObserver(changeTableWidthWhenResize);
     resizeObserver.current.observe(tableRef?.current as Element);
 
