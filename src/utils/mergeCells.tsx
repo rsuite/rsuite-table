@@ -42,7 +42,8 @@ function mergeCells(cells) {
           sortColumn,
           sortType,
           align,
-          verticalAlign
+          verticalAlign,
+          renderSortIcon
         } = nextCell.props;
 
         if (j !== 0) {
@@ -63,6 +64,7 @@ function mergeCells(cells) {
             sortColumn={sortColumn}
             sortType={sortType}
             onSortColumn={onSortColumn}
+            renderSortIcon={renderSortIcon}
           >
             {children}
           </HeaderCell>
