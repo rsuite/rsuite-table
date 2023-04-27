@@ -64,7 +64,8 @@ const groupKeys = [
   'groupHeader',
   'groupHeaderHeight',
   'groupAlign',
-  'groupVerticalAlign'
+  'groupVerticalAlign',
+  'renderSortIcon'
 ];
 
 const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElement>) => {

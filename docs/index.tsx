@@ -22,6 +22,9 @@ import fakeDataForColSpan from './data/usersForColSpan';
 import fakeDataForRowSpan from './data/usersForRowSpan';
 import { createUser, mockUsers, mockTreeData } from './data/mock';
 import GearIcon from '@rsuite/icons/Gear';
+import ArrowDownIcon from '@rsuite/icons/ArrowDown';
+import ArrowUpIcon from '@rsuite/icons/ArrowUp';
+import SortIcon from '@rsuite/icons/Sort';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { faker } from '@faker-js/faker';
@@ -68,7 +71,10 @@ const dependencies = {
   faker,
   createUser,
   mockUsers,
-  mockTreeData
+  mockTreeData,
+  ArrowDownIcon,
+  ArrowUpIcon,
+  SortIcon
 };
 
 const examples = [
