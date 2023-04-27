@@ -1,3 +1,12 @@
+## [5.10.4](https://github.com/rsuite/rsuite-table/compare/5.10.3...5.10.4) (2023-04-27)
+
+
+### Bug Fixes
+
+* **ColumnGroup:** fix `renderSortIcon` is not working in grouped columns ([#426](https://github.com/rsuite/rsuite-table/issues/426)) ([cb616bd](https://github.com/rsuite/rsuite-table/commit/cb616bdc1fe2e4afcadad0f6aa6168a24ad8932e))
+
+
+
 ## [5.10.3](https://github.com/rsuite/rsuite-table/compare/5.10.2...5.10.3) (2023-04-04)
 
 

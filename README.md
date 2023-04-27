@@ -2,9 +2,7 @@
 
 A React table component.
 
-[![npm][npm-badge]][npm]
-
-[![Travis][build-badge]][build] [![Coverage Status][coverage-badge]][coverage]
+[![npm][npm-badge]][npm] [![GitHub Actions][actions-svg]][actions-home] [![Coverage Status][coverage-badge]][coverage]
 
 ## Features
 
@@ -124,7 +122,7 @@ const App = () => (
 | renderRow                | (children?: ReactNode, rowData?: RowDataType) => ReactNode         | Custom row element                                                                                                                  |
 | renderRowExpanded        | (rowDate?: Object) => React.ReactNode                              | Customize what you can do to expand a zone                                                                                          |
 | renderTreeToggle         | (icon:node,rowData:object,expanded:boolean)=> node                 | Tree table, the callback function in the expanded node                                                                              |
-| rowClassName             | string , (rowData:object, rowIndex:number)=>string                  | Add an optional extra class name to row                                                                                             |
+| rowClassName             | string , (rowData:object, rowIndex:number)=>string                 | Add an optional extra class name to row                                                                                             |
 | rowExpandedHeight        | number `(100)`                                                     | Set the height of an expandable area                                                                                                |
 | rowHeight                | number`(46)`, (rowData: object) => number                          | Row height                                                                                                                          |
 | rowKey                   | string `('key')`                                                   | Each row corresponds to the unique `key` in `data`                                                                                  |
@@ -231,7 +229,7 @@ const NameCell = ({ rowData, ...props }) => (
 
 [npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/rsuite-table
-[build-badge]: https://img.shields.io/travis/rsuite/rsuite-table.svg?style=flat-square
-[build]: https://travis-ci.org/rsuite/rsuite-table
 [coverage-badge]: https://img.shields.io/coveralls/rsuite/rsuite-table.svg?style=flat-square
 [coverage]: https://coveralls.io/github/rsuite/rsuite-table
+[actions-svg]: https://github.com/rsuite/rsuite-table/workflows/Node.js%20CI/badge.svg?branch=main
+[actions-home]: https://github.com/rsuite/rsuite-table/actions?query=branch%3Amain+workflow%3A%22Node.js+CI%22
