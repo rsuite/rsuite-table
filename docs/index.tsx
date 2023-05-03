@@ -10,7 +10,8 @@ import {
   Stack,
   Divider,
   Input,
-  Loader
+  Loader,
+  Placeholder
 } from 'rsuite';
 import clone from 'lodash/clone';
 import isFunction from 'lodash/isFunction';
@@ -74,7 +75,8 @@ const dependencies = {
   mockTreeData,
   ArrowDownIcon,
   ArrowUpIcon,
-  SortIcon
+  SortIcon,
+  Placeholder
 };
 
 const examples = [

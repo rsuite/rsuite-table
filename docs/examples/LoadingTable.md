@@ -9,10 +9,30 @@ const App = () => {
   const [data, setData] = React.useState(fakeData);
   const [loading, setLoading] = React.useState(true);
   const [customLoader, setCustomLoader] = React.useState(false);
+  const [usePlaceholder, setUsePlaceholder] = React.useState(false);
   const [loadAnimation, setLoadAnimation] = React.useState(false);
+
   const renderLoading = () => {
+    if (usePlaceholder) {
+      return (
+        <div
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            background: '#fff',
+            padding: 20,
+            zIndex: 1
+          }}
+        >
+          <Placeholder.Grid rows={20} columns={6} active />
+        </div>
+      );
+    }
+
     return <Loader center backdrop content="Custom Loader" />;
   };
+
   return (
     <div>
       <Checkbox
@@ -34,6 +54,15 @@ const App = () => {
       </Checkbox>
 
       <Checkbox
+        checked={usePlaceholder}
+        onChange={() => {
+          setUsePlaceholder(!usePlaceholder);
+        }}
+      >
+        Use a placeholder
+      </Checkbox>
+
+      <Checkbox
         checked={loadAnimation}
         onChange={() => {
           setLoadAnimation(!loadAnimation);
@@ -47,7 +76,7 @@ const App = () => {
         height={500}
         data={data}
         loadAnimation={loadAnimation}
-        renderLoading={customLoader ? renderLoading : null}
+        renderLoading={customLoader || usePlaceholder ? renderLoading : null}
       >
         <Column width={70} align="center" fixed>
           <HeaderCell>Id</HeaderCell>
