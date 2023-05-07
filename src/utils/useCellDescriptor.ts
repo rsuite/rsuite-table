@@ -14,6 +14,7 @@ import useUpdateEffect from './useUpdateEffect';
 import { ColumnProps } from '../Column';
 import { CellProps } from '../Cell';
 import flushSync from './flushSync';
+import useMount from './useMount';
 
 interface CellDescriptorProps<Row> {
   children: React.ReactNode;
@@ -91,6 +92,10 @@ const useCellDescriptor = <Row extends RowDataType>(
   );
 
   const columnWidths = useRef({});
+
+  useMount(() => {
+    clearCache();
+  })
 
   useUpdateEffect(() => {
     clearCache();
