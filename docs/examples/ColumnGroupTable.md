@@ -72,7 +72,7 @@ const App = () => {
         <Cell dataKey="city" />
       </Column>
 
-      <Column width={100} resizable sortable>
+      <Column width={100} resizable sortable align="right" verticalAlign="bottom">
         <HeaderCell>Street</HeaderCell>
         <Cell dataKey="street" />
       </Column>

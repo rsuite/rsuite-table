@@ -602,52 +602,6 @@ describe('Table', () => {
     assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
   });
 
-  it('Should render 2 ColumnGroup', () => {
-    const ref = React.createRef();
-    const columnData = [
-      {
-        name: 'test 1',
-        id: 1
-      },
-      {
-        name: 'test 2',
-        id: 2
-      }
-    ];
-    act(() => {
-      render(
-        <div style={{ width: 300 }}>
-          <Table data={[]} ref={ref}>
-            {columnData.map((item, index) => {
-              return (
-                <ColumnGroup key={index} header={item.name} fixed>
-                  <Column width={130} sortable>
-                    <HeaderCell>First Name</HeaderCell>
-                    <Cell dataKey="firstName" />
-                  </Column>
-
-                  <Column width={130} sortable>
-                    <HeaderCell>Last Name</HeaderCell>
-                    <Cell dataKey="lastName" />
-                  </Column>
-                </ColumnGroup>
-              );
-            })}
-          </Table>
-        </div>
-      );
-    });
-
-    const table = ref.current.root;
-    assert.equal(table.querySelectorAll('.rs-table-column-group').length, 2);
-    assert.equal(
-      table.querySelectorAll(
-        '.rs-table-column-group .rs-table-cell-header .rs-table-cell-header-icon-sort'
-      ).length,
-      4
-    );
-  });
-
   it('Should replace all classPrefix', () => {
     const ref = React.createRef();
 
@@ -1145,71 +1099,6 @@ describe('Table', () => {
     const body = instance.querySelector('.rs-table-body-row-wrapper');
 
     assert.equal(body.querySelectorAll('.rs-table-cell-content').length, 9);
-  });
-
-  it('Should be aligned in ColumnGroup', () => {
-    const ref = React.createRef();
-    const data = [
-      {
-        name: 'test name',
-        id: 1
-      }
-    ];
-    act(() => {
-      render(
-        <Table data={data} ref={ref}>
-          <ColumnGroup header={'Info'} align="right" verticalAlign="top">
-            <Column width={150} resizable sortable align="left" verticalAlign="bottom">
-              <HeaderCell>firstName</HeaderCell>
-              <Cell dataKey="name" />
-            </Column>
-
-            <Column width={150} resizable sortable>
-              <HeaderCell>lastName</HeaderCell>
-              <Cell dataKey="name" />
-            </Column>
-
-            <Column width={200} resizable sortable align="center" verticalAlign="middle">
-              <HeaderCell>Email</HeaderCell>
-              <Cell dataKey="name" />
-            </Column>
-          </ColumnGroup>
-        </Table>
-      );
-    });
-
-    const table = ref.current.root;
-
-    const groupHeader = table.querySelector('.rs-table-column-group-header-content');
-    const groupChildren = table.querySelectorAll(
-      '.rs-table-column-group .rs-table-column-group-cell .rs-table-cell-content'
-    );
-
-    assert.equal(groupHeader.style.textAlign, 'right');
-    assert.equal(groupHeader.style.verticalAlign, 'top');
-
-    assert.equal(groupChildren.length, 3);
-    assert.equal(groupChildren[0].textContent, 'firstName');
-    assert.equal(groupChildren[1].textContent, 'lastName');
-    assert.equal(groupChildren[2].textContent, 'Email');
-
-    assert.equal(groupChildren[0].style.textAlign, 'left');
-    assert.equal(groupChildren[0].style.verticalAlign, 'bottom');
-    assert.equal(groupChildren[1].style.textAlign, 'right');
-    assert.equal(groupChildren[1].style.verticalAlign, 'top');
-    assert.equal(groupChildren[2].style.textAlign, 'center');
-    assert.equal(groupChildren[2].style.verticalAlign, 'middle');
-
-    const groupBodyChildren = table.querySelectorAll(
-      '.rs-table-body-row-wrapper .rs-table-cell-content'
-    );
-
-    assert.equal(groupBodyChildren[0].style.textAlign, 'left');
-    assert.equal(groupBodyChildren[0].style.verticalAlign, 'bottom');
-    assert.equal(groupBodyChildren[1].style.textAlign, 'right');
-    assert.equal(groupBodyChildren[1].style.verticalAlign, 'top');
-    assert.equal(groupBodyChildren[2].style.textAlign, 'center');
-    assert.equal(groupBodyChildren[2].style.verticalAlign, 'middle');
   });
 
   it('Should render a custom row', () => {

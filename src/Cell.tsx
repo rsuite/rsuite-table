@@ -5,6 +5,7 @@ import isNil from 'lodash/isNil';
 import get from 'lodash/get';
 import { LAYER_WIDTH } from './constants';
 import { useClassNames } from './utils';
+import { verticalAlignToAlignItems, textAlignToJustifyContent } from './utils/convertToFlex';
 import TableContext from './TableContext';
 import ArrowRight from '@rsuite/icons/ArrowRight';
 import ArrowDown from '@rsuite/icons/ArrowDown';
@@ -145,13 +146,17 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     ...style,
     width: fullText ? width - 1 : width,
     height: nextHeight,
-    textAlign: align,
+    display: 'flex',
+    flexWrap: 'wrap',
     [paddingKey]: isTreeCol ? depth * LAYER_WIDTH + 10 : style?.[paddingKey] || style?.padding
   };
 
+  if (align) {
+    contentStyles.justifyContent = textAlignToJustifyContent(align);
+  }
+
   if (verticalAlign) {
-    contentStyles.display = 'table-cell';
-    contentStyles.verticalAlign = verticalAlign;
+    contentStyles.alignItems = verticalAlignToAlignItems(verticalAlign);
   }
 
   if (wordWrap) {

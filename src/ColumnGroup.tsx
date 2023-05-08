@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useClassNames } from './utils';
+import { verticalAlignToAlignItems, textAlignToJustifyContent } from './utils/convertToFlex';
 import { StandardProps } from './@types/common';
 
 export interface ColumnGroupProps extends StandardProps {
@@ -48,7 +49,15 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
 
   const { withClassPrefix, merge, prefix } = useClassNames(classPrefix);
   const classes = merge(className, withClassPrefix());
-  const contentStyles = { ...styles, textAlign: align, verticalAlign };
+  const contentStyles: React.CSSProperties = { ...styles, display: 'flex', flexWrap: 'wrap' };
+
+  if (align) {
+    contentStyles.justifyContent = textAlignToJustifyContent(align);
+  }
+
+  if (verticalAlign) {
+    contentStyles.alignItems = verticalAlignToAlignItems(verticalAlign);
+  }
 
   return (
     <div ref={ref} className={classes} {...rest}>
