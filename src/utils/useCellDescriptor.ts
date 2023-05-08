@@ -94,6 +94,7 @@ const useCellDescriptor = <Row extends RowDataType>(
   const columnWidths = useRef({});
 
   useMount(() => {
+    // As the cells are cached before the table width is updated, it is necessary to clear the cache again. fix: #430
     clearCache();
   });
 
