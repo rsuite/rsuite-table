@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor, act, fireEvent } from '@testing-library/react';
+import { render, waitFor, act, fireEvent, screen } from '@testing-library/react';
 import getHeight from 'dom-lib/getHeight';
 import getWidth from 'dom-lib/getWidth';
 import Table from '../src/Table';
@@ -1296,5 +1296,67 @@ describe('Table', () => {
 
     expect(instance.querySelector('.rs-table-cell-header-sortable')).to.exist;
     expect(instance.querySelector('.rs-table-cell-full-text')).to.not.exist;
+  });
+
+  it('Should render custom column', () => {
+    const data = [{ id: 1, name: 'a' }];
+
+    render(
+      <Table data={data}>
+        <Column>
+          <HeaderCell>Id</HeaderCell>
+          <Cell dataKey="id" data-testid="test-1" />
+        </Column>
+
+        <Column align="center">
+          <HeaderCell>Id</HeaderCell>
+          <Cell dataKey="id" data-testid="test-2" />
+        </Column>
+
+        <Column align="left">
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" data-testid="test-3" />
+        </Column>
+
+        <Column align="start">
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" data-testid="test-4" />
+        </Column>
+
+        <Column verticalAlign="center">
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" data-testid="test-5" />
+        </Column>
+
+        <Column verticalAlign="bottom">
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" data-testid="test-6" />
+        </Column>
+
+        <Column verticalAlign="end">
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" data-testid="test-7" />
+        </Column>
+      </Table>
+    );
+
+    expect(screen.getByTestId('test-1').firstChild).not.to.have.style('display');
+    expect(screen.getByTestId('test-2').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-2').firstChild).to.have.style('justify-content', 'center');
+
+    expect(screen.getByTestId('test-3').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-3').firstChild).to.have.style('justify-content', 'flex-start');
+
+    expect(screen.getByTestId('test-4').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-4').firstChild).to.have.style('justify-content', 'start');
+
+    expect(screen.getByTestId('test-5').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-5').firstChild).to.have.style('align-items', 'center');
+
+    expect(screen.getByTestId('test-6').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-6').firstChild).to.have.style('align-items', 'flex-end');
+
+    expect(screen.getByTestId('test-7').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-7').firstChild).to.have.style('align-items', 'end');
   });
 });

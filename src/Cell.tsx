@@ -23,8 +23,8 @@ export interface CellProps extends StandardProps {
 }
 
 export interface InnerCellProps extends Omit<CellProps, 'children'> {
-  align?: 'left' | 'center' | 'right';
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  align?: React.CSSProperties['justifyContent'];
+  verticalAlign?: React.CSSProperties['alignItems'] | 'top' | 'middle' | 'bottom';
   isHeaderCell?: boolean;
   width?: number;
   height?: number | ((rowData: RowDataType) => number);
@@ -214,8 +214,8 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
 
 Cell.displayName = 'Table.Cell';
 Cell.propTypes = {
-  align: PropTypes.oneOf(['left', 'center', 'right']),
-  verticalAlign: PropTypes.oneOf(['top', 'middle', 'bottom']),
+  align: PropTypes.string,
+  verticalAlign: PropTypes.string,
   className: PropTypes.string,
   classPrefix: PropTypes.string,
   dataKey: PropTypes.string,
