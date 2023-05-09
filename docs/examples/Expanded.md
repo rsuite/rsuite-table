@@ -63,7 +63,7 @@ const ExpandedTable = () => {
                 background: '#eee'
               }}
             >
-              <img src={rowData.avartar} style={{ width: 60 }} />
+              <img src={rowData.avatar} style={{ width: 60 }} />
             </div>
             <p>{rowData.email}</p>
             <p>{rowData.date}</p>
@@ -96,7 +96,7 @@ const ExpandedTable = () => {
         <Cell dataKey="street" />
       </Column>
 
-      <Column width={300}>
+      <Column width={300} verticalAlign="middle">
         <HeaderCell>Company</HeaderCell>
         <Cell dataKey="company" />
       </Column>
