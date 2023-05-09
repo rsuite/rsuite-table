@@ -4,8 +4,7 @@ import omit from 'lodash/omit';
 import isNil from 'lodash/isNil';
 import get from 'lodash/get';
 import { LAYER_WIDTH } from './constants';
-import { useClassNames } from './utils';
-import { verticalAlignToAlignItems, textAlignToJustifyContent } from './utils/convertToFlex';
+import { useClassNames, convertToFlex } from './utils';
 import TableContext from './TableContext';
 import ArrowRight from '@rsuite/icons/ArrowRight';
 import ArrowDown from '@rsuite/icons/ArrowDown';
@@ -143,21 +142,12 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
 
   const paddingKey = rtl ? 'paddingRight' : 'paddingLeft';
   const contentStyles: React.CSSProperties = {
+    ...convertToFlex({ align, verticalAlign }),
     ...style,
     width: fullText ? width - 1 : width,
     height: nextHeight,
-    display: 'flex',
-    flexWrap: 'wrap',
     [paddingKey]: isTreeCol ? depth * LAYER_WIDTH + 10 : style?.[paddingKey] || style?.padding
   };
-
-  if (align) {
-    contentStyles.justifyContent = textAlignToJustifyContent(align);
-  }
-
-  if (verticalAlign) {
-    contentStyles.alignItems = verticalAlignToAlignItems(verticalAlign);
-  }
 
   if (wordWrap) {
     contentStyles.wordBreak = typeof wordWrap === 'boolean' ? 'break-all' : wordWrap;

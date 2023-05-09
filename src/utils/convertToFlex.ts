@@ -4,7 +4,7 @@ export const verticalAlignMap = {
   bottom: 'flex-end'
 };
 
-export const textAlignMap = {
+export const alignMap = {
   left: 'flex-start',
   center: 'center',
   right: 'flex-end'
@@ -12,10 +12,27 @@ export const textAlignMap = {
 
 // Convert verticalAlign to alignItems.
 export function verticalAlignToAlignItems(verticalAlign) {
-  return verticalAlignMap[verticalAlign] || verticalAlign || 'flex-start';
+  return verticalAlignMap[verticalAlign] || verticalAlign;
 }
 
-// Convert textAlign to justifyContent.
-export function textAlignToJustifyContent(textAlign) {
-  return textAlignMap[textAlign] || textAlign || 'flex-start';
+// Convert align to justifyContent.
+export function alignToJustifyContent(align) {
+  return alignMap[align] || align;
+}
+
+// Convert verticalAlign and align to flex styles.
+export default function convertToFlex(props: {
+  verticalAlign?: string;
+  align?: string;
+}): React.CSSProperties {
+  const { verticalAlign, align } = props;
+
+  if (!verticalAlign && !align) return {};
+
+  return {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: verticalAlignToAlignItems(verticalAlign),
+    justifyContent: alignToJustifyContent(align)
+  };
 }
