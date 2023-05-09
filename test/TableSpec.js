@@ -1298,7 +1298,7 @@ describe('Table', () => {
     expect(instance.querySelector('.rs-table-cell-full-text')).to.not.exist;
   });
 
-  it('Should render custom column', () => {
+  it('Should align cell content using Flexbox layout', () => {
     const data = [{ id: 1, name: 'a' }];
 
     render(
