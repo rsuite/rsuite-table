@@ -1,3 +1,12 @@
+## [5.10.6](https://github.com/rsuite/rsuite-table/compare/5.10.5...5.10.6) (2023-06-02)
+
+
+### Bug Fixes
+
+* **Table:** fix rowHeight is invalid when virtualized ([#437](https://github.com/rsuite/rsuite-table/issues/437)) ([fdacff0](https://github.com/rsuite/rsuite-table/commit/fdacff0a6e3088e92e0ac15ce7a9f46132338097))
+
+
+
 ## [5.10.5](https://github.com/rsuite/rsuite-table/compare/5.10.4...5.10.5) (2023-05-09)
 
 
