@@ -4,6 +4,8 @@ export const SCROLLBAR_WIDTH = 10;
 export const CELL_PADDING_HEIGHT = 26;
 export const RESIZE_MIN_WIDTH = 20;
 export const SORT_TYPE = { DESC: 'desc', ASC: 'asc' };
+export const ROW_HEIGHT = 46;
+export const ROW_HEADER_HEIGHT = 40;
 
 // transition-duration (ms)
 export const TRANSITION_DURATION = 1000;

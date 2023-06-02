@@ -16,7 +16,9 @@ import {
   CELL_PADDING_HEIGHT,
   SORT_TYPE,
   EXPANDED_KEY,
-  TREE_DEPTH
+  TREE_DEPTH,
+  ROW_HEADER_HEIGHT,
+  ROW_HEIGHT
 } from './constants';
 import {
   mergeCells,
@@ -280,9 +282,9 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
     },
     showHeader = true,
     sortColumn,
-    rowHeight = 46,
+    rowHeight = ROW_HEIGHT,
     sortType: sortTypeProp,
-    headerHeight: headerHeightProp = 40,
+    headerHeight: headerHeightProp = ROW_HEADER_HEIGHT,
     minHeight = 0,
     height = 200,
     autoHeight,
@@ -834,7 +836,7 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
     for (let i = 0; i < bodyCells.length; i++) {
       const cell = bodyCells[i];
       const rowSpan: number = cell.props?.rowSpan?.(rowData);
-      const dataCellHeight = rowSpan ? rowSpan * (cellHeight || 46) : cellHeight;
+      const dataCellHeight = rowSpan ? rowSpan * (cellHeight || ROW_HEIGHT) : cellHeight;
       const cellKey = cell.props.dataKey || i;
 
       // Record the cell state of the merged row
@@ -1032,7 +1034,8 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
             depth: rowData[TREE_DEPTH],
             top: index * nextRowHeight,
             width: rowWidth,
-            height: nextRowHeight
+            height: nextRowHeight,
+            cellHeight: nextRowHeight
           };
           visibleRows.current.push(renderRowData(bodyCells, rowData, rowProps, false));
         }
