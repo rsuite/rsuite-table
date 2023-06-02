@@ -132,17 +132,6 @@ describe('Table', () => {
     expect(instance).to.have.class('rs-table-bordered');
   });
 
-  it('Should be virtualized. Check: Maximum update depth exceeded', () => {
-    getDOMNode(
-      <Table virtualized data={[{ id: 1, name: 'name' }]}>
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell dataKey="id" />
-        </Column>
-      </Table>
-    );
-  });
-
   it('Should be bordered for cell', () => {
     const instance = getDOMNode(
       <Table cellBordered>

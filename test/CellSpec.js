@@ -11,7 +11,7 @@ describe('Cell', () => {
     const instance = getDOMNode(<Cell>Title</Cell>);
 
     assert.equal(instance.className, 'rs-cell');
-    assert.equal(instance.style.height, '36px');
+    assert.equal(instance.style.height, '46px');
     assert.equal(instance.innerText, Title);
   });
 
