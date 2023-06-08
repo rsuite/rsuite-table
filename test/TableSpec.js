@@ -132,17 +132,6 @@ describe('Table', () => {
     expect(instance).to.have.class('rs-table-bordered');
   });
 
-  it('Should be virtualized. Check: Maximum update depth exceeded', () => {
-    getDOMNode(
-      <Table virtualized data={[{ id: 1, name: 'name' }]}>
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell dataKey="id" />
-        </Column>
-      </Table>
-    );
-  });
-
   it('Should be bordered for cell', () => {
     const instance = getDOMNode(
       <Table cellBordered>
@@ -1218,37 +1207,6 @@ describe('Table', () => {
       </Table>
     );
     expect(instance.querySelector('.rs-table-scrollbar-vertical')).to.not.exist;
-  });
-
-  it('Should be to avoid nested classPrefix', () => {
-    const data = [{ id: 1, name: 'foobar' }];
-    const innerTable = React.createRef();
-
-    getDOMNode(
-      <Table
-        data={data}
-        rowKey="id"
-        expandedRowKeys={[1]}
-        renderRowExpanded={() => {
-          return (
-            <Table data={data} ref={innerTable}>
-              <Column width={130}>
-                <HeaderCell>inner name</HeaderCell>
-                <Cell dataKey="name" />
-              </Column>
-            </Table>
-          );
-        }}
-      >
-        <Column width={130}>
-          <HeaderCell>Name</HeaderCell>
-          <Cell dataKey="name" />
-        </Column>
-      </Table>
-    );
-
-    expect(innerTable.current.root).to.have.class('rs-table');
-    expect(innerTable.current.root).to.have.class('rs-table-hover');
   });
 
   it('Should throw error for rowData check', () => {

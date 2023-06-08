@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { mergeRefs, useClassNames } from './utils';
 import TableContext from './TableContext';
 import { StandardProps } from './@types/common';
+import { ROW_HEADER_HEIGHT, ROW_HEIGHT } from './constants';
 
 export interface RowProps extends StandardProps {
   width?: number;
@@ -16,8 +17,8 @@ export interface RowProps extends StandardProps {
 const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) => {
   const {
     classPrefix = 'row',
-    height = 46,
-    headerHeight = 40,
+    height = ROW_HEIGHT,
+    headerHeight = ROW_HEADER_HEIGHT,
     className,
     width,
     top,

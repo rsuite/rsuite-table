@@ -14,6 +14,7 @@ import useUpdateEffect from './useUpdateEffect';
 import { ColumnProps } from '../Column';
 import { CellProps } from '../Cell';
 import flushSync from './flushSync';
+import useMount from './useMount';
 
 interface CellDescriptorProps<Row> {
   children: React.ReactNode;
@@ -91,6 +92,11 @@ const useCellDescriptor = <Row extends RowDataType>(
   );
 
   const columnWidths = useRef({});
+
+  useMount(() => {
+    // As the cells are cached before the table width is updated, it is necessary to clear the cache again. fix: #430
+    clearCache();
+  });
 
   useUpdateEffect(() => {
     clearCache();

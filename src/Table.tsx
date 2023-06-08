@@ -16,7 +16,9 @@ import {
   CELL_PADDING_HEIGHT,
   SORT_TYPE,
   EXPANDED_KEY,
-  TREE_DEPTH
+  TREE_DEPTH,
+  ROW_HEADER_HEIGHT,
+  ROW_HEIGHT
 } from './constants';
 import {
   mergeCells,
@@ -280,9 +282,9 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
     },
     showHeader = true,
     sortColumn,
-    rowHeight = 46,
+    rowHeight = ROW_HEIGHT,
     sortType: sortTypeProp,
-    headerHeight: headerHeightProp = 40,
+    headerHeight: headerHeightProp = ROW_HEADER_HEIGHT,
     minHeight = 0,
     height = 200,
     autoHeight,
@@ -810,15 +812,17 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
   const renderRowData = (
     bodyCells: any[],
     rowData: any,
-    props: TableRowProps,
+    props: TableRowProps & { cellHeight?: number },
     shouldRenderExpandedRow?: boolean
   ) => {
     const hasChildren = isTree && rowData.children && Array.isArray(rowData.children);
     const nextRowKey =
       rowKey && typeof rowData[rowKey] !== 'undefined' ? rowData[rowKey] : props.key;
 
+    const { cellHeight, ...restRowProps } = props;
+
     const rowProps: TableRowProps = {
-      ...props,
+      ...restRowProps,
       key: nextRowKey,
       'aria-rowindex': (props.key as number) + 2,
       rowRef: bindTableRowsRef(props.key as any, rowData),
@@ -832,7 +836,7 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
     for (let i = 0; i < bodyCells.length; i++) {
       const cell = bodyCells[i];
       const rowSpan: number = cell.props?.rowSpan?.(rowData);
-      const rowHeight = rowSpan ? rowSpan * (props.height || 46) : props.height;
+      const dataCellHeight = rowSpan ? rowSpan * (cellHeight || ROW_HEIGHT) : cellHeight;
       const cellKey = cell.props.dataKey || i;
 
       // Record the cell state of the merged row
@@ -862,7 +866,7 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
           rowData,
           rowIndex: props.rowIndex,
           wordWrap,
-          height: rowHeight,
+          height: dataCellHeight,
           depth: props.depth,
           renderTreeToggle,
           onTreeToggle: handleTreeToggle,
@@ -952,17 +956,22 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
         for (let index = 0; index < data.length; index++) {
           const rowData = data[index];
           const maxHeight = tableRowsMaxHeight[index];
-          const shouldRender = shouldRenderExpandedRow(rowData);
+          const expandedRow = shouldRenderExpandedRow(rowData);
 
           let nextRowHeight = 0;
+          let cellHeight = 0;
 
           if (typeof rowHeight === 'function') {
             nextRowHeight = rowHeight(rowData);
+            cellHeight = nextRowHeight;
           } else {
             nextRowHeight = maxHeight
               ? Math.max(maxHeight + CELL_PADDING_HEIGHT, rowHeight)
               : rowHeight;
-            if (shouldRender) {
+
+            cellHeight = nextRowHeight;
+            if (expandedRow) {
+              // If the row is expanded, the height of the expanded row is added.
               nextRowHeight += rowExpandedHeight;
             }
           }
@@ -975,7 +984,8 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
             rowIndex: index,
             width: rowWidth,
             depth: rowData[TREE_DEPTH],
-            height: nextRowHeight
+            height: nextRowHeight,
+            cellHeight
           };
 
           top += nextRowHeight;
@@ -990,7 +1000,7 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
             }
           }
 
-          visibleRows.current.push(renderRowData(bodyCells, rowData, rowProps, shouldRender));
+          visibleRows.current.push(renderRowData(bodyCells, rowData, rowProps, expandedRow));
         }
       } else {
         /** virtualized */
@@ -1024,7 +1034,8 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
             depth: rowData[TREE_DEPTH],
             top: index * nextRowHeight,
             width: rowWidth,
-            height: nextRowHeight
+            height: nextRowHeight,
+            cellHeight: nextRowHeight
           };
           visibleRows.current.push(renderRowData(bodyCells, rowData, rowProps, false));
         }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
 import isNil from 'lodash/isNil';
 import get from 'lodash/get';
-import { LAYER_WIDTH } from './constants';
+import { LAYER_WIDTH, ROW_HEADER_HEIGHT, ROW_HEIGHT } from './constants';
 import { useClassNames, convertToFlex } from './utils';
 import TableContext from './TableContext';
 import ArrowRight from '@rsuite/icons/ArrowRight';
@@ -73,9 +73,9 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
     classPrefix = 'cell',
     width = 0,
     left = 0,
-    headerHeight = 36,
+    headerHeight = ROW_HEADER_HEIGHT,
     depth = 0,
-    height = 36,
+    height = ROW_HEIGHT,
     style,
     className,
     fullText,

@@ -1,3 +1,21 @@
+## [5.10.6](https://github.com/rsuite/rsuite-table/compare/5.10.5...5.10.6) (2023-06-02)
+
+
+### Bug Fixes
+
+* **Table:** fix rowHeight is invalid when virtualized ([#437](https://github.com/rsuite/rsuite-table/issues/437)) ([fdacff0](https://github.com/rsuite/rsuite-table/commit/fdacff0a6e3088e92e0ac15ce7a9f46132338097))
+
+
+
+## [5.10.5](https://github.com/rsuite/rsuite-table/compare/5.10.4...5.10.5) (2023-05-09)
+
+
+### Bug Fixes
+
+* **Table:** fix the calculation error of cell height when using renderRowExpanded ([#434](https://github.com/rsuite/rsuite-table/issues/434)) ([7da8a88](https://github.com/rsuite/rsuite-table/commit/7da8a88a66c76ca3886b7d5171434fe750961d39))
+* **Table:** fix didn't update fluid width when table was mounted ([#433](https://github.com/rsuite/rsuite-table/issues/433))
+
+
 ## [5.10.4](https://github.com/rsuite/rsuite-table/compare/5.10.3...5.10.4) (2023-04-27)
 
 
