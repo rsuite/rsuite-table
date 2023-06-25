@@ -217,13 +217,14 @@ const useCellDescriptor = <Row extends RowDataType>(
       const headerCell = columnChildren[0] as React.ReactElement<CellProps>;
       const cell = columnChildren[1] as React.ReactElement<CellProps>;
 
-      let cellWidth = columnWidths.current?.[`${cell.props.dataKey}_${index}_width`] || width || 0;
+      const currentWidth = columnWidths.current?.[`${cell.props.dataKey}_${index}_width`];
+
+      let cellWidth = currentWidth || width || 0;
 
       if (tableWidth.current && flexGrow && totalFlexGrow) {
-        cellWidth = Math.max(
-          ((tableWidth.current - totalWidth) / totalFlexGrow) * flexGrow,
-          minWidth || 60
-        );
+        cellWidth =
+          currentWidth ||
+          Math.max(((tableWidth.current - totalWidth) / totalFlexGrow) * flexGrow, minWidth || 60);
       }
 
       const cellProps = {
@@ -250,7 +251,7 @@ const useCellDescriptor = <Row extends RowDataType>(
           onSortColumn: handleSortColumn,
           sortType,
           sortColumn,
-          flexGrow
+          flexGrow: resizable ? undefined : flexGrow
         };
 
         if (resizable) {
