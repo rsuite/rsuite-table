@@ -216,9 +216,15 @@ const useCellDescriptor = <Row extends RowDataType>(
       let cellWidth = currentWidth || width || 0;
 
       if (tableWidth.current && flexGrow && totalFlexGrow) {
-        cellWidth =
-          currentWidth ||
-          Math.max(((tableWidth.current - totalWidth) / totalFlexGrow) * flexGrow, minWidth || 60);
+        const grewWidth = Math.max(
+          ((tableWidth.current - totalWidth) / totalFlexGrow) * flexGrow,
+          minWidth || 60
+        );
+        /**
+         * resizable = false, width will be recalc when table render.
+         * resizable = true, only first render will use grewWidth.
+         */
+        cellWidth = resizable ? currentWidth || grewWidth : grewWidth;
       }
 
       const cellProps = {
