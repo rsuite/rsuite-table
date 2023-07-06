@@ -1,3 +1,12 @@
+# [5.11.0](https://github.com/rsuite/rsuite-table/compare/5.10.6...5.11.0) (2023-07-06)
+
+
+### Features
+
+* **column:** add support for flexGrow with resizable ([#440](https://github.com/rsuite/rsuite-table/issues/440)) ([68c81f1](https://github.com/rsuite/rsuite-table/commit/68c81f1a7c0c49532f7112c6cdabc5abd6b555f1))
+
+
+
 ## [5.10.6](https://github.com/rsuite/rsuite-table/compare/5.10.5...5.10.6) (2023-06-02)
 
 
