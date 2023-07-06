@@ -1366,4 +1366,30 @@ describe('Table', () => {
     expect(instance.querySelector('.rs-table-cell-header-sortable')).to.exist;
     expect(instance.querySelector('.rs-table-cell-full-text')).to.not.exist;
   });
+
+  it('Should render ColumnResizer & fill rest space', () => {
+    const instance = getDOMNode(
+      <Table
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          }
+        ]}
+      >
+        <Column width={100} flexGrow={1} resizable>
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" />
+        </Column>
+      </Table>
+    );
+
+    const headerCell = instance.querySelector('.rs-table-cell-header');
+    expect(headerCell).to.exist;
+    expect(instance.querySelector('.rs-table-column-resize-spanner')).to.exist;
+
+    const width = headerCell.getBoundingClientRect().width;
+    expect(width).not.equal(100);
+    expect(width).to.equal(instance.getBoundingClientRect().width);
+  });
 });

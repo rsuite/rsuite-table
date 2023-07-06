@@ -204,12 +204,6 @@ const useCellDescriptor = <Row extends RowDataType>(
         hasCustomTreeCol = true;
       }
 
-      if (resizable && flexGrow) {
-        console.warn(
-          `Cannot set 'resizable' and 'flexGrow' together in <Column>, column index: ${index}`
-        );
-      }
-
       if (columnChildren.length !== 2) {
         throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
       }
@@ -217,13 +211,20 @@ const useCellDescriptor = <Row extends RowDataType>(
       const headerCell = columnChildren[0] as React.ReactElement<CellProps>;
       const cell = columnChildren[1] as React.ReactElement<CellProps>;
 
-      let cellWidth = columnWidths.current?.[`${cell.props.dataKey}_${index}_width`] || width || 0;
+      const currentWidth = columnWidths.current?.[`${cell.props.dataKey}_${index}_width`];
+
+      let cellWidth = currentWidth || width || 0;
 
       if (tableWidth.current && flexGrow && totalFlexGrow) {
-        cellWidth = Math.max(
+        const grewWidth = Math.max(
           ((tableWidth.current - totalWidth) / totalFlexGrow) * flexGrow,
           minWidth || 60
         );
+        /**
+         * resizable = false, width will be recalc when table render.
+         * resizable = true, only first render will use grewWidth.
+         */
+        cellWidth = resizable ? currentWidth || grewWidth : grewWidth;
       }
 
       const cellProps = {
@@ -250,7 +251,7 @@ const useCellDescriptor = <Row extends RowDataType>(
           onSortColumn: handleSortColumn,
           sortType,
           sortColumn,
-          flexGrow
+          flexGrow: resizable ? undefined : flexGrow
         };
 
         if (resizable) {
