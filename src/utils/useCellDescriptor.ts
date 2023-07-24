@@ -222,6 +222,8 @@ const useCellDescriptor = <Row extends RowDataType>(
 
       let cellWidth = currentWidth || width || 0;
 
+      const isControlled = typeof width === 'number' && typeof onResize === 'function';
+
       /**
        * in resizable mode,
        *    if width !== initialColumnWidth, use current column width and update cache.
@@ -257,7 +259,7 @@ const useCellDescriptor = <Row extends RowDataType>(
         left,
         headerHeight,
         key: index,
-        width: cellWidth,
+        width: isControlled ? width : cellWidth,
         height: typeof rowHeight === 'function' ? rowHeight() : rowHeight,
         firstColumn: index === 0,
         lastColumn: index === count - 1
