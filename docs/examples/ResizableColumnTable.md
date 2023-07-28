@@ -6,6 +6,8 @@
 const data = mockUsers(20);
 
 const App = () => {
+  const [width, setWidth] = React.useState(null);
+
   return (
     <Table bordered height={400} data={data}>
       <Column width={50} align="center" fixed>
@@ -30,12 +32,12 @@ const App = () => {
         <Cell dataKey="lastName" />
       </Column>
 
-      <Column width={200} resizable flexGrow={1}>
+      <Column width={width} resizable flexGrow={1} onResize={width => setWidth(width)}>
         <HeaderCell>City</HeaderCell>
         <Cell dataKey="city" />
       </Column>
 
-      <Column width={200} resizable>
+      <Column width={200} resizable flexGrow={1}>
         <HeaderCell>Street</HeaderCell>
         <Cell dataKey="street" />
       </Column>
