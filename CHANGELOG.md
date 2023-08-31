@@ -1,3 +1,11 @@
+## [5.11.1](https://github.com/rsuite/rsuite-table/compare/5.11.0...5.11.1) (2023-08-31)
+
+
+### Bug Fixes
+
+* **HeaderCell:** fix type extension ([#448](https://github.com/rsuite/rsuite-table/issues/448)) ([a8c9246](https://github.com/rsuite/rsuite-table/commit/a8c9246c362ef43545ecc021f273de58d05faedf))
+* **Column:** fix column width reset after children update ([#447](https://github.com/rsuite/rsuite-table/pull/447))
+
 # [5.11.0](https://github.com/rsuite/rsuite-table/compare/5.10.6...5.11.0) (2023-07-06)
 
 
