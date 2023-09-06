@@ -1,3 +1,12 @@
+# [5.12.0](https://github.com/rsuite/rsuite-table/compare/5.11.1...5.12.0) (2023-09-06)
+
+
+### Features
+
+* **Next.js:** add 'use client' to all components ([#456](https://github.com/rsuite/rsuite-table/issues/456)) ([ed49fe1](https://github.com/rsuite/rsuite-table/commit/ed49fe1a76a23878bcad62f4f521ffc95cf4b8e9))
+
+
+
 ## [5.11.1](https://github.com/rsuite/rsuite-table/compare/5.11.0...5.11.1) (2023-08-31)
 
 
