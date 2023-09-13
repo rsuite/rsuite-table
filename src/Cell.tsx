@@ -12,7 +12,7 @@ import ArrowDown from '@rsuite/icons/ArrowDown';
 import { StandardProps, RowDataType } from './@types/common';
 import { columnHandledProps } from './Column';
 
-export interface CellProps extends StandardProps {
+export interface CellProps<T = any> extends StandardProps {
   /** Data binding key, but also a sort of key */
   dataKey?: string;
 
@@ -20,15 +20,15 @@ export interface CellProps extends StandardProps {
   rowIndex?: number;
 
   /** Row Data */
-  rowData?: any;
+  rowData?: T;
 }
 
-export interface InnerCellProps extends Omit<CellProps, 'children'> {
+export interface InnerCellProps<T = any> extends Omit<CellProps<T>, 'children'> {
   align?: 'left' | 'center' | 'right';
   verticalAlign?: 'top' | 'middle' | 'bottom';
   isHeaderCell?: boolean;
   width?: number;
-  height?: number | ((rowData: RowDataType) => number);
+  height?: number | ((rowData: RowDataType<T>) => number);
   left?: number;
   headerHeight?: number;
   style?: React.CSSProperties;
@@ -36,7 +36,7 @@ export interface InnerCellProps extends Omit<CellProps, 'children'> {
   firstColumn?: boolean;
   lastColumn?: boolean;
   hasChildren?: boolean;
-  children?: React.ReactNode | ((rowData: RowDataType, rowIndex?: number) => React.ReactNode);
+  children?: React.ReactNode | ((rowData: RowDataType<T>, rowIndex?: number) => React.ReactNode);
   rowKey?: string | number;
   rowSpan?: number;
   depth?: number;
@@ -48,13 +48,13 @@ export interface InnerCellProps extends Omit<CellProps, 'children'> {
   onTreeToggle?: (
     rowKey?: string | number,
     rowIndex?: number,
-    rowData?: RowDataType,
+    rowData?: RowDataType<T>,
     event?: React.MouseEvent
   ) => void;
 
   renderTreeToggle?: (
     expandButton: React.ReactNode,
-    rowData?: RowDataType,
+    rowData?: RowDataType<T>,
     expanded?: boolean
   ) => React.ReactNode;
   renderCell?: (contentChildren: any) => React.ReactNode;
