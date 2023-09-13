@@ -9,7 +9,7 @@ import { useClassNames } from './utils';
 import TableContext from './TableContext';
 import ArrowRight from '@rsuite/icons/ArrowRight';
 import ArrowDown from '@rsuite/icons/ArrowDown';
-import { StandardProps, RowDataType } from './@types/common';
+import { StandardProps } from './@types/common';
 import { columnHandledProps } from './Column';
 
 export interface CellProps<T = any> extends StandardProps {
@@ -23,12 +23,12 @@ export interface CellProps<T = any> extends StandardProps {
   rowData?: T;
 }
 
-export interface InnerCellProps<T = any> extends Omit<CellProps<T>, 'children'> {
+export interface InnerCellProps<RowData = any> extends Omit<CellProps<RowData>, 'children'> {
   align?: 'left' | 'center' | 'right';
   verticalAlign?: 'top' | 'middle' | 'bottom';
   isHeaderCell?: boolean;
   width?: number;
-  height?: number | ((rowData: RowDataType<T>) => number);
+  height?: number | ((rowData: RowData) => number);
   left?: number;
   headerHeight?: number;
   style?: React.CSSProperties;
@@ -36,7 +36,7 @@ export interface InnerCellProps<T = any> extends Omit<CellProps<T>, 'children'> 
   firstColumn?: boolean;
   lastColumn?: boolean;
   hasChildren?: boolean;
-  children?: React.ReactNode | ((rowData: RowDataType<T>, rowIndex?: number) => React.ReactNode);
+  children?: React.ReactNode | ((rowData: RowData, rowIndex?: number) => React.ReactNode);
   rowKey?: string | number;
   rowSpan?: number;
   depth?: number;
@@ -48,13 +48,13 @@ export interface InnerCellProps<T = any> extends Omit<CellProps<T>, 'children'> 
   onTreeToggle?: (
     rowKey?: string | number,
     rowIndex?: number,
-    rowData?: RowDataType<T>,
+    rowData?: RowData,
     event?: React.MouseEvent
   ) => void;
 
   renderTreeToggle?: (
     expandButton: React.ReactNode,
-    rowData?: RowDataType<T>,
+    rowData?: RowData,
     expanded?: boolean
   ) => React.ReactNode;
   renderCell?: (contentChildren: any) => React.ReactNode;
@@ -69,7 +69,7 @@ const groupKeys = [
   'renderSortIcon'
 ];
 
-const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElement>) => {
+const Cell = React.forwardRef(<RowData = any>(props: InnerCellProps<RowData>, ref: React.Ref<HTMLDivElement>) => {
   const {
     classPrefix = 'cell',
     width = 0,
@@ -107,7 +107,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
   const { rtl, hasCustomTreeCol, isTree } = React.useContext(TableContext);
 
   const isTreeCol = treeCol || (!hasCustomTreeCol && firstColumn && isTree);
-  const cellHeight = typeof height === 'function' ? height(rowData) : height;
+  const cellHeight = typeof height === 'function' ? height(rowData!) : height;
 
   if (isTreeCol && !isHeaderCell && !rowData) {
     throw new Error('[Table.Cell]: `rowData` is required for tree column');
@@ -163,7 +163,7 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
   let cellContent = isNil(children) && rowData && dataKey ? get(rowData, dataKey) : children;
 
   if (typeof children === 'function') {
-    cellContent = children(rowData, rowIndex);
+    cellContent = children(rowData!, rowIndex);
   }
 
   const renderTreeNodeExpandIcon = () => {
