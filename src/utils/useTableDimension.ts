@@ -181,13 +181,17 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
     const row = table?.querySelector(`.${prefix('row')}:not(.virtualized)`);
     const nextContentWidth = row ? getWidth(row) : 0;
 
-    contentWidth.current = nextContentWidth - (autoHeight ? SCROLLBAR_WIDTH : 0);
+    // Whether to show the horizontal scroll bar
+    const hasHorizontalScrollbar = contentWidth.current > tableWidth.current;
+    const scrollbarWidth = hasHorizontalScrollbar ? 0 : SCROLLBAR_WIDTH;
+
+    contentWidth.current = nextContentWidth - (autoHeight ? scrollbarWidth : 0);
     columnCount.current = row?.querySelectorAll(`.${prefix('cell')}`).length || 0;
 
     // The value of SCROLLBAR_WIDTH is subtracted so that the scroll bar does not block the content part.
     // There is no vertical scroll bar after autoHeight.
     const minScrollWidth =
-      -(nextContentWidth - tableWidth.current) - (autoHeight ? 0 : SCROLLBAR_WIDTH);
+      -(nextContentWidth - tableWidth.current) - (autoHeight ? 0 : scrollbarWidth);
 
     if (minScrollX.current !== minScrollWidth) {
       minScrollX.current = minScrollWidth;
