@@ -417,7 +417,9 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
     setScrollX,
     getTableHeight
   } = useTableDimension({
-    data: dataProp,
+    // The data should be flattened,
+    // otherwise the array length required to calculate the scroll height in the TreeTable is not real.
+    data,
     width: widthProp,
     rowHeight,
     tableRef,
