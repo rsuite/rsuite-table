@@ -150,7 +150,7 @@ export interface TableProps<Row, Key> extends Omit<StandardProps, 'onScroll'> {
   isTree?: boolean;
 
   /** Set the height of an expandable area */
-  rowExpandedHeight?: number;
+  rowExpandedHeight?: ((rowData?: Row) => number) | number;
 
   /** Add an optional extra class name to row */
   rowClassName?: string | ((rowData: Row, rowIndex: number) => string);
@@ -169,11 +169,11 @@ export interface TableProps<Row, Key> extends Omit<StandardProps, 'onScroll'> {
    * whether to update the scroll after the table size is updated.
    */
   shouldUpdateScroll?:
-    | boolean
-    | ((event: TableSizeChangeEventName) => {
-        x?: number;
-        y?: number;
-      });
+  | boolean
+  | ((event: TableSizeChangeEventName) => {
+    x?: number;
+    y?: number;
+  });
 
   /** Enable 3D transition rendering to improve performance when scrolling. */
   translate3d?: boolean;
@@ -580,7 +580,13 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
 
   const renderRowExpanded = useCallback(
     (rowData?: Row) => {
-      const styles = { height: rowExpandedHeight };
+      let height = 0;
+      if (typeof rowExpandedHeight === 'function') {
+        height = rowExpandedHeight(rowData);
+      } else {
+        height = rowExpandedHeight;
+      }
+      const styles = { height };
 
       if (typeof renderRowExpandedProp === 'function') {
         return (
@@ -939,7 +945,14 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
     if (data) {
       let top = 0; // Row position
       let minTop = Math.abs(scrollY.current);
-      let maxTop = minTop + height + rowExpandedHeight;
+      let startHeight = 0;
+      if (typeof rowExpandedHeight === 'function') {
+        startHeight = data.length ? rowExpandedHeight(data[0]) : 100;
+      } else {
+        startHeight = rowExpandedHeight;
+      }
+
+      let maxTop = minTop + height + startHeight;
       const isCustomRowHeight = typeof rowHeight === 'function';
       const isUncertainHeight = !!renderRowExpandedProp || isCustomRowHeight || wordWrap;
 
@@ -973,7 +986,11 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
             cellHeight = nextRowHeight;
             if (expandedRow) {
               // If the row is expanded, the height of the expanded row is added.
-              nextRowHeight += rowExpandedHeight;
+              if (typeof rowExpandedHeight === 'function') {
+                nextRowHeight += rowExpandedHeight(rowData);
+              } else {
+                nextRowHeight += rowExpandedHeight;
+              }
             }
           }
 
@@ -1153,7 +1170,7 @@ Table.propTypes = {
   renderTreeToggle: PropTypes.func,
   renderRowExpanded: PropTypes.func,
   renderRow: PropTypes.func,
-  rowExpandedHeight: PropTypes.number,
+  rowExpandedHeight: PropTypes.oneOfType([PropTypes.func, PropTypes.number]),
   renderEmpty: PropTypes.func,
   renderLoading: PropTypes.func,
   rowClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
