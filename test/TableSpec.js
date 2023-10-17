@@ -330,10 +330,9 @@ describe('Table', () => {
       </Table>
     );
 
-    const SCROLLBAR_WIDTH = 10;
     const tableWidth = 200;
     const contextWidth = 400;
-    const width = Math.floor((tableWidth / (contextWidth - SCROLLBAR_WIDTH)) * tableWidth);
+    const width = Math.floor((tableWidth / contextWidth) * tableWidth);
 
     const scrollbarHandleWidth = Math.floor(
       getWidth(instance.querySelector('.rs-table-scrollbar-handle'))

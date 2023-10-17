@@ -100,11 +100,15 @@ const usePosition = (props: PositionProps) => {
 
     updateWheelElementPosition(true);
 
+    // Whether to show the horizontal scroll bar
+    const hasHorizontalScrollbar = contentWidth.current > tableWidth.current;
+    const scrollbarWidth = hasHorizontalScrollbar ? 0 : SCROLLBAR_WIDTH;
+
     const leftShadowClassName = prefix('cell-group-left-shadow');
     const rightShadowClassName = prefix('cell-group-right-shadow');
     const showLeftShadow = scrollX.current < 0;
     const showRightShadow =
-      tableWidth.current - contentWidth.current - SCROLLBAR_WIDTH !== scrollX.current;
+      tableWidth.current - contentWidth.current - scrollbarWidth !== scrollX.current;
 
     toggleClass(fixedLeftGroups as unknown as HTMLElement[], leftShadowClassName, showLeftShadow);
     toggleClass(
