@@ -1,3 +1,18 @@
+# [5.13.0](https://github.com/rsuite/rsuite-table/compare/5.12.0...5.13.0) (2023-10-17)
+
+
+### Bug Fixes
+
+* **Table:** fix table scroll width not excluding scroll bar width ([#461](https://github.com/rsuite/rsuite-table/issues/461)) ([88b0575](https://github.com/rsuite/rsuite-table/commit/88b0575954460539e7d5f29ee06d9251f89e8d23))
+* **TreeTable:** fix incorrect scrolling position of tree nodes after collapse ([#462](https://github.com/rsuite/rsuite-table/issues/462)) ([0e0c8dc](https://github.com/rsuite/rsuite-table/commit/0e0c8dc6357846997533f82aeea6da64d315034a))
+
+
+### Features
+
+* **Table:** support table scrolling through keyboard arrow keys ([#463](https://github.com/rsuite/rsuite-table/issues/463)) ([bf451a8](https://github.com/rsuite/rsuite-table/commit/bf451a8c65ab24a3812fd16e1f176a977eddd223))
+
+
+
 # [5.12.0](https://github.com/rsuite/rsuite-table/compare/5.11.1...5.12.0) (2023-09-06)
 
 
