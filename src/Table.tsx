@@ -476,7 +476,8 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
     onScrollBody,
     onScrollTop,
     onScrollLeft,
-    onScrollTo
+    onScrollTo,
+    onScrollByKeydown
   } = useScrollListener({
     rtl,
     data: dataProp,
@@ -1110,6 +1111,8 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
         className={classes}
         style={styles}
         ref={tableRef}
+        tabIndex={-1}
+        onKeyDown={onScrollByKeydown}
       >
         {showHeader && renderTableHeader(headerCells, rowWidth)}
         {children && renderTableBody(bodyCells, rowWidth)}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor, act, fireEvent } from '@testing-library/react';
+import { render, waitFor, act, fireEvent, screen } from '@testing-library/react';
 import getHeight from 'dom-lib/getHeight';
 import getWidth from 'dom-lib/getWidth';
 import Table from '../src/Table';
@@ -1390,5 +1390,38 @@ describe('Table', () => {
     const width = headerCell.getBoundingClientRect().width;
     expect(width).not.equal(100);
     expect(width).to.equal(instance.getBoundingClientRect().width);
+  });
+
+  it('Should call `onScroll` callback when trigger keyboard event', () => {
+    const onScrollSpy = sinon.spy();
+    render(
+      <Table onScroll={onScrollSpy} data={[{ id: 1, name: 'a' }]} height={10} width={100}>
+        <Column width={100}>
+          <HeaderCell>11</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+        <Column width={100}>
+          <HeaderCell>11</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      </Table>
+    );
+
+    fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowDown' });
+
+    expect(onScrollSpy).to.have.been.calledOnce;
+    expect(onScrollSpy).to.be.calledWith(0, 40);
+
+    fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowUp' });
+    expect(onScrollSpy).to.have.been.calledTwice;
+    expect(onScrollSpy).to.be.calledWith(0, 0);
+
+    fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowRight' });
+    expect(onScrollSpy).to.have.been.calledThrice;
+    expect(onScrollSpy).to.be.calledWith(40, 0);
+
+    fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowLeft' });
+    expect(onScrollSpy).to.have.callCount(4);
+    expect(onScrollSpy).to.be.calledWith(0, 0);
   });
 });
