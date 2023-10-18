@@ -169,11 +169,11 @@ export interface TableProps<Row, Key> extends Omit<StandardProps, 'onScroll'> {
    * whether to update the scroll after the table size is updated.
    */
   shouldUpdateScroll?:
-  | boolean
-  | ((event: TableSizeChangeEventName) => {
-    x?: number;
-    y?: number;
-  });
+    | boolean
+    | ((event: TableSizeChangeEventName) => {
+        x?: number;
+        y?: number;
+      });
 
   /** Enable 3D transition rendering to improve performance when scrolling. */
   translate3d?: boolean;
