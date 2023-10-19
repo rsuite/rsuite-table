@@ -1,3 +1,10 @@
+# [5.14.0](https://github.com/rsuite/rsuite-table/compare/5.13.0...5.14.0) (2023-10-19)
+
+### Features
+
+* **Table:** add an option to define rowExpandedHeight as function [#465](https://github.com/rsuite/rsuite-table/pull/465)
+
+
 # [5.13.0](https://github.com/rsuite/rsuite-table/compare/5.12.0...5.13.0) (2023-10-17)
 
 
