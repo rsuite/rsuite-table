@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import translateDOMPositionXY from './utils/translateDOMPositionXY';
 import isRTL from './utils/isRTL';
