@@ -21,8 +21,7 @@ const momentumTimeThreshold = 300;
 const momentumYThreshold = 15;
 
 //List of Arrow Keys for scrolling through keys
-const arrowKeysList = ['ArrowUp', "ArrowDown", "ArrowLeft", "ArrowRight"]
-
+const arrowKeysList = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
 interface ScrollListenerProps {
   rtl: boolean;
@@ -510,7 +509,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
   const onScrollByKeydown = useCallback(
     (event: React.KeyboardEvent) => {
-      if (event.currentTarget === event.target && arrowKeysList.indexOf(event.key) > -1 ) {
+      if (event.currentTarget === event.target && arrowKeysList.indexOf(event.key) > -1) {
         event.preventDefault();
         const step = 40;
 
