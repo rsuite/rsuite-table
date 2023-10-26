@@ -1,3 +1,17 @@
+# [5.15.0](https://github.com/rsuite/rsuite-table/compare/5.14.0...5.15.0) (2023-10-26)
+
+
+### Bug Fixes
+
+* **Table:** fix table cell text cannot be copied ([8a9f06b](https://github.com/rsuite/rsuite-table/commit/8a9f06bf34c83ba6c48c5da2c0988c83faea2d5c))
+
+
+### Features
+
+* add a script to prepend the use client directive ([#466](https://github.com/rsuite/rsuite-table/issues/466)) ([24369c5](https://github.com/rsuite/rsuite-table/commit/24369c583786fea1757131b417ce25aa3bc3a4f8))
+
+
+
 # [5.14.0](https://github.com/rsuite/rsuite-table/compare/5.13.0...5.14.0) (2023-10-19)
 
 ### Features
