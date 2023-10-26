@@ -1,4 +1,3 @@
-'use client';
 import React, { useContext } from 'react';
 import { useClassNames } from './utils';
 import TableContext from './TableContext';

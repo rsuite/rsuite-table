@@ -1,4 +1,3 @@
-'use client';
 import React, { useState, useRef, useCallback, useImperativeHandle } from 'react';
 import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
 import addStyle, { CSSProperty } from 'dom-lib/addStyle';

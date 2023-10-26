@@ -1,4 +1,3 @@
-'use client';
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import clamp from 'lodash/clamp';
 import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';

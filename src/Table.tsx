@@ -1,4 +1,3 @@
-'use client';
 import React, { useState, useRef, useCallback, useImperativeHandle, useReducer } from 'react';
 import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 import PropTypes from 'prop-types';

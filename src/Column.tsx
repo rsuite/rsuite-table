@@ -1,4 +1,3 @@
-'use client';
 import PropTypes from 'prop-types';
 
 export interface ColumnProps {

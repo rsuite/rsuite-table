@@ -5,13 +5,14 @@ const less = require('gulp-less');
 const postcss = require('gulp-postcss');
 const sourcemaps = require('gulp-sourcemaps');
 const rename = require('gulp-rename');
+const insert = require('gulp-insert');
 const gulp = require('gulp');
 const babelrc = require('./babel.config.js');
 const STYLE_SOURCE_DIR = './src/less';
 const STYLE_DIST_DIR = './dist/css';
 const TS_SOURCE_DIR = ['./src/**/*.tsx', './src/**/*.ts', '!./src/**/*.d.ts'];
 const ESM_DIR = './es';
-const LIB_DIR = './lib';
+const CJS_DIR = './lib';
 const DIST_DIR = './dist';
 
 function buildLess() {
@@ -36,7 +37,14 @@ function buildCSS() {
 }
 
 function buildLib() {
-  return gulp.src(TS_SOURCE_DIR).pipe(babel(babelrc())).pipe(gulp.dest(LIB_DIR));
+  return (
+    gulp
+      .src(TS_SOURCE_DIR)
+      .pipe(babel(babelrc()))
+      // adds the 'use-client' directive to /lib exported from rsuite-talbe
+      .pipe(insert.prepend(`'use client';\n`))
+      .pipe(gulp.dest(CJS_DIR))
+  );
 }
 
 function buildEsm() {
@@ -48,18 +56,19 @@ function buildEsm() {
           NODE_ENV: 'esm'
         })
       )
-    )
+    ) // adds the 'use-client' directive to /es exported from rsuite-talbe
+    .pipe(insert.prepend(`'use client';\n`))
     .pipe(gulp.dest(ESM_DIR));
 }
 
 function copyTypescriptDeclarationFiles() {
-  return gulp.src('./src/**/*.d.ts').pipe(gulp.dest(LIB_DIR)).pipe(gulp.dest(ESM_DIR));
+  return gulp.src('./src/**/*.d.ts').pipe(gulp.dest(CJS_DIR)).pipe(gulp.dest(ESM_DIR));
 }
 
 function copyLessFiles() {
   return gulp
     .src(['./src/**/*.less', './src/**/fonts/**/*'])
-    .pipe(gulp.dest(LIB_DIR))
+    .pipe(gulp.dest(CJS_DIR))
     .pipe(gulp.dest(ESM_DIR));
 }
 
@@ -68,7 +77,7 @@ function copyFontFiles() {
 }
 
 function clean(done) {
-  del.sync([LIB_DIR, ESM_DIR, DIST_DIR], { force: true });
+  del.sync([CJS_DIR, ESM_DIR, DIST_DIR], { force: true });
   done();
 }
 
