@@ -12,7 +12,6 @@ import getTotalByColumns from './getTotalByColumns';
 import getColumnProps from './getColumnProps';
 import useUpdateEffect from './useUpdateEffect';
 import { ColumnProps } from '../Column';
-import { CellProps } from '../Cell';
 import flushSync from './flushSync';
 import useMount from './useMount';
 
@@ -210,8 +209,8 @@ const useCellDescriptor = <Row extends RowDataType>(
         throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
       }
 
-      const headerCell = columnChildren[0] as React.ReactElement<CellProps>;
-      const cell = columnChildren[1] as React.ReactElement<CellProps>;
+      const headerCell = columnChildren[0] as React.ReactElement;
+      const cell = columnChildren[1] as React.ReactElement;
 
       const cellWidthId = `${cell.props.dataKey}_${index}_width`;
 
