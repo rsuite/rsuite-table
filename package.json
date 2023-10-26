@@ -10,7 +10,7 @@
     "format:check": "prettier --list-different \"{src,test}/**/*.{tsx,ts,js}\"",
     "build": "npm run build:gulp && npm run build:types",
     "build:gulp": "gulp build",
-    "build:types": "npx tsc --emitDeclarationOnly --outDir lib && npx tsc --emitDeclarationOnly --outDir es",
+    "build:types": "tsc --emitDeclarationOnly --outDir lib && tsc --emitDeclarationOnly --outDir es",
     "build:docs": "rm -rf assets &&  NODE_ENV=production webpack",
     "postbuild": "mocha test/build.test.js",
     "dev": "webpack serve --mode development --port 3100 --host 0.0.0.0 --progress",
