@@ -1,3 +1,12 @@
+# [5.16.0](https://github.com/rsuite/rsuite-table/compare/5.15.0...5.16.0) (2023-11-09)
+
+
+### Bug Fixes
+
+* **Table:** fix the compatibility issue with verticalAlign ([#435](https://github.com/rsuite/rsuite-table/issues/435)) ([2ed844c](https://github.com/rsuite/rsuite-table/commit/2ed844c67bcb440b55c652de9acc994c3badd108))
+
+
+
 # [5.15.0](https://github.com/rsuite/rsuite-table/compare/5.14.0...5.15.0) (2023-10-26)
 
 
