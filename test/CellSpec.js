@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
+import { render, screen } from '@testing-library/react';
 import { getDOMNode } from './utils';
 import Cell from '../src/Cell';
 import TableContext from '../src/TableContext';
@@ -17,14 +18,8 @@ describe('Cell', () => {
 
   it('Should The text be `right` aligned', () => {
     const instance = getDOMNode(<Cell align="right" />).querySelector('.rs-cell-content');
-    assert.equal(instance.style.textAlign, 'right');
-  });
 
-  it('Should The text be `middle` aligned', () => {
-    const instance = getDOMNode(<Cell verticalAlign="middle" />).querySelector('.rs-cell-content');
-
-    assert.equal(instance.style.display, 'table-cell');
-    assert.equal(instance.style.verticalAlign, 'middle');
+    expect(instance).to.have.style('justify-content', 'flex-end');
   });
 
   it('Should have a children is `abc`', () => {
@@ -176,5 +171,24 @@ describe('Cell', () => {
     expect(instance).to.style('min-width', '100px');
     expect(instance.style.width).to.equal('');
     expect(instance.querySelector('.rs-cell-content')).to.style('width', '99px');
+  });
+
+  it('Should align vertically using verticalAlign', () => {
+    render(
+      <>
+        <Cell verticalAlign="middle" data-testid="middle" />
+        <Cell verticalAlign="top" data-testid="top" />
+        <Cell verticalAlign="bottom" data-testid="bottom" />
+      </>
+    );
+
+    expect(screen.getByTestId('middle').childNodes[0]).to.have.style('align-items', 'center');
+    expect(screen.getByTestId('middle').childNodes[0]).to.have.style('display', 'flex');
+
+    expect(screen.getByTestId('top').childNodes[0]).to.have.style('align-items', 'flex-start');
+    expect(screen.getByTestId('top').childNodes[0]).to.have.style('display', 'flex');
+
+    expect(screen.getByTestId('bottom').childNodes[0]).to.have.style('align-items', 'flex-end');
+    expect(screen.getByTestId('bottom').childNodes[0]).to.have.style('display', 'flex');
   });
 });

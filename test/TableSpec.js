@@ -590,52 +590,6 @@ describe('Table', () => {
     assert.equal(table.querySelectorAll('.rs-table-cell-group-fixed-left').length, 1);
   });
 
-  it('Should render 2 ColumnGroup', () => {
-    const ref = React.createRef();
-    const columnData = [
-      {
-        name: 'test 1',
-        id: 1
-      },
-      {
-        name: 'test 2',
-        id: 2
-      }
-    ];
-    act(() => {
-      render(
-        <div style={{ width: 300 }}>
-          <Table data={[]} ref={ref}>
-            {columnData.map((item, index) => {
-              return (
-                <ColumnGroup key={index} header={item.name} fixed>
-                  <Column width={130} sortable>
-                    <HeaderCell>First Name</HeaderCell>
-                    <Cell dataKey="firstName" />
-                  </Column>
-
-                  <Column width={130} sortable>
-                    <HeaderCell>Last Name</HeaderCell>
-                    <Cell dataKey="lastName" />
-                  </Column>
-                </ColumnGroup>
-              );
-            })}
-          </Table>
-        </div>
-      );
-    });
-
-    const table = ref.current.root;
-    assert.equal(table.querySelectorAll('.rs-table-column-group').length, 2);
-    assert.equal(
-      table.querySelectorAll(
-        '.rs-table-column-group .rs-table-cell-header .rs-table-cell-header-icon-sort'
-      ).length,
-      4
-    );
-  });
-
   it('Should replace all classPrefix', () => {
     const ref = React.createRef();
 
@@ -1135,71 +1089,6 @@ describe('Table', () => {
     assert.equal(body.querySelectorAll('.rs-table-cell-content').length, 9);
   });
 
-  it('Should be aligned in ColumnGroup', () => {
-    const ref = React.createRef();
-    const data = [
-      {
-        name: 'test name',
-        id: 1
-      }
-    ];
-    act(() => {
-      render(
-        <Table data={data} ref={ref}>
-          <ColumnGroup header={'Info'} align="right" verticalAlign="top">
-            <Column width={150} resizable sortable align="left" verticalAlign="bottom">
-              <HeaderCell>firstName</HeaderCell>
-              <Cell dataKey="name" />
-            </Column>
-
-            <Column width={150} resizable sortable>
-              <HeaderCell>lastName</HeaderCell>
-              <Cell dataKey="name" />
-            </Column>
-
-            <Column width={200} resizable sortable align="center" verticalAlign="middle">
-              <HeaderCell>Email</HeaderCell>
-              <Cell dataKey="name" />
-            </Column>
-          </ColumnGroup>
-        </Table>
-      );
-    });
-
-    const table = ref.current.root;
-
-    const groupHeader = table.querySelector('.rs-table-column-group-header-content');
-    const groupChildren = table.querySelectorAll(
-      '.rs-table-column-group .rs-table-column-group-cell .rs-table-cell-content'
-    );
-
-    assert.equal(groupHeader.style.textAlign, 'right');
-    assert.equal(groupHeader.style.verticalAlign, 'top');
-
-    assert.equal(groupChildren.length, 3);
-    assert.equal(groupChildren[0].textContent, 'firstName');
-    assert.equal(groupChildren[1].textContent, 'lastName');
-    assert.equal(groupChildren[2].textContent, 'Email');
-
-    assert.equal(groupChildren[0].style.textAlign, 'left');
-    assert.equal(groupChildren[0].style.verticalAlign, 'bottom');
-    assert.equal(groupChildren[1].style.textAlign, 'right');
-    assert.equal(groupChildren[1].style.verticalAlign, 'top');
-    assert.equal(groupChildren[2].style.textAlign, 'center');
-    assert.equal(groupChildren[2].style.verticalAlign, 'middle');
-
-    const groupBodyChildren = table.querySelectorAll(
-      '.rs-table-body-row-wrapper .rs-table-cell-content'
-    );
-
-    assert.equal(groupBodyChildren[0].style.textAlign, 'left');
-    assert.equal(groupBodyChildren[0].style.verticalAlign, 'bottom');
-    assert.equal(groupBodyChildren[1].style.textAlign, 'right');
-    assert.equal(groupBodyChildren[1].style.verticalAlign, 'top');
-    assert.equal(groupBodyChildren[2].style.textAlign, 'center');
-    assert.equal(groupBodyChildren[2].style.verticalAlign, 'middle');
-  });
-
   it('Should render a custom row', () => {
     const instance = getDOMNode(
       <Table
@@ -1364,6 +1253,68 @@ describe('Table', () => {
 
     expect(instance.querySelector('.rs-table-cell-header-sortable')).to.exist;
     expect(instance.querySelector('.rs-table-cell-full-text')).to.not.exist;
+  });
+
+  it('Should align cell content using Flexbox layout', () => {
+    const data = [{ id: 1, name: 'a' }];
+
+    render(
+      <Table data={data}>
+        <Column>
+          <HeaderCell>Id</HeaderCell>
+          <Cell dataKey="id" data-testid="test-1" />
+        </Column>
+
+        <Column align="center">
+          <HeaderCell>Id</HeaderCell>
+          <Cell dataKey="id" data-testid="test-2" />
+        </Column>
+
+        <Column align="left">
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" data-testid="test-3" />
+        </Column>
+
+        <Column align="start">
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" data-testid="test-4" />
+        </Column>
+
+        <Column verticalAlign="center">
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" data-testid="test-5" />
+        </Column>
+
+        <Column verticalAlign="bottom">
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" data-testid="test-6" />
+        </Column>
+
+        <Column verticalAlign="end">
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" data-testid="test-7" />
+        </Column>
+      </Table>
+    );
+
+    expect(screen.getByTestId('test-1').firstChild).not.to.have.style('display');
+    expect(screen.getByTestId('test-2').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-2').firstChild).to.have.style('justify-content', 'center');
+
+    expect(screen.getByTestId('test-3').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-3').firstChild).to.have.style('justify-content', 'flex-start');
+
+    expect(screen.getByTestId('test-4').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-4').firstChild).to.have.style('justify-content', 'start');
+
+    expect(screen.getByTestId('test-5').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-5').firstChild).to.have.style('align-items', 'center');
+
+    expect(screen.getByTestId('test-6').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-6').firstChild).to.have.style('align-items', 'flex-end');
+
+    expect(screen.getByTestId('test-7').firstChild).to.have.style('display', 'flex');
+    expect(screen.getByTestId('test-7').firstChild).to.have.style('align-items', 'end');
   });
 
   it('Should render ColumnResizer & fill rest space', () => {

@@ -4,7 +4,7 @@ import omit from 'lodash/omit';
 import isNil from 'lodash/isNil';
 import get from 'lodash/get';
 import { LAYER_WIDTH, ROW_HEADER_HEIGHT, ROW_HEIGHT } from './constants';
-import { useClassNames } from './utils';
+import { useClassNames, convertToFlex } from './utils';
 import TableContext from './TableContext';
 import ArrowRight from '@rsuite/icons/ArrowRight';
 import ArrowDown from '@rsuite/icons/ArrowDown';
@@ -23,8 +23,8 @@ export interface CellProps extends StandardProps {
 }
 
 export interface InnerCellProps extends Omit<CellProps, 'children'> {
-  align?: 'left' | 'center' | 'right';
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  align?: React.CSSProperties['justifyContent'];
+  verticalAlign?: React.CSSProperties['alignItems'] | 'top' | 'middle' | 'bottom';
   isHeaderCell?: boolean;
   width?: number;
   height?: number | ((rowData: RowDataType) => number);
@@ -142,17 +142,12 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
 
   const paddingKey = rtl ? 'paddingRight' : 'paddingLeft';
   const contentStyles: React.CSSProperties = {
+    ...convertToFlex({ align, verticalAlign }),
     ...style,
     width: fullText ? width - 1 : width,
     height: nextHeight,
-    textAlign: align,
     [paddingKey]: isTreeCol ? depth * LAYER_WIDTH + 10 : style?.[paddingKey] || style?.padding
   };
-
-  if (verticalAlign) {
-    contentStyles.display = 'table-cell';
-    contentStyles.verticalAlign = verticalAlign;
-  }
 
   if (wordWrap) {
     contentStyles.wordBreak = typeof wordWrap === 'boolean' ? 'break-all' : wordWrap;
@@ -219,8 +214,8 @@ const Cell = React.forwardRef((props: InnerCellProps, ref: React.Ref<HTMLDivElem
 
 Cell.displayName = 'Table.Cell';
 Cell.propTypes = {
-  align: PropTypes.oneOf(['left', 'center', 'right']),
-  verticalAlign: PropTypes.oneOf(['top', 'middle', 'bottom']),
+  align: PropTypes.string,
+  verticalAlign: PropTypes.string,
   className: PropTypes.string,
   classPrefix: PropTypes.string,
   dataKey: PropTypes.string,

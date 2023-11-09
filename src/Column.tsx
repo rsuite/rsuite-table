@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 export interface ColumnProps {
   /** Alignment */
-  align?: 'left' | 'center' | 'right';
+  align?: React.CSSProperties['justifyContent'];
 
   /** Merges column cells to merge when the dataKey value for the merged column is null or undefined. */
   colSpan?: number;
@@ -17,7 +17,7 @@ export interface ColumnProps {
   fullText?: boolean;
 
   /** Vertical alignment */
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  verticalAlign?: React.CSSProperties['alignItems'] | 'top' | 'middle' | 'bottom';
 
   /** Column width */
   width?: number;
@@ -50,8 +50,8 @@ function Column(_props: ColumnProps) {
 }
 
 const propTypes = {
-  align: PropTypes.oneOf(['left', 'center', 'right']),
-  verticalAlign: PropTypes.oneOf(['top', 'middle', 'bottom']),
+  align: PropTypes.string,
+  verticalAlign: PropTypes.string,
   width: PropTypes.number,
   fixed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right'])]),
   resizable: PropTypes.bool,

@@ -14,7 +14,7 @@ const App = () => {
           <Cell dataKey="name" />
         </Column>
 
-        <Column width={300} fullText>
+        <Column width={300} fullText verticalAlign="middle">
           <HeaderCell>Avatar</HeaderCell>
           <Cell dataKey="avatar" />
         </Column>

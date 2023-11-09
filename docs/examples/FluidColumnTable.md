@@ -31,14 +31,14 @@ const App = () => {
 
       <Column flexGrow={1} sortable>
         <HeaderCell>
-          City <code>flexGrow={1}</code>
+          City <code>(flexGrow={1})</code>
         </HeaderCell>
         <Cell dataKey="city" />
       </Column>
 
       <Column flexGrow={2} sortable>
         <HeaderCell>
-          Company <code>flexGrow={2}</code>
+          Company <code>(flexGrow={2})</code>
         </HeaderCell>
         <Cell dataKey="company" />
       </Column>

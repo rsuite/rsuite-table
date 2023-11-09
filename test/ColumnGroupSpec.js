@@ -67,9 +67,9 @@ describe('ColumnGroup', () => {
       </ColumnGroup>
     );
 
-    assert.equal(
-      instance.querySelector('.rs-column-group-header-content').style.verticalAlign,
-      'middle'
+    expect(instance.querySelector('.rs-column-group-header-content')).to.have.style(
+      'align-items',
+      'center'
     );
   });
 
