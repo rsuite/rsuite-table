@@ -20,6 +20,9 @@ const momentumTimeThreshold = 300;
 // Inertial sliding start vertical distance threshold
 const momentumYThreshold = 15;
 
+//List of Arrow Keys for scrolling through keys
+const arrowKeysList = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+
 interface ScrollListenerProps {
   rtl: boolean;
   data: readonly RowDataType[];
@@ -504,6 +507,31 @@ const useScrollListener = (props: ScrollListenerProps) => {
     tableBodyRef
   ]);
 
+  const onScrollByKeydown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.currentTarget === event.target && arrowKeysList.indexOf(event.key) > -1) {
+        event.preventDefault();
+        const step = 40;
+
+        switch (event.key) {
+          case 'ArrowUp':
+            onWheel(0, -step);
+            break;
+          case 'ArrowDown':
+            onWheel(0, step);
+            break;
+          case 'ArrowLeft':
+            onWheel(-step, 0);
+            break;
+          case 'ArrowRight':
+            onWheel(step, 0);
+            break;
+        }
+      }
+    },
+    [onWheel]
+  );
+
   useMount(() => {
     if (rtl) {
       // Initialize scroll position
@@ -526,7 +554,8 @@ const useScrollListener = (props: ScrollListenerProps) => {
     onScrollBody,
     onScrollTop,
     onScrollLeft,
-    onScrollTo
+    onScrollTo,
+    onScrollByKeydown
   };
 };
 

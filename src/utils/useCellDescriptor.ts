@@ -12,7 +12,6 @@ import getTotalByColumns from './getTotalByColumns';
 import getColumnProps from './getColumnProps';
 import useUpdateEffect from './useUpdateEffect';
 import { ColumnProps } from '../Column';
-import { CellProps } from '../Cell';
 import flushSync from './flushSync';
 import useMount from './useMount';
 
@@ -91,6 +90,12 @@ const useCellDescriptor = <Row extends RowDataType>(
     [prefix, tableRef]
   );
 
+  /**
+   * storage column width from props.
+   * if current column width not equal initial column width, use current column width and update cache.
+   */
+  const initialColumnWidths = useRef({});
+
   const columnWidths = useRef({});
 
   useMount(() => {
@@ -101,10 +106,6 @@ const useCellDescriptor = <Row extends RowDataType>(
   useUpdateEffect(() => {
     clearCache();
   }, [children, sortColumn, sortType, tableWidth.current, scrollX.current, minScrollX.current]);
-
-  useUpdateEffect(() => {
-    columnWidths.current = {};
-  }, [children]);
 
   const handleColumnResizeEnd = useCallback(
     (columnWidth: number, _cursorDelta: number, dataKey: any, index: number) => {
@@ -204,26 +205,51 @@ const useCellDescriptor = <Row extends RowDataType>(
         hasCustomTreeCol = true;
       }
 
-      if (resizable && flexGrow) {
-        console.warn(
-          `Cannot set 'resizable' and 'flexGrow' together in <Column>, column index: ${index}`
-        );
-      }
-
       if (columnChildren.length !== 2) {
         throw new Error(`Component <HeaderCell> and <Cell> is required, column index: ${index} `);
       }
 
-      const headerCell = columnChildren[0] as React.ReactElement<CellProps>;
-      const cell = columnChildren[1] as React.ReactElement<CellProps>;
+      const headerCell = columnChildren[0] as React.ReactElement;
+      const cell = columnChildren[1] as React.ReactElement;
 
-      let cellWidth = columnWidths.current?.[`${cell.props.dataKey}_${index}_width`] || width || 0;
+      const cellWidthId = `${cell.props.dataKey}_${index}_width`;
+
+      // get column width from cache.
+      const initialColumnWidth = initialColumnWidths.current?.[cellWidthId];
+
+      const currentWidth = columnWidths.current?.[cellWidthId];
+
+      let cellWidth = currentWidth || width || 0;
+
+      const isControlled = typeof width === 'number' && typeof onResize === 'function';
+
+      /**
+       * in resizable mode,
+       *    if width !== initialColumnWidth, use current column width and update cache.
+       */
+      if (resizable && (initialColumnWidth || width) && initialColumnWidth !== width) {
+        // initial or update initialColumnWidth cache.
+        initialColumnWidths.current[cellWidthId] = width;
+        /**
+         * if currentWidth exist, update columnWidths cache.
+         */
+        if (currentWidth) {
+          columnWidths.current[cellWidthId] = width;
+          // update cellWidth
+          cellWidth = width;
+        }
+      }
 
       if (tableWidth.current && flexGrow && totalFlexGrow) {
-        cellWidth = Math.max(
+        const grewWidth = Math.max(
           ((tableWidth.current - totalWidth) / totalFlexGrow) * flexGrow,
           minWidth || 60
         );
+        /**
+         * resizable = false, width will be recalc when table render.
+         * resizable = true, only first render will use grewWidth.
+         */
+        cellWidth = resizable ? currentWidth || grewWidth : grewWidth;
       }
 
       const cellProps = {
@@ -232,7 +258,7 @@ const useCellDescriptor = <Row extends RowDataType>(
         left,
         headerHeight,
         key: index,
-        width: cellWidth,
+        width: isControlled ? width : cellWidth,
         height: typeof rowHeight === 'function' ? rowHeight() : rowHeight,
         firstColumn: index === 0,
         lastColumn: index === count - 1
@@ -250,7 +276,7 @@ const useCellDescriptor = <Row extends RowDataType>(
           onSortColumn: handleSortColumn,
           sortType,
           sortColumn,
-          flexGrow
+          flexGrow: resizable ? undefined : flexGrow
         };
 
         if (resizable) {

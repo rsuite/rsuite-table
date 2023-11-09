@@ -330,10 +330,9 @@ describe('Table', () => {
       </Table>
     );
 
-    const SCROLLBAR_WIDTH = 10;
     const tableWidth = 200;
     const contextWidth = 400;
-    const width = Math.floor((tableWidth / (contextWidth - SCROLLBAR_WIDTH)) * tableWidth);
+    const width = Math.floor((tableWidth / contextWidth) * tableWidth);
 
     const scrollbarHandleWidth = Math.floor(
       getWidth(instance.querySelector('.rs-table-scrollbar-handle'))
@@ -1316,5 +1315,64 @@ describe('Table', () => {
 
     expect(screen.getByTestId('test-7').firstChild).to.have.style('display', 'flex');
     expect(screen.getByTestId('test-7').firstChild).to.have.style('align-items', 'end');
+  });
+
+  it('Should render ColumnResizer & fill rest space', () => {
+    const instance = getDOMNode(
+      <Table
+        data={[
+          {
+            id: 1,
+            name: 'a'
+          }
+        ]}
+      >
+        <Column width={100} flexGrow={1} resizable>
+          <HeaderCell>Name</HeaderCell>
+          <Cell dataKey="name" />
+        </Column>
+      </Table>
+    );
+
+    const headerCell = instance.querySelector('.rs-table-cell-header');
+    expect(headerCell).to.exist;
+    expect(instance.querySelector('.rs-table-column-resize-spanner')).to.exist;
+
+    const width = headerCell.getBoundingClientRect().width;
+    expect(width).not.equal(100);
+    expect(width).to.equal(instance.getBoundingClientRect().width);
+  });
+
+  it('Should call `onScroll` callback when trigger keyboard event', () => {
+    const onScrollSpy = sinon.spy();
+    render(
+      <Table onScroll={onScrollSpy} data={[{ id: 1, name: 'a' }]} height={10} width={100}>
+        <Column width={100}>
+          <HeaderCell>11</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+        <Column width={100}>
+          <HeaderCell>11</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      </Table>
+    );
+
+    fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowDown' });
+
+    expect(onScrollSpy).to.have.been.calledOnce;
+    expect(onScrollSpy).to.be.calledWith(0, 40);
+
+    fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowUp' });
+    expect(onScrollSpy).to.have.been.calledTwice;
+    expect(onScrollSpy).to.be.calledWith(0, 0);
+
+    fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowRight' });
+    expect(onScrollSpy).to.have.been.calledThrice;
+    expect(onScrollSpy).to.be.calledWith(40, 0);
+
+    fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowLeft' });
+    expect(onScrollSpy).to.have.callCount(4);
+    expect(onScrollSpy).to.be.calledWith(0, 0);
   });
 });

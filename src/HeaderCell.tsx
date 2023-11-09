@@ -9,7 +9,7 @@ import ColumnResizeHandler, { FixedType } from './ColumnResizeHandler';
 import { useUpdateEffect, useClassNames } from './utils';
 import Cell, { InnerCellProps } from './Cell';
 
-export interface HeaderCellProps extends InnerCellProps {
+export interface HeaderCellProps extends Omit<InnerCellProps, 'onResize'> {
   index?: number;
   minWidth?: number;
   sortColumn?: string;

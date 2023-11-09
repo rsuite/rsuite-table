@@ -225,3 +225,7 @@ If you need to define row heights based on the content of your data in practical
 ...
 </Table>
 ```
+
+When used in conjunction with `renderRowExpanded`, it should be noted that the height returned in `rowHeight` needs to include the height of `renderRowExpanded`.
+
+Reference example https://github.com/rsuite/rsuite-table/issues/454#issuecomment-1756703149

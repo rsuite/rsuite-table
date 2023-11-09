@@ -1,3 +1,65 @@
+# [5.15.0](https://github.com/rsuite/rsuite-table/compare/5.14.0...5.15.0) (2023-10-26)
+
+
+### Bug Fixes
+
+* **Table:** fix table cell text cannot be copied ([8a9f06b](https://github.com/rsuite/rsuite-table/commit/8a9f06bf34c83ba6c48c5da2c0988c83faea2d5c))
+
+
+### Features
+
+* add a script to prepend the use client directive ([#466](https://github.com/rsuite/rsuite-table/issues/466)) ([24369c5](https://github.com/rsuite/rsuite-table/commit/24369c583786fea1757131b417ce25aa3bc3a4f8))
+
+
+
+# [5.14.0](https://github.com/rsuite/rsuite-table/compare/5.13.0...5.14.0) (2023-10-19)
+
+### Features
+
+* **Table:** add an option to define rowExpandedHeight as function [#465](https://github.com/rsuite/rsuite-table/pull/465)
+
+
+# [5.13.0](https://github.com/rsuite/rsuite-table/compare/5.12.0...5.13.0) (2023-10-17)
+
+
+### Bug Fixes
+
+* **Table:** fix table scroll width not excluding scroll bar width ([#461](https://github.com/rsuite/rsuite-table/issues/461)) ([88b0575](https://github.com/rsuite/rsuite-table/commit/88b0575954460539e7d5f29ee06d9251f89e8d23))
+* **TreeTable:** fix incorrect scrolling position of tree nodes after collapse ([#462](https://github.com/rsuite/rsuite-table/issues/462)) ([0e0c8dc](https://github.com/rsuite/rsuite-table/commit/0e0c8dc6357846997533f82aeea6da64d315034a))
+
+
+### Features
+
+* **Table:** support table scrolling through keyboard arrow keys ([#463](https://github.com/rsuite/rsuite-table/issues/463)) ([bf451a8](https://github.com/rsuite/rsuite-table/commit/bf451a8c65ab24a3812fd16e1f176a977eddd223))
+
+
+
+# [5.12.0](https://github.com/rsuite/rsuite-table/compare/5.11.1...5.12.0) (2023-09-06)
+
+
+### Features
+
+* **Next.js:** add 'use client' to all components ([#456](https://github.com/rsuite/rsuite-table/issues/456)) ([ed49fe1](https://github.com/rsuite/rsuite-table/commit/ed49fe1a76a23878bcad62f4f521ffc95cf4b8e9))
+
+
+
+## [5.11.1](https://github.com/rsuite/rsuite-table/compare/5.11.0...5.11.1) (2023-08-31)
+
+
+### Bug Fixes
+
+* **HeaderCell:** fix type extension ([#448](https://github.com/rsuite/rsuite-table/issues/448)) ([a8c9246](https://github.com/rsuite/rsuite-table/commit/a8c9246c362ef43545ecc021f273de58d05faedf))
+* **Column:** fix column width reset after children update ([#447](https://github.com/rsuite/rsuite-table/pull/447))
+
+# [5.11.0](https://github.com/rsuite/rsuite-table/compare/5.10.6...5.11.0) (2023-07-06)
+
+
+### Features
+
+* **column:** add support for flexGrow with resizable ([#440](https://github.com/rsuite/rsuite-table/issues/440)) ([68c81f1](https://github.com/rsuite/rsuite-table/commit/68c81f1a7c0c49532f7112c6cdabc5abd6b555f1))
+
+
+
 ## [5.10.6](https://github.com/rsuite/rsuite-table/compare/5.10.5...5.10.6) (2023-06-02)
 
 
