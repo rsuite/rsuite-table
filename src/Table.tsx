@@ -549,6 +549,14 @@ const Table = React.forwardRef(<Row extends RowDataType, Key>(props: TableProps<
     get body() {
       return wheelWrapperRef.current;
     },
+
+    // The scroll position of the table
+    get scrollPosition() {
+      return {
+        top: Math.abs(scrollY.current),
+        left: Math.abs(scrollX.current)
+      };
+    },
     scrollTop: onScrollTop,
     scrollLeft: onScrollLeft
   }));

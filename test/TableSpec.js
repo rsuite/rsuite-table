@@ -625,27 +625,49 @@ describe('Table', () => {
     assert.equal(table.querySelectorAll('.my-list-row').length, 2);
   });
 
-  it('Should call `onScroll` callback', done => {
+  it('Should call `onScroll` callback', async () => {
+    const onScrollSpy = sinon.spy();
     const instance = getDOMNode(
-      <Table
-        onScroll={() => done()}
-        data={[
-          {
-            id: 1,
-            name: 'a'
-          }
-        ]}
-        height={10}
-      >
-        <Column>
-          <HeaderCell>11</HeaderCell>
+      <Table onScroll={onScrollSpy} data={[{ id: 1, name: 'a' }]} height={10} width={100}>
+        <Column width={200}>
+          <HeaderCell>Id</HeaderCell>
           <Cell dataKey="id" />
         </Column>
       </Table>
     );
     const body = instance.querySelector('.rs-table-body-row-wrapper');
+    body.dispatchEvent(new WheelEvent('wheel', { deltaY: 10, deltaX: 2 }));
 
-    body.dispatchEvent(new WheelEvent('wheel', { deltaY: 10 }));
+    await waitFor(() => {
+      expect(onScrollSpy).to.have.been.calledOnce;
+      expect(onScrollSpy).to.have.been.calledWith(2, 10);
+    });
+  });
+
+  it('Should get scroll position via `ref`', async () => {
+    const onScrollSpy = sinon.spy();
+    const table = React.createRef();
+    const instance = getDOMNode(
+      <Table
+        onScroll={onScrollSpy}
+        ref={table}
+        data={[{ id: 1, name: 'a' }]}
+        height={10}
+        width={100}
+      >
+        <Column width={200}>
+          <HeaderCell>Id</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      </Table>
+    );
+    const body = instance.querySelector('.rs-table-body-row-wrapper');
+    body.dispatchEvent(new WheelEvent('wheel', { deltaY: 10, deltaX: 2 }));
+
+    await waitFor(() => {
+      expect(table.current?.scrollPosition.top).to.equal(10);
+      expect(table.current?.scrollPosition.left).to.equal(2);
+    });
   });
 
   it('Should call `onScroll` callback by scrollTop', done => {
