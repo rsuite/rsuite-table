@@ -1,3 +1,12 @@
+# [5.17.0](https://github.com/rsuite/rsuite-table/compare/5.16.0...5.17.0) (2023-11-17)
+
+
+### Features
+
+* **Table:** support get scroll position of the table through ref ([#473](https://github.com/rsuite/rsuite-table/issues/473)) ([8f44c93](https://github.com/rsuite/rsuite-table/commit/8f44c93fe465504e545039d6861c1f13421c37b8))
+
+
+
 # [5.16.0](https://github.com/rsuite/rsuite-table/compare/5.15.0...5.16.0) (2023-11-09)
 
 
