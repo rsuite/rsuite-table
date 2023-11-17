@@ -143,6 +143,7 @@ const App = () => (
 | colSpan       | number                                           | Merges column cells to merge when the `dataKey` value for the merged column is `null` or `undefined`.       |
 | fixed         | boolean, 'left', 'right'                         | Fixed column                                                                                                |
 | flexGrow      | number                                           | Set the column width automatically adjusts, when set `flexGrow` cannot set `resizable` and `width` property |
+| fullText      | boolean                                          | Whether to display the full text of the cell content when the mouse is hovered                              |
 | minWidth      | number`(200)`                                    | When you use `flexGrow`, you can set a minimum width by `minwidth`                                          |
 | onResize      | (columnWidth?: number, dataKey?: string) => void | Callback after column width change                                                                          |
 | resizable     | boolean                                          | Customizable Resize Column width                                                                            |
@@ -151,7 +152,6 @@ const App = () => (
 | treeCol       | boolean                                          | A column of a tree.                                                                                         |
 | verticalAlign | enum: 'top', 'middle', 'bottom'                  | Vertical alignment                                                                                          |
 | width         | number                                           | Column width                                                                                                |
-| fullText      | boolean                                          | Whether to display the full text of the cell content when the mouse is hovered                              |
 
 > `sortable` is used to define whether the column is sortable, but depending on what `key` sort needs to set a `dataKey` in `Cell`.
 > The sort here is the service-side sort, so you need to handle the logic in the ' Onsortcolumn ' callback function of `<Table>`, and the callback function returns `sortColumn`, `sortType` values.
@@ -222,10 +222,15 @@ const NameCell = ({ rowData, ...props }) => (
 
 (For nested data read this: https://github.com/rsuite/rsuite-table/issues/158)
 
-## Methods
+### Table ref
 
-- scrollTop(top:number = 0)
-- scrollLeft(left:number = 0)
+| Property       | Type                     | Description                                                    |
+| -------------- | ------------------------ | -------------------------------------------------------------- |
+| body           | HTMLDivElement           | The body element of the table                                  |
+| root           | HTMLDivElement           | The root element of the table                                  |
+| scrollLeft     | (left:number)=>void      | Set the number of pixels for horizontal scrolling of the table |
+| scrollPosition | {top:number,left:number} | The scroll position of the table                               |
+| scrollTop      | (top:number)=>void       | Set the number of pixels for vertical scrolling of the table   |
 
 [npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/rsuite-table
