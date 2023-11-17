@@ -28999,9 +28999,6 @@ textarea.rs-picker-search-input {
   vertical-align: middle;
   max-width: 100%;
 }
-.rs-picker-toggle {
-  min-width: 75px;
-}
 .rs-picker-toggle.rs-btn .rs-ripple-pond {
   display: none !important;
 }
