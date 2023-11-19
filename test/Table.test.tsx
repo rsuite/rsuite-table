@@ -61,6 +61,17 @@ const ref = React.createRef<TableInstance<Row, string>>();
 
 <Table ref={ref} />;
 
+<Table ref={ref}>
+  {({ Column, HeaderCell, Cell }) => (
+    <>
+      <Column>
+        <HeaderCell>Id</HeaderCell>
+        <Cell>{({ id }) => id}</Cell>
+      </Column>
+    </>
+  )}
+</Table>;
+
 ref.current?.body;
 ref.current?.root;
 ref.current?.scrollLeft(100);

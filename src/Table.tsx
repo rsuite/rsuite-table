@@ -251,7 +251,7 @@ export interface TableProps<Row extends RowDataType, Key extends RowKeyType>
    **/
   bodyRef?: (ref: HTMLElement) => void;
 
-  children:
+  children?:
     | React.ReactNode
     | React.ReactNode[]
     | ((props: {
