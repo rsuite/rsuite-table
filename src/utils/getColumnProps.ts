@@ -1,5 +1,6 @@
+import React from 'react';
+import { RowDataType } from '../@types/common';
 import { ColumnProps } from '../Column';
-export type Column = React.ReactElement<ColumnProps>;
 
 /**
  * Get the union of the props of the column itself and the props of the custom column
@@ -15,7 +16,9 @@ export type Column = React.ReactElement<ColumnProps>;
  * </CustomColumn>
  *
  */
-export default function getColumnProps(column: Column): ColumnProps {
+export default function getColumnProps<Row extends RowDataType>(
+  column: React.ReactElement
+): ColumnProps<Row> {
   const columnDefaultProps = column['type']?.['render']?.()?.props || {};
 
   return { ...columnDefaultProps, ...column?.props };

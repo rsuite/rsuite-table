@@ -192,9 +192,9 @@ const useCellDescriptor = <Row extends RowDataType>(
 
   const columns = getTableColumns(children) as React.ReactElement[];
   const count = columns.length;
-  const { totalFlexGrow, totalWidth } = getTotalByColumns(columns);
+  const { totalFlexGrow, totalWidth } = getTotalByColumns<Row>(columns);
 
-  React.Children.forEach(columns, (column: React.ReactElement<ColumnProps>, index) => {
+  React.Children.forEach(columns, (column: React.ReactElement<ColumnProps<Row>>, index) => {
     if (React.isValidElement(column)) {
       const columnChildren = column.props.children as React.ReactNode[];
       const columnProps = getColumnProps(column);
