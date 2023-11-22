@@ -6,10 +6,10 @@ import React, {
   useReducer,
   useMemo
 } from 'react';
+import * as ReactIs from 'react-is';
 import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 import PropTypes from 'prop-types';
 import isFunction from 'lodash/isFunction';
-import flatten from 'lodash/flatten';
 import debounce from 'lodash/debounce';
 import Row, { RowProps } from './Row';
 import CellGroup from './CellGroup';
@@ -401,13 +401,13 @@ const Table = React.forwardRef(
     );
 
     // Check for the existence of fixed columns in all column properties.
-    const shouldFixedColumn = Array.from(flatten(children as any) as Iterable<any>).some(
-      child => child?.props?.fixed
+    const shouldFixedColumn = children.some(
+      child => ReactIs.isElement(child) && child?.props?.fixed
     );
 
     // Check all column properties for the existence of rowSpan.
-    const shouldRowSpanColumn = Array.from(flatten(children as any) as Iterable<any>).some(
-      child => child?.props?.rowSpan
+    const shouldRowSpanColumn = children.some(
+      child => ReactIs.isElement(child) && child?.props?.rowSpan
     );
 
     const visibleRows = useRef<React.ReactNode[]>([]);
