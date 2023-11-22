@@ -29,7 +29,6 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-
     expect(instance.querySelectorAll('.rs-table-cell')).to.be.length(2);
   });
 

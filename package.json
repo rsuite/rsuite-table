@@ -73,6 +73,7 @@
     "@types/prop-types": "^15.7.1",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/react-is": "^18.2.4",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
     "autoprefixer": "^8.3.0",

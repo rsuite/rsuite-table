@@ -16,7 +16,7 @@ import flushSync from './flushSync';
 import useMount from './useMount';
 
 interface CellDescriptorProps<Row> {
-  children: React.ReactNode;
+  children: React.ReactNode[];
   rtl: boolean;
   minScrollX: React.MutableRefObject<number>;
   scrollX: React.MutableRefObject<number>;

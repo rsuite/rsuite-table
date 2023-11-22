@@ -1,4 +1,11 @@
-import React, { useState, useRef, useCallback, useImperativeHandle, useReducer } from 'react';
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useImperativeHandle,
+  useReducer,
+  useMemo
+} from 'react';
 import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 import PropTypes from 'prop-types';
 import isFunction from 'lodash/isFunction';
@@ -51,6 +58,7 @@ import type {
   TableSizeChangeEventName,
   RowDataType
 } from './@types/common';
+import { flattenChildren } from './utils/children';
 /**
  * Filter those expanded nodes.
  * @param data
@@ -339,7 +347,10 @@ const Table = React.forwardRef(
       ...rest
     } = props;
 
-    const children = isFunction(getChildren) ? getChildren(getChildrenProps) : getChildren;
+    const children = useMemo(
+      () => flattenChildren(isFunction(getChildren) ? getChildren(getChildrenProps) : getChildren),
+      [getChildren]
+    );
 
     const {
       withClassPrefix,
