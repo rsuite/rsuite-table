@@ -1,3 +1,12 @@
+## [5.18.1](https://github.com/rsuite/rsuite-table/compare/5.18.0...5.18.1) (2023-11-24)
+
+
+### Bug Fixes
+
+* **Table:** fix missing ColumnGroup parameter in children ([#475](https://github.com/rsuite/rsuite-table/issues/475)) ([1389716](https://github.com/rsuite/rsuite-table/commit/138971657055b0f31f5c8a385e72e497c5f7a173))
+
+
+
 # [5.18.0](https://github.com/rsuite/rsuite-table/compare/5.17.0...5.18.0) (2023-11-24)
 
 ### Features
