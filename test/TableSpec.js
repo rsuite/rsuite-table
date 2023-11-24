@@ -29,6 +29,26 @@ describe('Table', () => {
         </Column>
       </Table>
     );
+    expect(instance.querySelectorAll('.rs-table-cell')).to.be.length(2);
+  });
+
+  it('Should accept render prop', () => {
+    const instance = getDOMNode(
+      <Table>
+        {({ Column, HeaderCell, Cell }) => (
+          <>
+            <Column>
+              <HeaderCell>11</HeaderCell>
+              <Cell>12</Cell>
+            </Column>
+            <Column>
+              <HeaderCell>11</HeaderCell>
+              <Cell>12</Cell>
+            </Column>
+          </>
+        )}
+      </Table>
+    );
 
     expect(instance.querySelectorAll('.rs-table-cell')).to.be.length(2);
   });

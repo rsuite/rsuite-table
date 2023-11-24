@@ -1,6 +1,8 @@
+import React from 'react';
 import PropTypes from 'prop-types';
+import { RowDataType } from './@types/common';
 
-export interface ColumnProps {
+export interface ColumnProps<Row extends RowDataType> {
   /** Alignment */
   align?: React.CSSProperties['justifyContent'];
 
@@ -8,7 +10,7 @@ export interface ColumnProps {
   colSpan?: number;
 
   /** Merges rows on the specified column. */
-  rowSpan?: (rowData: any) => number;
+  rowSpan?: (rowData: Row) => number;
 
   /** Fixed column */
   fixed?: boolean | 'left' | 'right';
@@ -45,8 +47,8 @@ export interface ColumnProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function Column(_props: ColumnProps) {
-  return null;
+function Column<Row extends RowDataType>(_props: ColumnProps<Row>) {
+  return <></>;
 }
 
 const propTypes = {
@@ -67,6 +69,7 @@ const propTypes = {
 };
 
 Column.displayName = 'Table.Column';
+
 Column.defaultProps = {
   width: 100
 };

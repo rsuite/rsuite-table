@@ -99,6 +99,7 @@ const App = () => (
 | autoHeight               | boolean                                                            | The height of the table will be automatically expanded according to the number of data rows, and no vertical scroll bar will appear |
 | bordered                 | boolean                                                            | Show border                                                                                                                         |
 | cellBordered             | boolean                                                            | Show cell border                                                                                                                    |
+| children                 | (components: { Cell, HeaderCell, ColumnGroup }) => React.ReactNode | Render props that receives parameterized Cell, HeaderCell, ColumnGroup components - making typescript usage more convenient         |
 | data \*                  | object[]                                                           | Table data                                                                                                                          |
 | defaultExpandAllRows     | boolean                                                            | Expand all nodes By default                                                                                                         |
 | defaultExpandedRowKeys   | string[]                                                           | Specify the default expanded row by `rowkey`                                                                                        |
@@ -238,3 +239,61 @@ const NameCell = ({ rowData, ...props }) => (
 [coverage]: https://coveralls.io/github/rsuite/rsuite-table
 [actions-svg]: https://github.com/rsuite/rsuite-table/workflows/Node.js%20CI/badge.svg?branch=main
 [actions-home]: https://github.com/rsuite/rsuite-table/actions?query=branch%3Amain+workflow%3A%22Node.js+CI%22
+
+### Type safety
+
+We can pass generic type parameters to Table, Cell etc. for better type-safety when using typescript.
+
+Passing a render prop to Table is recommended when using TS, as this will ensure that
+the right generic type parameter is automatically propagated to the Cell component.
+
+```ts
+const products: Product[] = [{ name: "Pineapple" }];
+
+<Table<Product, string> ref={table} data={products}>
+  {({ Column, HeaderCell, Cell }) => (
+    <>
+      <Column>
+        <HeaderCell>Name</HeaderCell>
+        {/* No need for passing explicit type parameter to Cell */}
+        <Cell>{row => row.name}</Cell>
+      </Column>
+    </>
+  )}
+</Table>;
+```
+
+In fact, the type parameter from table can be inferred from the data passed to it, so the type parameter to Table can also be skipped.
+
+```ts
+const products: Product[] = [{ name: "Pineapple" }];
+
+<Table data={products}>
+  {({ Column, HeaderCell, Cell }) => (
+    <>
+      <Column>
+        <HeaderCell>Name</HeaderCell>
+        <Cell>{row => row.name}</Cell>
+      </Column>
+    </>
+  )}
+</Table>;
+```
+
+When writing reusable components, it is recommended to make your components generic as well. For example:
+
+```ts
+interface ImageCellProps<TKey extends string, TRow extends Record<TKey, string>> {
+  rowData: TRow,
+  dataKey: TKey,
+  // ... any other props
+}
+
+const ImageCell = <TKey extends string, TRow extends Record<TKey, string>>(
+  { rowData, dataKey, ...rest }: ImageCellProps<TKey, TRow>
+) => (
+  <Cell<TRow, TKey> {...rest}>
+    <img src={rowData[dataKey]} width="50" />
+  </Cell>
+);
+```
