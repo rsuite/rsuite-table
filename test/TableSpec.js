@@ -33,9 +33,9 @@ describe('Table', () => {
   });
 
   it('Should accept render prop', () => {
-    const instance = getDOMNode(
+    render(
       <Table>
-        {({ Column, HeaderCell, Cell }) => (
+        {({ Column, HeaderCell, Cell, ColumnGroup }) => (
           <>
             <Column>
               <HeaderCell>11</HeaderCell>
@@ -45,12 +45,21 @@ describe('Table', () => {
               <HeaderCell>11</HeaderCell>
               <Cell>12</Cell>
             </Column>
+            <ColumnGroup>
+              <Column>
+                <HeaderCell>11</HeaderCell>
+                <Cell>12</Cell>
+              </Column>
+              <Column>
+                <HeaderCell>11</HeaderCell>
+                <Cell>12</Cell>
+              </Column>
+            </ColumnGroup>
           </>
         )}
       </Table>
     );
-
-    expect(instance.querySelectorAll('.rs-table-cell')).to.be.length(2);
+    expect(screen.queryAllByRole('columnheader')).to.be.length(5);
   });
 
   it('Should be disabled scroll', () => {

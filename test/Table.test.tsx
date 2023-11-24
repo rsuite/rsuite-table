@@ -86,7 +86,7 @@ interface InventoryItem {
 const table = React.createRef<TableInstance<InventoryItem, string>>();
 
 <Table<InventoryItem, string> ref={table}>
-  {({ Column, HeaderCell, Cell }) => (
+  {({ Column, HeaderCell, Cell, ColumnGroup }) => (
     <>
       <Column>
         <HeaderCell>Name</HeaderCell>
@@ -97,6 +97,17 @@ const table = React.createRef<TableInstance<InventoryItem, string>>();
         {/** @ts-expect-error Property 'type' does not exist on type 'InventoryItem' */}
         <Cell>{row => row.type}</Cell>
       </Column>
+
+      <ColumnGroup>
+        <Column>
+          <HeaderCell>Id</HeaderCell>
+          <Cell>{row => row.id}</Cell>
+        </Column>
+        <Column>
+          <HeaderCell>Name</HeaderCell>
+          <Cell>{row => row.name}</Cell>
+        </Column>
+      </ColumnGroup>
     </>
   )}
 </Table>;
