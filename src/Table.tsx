@@ -21,6 +21,7 @@ import TableContext from './TableContext';
 import Cell, { InnerCellProps } from './Cell';
 import HeaderCell, { HeaderCellProps } from './HeaderCell';
 import Column, { ColumnProps } from './Column';
+import ColumnGroup from './ColumnGroup';
 import {
   SCROLLBAR_WIDTH,
   CELL_PADDING_HEIGHT,
@@ -267,6 +268,7 @@ export interface TableProps<Row extends RowDataType, Key extends RowKeyType>
           props: InnerCellProps<Row, Key> & React.RefAttributes<HTMLDivElement>
         ) => React.ReactElement;
         Column: (props: ColumnProps<Row>) => React.ReactElement;
+        ColumnGroup: typeof ColumnGroup;
         HeaderCell: (
           props: HeaderCellProps<Row, Key> & React.RefAttributes<HTMLDivElement>
         ) => React.ReactElement;
@@ -284,7 +286,8 @@ const DATA_PLACEHOLDER = [];
 const getChildrenProps = {
   Cell,
   HeaderCell,
-  Column
+  Column,
+  ColumnGroup
 };
 
 const Table = React.forwardRef(
