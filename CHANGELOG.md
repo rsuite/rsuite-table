@@ -1,3 +1,9 @@
+# [5.18.0](https://github.com/rsuite/rsuite-table/compare/5.17.0...5.18.0) (2023-11-24)
+
+### Features
+
+* **Table:** add support function type for children prop ([#474](https://github.com/rsuite/rsuite-table/pull/474))
+
 # [5.17.0](https://github.com/rsuite/rsuite-table/compare/5.16.0...5.17.0) (2023-11-17)
 
 

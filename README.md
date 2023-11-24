@@ -38,10 +38,17 @@ A React table component.
 ## Install
 
 ```sh
-npm i rsuite-table --save
+# use npm
+npm i rsuite-table
+
+# or use yarn
+yarn add rsuite-table
+
+# or use pnpm
+pnpm add rsuite-table
 ```
 
-### Usage
+## Usage
 
 ```tsx
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
@@ -233,13 +240,6 @@ const NameCell = ({ rowData, ...props }) => (
 | scrollPosition | {top:number,left:number} | The scroll position of the table                               |
 | scrollTop      | (top:number)=>void       | Set the number of pixels for vertical scrolling of the table   |
 
-[npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg?style=flat-square
-[npm]: https://www.npmjs.com/package/rsuite-table
-[coverage-badge]: https://img.shields.io/coveralls/rsuite/rsuite-table.svg?style=flat-square
-[coverage]: https://coveralls.io/github/rsuite/rsuite-table
-[actions-svg]: https://github.com/rsuite/rsuite-table/workflows/Node.js%20CI/badge.svg?branch=main
-[actions-home]: https://github.com/rsuite/rsuite-table/actions?query=branch%3Amain+workflow%3A%22Node.js+CI%22
-
 ### Type safety
 
 We can pass generic type parameters to Table, Cell etc. for better type-safety when using typescript.
@@ -248,7 +248,7 @@ Passing a render prop to Table is recommended when using TS, as this will ensure
 the right generic type parameter is automatically propagated to the Cell component.
 
 ```ts
-const products: Product[] = [{ name: "Pineapple" }];
+const products: Product[] = [{ name: 'Pineapple' }];
 
 <Table<Product, string> ref={table} data={products}>
   {({ Column, HeaderCell, Cell }) => (
@@ -266,7 +266,7 @@ const products: Product[] = [{ name: "Pineapple" }];
 In fact, the type parameter from table can be inferred from the data passed to it, so the type parameter to Table can also be skipped.
 
 ```ts
-const products: Product[] = [{ name: "Pineapple" }];
+const products: Product[] = [{ name: 'Pineapple' }];
 
 <Table data={products}>
   {({ Column, HeaderCell, Cell }) => (
@@ -284,16 +284,25 @@ When writing reusable components, it is recommended to make your components gene
 
 ```ts
 interface ImageCellProps<TKey extends string, TRow extends Record<TKey, string>> {
-  rowData: TRow,
-  dataKey: TKey,
+  rowData: TRow;
+  dataKey: TKey;
   // ... any other props
 }
 
-const ImageCell = <TKey extends string, TRow extends Record<TKey, string>>(
-  { rowData, dataKey, ...rest }: ImageCellProps<TKey, TRow>
-) => (
+const ImageCell = <TKey extends string, TRow extends Record<TKey, string>>({
+  rowData,
+  dataKey,
+  ...rest
+}: ImageCellProps<TKey, TRow>) => (
   <Cell<TRow, TKey> {...rest}>
     <img src={rowData[dataKey]} width="50" />
   </Cell>
 );
 ```
+
+[npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg?style=flat-square
+[npm]: https://www.npmjs.com/package/rsuite-table
+[coverage-badge]: https://img.shields.io/coveralls/rsuite/rsuite-table.svg?style=flat-square
+[coverage]: https://coveralls.io/github/rsuite/rsuite-table
+[actions-svg]: https://github.com/rsuite/rsuite-table/workflows/Node.js%20CI/badge.svg?branch=main
+[actions-home]: https://github.com/rsuite/rsuite-table/actions?query=branch%3Amain+workflow%3A%22Node.js+CI%22
