@@ -23535,7 +23535,7 @@ label:hover .rs-checkbox-wrapper .rs-checkbox-inner::before {
 }
 .rs-drawer-full.rs-drawer-top,
 .rs-drawer-full.rs-drawer-bottom {
-  height: calc(100% - 60px);
+  height: 100%;
 }
 .rs-drawer-full.rs-drawer-top .rs-drawer-content,
 .rs-drawer-full.rs-drawer-bottom .rs-drawer-content {
@@ -23543,7 +23543,7 @@ label:hover .rs-checkbox-wrapper .rs-checkbox-inner::before {
 }
 .rs-drawer-full.rs-drawer-left,
 .rs-drawer-full.rs-drawer-right {
-  width: calc(100% - 60px);
+  width: 100%;
 }
 .rs-drawer-right {
   right: 0;
@@ -27844,8 +27844,26 @@ textarea.rs-picker-search-input {
   max-width: calc(100% - 10px);
 }
 .rs-modal-full {
-  width: calc(100% - 120px);
-  max-width: calc(100% - 10px);
+  margin: 0;
+  height: 100%;
+}
+.rs-modal-full .rs-modal-content {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+}
+.rs-modal-full .rs-modal-content .rs-modal-header {
+  flex: 0 0 auto;
+}
+.rs-modal-full .rs-modal-content .rs-modal-body {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+.rs-modal-full .rs-modal-content .rs-modal-footer {
+  flex: 0 0 auto;
 }
 .rs-modal-shake .rs-modal-dialog {
   animation: 0.3s linear shakeHead;
