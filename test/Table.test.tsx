@@ -2,6 +2,9 @@ import React from 'react';
 import { expectType } from 'ts-expect';
 import Table, { TableInstance } from '../src/Table';
 import Cell from '../src/Cell';
+import Column from '../src/Column';
+import HeaderCell from '../src/HeaderCell';
+import { ItemDataType } from 'rsuite/esm/@types/common';
 
 type Row = {
   id: number;
@@ -9,14 +12,8 @@ type Row = {
 };
 
 const data: Row[] = [
-  {
-    id: 1,
-    name: 'First'
-  },
-  {
-    id: 2,
-    name: 'Second'
-  }
+  { id: 1, name: 'First' },
+  { id: 2, name: 'Second' }
 ];
 
 <Table
@@ -127,3 +124,16 @@ export const ImageCell = <TKey extends string, TRow extends Record<TKey, string>
     <img src={rowData[dataKey]} width="50" />
   </Cell>
 );
+
+const rows: ItemDataType[] = [
+  { id: 1, name: 'First' },
+  { id: 2, name: 'Second' }
+];
+
+// test case for https://github.com/rsuite/rsuite-table/issues/422
+<Table data={rows}>
+  <Column width={50}>
+    <HeaderCell>Id</HeaderCell>
+    <Cell>{rowData => rowData.id}</Cell>
+  </Column>
+</Table>;
