@@ -342,29 +342,6 @@
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -699,26 +676,6 @@
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -1068,23 +1025,6 @@
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -1960,29 +1900,6 @@ dd {
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -2317,26 +2234,6 @@ dd {
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -2686,23 +2583,6 @@ dd {
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -3609,29 +3489,6 @@ dd {
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -3966,26 +3823,6 @@ dd {
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -4335,23 +4172,6 @@ dd {
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -6824,29 +6644,6 @@ dd {
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -7181,26 +6978,6 @@ dd {
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -7550,23 +7327,6 @@ dd {
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -9010,29 +8770,6 @@ dd {
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -9367,26 +9104,6 @@ dd {
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -9736,23 +9453,6 @@ dd {
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -10413,29 +10113,6 @@ dd {
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -10770,26 +10447,6 @@ dd {
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -11139,23 +10796,6 @@ dd {
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -11922,29 +11562,6 @@ label:hover .rs-checkbox-wrapper .rs-checkbox-inner::before {
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -12279,26 +11896,6 @@ label:hover .rs-checkbox-wrapper .rs-checkbox-inner::before {
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -12648,23 +12245,6 @@ label:hover .rs-checkbox-wrapper .rs-checkbox-inner::before {
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -14636,29 +14216,6 @@ dd {
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -14993,26 +14550,6 @@ dd {
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -15362,23 +14899,6 @@ dd {
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -16079,29 +15599,6 @@ textarea.rs-input-sm {
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -16436,26 +15933,6 @@ textarea.rs-input-sm {
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -16805,23 +16282,6 @@ textarea.rs-input-sm {
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -17433,29 +16893,6 @@ dd {
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -17790,26 +17227,6 @@ dd {
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -18159,23 +17576,6 @@ dd {
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -19602,29 +19002,6 @@ code.hljs {
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
-@supports not (color: rgb(from white r g b)) {
-  :root,
-  .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
-    --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
-    --rs-loader-ring: rgba(247, 247, 250, 0.8);
-    --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
-    --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
-    --rs-dropdown-item-bg-hover: rgba(204, 233, 255, 0.5);
-    --rs-menuitem-active-bg: rgba(204, 233, 255, 0.5);
-    --rs-listbox-option-hover-bg: rgba(204, 233, 255, 0.5);
-    --rs-toggle-loader-ring: rgba(247, 247, 250, 0.3);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 152, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(255, 255, 255, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(242, 250, 255, 0.5);
-    --rs-table-scrollbar-vertical-track: rgba(229, 229, 234, 0.4);
-    --rs-calendar-range-bg: rgba(204, 233, 255, 0.5);
-  }
-}
 .rs-theme-dark {
   --rs-gray-0: #fff;
   --rs-gray-50: #e9ebf0;
@@ -19959,26 +19336,6 @@ code.hljs {
   --rs-calendar-date-selected-text: #fff;
   --rs-calendar-cell-selected-hover-bg: var(--rs-primary-700);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-dark {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-color-focus-ring: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-shadow: 0 0 0 3px rgba(52, 195, 255, 0.25);
-    --rs-state-focus-outline: 3px solid rgba(52, 195, 255, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(0, 97, 153, 0.2);
-    --rs-listbox-option-selected-bg: rgba(0, 97, 153, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(52, 195, 255, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(0, 97, 153, 0.2);
-    --rs-calendar-range-bg: rgba(0, 97, 153, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 .rs-theme-high-contrast {
   --rs-gray-0: #fff;
@@ -20328,23 +19685,6 @@ code.hljs {
   --rs-calendar-date-selected-text: var(--rs-gray-900);
   --rs-calendar-cell-selected-hover-bg: var(--rs-gray-50);
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-@supports not (color: rgb(from white r g b)) {
-  .rs-theme-high-contrast {
-    --rs-bg-backdrop: rgba(15, 19, 26, 0.8);
-    --rs-state-focus-outline: 3px solid rgba(255, 255, 0, 0.25);
-    --rs-loader-ring: rgba(233, 235, 240, 0.3);
-    --rs-loader-backdrop: rgba(15, 19, 26, 0.83);
-    --rs-loader-ring-inverse: rgba(233, 235, 240, 0.8);
-    --rs-loader-backdrop-inverse: rgba(255, 255, 255, 0.9);
-    --rs-dropdown-item-bg-active: rgba(143, 153, 0, 0.2);
-    --rs-slider-thumb-hover-shadow: 0 0 0 8px rgba(255, 255, 0, 0.25);
-    --rs-uploader-overlay-bg: rgba(60, 63, 67, 0.8);
-    --rs-carousel-indicator: rgba(255, 255, 255, 0.4);
-    --rs-list-placeholder-bg: rgba(143, 153, 0, 0.2);
-    --rs-calendar-range-bg: rgba(143, 153, 0, 0.5);
-    --rs-placeholder-active: #484c50;
-  }
 }
 /* stylelint-disable */
 * {
@@ -23315,6 +22655,15 @@ label:hover .rs-checkbox-wrapper .rs-checkbox-inner::before {
 }
 .rs-picker-menu .rs-calendar-table {
   width: unset;
+}
+.rs-picker-menu .rs-calendar-month-dropdown-cell:focus-visible .rs-calendar-month-dropdown-cell-content {
+  outline: 3px solid var(--rs-color-focus-ring);
+}
+.rs-picker-menu .rs-calendar-table-cell:focus-visible {
+  outline: none;
+}
+.rs-picker-menu .rs-calendar-table-cell:focus-visible .rs-calendar-table-cell-content {
+  outline: 3px solid var(--rs-color-focus-ring);
 }
 .rs-picker-menu .rs-calendar .rs-calendar-month-dropdown-cell-content,
 .rs-picker-menu .rs-calendar .rs-calendar-table-cell-content {
