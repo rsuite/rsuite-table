@@ -1,3 +1,12 @@
+## [5.18.2](https://github.com/rsuite/rsuite-table/compare/5.18.1...5.18.2) (2023-12-01)
+
+
+### Bug Fixes
+
+* fix availability of `RowDataType` type ([#476](https://github.com/rsuite/rsuite-table/issues/476)) ([8590477](https://github.com/rsuite/rsuite-table/commit/85904773df3b81acd619eaec2fd17299e8889abe))
+
+
+
 ## [5.18.1](https://github.com/rsuite/rsuite-table/compare/5.18.0...5.18.1) (2023-11-24)
 
 
