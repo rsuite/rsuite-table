@@ -4,7 +4,7 @@ import Table, { TableInstance } from '../src/Table';
 import Cell from '../src/Cell';
 import Column from '../src/Column';
 import HeaderCell from '../src/HeaderCell';
-import { ItemDataType } from 'rsuite/esm/@types/common';
+import { ItemDataType } from 'rsuite/esm/internals/types';
 
 type Row = {
   id: number;
