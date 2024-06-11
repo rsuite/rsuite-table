@@ -9,7 +9,6 @@ import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import useIntersectionObserver from './useIntersectionObserver';
 import isNumberOrTrue from './isNumberOrTrue';
 import { RowDataType, ElementOffset } from '../@types/common';
-import debounce from 'lodash/debounce';
 
 interface TableDimensionProps<Row, Key> {
   data?: readonly Row[];
@@ -60,7 +59,6 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
     children,
     expandedRowKeys,
     showHeader,
-    bordered,
     onTableResizeChange,
     onTableScroll
   } = props;
@@ -262,13 +260,21 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
       calculateTableHeight(entries[0].contentRect.height);
     });
     containerResizeObserver.current.observe(tableRef?.current?.parentNode as Element);
-    const changeTableWidthWhenResize = debounce(entries => {
-      const { width } = entries[0].contentRect;
-      // bordered table width is 1px larger than the container width. fix: #405 #404
-      const widthWithBorder = width + 2;
-
-      calculateTableWidth(bordered ? widthWithBorder : width);
-    }, 20);
+    let idleCallbackId: null | number = null;
+    const changeTableWidthWhenResize = function (entries) {
+      if (idleCallbackId) {
+        window.cancelIdleCallback(idleCallbackId);
+      }
+      idleCallbackId = window.requestIdleCallback(deadline => {
+        // if idle time >= 10ms, then we can judge other tasks have completed
+        if (deadline.timeRemaining() >= 10) {
+          idleCallbackId = null;
+          calculateTableWidth(entries[0].contentRect.width);
+        } else {
+          changeTableWidthWhenResize(entries);
+        }
+      });
+    };
     resizeObserver.current = new ResizeObserver(changeTableWidthWhenResize);
     resizeObserver.current.observe(tableRef?.current as Element);
 
