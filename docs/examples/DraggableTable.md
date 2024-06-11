@@ -100,6 +100,10 @@ function sort(source, sourceId, targetId) {
   const dragItem = source.find(item => item.id === sourceId);
   const index = nextData.findIndex(item => item.id === targetId);
 
+  if (index === -1) {
+    return source;
+  }
+
   nextData.splice(index, 0, dragItem);
   return nextData;
 }
