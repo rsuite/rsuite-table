@@ -1,3 +1,12 @@
+## [5.18.3](https://github.com/rsuite/rsuite-table/compare/5.18.2...5.18.3) (2024-06-11)
+
+
+### Bug Fixes
+
+* **Table:** fix `flexGrow` is invalid when the table is hidden and then shown ([#489](https://github.com/rsuite/rsuite-table/issues/489)) ([8cdf3bf](https://github.com/rsuite/rsuite-table/commit/8cdf3bf91fd7aa8fcd46998b83c2289fbff45c0c))
+
+
+
 ## [5.18.2](https://github.com/rsuite/rsuite-table/compare/5.18.1...5.18.2) (2023-12-01)
 
 
