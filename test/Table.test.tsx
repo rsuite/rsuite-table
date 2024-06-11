@@ -4,7 +4,15 @@ import Table, { TableInstance } from '../src/Table';
 import Cell from '../src/Cell';
 import Column from '../src/Column';
 import HeaderCell from '../src/HeaderCell';
-import { ItemDataType } from 'rsuite/esm/@types/common';
+
+interface ItemDataType<T = number | string> extends Record<string, any> {
+  label?: React.ReactNode;
+  value?: T;
+  groupBy?: string;
+  parent?: ItemDataType<T>;
+  children?: ItemDataType<T>[];
+  loading?: boolean;
+}
 
 type Row = {
   id: number;

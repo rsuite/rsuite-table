@@ -6,6 +6,7 @@ import { SCROLLBAR_WIDTH } from '../constants';
 import { ResizeObserver } from '@juggle/resize-observer';
 import useMount from './useMount';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
+import useIntersectionObserver from './useIntersectionObserver';
 import isNumberOrTrue from './isNumberOrTrue';
 import { RowDataType, ElementOffset } from '../@types/common';
 import debounce from 'lodash/debounce';
@@ -295,6 +296,17 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
     calculateTableContextHeight,
     calculateTableContentWidth
   ]);
+
+  const isVisible = useIntersectionObserver(tableRef);
+
+  useUpdateLayoutEffect(() => {
+    // When the table is visible, the width of the table is recalculated.
+    // fix: https://github.com/rsuite/rsuite/issues/397
+    if (isVisible) {
+      calculateTableWidth();
+      calculateTableContentWidth();
+    }
+  }, [isVisible]);
 
   const setScrollY = useCallback((value: number) => {
     scrollY.current = value;

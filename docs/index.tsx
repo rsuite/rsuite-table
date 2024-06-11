@@ -11,7 +11,8 @@ import {
   Divider,
   Input,
   Loader,
-  Placeholder
+  Placeholder,
+  Tabs
 } from 'rsuite';
 import clone from 'lodash/clone';
 import isFunction from 'lodash/isFunction';
@@ -40,6 +41,7 @@ import 'rsuite/Nav/styles/index.less';
 import 'rsuite/Input/styles/index.less';
 import 'rsuite/Stack/styles/index.less';
 import 'rsuite/Divider/styles/index.less';
+import 'rsuite/Tabs/styles/index.less';
 import './less/index.less';
 
 const dependencies = {
@@ -76,7 +78,8 @@ const dependencies = {
   ArrowDownIcon,
   ArrowUpIcon,
   SortIcon,
-  Placeholder
+  Placeholder,
+  Tabs
 };
 
 const examples = [
