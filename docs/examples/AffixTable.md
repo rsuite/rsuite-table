@@ -12,7 +12,7 @@ const App = () => {
         height={400}
         autoHeight
         affixHeader
-        data={mockUsers(20)}
+        data={mockUsers(100)}
         onRowClick={data => {
           console.log(data);
         }}
@@ -67,9 +67,6 @@ const App = () => {
           <Cell dataKey="email" />
         </Column>
       </Table>
-      <div style={{ height: 2000 }}>
-        <hr />
-      </div>
     </div>
   );
 };

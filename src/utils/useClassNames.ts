@@ -17,6 +17,13 @@ export type ClassValue =
 
 export interface ClassArray extends Array<ClassValue> {} //eslint-disable-line @typescript-eslint/no-empty-interface
 
+interface ClassNameUtils {
+  withClassPrefix: (...classes: ClassValue[]) => string;
+  merge: (...classes: ClassValue[]) => string;
+  prefix: (...classes: ClassValue[]) => string;
+  rootPrefix: (...classes: ClassValue[]) => string;
+}
+
 export interface ClassDictionary {
   [id: string]: any;
 }
@@ -31,7 +38,7 @@ export interface ClassDictionary {
  *  - prefix: Add a prefix to className
  *  - rootPrefix
  */
-function useClassNames(str: string, controlled?: boolean) {
+function useClassNames(str: string, controlled?: boolean): ClassNameUtils {
   const { classPrefix: contextClassPrefix = 'rs' } = useContext(TableContext) || {};
   const componentName = controlled ? str : addPrefix(contextClassPrefix, str);
 

@@ -13,29 +13,26 @@ const App = () => {
 
   return (
     <div>
-      <Stack spacing={10} divider={<Divider vertical />}>
-        <span>
-          <Checkbox
-            checked={fillHeight}
-            onChange={(_v, checked) => {
-              setFillHeight(checked);
-            }}
-          >
-            fillHeight
-          </Checkbox>
-        </span>
+      <HStack spacing={10} divider={<Divider vertical />}>
+        <Checkbox
+          checked={fillHeight}
+          onChange={(_v, checked) => {
+            setFillHeight(checked);
+          }}
+        >
+          fillHeight
+        </Checkbox>
 
-        <span>
-          Container height:{' '}
+        <HStack>
+          <span>Container height:</span>
           <Input
-            type="text"
+            size="sm"
             style={{ width: 100, display: 'inline-block' }}
             onChange={setHeight}
             value={height}
-          />{' '}
-          rem
-        </span>
-      </Stack>
+          /> rem
+        </HStack>
+      </HStack>
       <hr />
       <div style={{ border: '1px solid red', height: `${height}rem` }}>
         <Table

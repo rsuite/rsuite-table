@@ -97,97 +97,99 @@ const App = () => (
 
 ## API
 
-### `<Table>`
+### <Table>
 
-| Property                 | Type `(Default)`                                                                                  | Description                                                                                                                         |
-| ------------------------ | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| affixHeader              | boolean,number                                                                                    | Affix the table header to the specified position on the page                                                                        |
-| affixHorizontalScrollbar | boolean,number                                                                                    | Affix the table horizontal scrollbar to the specified position on the page                                                          |
-| autoHeight               | boolean                                                                                           | The height of the table will be automatically expanded according to the number of data rows, and no vertical scroll bar will appear |
-| bordered                 | boolean                                                                                           | Show border                                                                                                                         |
-| cellBordered             | boolean                                                                                           | Show cell border                                                                                                                    |
-| children                 | (components: { Cell, HeaderCell, Column, ColumnGroup }) => React.ReactNode &#124; React.ReactNode | Render props that receives parameterized Cell, HeaderCell, Column, ColumnGroup components - making typescript usage more convenient |
-| data \*                  | object[]                                                                                          | Table data                                                                                                                          |
-| defaultExpandAllRows     | boolean                                                                                           | Expand all nodes By default                                                                                                         |
-| defaultExpandedRowKeys   | string[]                                                                                          | Specify the default expanded row by `rowkey`                                                                                        |
-| defaultSortType          | enum: 'desc', 'asc'                                                                               | Sort type                                                                                                                           |
-| expandedRowKeys          | string[]                                                                                          | Specify the default expanded row by `rowkey` (Controlled)                                                                           |
-| fillHeight               | boolean                                                                                           | Force the height of the table to be equal to the height of its parent container. Cannot be used together with autoHeight.           |
-| headerHeight             | number`(40)`                                                                                      | Table Header Height                                                                                                                 |
-| height                   | number`(200)`                                                                                     | Table height                                                                                                                        |
-| hover                    | boolean `(true)`                                                                                  | The row of the table has a mouseover effect                                                                                         |
-| isTree                   | boolean                                                                                           | Show as Tree table                                                                                                                  |
-| loading                  | boolean                                                                                           | Show loading                                                                                                                        |
-| locale                   | object: { emptyMessage: `('No data')`, loading: `('Loading...')` }                                | Messages for empty data and loading states                                                                                          |
-| minHeight                | number `(0)`                                                                                      | Minimum height                                                                                                                      |
-| onExpandChange           | (expanded:boolean,rowData:object)=>void                                                           | Tree table, the callback function in the expanded node                                                                              |
-| onRowClick               | (rowData:object, event: SyntheticEvent)=>void                                                     | Click the callback function after the row and return to `rowDate`                                                                   |
-| onRowContextMenu         | (rowData:object, event: SyntheticEvent)=>void                                                     | Invoke the callback function on contextMenu and pass the `rowData`                                                                  |
-| onScroll                 | (scrollX:object, scrollY:object)=>void                                                            | Callback function for scroll bar scrolling                                                                                          |
-| onSortColumn             | (dataKey:string, sortType:string)=>void                                                           | Click the callback function of the sort sequence to return the value `sortColumn`, `sortType`                                       |
-| renderEmpty              | (info: React.ReactNode) => React.ReactNode                                                        | Customized data is empty display content                                                                                            |
-| renderLoading            | (loading: React.ReactNode) => React.ReactNode                                                     | Customize the display content in the data load                                                                                      |
-| renderRow                | (children?: ReactNode, rowData?: RowDataType) => ReactNode                                        | Custom row element                                                                                                                  |
-| renderRowExpanded        | (rowDate?: Object) => React.ReactNode                                                             | Customize what you can do to expand a zone                                                                                          |
-| renderTreeToggle         | (icon:node,rowData:object,expanded:boolean)=> node                                                | Tree table, the callback function in the expanded node                                                                              |
-| rowClassName             | string , (rowData:object, rowIndex:number)=>string                                                | Add an optional extra class name to row                                                                                             |
-| rowExpandedHeight        | number `(100)`, (rowDate?: Object) => number                                                      | Set the height of an expandable area                                                                                                |
-| rowHeight                | number`(46)`, (rowData: object) => number                                                         | Row height                                                                                                                          |
-| rowKey                   | string `('key')`                                                                                  | Each row corresponds to the unique `key` in `data`                                                                                  |
-| rtl                      | boolean                                                                                           | Right to left                                                                                                                       |
-| shouldUpdateScroll       | boolean,(event)=>({x,y}) `(true)`                                                                 | Use the return value of `shouldUpdateScroll` to determine whether to update the scroll after the table size is updated.             |
-| showHeader               | boolean `(true)`                                                                                  | Display header                                                                                                                      |
-| sortColumn               | string                                                                                            | Sort column name ˝                                                                                                                  |
-| sortType                 | enum: 'desc', 'asc'                                                                               | Sort type (Controlled)                                                                                                              |
-| virtualized              | boolean                                                                                           | Effectively render large tabular data                                                                                               |
-| width                    | number                                                                                            | Table width                                                                                                                         |
-| wordWrap                 | boolean,'break-all','break-word','keep-all'                                                       | Whether to appear line breaks where text overflows its content box.                                                                 |
+| Property                 | Type (Default)                                                                    | Description                                                                                                                            |
+| ------------------------ | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| affixHeader              | boolean, number                                                                   | Affix the table header to a specified position on the page.                                                                            |
+| affixHorizontalScrollbar | boolean, number                                                                   | Affix the table's horizontal scrollbar to a specified position on the page.                                                            |
+| autoHeight               | boolean                                                                           | Automatically expand the table's height based on the number of data rows, without displaying a vertical scrollbar.                     |
+| bordered                 | boolean                                                                           | Display table borders.                                                                                                                 |
+| cellBordered             | boolean                                                                           | Display cell borders.                                                                                                                  |
+| children                 | (components: { Cell, HeaderCell, Column, ColumnGroup }) => ReactNode \| ReactNode | Render props that receive parameterized Cell, HeaderCell, Column, and ColumnGroup components, making TypeScript usage more convenient. |
+| data \*                  | RowData[]                                                                         | Table data.                                                                                                                            |
+| defaultExpandAllRows     | boolean                                                                           | Expand all rows by default.                                                                                                            |
+| defaultExpandedRowKeys   | string[]                                                                          | Specify the initially expanded rows by their keys.                                                                                     |
+| defaultSortType          | 'desc' \| 'asc'                                                                   | Default sort type.                                                                                                                     |
+| expandedRowKeys          | string[]                                                                          | Specify the expanded rows by their keys (Controlled).                                                                                  |
+| fillHeight               | boolean                                                                           | Force the table's height to match its parent container's height. Cannot be used with `autoHeight`.                                     |
+| headerHeight             | number (40)                                                                       | Table header height.                                                                                                                   |
+| height                   | number (200)                                                                      | Table height.                                                                                                                          |
+| hover                    | boolean (true)                                                                    | Enable row hover effects.                                                                                                              |
+| isTree                   | boolean                                                                           | Display the table as a tree structure.                                                                                                 |
+| loading                  | boolean                                                                           | Show a loading state.                                                                                                                  |
+| locale                   | {emptyMessage: string, loading: string}                                           | Messages for empty data and loading states.                                                                                            |
+| maxHeight                | number                                                                            | Maximum table height.                                                                                                                  |
+| minHeight                | number (0)                                                                        | Minimum table height.                                                                                                                  |
+| onExpandChange           | (expanded: boolean, rowData: RowData) => void                                     | Callback function triggered when a tree table node is expanded or collapsed.                                                           |
+| onRowClick               | (rowData: RowData, event: SyntheticEvent) => void                                 | Callback function triggered when a row is clicked, returning the row data.                                                             |
+| onRowContextMenu         | (rowData: RowData, event: SyntheticEvent) => void                                 | Callback function triggered by a context menu event, returning the row data.                                                           |
+| onScroll                 | (scrollX: object, scrollY: object) => void                                        | Callback function for scrollbar scroll events.                                                                                         |
+| onSortColumn             | (dataKey: string, sortType: string) => void                                       | Callback function triggered when the sort order changes, returning the column key and sort type.                                       |
+| renderEmpty              | (info: ReactNode) => ReactNode                                                    | Custom content to display when there is no data.                                                                                       |
+| renderLoading            | (loading: ReactNode) => ReactNode                                                 | Custom content to display during data loading.                                                                                         |
+| renderRow                | (children?: ReactNode, rowData?: RowData) => ReactNode                            | Custom row element renderer.                                                                                                           |
+| renderRowExpanded        | (rowData?: RowData) => ReactNode                                                  | Custom content to display in an expanded row.                                                                                          |
+| renderTreeToggle         | (icon: ReactNode, rowData: RowData, expanded: boolean) => ReactNode               | Custom toggle icon for expanding/collapsing tree nodes.                                                                                |
+| rowClassName             | string, (rowData: RowData, rowIndex: number) => string                            | Add an optional custom class name to rows.                                                                                             |
+| rowExpandedHeight        | number (100), (rowData?: RowData) => number                                       | Set the height of expanded rows.                                                                                                       |
+| rowHeight                | number (46), (rowData: RowData) => number                                         | Row height.                                                                                                                            |
+| rowKey                   | string ('key')                                                                    | Unique key for each row, derived from data.                                                                                            |
+| rtl                      | boolean                                                                           | Enable right-to-left layout.                                                                                                           |
+| shouldUpdateScroll       | boolean, (event) => ({ x, y }) (true)                                             | Determine whether to update the scroll position after the table size changes.                                                          |
+| showHeader               | boolean (true)                                                                    | Display the table header.                                                                                                              |
+| sortColumn               | string                                                                            | Name of the column to sort by.                                                                                                         |
+| sortType                 | 'desc' \| 'asc'                                                                   | Sort type (Controlled).                                                                                                                |
+| virtualized              | boolean                                                                           | Efficiently render large datasets.                                                                                                     |
+| width                    | number                                                                            | Table width.                                                                                                                           |
+| wordWrap                 | boolean \| 'break-all' \| 'break-word' \| 'keep-all'                              | Control text wrapping behavior within cells.                                                                                           |
 
 ### `<Column>`
 
-| Property      | Type `(Default)`                                 | Description                                                                                                 |
-| ------------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
-| align         | enum: 'left','center','right'                    | Alignment                                                                                                   |
-| colSpan       | number                                           | Merges column cells to merge when the `dataKey` value for the merged column is `null` or `undefined`.       |
-| fixed         | boolean, 'left', 'right'                         | Fixed column                                                                                                |
-| flexGrow      | number                                           | Set the column width automatically adjusts, when set `flexGrow` cannot set `resizable` and `width` property |
-| fullText      | boolean                                          | Whether to display the full text of the cell content when the mouse is hovered                              |
-| minWidth      | number`(200)`                                    | When you use `flexGrow`, you can set a minimum width by `minwidth`                                          |
-| onResize      | (columnWidth?: number, dataKey?: string) => void | Callback after column width change                                                                          |
-| resizable     | boolean                                          | Customizable Resize Column width                                                                            |
-| rowSpan       | (rowData: any) => number                         | Merges rows on the specified column.                                                                        |
-| sortable      | boolean                                          | Sortable                                                                                                    |
-| treeCol       | boolean                                          | A column of a tree.                                                                                         |
-| verticalAlign | enum: 'top', 'middle', 'bottom'                  | Vertical alignment                                                                                          |
-| width         | number                                           | Column width                                                                                                |
+| Property      | Type `(Default)`                                 | Description                                                                                                                      |
+| ------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| align         | 'left' \| 'center' \| 'right'                    | Sets the text alignment within the column.                                                                                       |
+| colSpan       | number                                           | Merges cells within the column when the `dataKey` value for the merged cells is `null` or `undefined`.                           |
+| fixed         | boolean \| 'left' \| 'right'                     | Fixes the column to the left or right side of the table.                                                                         |
+| flexGrow      | number                                           | Automatically adjusts the column width based on the value of `flexGrow`. Cannot be used with `resizable` and `width` properties. |
+| fullText      | boolean                                          | Displays the full text of the cell content when the mouse hovers over it.                                                        |
+| minWidth      | number `(200)`                                   | Sets the minimum width of the column when using `flexGrow`.                                                                      |
+| onResize      | (columnWidth?: number, dataKey?: string) => void | Callback function triggered after the column width changes.                                                                      |
+| resizable     | boolean                                          | Allows the column width to be resized.                                                                                           |
+| rowSpan       | (rowData: RowData) => number                     | Merges rows in the specified column.                                                                                             |
+| sortable      | boolean                                          | Enables sorting on the column.                                                                                                   |
+| treeCol       | boolean                                          | Indicates that the column is part of a tree structure.                                                                           |
+| verticalAlign | 'top' \| 'middle' \| 'bottom'                    | Sets the vertical alignment of content within the column.                                                                        |
+| width         | number                                           | Specifies the column width.                                                                                                      |
 
 > `sortable` is used to define whether the column is sortable, but depending on what `key` sort needs to set a `dataKey` in `Cell`.
 > The sort here is the service-side sort, so you need to handle the logic in the ' Onsortcolumn ' callback function of `<Table>`, and the callback function returns `sortColumn`, `sortType` values.
 
 ### `<ColumnGroup>`
 
-| Property          | Type `(Default)`                | Description                                                                                             |
-| ----------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| align             | enum: 'left','center','right'   | Alignment                                                                                               |
-| fixed             | boolean, 'left', 'right'        | Fixed column                                                                                            |
-| groupHeaderHeight | number                          | The height of the header of the merged cell group. The default value is 50% of the table `headerHeight` |
-| header            | React.ReactNode                 | Group header                                                                                            |
-| verticalAlign     | enum: 'top', 'middle', 'bottom' | Vertical alignment                                                                                      |
+| Property          | Type `(Default)`              | Description                                                                                  |
+| ----------------- | ----------------------------- | -------------------------------------------------------------------------------------------- |
+| align             | 'left' \| 'center' \| 'right' | Sets the text alignment within the column group.                                             |
+| fixed             | boolean \| 'left' \| 'right'  | Fixes the column group to the left or right side of the table.                               |
+| groupHeaderHeight | number                        | Sets the height of the group header. The default value is 50% of the table's `headerHeight`. |
+| header            | ReactNode                     | Specifies the content to be displayed as the group header.                                   |
+| verticalAlign     | 'top' \| 'middle' \| 'bottom' | Sets the vertical alignment of content within the column group.                              |
 
 ### `<HeaderCell>`
 
-| Property       | Type `(Default)`              | Description                                  |
-| -------------- | ----------------------------- | -------------------------------------------- |
-| children       | React.ReactNode               | The table column header displays the content |
-| renderSortIcon | (sortType) => React.ReactNode | Custom render sort icons on column headers   |
+| Property       | Type `(Default)`        | Description                                                 |
+| -------------- | ----------------------- | ----------------------------------------------------------- |
+| children       | ReactNode               | Specifies the content to be displayed in the column header. |
+| renderSortIcon | (sortType) => ReactNode | Customizes the rendering of sort icons on column headers.   |
 
 ### `<Cell>`
 
-| Property | Type `(Default)` | Description                                  |
-| -------- | ---------------- | -------------------------------------------- |
-| dataKey  | string           | Data binding `key`, but also a sort of `key` |
-| rowData  | object           | Row data                                     |
-| rowIndex | number           | Row number                                   |
+| Property | Type `(Default)`                                                  | Description                                |
+| -------- | ----------------------------------------------------------------- | ------------------------------------------ |
+| children | ReactNode \| ((rowData: RowData, rowIndex?: number) => ReactNode) | The content to be displayed in the cell.   |
+| dataKey  | string                                                            | The key used for data binding and sorting. |
+| rowData  | RowData                                                           | The data associated with the current row.  |
+| rowIndex | number                                                            | The index of the current row.              |
 
 #### There are three ways to use `<Cell>`, as follows:
 

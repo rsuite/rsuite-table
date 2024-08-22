@@ -23,16 +23,17 @@ const App = () => {
   const [tree, setTree] = React.useState(true);
   return (
     <div>
-      <label>
-        <input
-          type="checkbox"
+      <HStack spacing={10} divider={<Divider vertical />}>
+        <Checkbox
           checked={tree}
-          onChange={() => {
-            setTree(!tree);
+          onChange={(_v, checked) => {
+            setTree(checked);
           }}
-        />
-        isTree
-      </label>
+        >
+          isTree
+        </Checkbox>
+      </HStack>
+      <hr />
       <Table
         isTree={tree}
         virtualized

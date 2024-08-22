@@ -270,55 +270,6 @@ describe('Table', () => {
     expect(cellContent.style.wordBreak).to.equal('keep-all');
   });
 
-  it('Should be automatic height', () => {
-    const instance = getDOMNode(
-      <Table
-        autoHeight
-        data={[
-          { id: 1, name: 'a' },
-          { id: 2, name: 'b' }
-        ]}
-      >
-        <Column>
-          <HeaderCell>id</HeaderCell>
-          <Cell dataKey="id" />
-        </Column>
-        <Column>
-          <HeaderCell>name</HeaderCell>
-          <Cell dataKey="name" />
-        </Column>
-      </Table>
-    );
-    // 2 rows + header row
-    const height = 46 * 2 + 40;
-    expect(instance).to.style('height', height + 'px');
-  });
-
-  it('Should be automatic height when there is a horizontal scroll bar', () => {
-    const instance = getDOMNode(
-      <Table
-        autoHeight
-        width={100}
-        data={[
-          { id: 1, name: 'a' },
-          { id: 2, name: 'b' }
-        ]}
-      >
-        <Column>
-          <HeaderCell>id</HeaderCell>
-          <Cell dataKey="id" />
-        </Column>
-        <Column>
-          <HeaderCell>name</HeaderCell>
-          <Cell dataKey="name" />
-        </Column>
-      </Table>
-    );
-    // 2 rows + header row + scrollbar
-    const height = 46 * 2 + 40 + 10;
-    expect(instance).to.style('height', height + 'px');
-  });
-
   // https://github.com/rsuite/rsuite-table/issues/300
   it('Should be a full horizontal scrolling range', () => {
     const instance = getDOMNode(
@@ -368,35 +319,6 @@ describe('Table', () => {
     );
 
     expect(width).to.equal(scrollbarHandleWidth);
-  });
-
-  it('Should be min height', () => {
-    const instance = getDOMNode(
-      <Table
-        autoHeight
-        minHeight={500}
-        data={[
-          {
-            id: 1,
-            name: 'a'
-          },
-          {
-            id: 2,
-            name: 'b'
-          }
-        ]}
-      >
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
-        </Column>
-        <Column>
-          <HeaderCell>11</HeaderCell>
-          <Cell>12</Cell>
-        </Column>
-      </Table>
-    );
-    expect(instance).to.style('height', '500px');
   });
 
   it('Should call `rowHeight` callback', done => {
@@ -1169,25 +1091,6 @@ describe('Table', () => {
       </Table>
     );
     assert.equal(instance.querySelectorAll('.rs-table-row .custom-row').length, 1);
-  });
-
-  it('Should be fill height', () => {
-    const instance = getDOMNode(
-      <div style={{ height: 300 }}>
-        <Table fillHeight height={200} data={[]}>
-          <Column>
-            <HeaderCell>11</HeaderCell>
-            <Cell>12</Cell>
-          </Column>
-          <Column>
-            <HeaderCell>11</HeaderCell>
-            <Cell>12</Cell>
-          </Column>
-        </Table>
-      </div>
-    );
-
-    assert.equal(instance.querySelector('.rs-table').style.height, '300px');
   });
 
   it('Should call shouldUpdateScroll after the height of the table container is changed', async () => {

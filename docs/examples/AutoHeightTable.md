@@ -5,44 +5,58 @@ The height of the table will be automatically expanded according to the number o
 <!--start-code-->
 
 ```js
-const data = mockUsers(20);
+const data = mockUsers(100);
+
 const App = () => {
-  const [size, setSize] = React.useState(data.length);
+  const [size, setSize] = React.useState(100);
   const [autoHeight, setAutoHeight] = React.useState(true);
+  const [height, setHeight] = React.useState(400);
+  const [maxHeight, setMaxHeight] = React.useState(500);
+  const [minHeight, setMinHeight] = React.useState(200);
 
   const filterData = data.filter((item, index) => index < size);
   return (
     <div>
-      <Stack spacing={10} divider={<Divider vertical />}>
-        <span>
-          <Checkbox
-            checked={autoHeight}
-            onChange={(_v, checked) => {
-              setAutoHeight(checked);
-            }}
-          >
-            autoHeight
-          </Checkbox>
-        </span>
+      <VStack spacing={10}>
+        <Checkbox
+          checked={autoHeight}
+          onChange={(_v, checked) => {
+            setAutoHeight(checked);
+          }}
+        >
+          autoHeight
+        </Checkbox>
 
-        <span>
-          Size:{' '}
-          <Input
-            type="text"
-            style={{ width: 100, display: 'inline-block' }}
-            onChange={setSize}
-            value={size}
-          />{' '}
-          rem
-        </span>
-      </Stack>
+        <HStack>
+          <Label>Data rows:</Label>
+          <Input size="sm" onChange={setSize} value={size} />
+        </HStack>
+
+        <HStack>
+          <Label>minHeight:</Label>
+          <Input size="sm" onChange={setMinHeight} value={minHeight} />
+        </HStack>
+
+        <HStack>
+          <Label>height:</Label>
+          <Input size="sm" onChange={setHeight} value={height} />
+        </HStack>
+
+        <HStack>
+          <Label>maxHeight:</Label>
+          <Input size="sm" onChange={setMaxHeight} value={maxHeight} />
+        </HStack>
+      </VStack>
       <hr />
 
       <Table
-        height={400}
+        height={parseInt(height)}
+        minHeight={parseInt(minHeight)}
+        maxHeight={parseInt(maxHeight)}
         autoHeight={autoHeight}
         cellBordered
         data={filterData}
+        affixHorizontalScrollbar
         onRowClick={data => {
           console.log(data);
         }}
@@ -101,6 +115,8 @@ const App = () => {
   );
 };
 ReactDOM.render(<App />);
+
+const Label = ({ children }) => <div style={{ width: 130 }}>{children}</div>;
 ```
 
 <!--end-code-->

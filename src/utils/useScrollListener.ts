@@ -31,6 +31,7 @@ interface ScrollListenerProps {
   contentHeight: React.MutableRefObject<number>;
   headerHeight: number;
   autoHeight?: boolean;
+  maxHeight?: number;
   tableBodyRef: React.RefObject<HTMLDivElement>;
   scrollbarXRef: React.RefObject<ScrollbarInstance>;
   scrollbarYRef: React.RefObject<ScrollbarInstance>;
@@ -103,7 +104,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     onTouchMove,
     onTouchStart,
     onTouchEnd,
-    height,
+    height: heightProp,
     getTableHeight,
     contentHeight,
     headerHeight,
@@ -464,7 +465,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
     // fix: #405 #404
     deferUpdatePosition();
-  }, [height, data]);
+  }, [heightProp, data]);
 
   const releaseListeners = useCallback(() => {
     wheelHandler.current = null;
