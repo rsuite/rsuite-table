@@ -21,7 +21,7 @@ importers:
         specifier: ^2.3.1
         version: 2.5.1
       dom-lib:
-        specifier: ^3.1.3
+        specifier: ^3.3.1
         version: 3.3.1
       lodash:
         specifier: ^4.17.21
