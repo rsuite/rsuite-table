@@ -5,12 +5,12 @@
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -237,6 +237,12 @@
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -296,11 +302,11 @@
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -340,6 +346,7 @@
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -355,6 +362,8 @@
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -368,14 +377,14 @@
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -613,6 +622,11 @@
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -713,6 +727,7 @@
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -984,6 +999,11 @@
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -1089,6 +1109,7 @@
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -1700,12 +1721,12 @@ dd {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -1932,6 +1953,12 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -1991,11 +2018,11 @@ dd {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -2035,6 +2062,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -2050,6 +2078,8 @@ dd {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -2063,14 +2093,14 @@ dd {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -2308,6 +2338,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -2408,6 +2443,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -2679,6 +2715,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -2784,6 +2825,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -3468,12 +3510,12 @@ dd {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -3700,6 +3742,12 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -3759,11 +3807,11 @@ dd {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -3803,6 +3851,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -3818,6 +3867,8 @@ dd {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -3831,14 +3882,14 @@ dd {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -4076,6 +4127,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -4176,6 +4232,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -4447,6 +4504,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -4552,6 +4614,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -6723,12 +6786,12 @@ dd {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -6955,6 +7018,12 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -7014,11 +7083,11 @@ dd {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -7058,6 +7127,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -7073,6 +7143,8 @@ dd {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -7086,14 +7158,14 @@ dd {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -7331,6 +7403,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -7431,6 +7508,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -7702,6 +7780,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -7807,6 +7890,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -8326,7 +8410,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-red-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-red-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-red-700);
   --rs-btn-ghost-text: var(--rs-red-700);
   --rs-btn-ghost-hover-border: var(--rs-red-900);
@@ -8386,7 +8470,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-orange-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-orange-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-orange-700);
   --rs-btn-ghost-text: var(--rs-orange-700);
   --rs-btn-ghost-hover-border: var(--rs-orange-900);
@@ -8446,7 +8530,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-yellow-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-yellow-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-yellow-700);
   --rs-btn-ghost-text: var(--rs-yellow-700);
   --rs-btn-ghost-hover-border: var(--rs-yellow-900);
@@ -8506,7 +8590,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-green-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-green-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-green-700);
   --rs-btn-ghost-text: var(--rs-green-700);
   --rs-btn-ghost-hover-border: var(--rs-green-900);
@@ -8566,7 +8650,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-cyan-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-cyan-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-cyan-700);
   --rs-btn-ghost-text: var(--rs-cyan-700);
   --rs-btn-ghost-hover-border: var(--rs-cyan-900);
@@ -8626,7 +8710,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-blue-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-blue-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-blue-700);
   --rs-btn-ghost-text: var(--rs-blue-700);
   --rs-btn-ghost-hover-border: var(--rs-blue-900);
@@ -8686,7 +8770,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-violet-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-violet-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-violet-700);
   --rs-btn-ghost-text: var(--rs-violet-700);
   --rs-btn-ghost-hover-border: var(--rs-violet-900);
@@ -8888,7 +8972,6 @@ dd {
   border-left: var(--rs-btn-default-border, none);
 }
 .rs-btn-block {
-  display: block;
   width: 100%;
 }
 .rs-btn-block + .rs-btn-block {
@@ -8956,12 +9039,12 @@ dd {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -9188,6 +9271,12 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -9247,11 +9336,11 @@ dd {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -9291,6 +9380,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -9306,6 +9396,8 @@ dd {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -9319,14 +9411,14 @@ dd {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -9564,6 +9656,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -9664,6 +9761,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -9935,6 +10033,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -10040,6 +10143,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -10406,12 +10510,12 @@ dd {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -10638,6 +10742,12 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -10697,11 +10807,11 @@ dd {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -10741,6 +10851,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -10756,6 +10867,8 @@ dd {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -10769,14 +10882,14 @@ dd {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -11014,6 +11127,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -11114,6 +11232,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -11385,6 +11504,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -11490,6 +11614,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -12034,12 +12159,12 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -12266,6 +12391,12 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -12325,11 +12456,11 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -12369,6 +12500,7 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -12384,6 +12516,8 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -12397,14 +12531,14 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -12642,6 +12776,11 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -12742,6 +12881,7 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -13013,6 +13153,11 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -13118,6 +13263,7 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -13637,7 +13783,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-red-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-red-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-red-700);
   --rs-btn-ghost-text: var(--rs-red-700);
   --rs-btn-ghost-hover-border: var(--rs-red-900);
@@ -13697,7 +13843,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-orange-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-orange-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-orange-700);
   --rs-btn-ghost-text: var(--rs-orange-700);
   --rs-btn-ghost-hover-border: var(--rs-orange-900);
@@ -13757,7 +13903,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-yellow-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-yellow-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-yellow-700);
   --rs-btn-ghost-text: var(--rs-yellow-700);
   --rs-btn-ghost-hover-border: var(--rs-yellow-900);
@@ -13817,7 +13963,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-green-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-green-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-green-700);
   --rs-btn-ghost-text: var(--rs-green-700);
   --rs-btn-ghost-hover-border: var(--rs-green-900);
@@ -13877,7 +14023,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-cyan-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-cyan-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-cyan-700);
   --rs-btn-ghost-text: var(--rs-cyan-700);
   --rs-btn-ghost-hover-border: var(--rs-cyan-900);
@@ -13937,7 +14083,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-blue-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-blue-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-blue-700);
   --rs-btn-ghost-text: var(--rs-blue-700);
   --rs-btn-ghost-hover-border: var(--rs-blue-900);
@@ -13997,7 +14143,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-violet-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-violet-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-violet-700);
   --rs-btn-ghost-text: var(--rs-violet-700);
   --rs-btn-ghost-hover-border: var(--rs-violet-900);
@@ -14199,7 +14345,6 @@ dd {
   border-left: var(--rs-btn-default-border, none);
 }
 .rs-btn-block {
-  display: block;
   width: 100%;
 }
 .rs-btn-block + .rs-btn-block {
@@ -14589,6 +14734,7 @@ dd {
   padding: 8px 12px;
   cursor: pointer;
   color: var(--rs-navs-text);
+  background: transparent;
   transition: color 0.15s ease-out, background-color 0.15s ease-out;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -14663,6 +14809,7 @@ dd {
 .rs-nav-horizontal > .rs-nav-item {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   vertical-align: top;
 }
 .rs-nav-horizontal .rs-nav-bar {
@@ -14789,6 +14936,34 @@ dd {
   right: auto;
   left: 0;
 }
+.rs-nav-pills {
+  display: inline-flex;
+  background-color: var(--rs-navs-pills-bg);
+  border-radius: 6px;
+  padding: 4px;
+  width: max-content;
+}
+.rs-nav-pills .rs-nav-item {
+  border-radius: 6px;
+  position: relative;
+  padding: 4px 12px;
+  color: var(--rs-navs-pills-item-color);
+}
+.rs-nav-pills .rs-nav-item-active {
+  background-color: var(--rs-navs-pills-item-active-bg);
+  color: var(--rs-navs-pills-item-active-color);
+  box-shadow: var(--rs-navs-pills-item-shadow);
+}
+.rs-nav-pills .rs-nav-item-disabled {
+  color: var(--rs-navs-pills-item-disabled-color);
+}
+.rs-nav-pills.rs-nav-vertical {
+  flex-direction: column;
+}
+.rs-nav-pills.rs-nav-vertical .rs-nav-item {
+  padding: 6px 12px;
+  justify-content: center;
+}
 .rs-nav-justified {
   display: flex;
 }
@@ -14808,12 +14983,12 @@ dd {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -15040,6 +15215,12 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -15099,11 +15280,11 @@ dd {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -15143,6 +15324,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -15158,6 +15340,8 @@ dd {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -15171,14 +15355,14 @@ dd {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -15416,6 +15600,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -15516,6 +15705,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -15787,6 +15977,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -15892,6 +16087,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -16298,12 +16494,12 @@ textarea.rs-input-sm {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -16530,6 +16726,12 @@ textarea.rs-input-sm {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -16589,11 +16791,11 @@ textarea.rs-input-sm {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -16633,6 +16835,7 @@ textarea.rs-input-sm {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -16648,6 +16851,8 @@ textarea.rs-input-sm {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -16661,14 +16866,14 @@ textarea.rs-input-sm {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -16906,6 +17111,11 @@ textarea.rs-input-sm {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -17006,6 +17216,7 @@ textarea.rs-input-sm {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -17277,6 +17488,11 @@ textarea.rs-input-sm {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -17382,6 +17598,7 @@ textarea.rs-input-sm {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -17699,12 +17916,12 @@ dd {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -17931,6 +18148,12 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -17990,11 +18213,11 @@ dd {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -18034,6 +18257,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -18049,6 +18273,8 @@ dd {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -18062,14 +18288,14 @@ dd {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -18307,6 +18533,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -18407,6 +18638,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -18678,6 +18910,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -18783,6 +19020,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -19094,13 +19332,15 @@ dd {
 }
 .rs-divider-vertical {
   display: inline-block;
-  height: 1em;
+  min-height: 1em;
+  height: 100%;
   width: 1px;
   vertical-align: middle;
   margin: 0 12px;
 }
 .rs-divider-horizontal {
   height: 1px;
+  width: 100%;
   margin: 24px 0;
 }
 .rs-divider-horizontal.rs-divider-with-text {
@@ -19128,12 +19368,12 @@ dd {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -19360,6 +19600,12 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -19419,11 +19665,11 @@ dd {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -19463,6 +19709,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -19478,6 +19725,8 @@ dd {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -19491,14 +19740,14 @@ dd {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -19736,6 +19985,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -19836,6 +20090,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -20107,6 +20362,11 @@ dd {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -20212,6 +20472,7 @@ dd {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -20731,7 +20992,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-red-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-red-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-red-700);
   --rs-btn-ghost-text: var(--rs-red-700);
   --rs-btn-ghost-hover-border: var(--rs-red-900);
@@ -20791,7 +21052,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-orange-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-orange-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-orange-700);
   --rs-btn-ghost-text: var(--rs-orange-700);
   --rs-btn-ghost-hover-border: var(--rs-orange-900);
@@ -20851,7 +21112,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-yellow-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-yellow-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-yellow-700);
   --rs-btn-ghost-text: var(--rs-yellow-700);
   --rs-btn-ghost-hover-border: var(--rs-yellow-900);
@@ -20911,7 +21172,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-green-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-green-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-green-700);
   --rs-btn-ghost-text: var(--rs-green-700);
   --rs-btn-ghost-hover-border: var(--rs-green-900);
@@ -20971,7 +21232,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-cyan-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-cyan-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-cyan-700);
   --rs-btn-ghost-text: var(--rs-cyan-700);
   --rs-btn-ghost-hover-border: var(--rs-cyan-900);
@@ -21031,7 +21292,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-blue-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-blue-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-blue-700);
   --rs-btn-ghost-text: var(--rs-blue-700);
   --rs-btn-ghost-hover-border: var(--rs-blue-900);
@@ -21091,7 +21352,7 @@ dd {
   --rs-btn-subtle-hover-bg: var(--rs-violet-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-violet-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-violet-700);
   --rs-btn-ghost-text: var(--rs-violet-700);
   --rs-btn-ghost-hover-border: var(--rs-violet-900);
@@ -21293,7 +21554,6 @@ dd {
   border-left: var(--rs-btn-default-border, none);
 }
 .rs-btn-block {
-  display: block;
   width: 100%;
 }
 .rs-btn-block + .rs-btn-block {
@@ -21683,6 +21943,7 @@ dd {
   padding: 8px 12px;
   cursor: pointer;
   color: var(--rs-navs-text);
+  background: transparent;
   transition: color 0.15s ease-out, background-color 0.15s ease-out;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -21757,6 +22018,7 @@ dd {
 .rs-nav-horizontal > .rs-nav-item {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   vertical-align: top;
 }
 .rs-nav-horizontal .rs-nav-bar {
@@ -21883,6 +22145,34 @@ dd {
   right: auto;
   left: 0;
 }
+.rs-nav-pills {
+  display: inline-flex;
+  background-color: var(--rs-navs-pills-bg);
+  border-radius: 6px;
+  padding: 4px;
+  width: max-content;
+}
+.rs-nav-pills .rs-nav-item {
+  border-radius: 6px;
+  position: relative;
+  padding: 4px 12px;
+  color: var(--rs-navs-pills-item-color);
+}
+.rs-nav-pills .rs-nav-item-active {
+  background-color: var(--rs-navs-pills-item-active-bg);
+  color: var(--rs-navs-pills-item-active-color);
+  box-shadow: var(--rs-navs-pills-item-shadow);
+}
+.rs-nav-pills .rs-nav-item-disabled {
+  color: var(--rs-navs-pills-item-disabled-color);
+}
+.rs-nav-pills.rs-nav-vertical {
+  flex-direction: column;
+}
+.rs-nav-pills.rs-nav-vertical .rs-nav-item {
+  padding: 6px 12px;
+  justify-content: center;
+}
 .rs-nav-justified {
   display: flex;
 }
@@ -21908,9 +22198,6 @@ dd {
 .rs-tabs-vertical .rs-tabs-content {
   flex: 1;
 }
-.rs-tabs .rs-nav-item {
-  background: none;
-}
 .rs-tabs .rs-nav-vertical {
   display: flex;
   flex-direction: column;
@@ -21919,17 +22206,14 @@ dd {
 .rcv-container {
   position: relative;
   margin-bottom: 18px;
-  border: 1px dashed #f1f1f1;
+  border: 1px solid #f1f1f1;
   padding: 18px 18px 28px 18px;
+  border-radius: 6px;
 }
 .rcv-toolbar {
   right: 0;
   bottom: 0;
-  border-bottom: 1px dashed #f5f5f5;
   text-align: right;
-}
-.rcv-toolbar .btn {
-  border-style: dashed;
 }
 .rcv-toolbar .btn .icon-code {
   font-size: 20px;
@@ -21957,9 +22241,12 @@ dd {
   color: red;
 }
 .rcv-highlight {
-  background-color: #f5f5f5;
+  background-color: #282c34;
+  border-radius: 6px;
   margin: 1em 0;
-  padding: 10px;
+  padding: 12px;
+  color: #eee;
+  position: relative;
 }
 .rcv-highlight pre {
   margin: 0;
@@ -21971,6 +22258,19 @@ dd {
 }
 .CodeMirror pre {
   padding: 0 20px;
+}
+.copy-code-button {
+  position: absolute;
+  color: #858b94;
+}
+.rcv-editor .copy-code-button {
+  right: 8px;
+  top: 16px;
+  z-index: 1;
+}
+.rcv-highlight .copy-code-button {
+  right: 8px;
+  top: 8px;
 }
 /* BASICS */
 .CodeMirror {
@@ -22047,11 +22347,6 @@ dd {
 }
 .cm-fat-cursor {
   caret-color: transparent;
-}
-@-webkit-keyframes blink {
-  50% {
-    background-color: transparent;
-  }
 }
 @keyframes blink {
   50% {
@@ -22594,111 +22889,87 @@ span.CodeMirror-selectedtext {
   text-decoration: underline;
   color: white !important;
 }
-/*!
-  Theme: Tomorrow
-  Author: Chris Kempson (http://chriskempson.com)
-  License: ~ MIT (or more permissive) [via base16-schemes-source]
-  Maintainer: @highlightjs/core-team
-  Version: 2021.09.0
+/*
+
+Atom One Dark by Daniel Gamage
+Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
+
+base:    #282c34
+mono-1:  #abb2bf
+mono-2:  #818896
+mono-3:  #5c6370
+hue-1:   #56b6c2
+hue-2:   #61aeee
+hue-3:   #c678dd
+hue-4:   #98c379
+hue-5:   #e06c75
+hue-5-2: #be5046
+hue-6:   #d19a66
+hue-6-2: #e6c07b
+
 */
-pre code.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 1em;
-}
-code.hljs {
-  padding: 3px 5px;
-}
 .hljs {
-  color: #4d4d4c;
-  background: #fff;
+  color: #abb2bf;
+  background: #282c34;
 }
-.hljs ::-moz-selection, .hljs::-moz-selection {
-  background-color: #d6d6d6;
-  color: #4d4d4c;
-}
-.hljs ::selection,
-.hljs::selection {
-  background-color: #d6d6d6;
-  color: #4d4d4c;
-}
-.hljs-comment {
-  color: #8e908c;
-}
-.hljs-tag {
-  color: #969896;
-}
-.hljs-operator,
-.hljs-punctuation,
-.hljs-subst {
-  color: #4d4d4c;
-}
-.hljs-operator {
-  opacity: 0.7;
-}
-.hljs-bullet,
-.hljs-deletion,
-.hljs-name,
-.hljs-selector-tag,
-.hljs-template-variable,
-.hljs-variable {
-  color: #c82829;
-}
-.hljs-attr,
-.hljs-link,
-.hljs-literal,
-.hljs-number,
-.hljs-symbol,
-.hljs-variable.constant_ {
-  color: #f5871f;
-}
-.hljs-class .hljs-title,
-.hljs-title,
-.hljs-title.class_ {
-  color: #eab700;
-}
-.hljs-strong {
-  font-weight: 700;
-  color: #eab700;
-}
-.hljs-addition,
-.hljs-code,
-.hljs-string,
-.hljs-title.class_.inherited__ {
-  color: #718c00;
-}
-.hljs-built_in,
-.hljs-doctag,
-.hljs-keyword.hljs-atrule,
-.hljs-quote,
-.hljs-regexp {
-  color: #3e999f;
-}
-.hljs-attribute,
-.hljs-function .hljs-title,
-.hljs-section,
-.hljs-title.function_,
-.ruby .hljs-property {
-  color: #4271ae;
-}
-.diff .hljs-meta,
-.hljs-keyword,
-.hljs-template-tag,
-.hljs-type {
-  color: #8959a8;
-}
-.hljs-emphasis {
-  color: #8959a8;
+.hljs-comment,
+.hljs-quote {
+  color: #5c6370;
   font-style: italic;
 }
-.hljs-meta,
-.hljs-meta .hljs-keyword,
-.hljs-meta .hljs-string {
-  color: #a3685a;
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #c678dd;
 }
-.hljs-meta .hljs-keyword,
-.hljs-meta-keyword {
-  font-weight: 700;
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e06c75;
+}
+.hljs-literal {
+  color: #56b6c2;
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string {
+  color: #98c379;
+}
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #d19a66;
+}
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #61aeee;
+}
+.hljs-built_in,
+.hljs-title.class_,
+.hljs-class .hljs-title {
+  color: #e6c07b;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: bold;
+}
+.hljs-link {
+  text-decoration: underline;
 }
 
 /*# sourceMappingURL=index.css.map */
@@ -22710,12 +22981,12 @@ code.hljs {
   --rs-gray-100: #f2f2f5;
   --rs-gray-200: #e5e5ea;
   --rs-gray-300: #d9d9d9;
-  --rs-gray-400: #c5c6c7;
-  --rs-gray-500: #a6a6a6;
-  --rs-gray-600: #8e8e93;
-  --rs-gray-700: #7a7a7a;
-  --rs-gray-800: #575757;
-  --rs-gray-900: #272c36;
+  --rs-gray-400: #b6b7b8;
+  --rs-gray-500: #939393;
+  --rs-gray-600: #717273;
+  --rs-gray-700: #575757;
+  --rs-gray-800: #343434;
+  --rs-gray-900: #121212;
   --rs-primary-50: #f2faff;
   --rs-primary-100: #cce9ff;
   --rs-primary-200: #a6d7ff;
@@ -22942,6 +23213,12 @@ code.hljs {
   --rs-navs-tab-border: var(--rs-gray-300);
   --rs-navs-subtle-border: var(--rs-gray-50);
   --rs-navs-selected: var(--rs-primary-700);
+  --rs-navs-pills-bg: var(--rs-gray-100);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-0);
+  --rs-navs-pills-item-active-color: var(--rs-gray-900);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
+  --rs-navs-pills-item-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   --rs-navbar-default-bg: var(--rs-gray-50);
   --rs-navbar-default-text: var(--rs-gray-800);
   --rs-navbar-default-selected-text: var(--rs-primary-700);
@@ -23001,11 +23278,11 @@ code.hljs {
   --rs-radio-tile-icon-size: 32px;
   --rs-rate-symbol: var(--rs-gray-600);
   --rs-rate-symbol-checked: var(--rs-blue-500);
-  --rs-toggle-bg: var(--rs-gray-300);
+  --rs-toggle-bg: var(--rs-gray-400);
   --rs-toggle-thumb: #fff;
   --rs-toggle-loader-ring: rgb(from var(--rs-gray-50) r g b / 30%);
   --rs-toggle-loader-rotor: var(--rs-gray-0);
-  --rs-toggle-hover-bg: var(--rs-gray-400);
+  --rs-toggle-hover-bg: var(--rs-gray-500);
   --rs-toggle-disabled-bg: var(--rs-gray-200);
   --rs-toggle-disabled-thumb: #fff;
   --rs-toggle-checked-bg: var(--rs-primary-500);
@@ -23045,6 +23322,7 @@ code.hljs {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-300);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.08);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -23060,6 +23338,8 @@ code.hljs {
   --rs-picker-value: var(--rs-primary-700);
   --rs-picker-count-bg: var(--rs-primary-500);
   --rs-picker-count-text: #fff;
+  --rs-picker-state-error: var(--rs-state-error);
+  --rs-picker-state-error-outline: var(--rs-state-error-outline);
   --rs-calendar-today-bg: var(--rs-primary-500);
   --rs-calendar-today-text: #fff;
   --rs-calendar-range-bg: rgb(from var(--rs-primary-100) r g b / 50%);
@@ -23073,14 +23353,14 @@ code.hljs {
 @supports not (color: rgb(from white r g b)) {
   :root,
   .rs-theme-light {
-    --rs-bg-backdrop: rgba(39, 44, 54, 0.3);
+    --rs-bg-backdrop: rgba(18, 18, 18, 0.3);
     --rs-color-focus-ring: rgba(52, 152, 255, 0.25);
     --rs-state-focus-shadow: 0 0 0 3px rgba(52, 152, 255, 0.25);
     --rs-state-focus-outline: 3px solid rgba(52, 152, 255, 0.25);
     --rs-loader-ring: rgba(247, 247, 250, 0.8);
     --rs-loader-backdrop: rgba(255, 255, 255, 0.9);
     --rs-loader-ring-inverse: rgba(247, 247, 250, 0.3);
-    --rs-loader-backdrop-inverse: rgba(39, 44, 54, 0.83);
+    --rs-loader-backdrop-inverse: rgba(18, 18, 18, 0.83);
     --rs-message-success-bg: rgba(200, 240, 199, 0.6);
     --rs-message-info-bg: rgba(197, 231, 252, 0.6);
     --rs-message-warning-bg: rgba(255, 233, 194, 0.6);
@@ -23318,6 +23598,11 @@ code.hljs {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-gray-0);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-200);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -23418,6 +23703,7 @@ code.hljs {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -23689,6 +23975,11 @@ code.hljs {
   --rs-navs-tab-border: var(--rs-gray-600);
   --rs-navs-subtle-border: var(--rs-gray-600);
   --rs-navs-selected: var(--rs-primary-500);
+  --rs-navs-pills-bg: var(--rs-gray-700);
+  --rs-navs-pills-item-color: var(--rs-text-secondary);
+  --rs-navs-pills-item-active-bg: var(--rs-gray-600);
+  --rs-navs-pills-item-active-color: var(--rs-primary-500);
+  --rs-navs-pills-item-disabled-color: var(--rs-gray-400);
   --rs-navbar-default-bg: var(--rs-gray-800);
   --rs-navbar-default-text: var(--rs-gray-50);
   --rs-navbar-default-selected-text: var(--rs-primary-500);
@@ -23794,6 +24085,7 @@ code.hljs {
   --rs-list-placeholder-border: var(--rs-primary-500);
   --rs-timeline-indicator-bg: var(--rs-gray-500);
   --rs-timeline-indicator-active-bg: var(--rs-primary-500);
+  --rs-table-border-color: var(--rs-border-secondary);
   --rs-table-shadow: rgba(9, 9, 9, 0.99);
   --rs-table-sort: var(--rs-primary-500);
   --rs-table-resize: var(--rs-primary-500);
@@ -24764,7 +25056,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   --rs-btn-subtle-hover-bg: var(--rs-red-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-red-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-red-700);
   --rs-btn-ghost-text: var(--rs-red-700);
   --rs-btn-ghost-hover-border: var(--rs-red-900);
@@ -24824,7 +25116,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   --rs-btn-subtle-hover-bg: var(--rs-orange-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-orange-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-orange-700);
   --rs-btn-ghost-text: var(--rs-orange-700);
   --rs-btn-ghost-hover-border: var(--rs-orange-900);
@@ -24884,7 +25176,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   --rs-btn-subtle-hover-bg: var(--rs-yellow-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-yellow-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-yellow-700);
   --rs-btn-ghost-text: var(--rs-yellow-700);
   --rs-btn-ghost-hover-border: var(--rs-yellow-900);
@@ -24944,7 +25236,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   --rs-btn-subtle-hover-bg: var(--rs-green-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-green-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-green-700);
   --rs-btn-ghost-text: var(--rs-green-700);
   --rs-btn-ghost-hover-border: var(--rs-green-900);
@@ -25004,7 +25296,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   --rs-btn-subtle-hover-bg: var(--rs-cyan-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-cyan-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-cyan-700);
   --rs-btn-ghost-text: var(--rs-cyan-700);
   --rs-btn-ghost-hover-border: var(--rs-cyan-900);
@@ -25064,7 +25356,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   --rs-btn-subtle-hover-bg: var(--rs-blue-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-blue-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-blue-700);
   --rs-btn-ghost-text: var(--rs-blue-700);
   --rs-btn-ghost-hover-border: var(--rs-blue-900);
@@ -25124,7 +25416,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   --rs-btn-subtle-hover-bg: var(--rs-violet-500);
   --rs-btn-subtle-hover-text: #e5e5ea;
   --rs-btn-subtle-active-bg: var(--rs-violet-600);
-  --rs-btn-subtle-active-text: #575757;
+  --rs-btn-subtle-active-text: #343434;
   --rs-btn-ghost-border: var(--rs-violet-700);
   --rs-btn-ghost-text: var(--rs-violet-700);
   --rs-btn-ghost-hover-border: var(--rs-violet-900);
@@ -25326,7 +25618,6 @@ tbody.rs-anim-collapse.rs-anim-in {
   border-left: var(--rs-btn-default-border, none);
 }
 .rs-btn-block {
-  display: block;
   width: 100%;
 }
 .rs-btn-block + .rs-btn-block {
@@ -25934,7 +26225,7 @@ tbody.rs-anim-collapse.rs-anim-in {
 .rs-calendar-month-view .rs-calendar-month-dropdown {
   display: block;
 }
-.rs-calendar-month-view .rs-calendar-month-dropdown-content {
+.rs-calendar-month-view .rs-calendar-month-dropdown-scroll {
   animation: 0.3s linear slideDown;
 }
 .rs-calendar-month-dropdown-scroll {
@@ -27111,13 +27402,15 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
 }
 .rs-divider-vertical {
   display: inline-block;
-  height: 1em;
+  min-height: 1em;
+  height: 100%;
   width: 1px;
   vertical-align: middle;
   margin: 0 12px;
 }
 .rs-divider-horizontal {
   height: 1px;
+  width: 100%;
   margin: 24px 0;
 }
 .rs-divider-horizontal.rs-divider-with-text {
@@ -31288,6 +31581,9 @@ textarea.rs-inline-edit-sm .rs-plaintext {
 .rs-loader-speed-slow .rs-loader-spin::after {
   animation-duration: 0.8s;
 }
+.rs-loader-speed-paused .rs-loader-spin::after {
+  animation-play-state: paused;
+}
 .rs-loader-center,
 .rs-loader-backdrop-wrapper {
   position: absolute;
@@ -31898,6 +32194,7 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   padding: 8px 12px;
   cursor: pointer;
   color: var(--rs-navs-text);
+  background: transparent;
   transition: color 0.15s ease-out, background-color 0.15s ease-out;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -31972,6 +32269,7 @@ textarea.rs-inline-edit-sm .rs-plaintext {
 .rs-nav-horizontal > .rs-nav-item {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   vertical-align: top;
 }
 .rs-nav-horizontal .rs-nav-bar {
@@ -32097,6 +32395,34 @@ textarea.rs-inline-edit-sm .rs-plaintext {
 .rs-nav-reversed.rs-nav-subtle.rs-nav-vertical .rs-nav-item.rs-nav-item-active::before {
   right: auto;
   left: 0;
+}
+.rs-nav-pills {
+  display: inline-flex;
+  background-color: var(--rs-navs-pills-bg);
+  border-radius: 6px;
+  padding: 4px;
+  width: max-content;
+}
+.rs-nav-pills .rs-nav-item {
+  border-radius: 6px;
+  position: relative;
+  padding: 4px 12px;
+  color: var(--rs-navs-pills-item-color);
+}
+.rs-nav-pills .rs-nav-item-active {
+  background-color: var(--rs-navs-pills-item-active-bg);
+  color: var(--rs-navs-pills-item-active-color);
+  box-shadow: var(--rs-navs-pills-item-shadow);
+}
+.rs-nav-pills .rs-nav-item-disabled {
+  color: var(--rs-navs-pills-item-disabled-color);
+}
+.rs-nav-pills.rs-nav-vertical {
+  flex-direction: column;
+}
+.rs-nav-pills.rs-nav-vertical .rs-nav-item {
+  padding: 6px 12px;
+  justify-content: center;
 }
 .rs-nav-justified {
   display: flex;
@@ -33532,6 +33858,7 @@ textarea.rs-inline-edit-sm .rs-plaintext {
 .rs-progress-line.rs-progress-line-vertical .rs-progress-info {
   flex-basis: auto;
   padding-left: 0;
+  padding-bottom: 12px;
   width: auto;
 }
 .rs-progress-line.rs-progress-line-vertical .rs-progress-line-bg {
@@ -33627,6 +33954,9 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   right: -10px;
   bottom: -10px;
   left: -10px;
+}
+.rs-radio-control [type='radio']:disabled {
+  cursor: not-allowed;
 }
 .rs-radio-control::before,
 .rs-radio-control .rs-radio-inner::before,
@@ -34983,7 +35313,7 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   bottom: 0;
   width: 100%;
   z-index: 4;
-  border-top: 1px solid var(--rs-border-secondary);
+  border-top: 1px solid var(--rs-table-border-color);
   padding: 10px;
   background-color: var(--rs-bg-card);
 }
@@ -35113,7 +35443,7 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   position: absolute;
   white-space: normal;
   background-color: var(--rs-bg-card);
-  border-bottom: 1px solid var(--rs-border-secondary);
+  border-bottom: 1px solid var(--rs-table-border-color);
 }
 .rs-table-cell.first {
   border-left-width: 0;
@@ -35150,7 +35480,7 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   line-height: 1.66666667;
 }
 .rs-table-cell-rowspan {
-  border-bottom: 1px solid var(--rs-border-secondary) !important;
+  border-bottom: 1px solid var(--rs-table-border-color) !important;
 }
 .rs-table-cell-full-text:hover {
   z-index: 1 !important;
@@ -35241,10 +35571,10 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   white-space: normal;
 }
 .rs-table-bordered {
-  border: 1px solid var(--rs-border-secondary);
+  border: 1px solid var(--rs-table-border-color);
 }
 .rs-table-cell-bordered .rs-table-cell {
-  border-right: 1px solid var(--rs-border-secondary);
+  border-right: 1px solid var(--rs-table-border-color);
 }
 .rs-table-column-group {
   position: absolute;
@@ -35254,7 +35584,7 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   width: 100%;
 }
 .rs-table-column-group-header {
-  border-bottom: 1px solid var(--rs-border-secondary);
+  border-bottom: 1px solid var(--rs-table-border-color);
   position: absolute;
   width: 100%;
 }
@@ -35264,7 +35594,10 @@ textarea.rs-inline-edit-sm .rs-plaintext {
 }
 .rs-table-column-group-cell {
   position: absolute;
-  border-right: 1px solid var(--rs-border-secondary);
+  border-right: 1px solid var(--rs-table-border-color);
+}
+.rs-table-row:not(.rs-table-row-rowspan) {
+  border-bottom: 1px solid var(--rs-table-border-color);
 }
 .rs-table-cell-expand-wrapper {
   margin-right: 10px;
@@ -35429,9 +35762,6 @@ textarea.rs-inline-edit-sm .rs-plaintext {
 }
 .rs-tabs-vertical .rs-tabs-content {
   flex: 1;
-}
-.rs-tabs .rs-nav-item {
-  background: none;
 }
 .rs-tabs .rs-nav-vertical {
   display: flex;
@@ -36510,6 +36840,9 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   opacity: 0.3;
   cursor: not-allowed;
 }
+.rs-uploader-file-item-disabled:hover {
+  background-color: transparent !important;
+}
 .rs-uploader-picture .rs-uploader-file-item-disabled .rs-uploader-file-item-status {
   cursor: not-allowed;
 }
@@ -37551,11 +37884,15 @@ kbd.rs-text {
   display: flex;
   align-items: center;
 }
-.rs-picker-error > .rs-input-group {
-  border-color: var(--rs-state-error) !important;
+.rs-picker-error > .rs-picker-input-group {
+  border-color: var(--rs-picker-state-error);
 }
-.rs-picker-error > .rs-input-group:focus-within {
-  outline: var(--rs-state-error-outline) !important;
+.rs-picker-error > .rs-picker-input-group:hover {
+  border-color: var(--rs-picker-state-error);
+}
+.rs-picker-error > .rs-picker-input-group:focus-within {
+  border-color: var(--rs-picker-state-error);
+  outline: var(--rs-picker-state-error-outline);
 }
 .rs-picker-toggle {
   display: inline-flex;
@@ -38741,7 +39078,7 @@ body {
   background: #f5f8fa;
 }
 .text-muted {
-  color: #7a7a7a;
+  color: #575757;
 }
 .rs-sidebar {
   position: fixed;
