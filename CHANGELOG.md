@@ -1,3 +1,12 @@
+# [5.19.0](https://github.com/rsuite/rsuite-table/compare/5.18.3...5.19.0) (2024-08-22)
+
+
+### Features
+
+* **Table:** add support for `maxHeight` prop ([#498](https://github.com/rsuite/rsuite-table/issues/498)) ([1d3598d](https://github.com/rsuite/rsuite-table/commit/1d3598d99a4d3e0599fdeffede2d0529fe32ce6a))
+
+
+
 ## [5.18.3](https://github.com/rsuite/rsuite-table/compare/5.18.2...5.18.3) (2024-06-11)
 
 
