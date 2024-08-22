@@ -12,7 +12,9 @@ import {
   Input,
   Loader,
   Placeholder,
-  Tabs
+  Tabs,
+  VStack,
+  HStack
 } from 'rsuite';
 import clone from 'lodash/clone';
 import isFunction from 'lodash/isFunction';
@@ -79,7 +81,9 @@ const dependencies = {
   ArrowUpIcon,
   SortIcon,
   Placeholder,
-  Tabs
+  Tabs,
+  VStack,
+  HStack
 };
 
 const examples = [

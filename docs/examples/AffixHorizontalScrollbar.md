@@ -13,19 +13,12 @@ const App = () => {
         <p style={{ textAlign: 'center' }}>⬇️ Scroll down the page ⬇️</p>
         <hr />
       </div>
-      <Button
-        onClick={() => {
-          this.setState({ data: [] });
-        }}
-      >
-        clear data
-      </Button>
       <Table
         height={400}
         autoHeight
         affixHeader
         affixHorizontalScrollbar
-        data={mockUsers(20)}
+        data={mockUsers(100)}
         onRowClick={data => {
           console.log(data);
         }}

@@ -5,7 +5,7 @@ export const createUser = rowIndex => {
   const lastName = faker.name.lastName();
   const gender = faker.name.sex();
   const name = faker.name.fullName({ firstName, lastName });
-  const avatar = faker.image.avatar();
+  const avatar = 'https://i.pravatar.cc/150?u=' + name;
 
   const city = faker.address.city();
   const street = faker.address.street();

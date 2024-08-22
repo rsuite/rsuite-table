@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useCallback,
-  useImperativeHandle,
-  useReducer,
-  useMemo
-} from 'react';
+import React, { useRef, useCallback, useImperativeHandle, useReducer, useMemo } from 'react';
 import * as ReactIs from 'react-is';
 import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 import PropTypes from 'prop-types';
@@ -26,18 +19,14 @@ import {
   SCROLLBAR_WIDTH,
   CELL_PADDING_HEIGHT,
   SORT_TYPE,
-  EXPANDED_KEY,
   TREE_DEPTH,
   ROW_HEADER_HEIGHT,
   ROW_HEIGHT
 } from './constants';
 import {
   mergeCells,
-  flattenData,
   isRTL,
   findRowKeys,
-  findAllParents,
-  shouldShowRowByExpanded,
   resetLeftForCells,
   useClassNames,
   useControlled,
@@ -48,6 +37,7 @@ import {
   useAffix,
   useScrollListener,
   usePosition,
+  useTableData,
   isSupportTouchEvent
 } from './utils';
 
@@ -60,32 +50,6 @@ import type {
   RowDataType
 } from './@types/common';
 import { flattenChildren } from './utils/children';
-/**
- * Filter those expanded nodes.
- * @param data
- * @param expandedRowKeys
- * @param rowKey
- * @returns
- */
-const filterTreeData = <Row extends RowDataType, Key>(
-  data: readonly Row[],
-  expandedRowKeys: readonly Key[],
-  rowKey?: RowKeyType
-) => {
-  return flattenData(data).filter(rowData => {
-    if (rowKey) {
-      const parents = findAllParents(rowData, rowKey);
-      const expanded = shouldShowRowByExpanded(expandedRowKeys, parents);
-
-      // FIXME This function is supposed to be pure.
-      //       Don't mutate rowData in-place!
-      (rowData as Record<string, unknown>)[EXPANDED_KEY] = expanded;
-      (rowData as Record<string, unknown>)[TREE_DEPTH] = parents.length;
-
-      return expanded;
-    }
-  });
-};
 
 export interface TableProps<Row extends RowDataType, Key extends RowKeyType>
   extends Omit<StandardProps, 'onScroll' | 'children'> {
@@ -136,6 +100,12 @@ export interface TableProps<Row extends RowDataType, Key extends RowKeyType>
 
   /** The minimum height of the table. The height is maintained even when the content is not stretched. */
   minHeight?: number;
+
+  /**
+   * The maximum height of the table.
+   * Usually used together with `autoHeight`. When the height of the table exceeds `maxHeight`, the table will have a scroll bar.
+   */
+  maxHeight?: number;
 
   /** The row of the table has a mouseover effect */
   hover?: boolean;
@@ -321,6 +291,7 @@ const Table = React.forwardRef(
       sortType: sortTypeProp,
       headerHeight: headerHeightProp = ROW_HEADER_HEIGHT,
       minHeight = 0,
+      maxHeight,
       height = 200,
       autoHeight,
       fillHeight,
@@ -355,6 +326,8 @@ const Table = React.forwardRef(
       [getChildren]
     );
 
+    const isAutoHeight = useMemo(() => autoHeight && !maxHeight, [autoHeight, maxHeight]);
+
     const {
       withClassPrefix,
       merge: mergeCls,
@@ -371,9 +344,7 @@ const Table = React.forwardRef(
         : defaultExpandedRowKeys || []
     );
 
-    const [data, setData] = useState(() => {
-      return isTree ? filterTreeData(dataProp, expandedRowKeys, rowKey) : dataProp;
-    });
+    const data = useTableData({ data: dataProp, isTree, expandedRowKeys, rowKey });
 
     if (isTree) {
       if (!rowKey) {
@@ -469,6 +440,7 @@ const Table = React.forwardRef(
       headerHeight,
       height,
       minHeight,
+      maxHeight,
       autoHeight,
       fillHeight,
       children,
@@ -525,7 +497,8 @@ const Table = React.forwardRef(
       getTableHeight,
       contentHeight,
       headerHeight,
-      autoHeight,
+      autoHeight: isAutoHeight,
+      maxHeight,
       tableBodyRef,
       scrollbarXRef,
       scrollbarYRef,
@@ -572,10 +545,6 @@ const Table = React.forwardRef(
     const colCounts = useRef(headerCells?.length || 0);
 
     useUpdateEffect(() => {
-      setData(isTree ? filterTreeData(dataProp, expandedRowKeys, rowKey) : dataProp);
-    }, [dataProp, expandedRowKeys, rowKey, isTree]);
-
-    useUpdateEffect(() => {
       if (headerCells?.length !== colCounts.current) {
         onScrollLeft(0);
         colCounts.current = headerCells?.length || 0;
@@ -605,7 +574,7 @@ const Table = React.forwardRef(
 
     // Whether to show vertical scroll bar
     const hasVerticalScrollbar =
-      !autoHeight && contentHeight.current > getTableHeight() - headerHeight;
+      !isAutoHeight && contentHeight.current > getTableHeight() - headerHeight;
 
     // Whether to show the horizontal scroll bar
     const hasHorizontalScrollbar = contentWidth.current > tableWidth.current;
@@ -1222,6 +1191,7 @@ Table.propTypes = {
   loading: PropTypes.bool,
   loadAnimation: PropTypes.bool,
   minHeight: PropTypes.number,
+  maxHeight: PropTypes.number,
   rowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   renderTreeToggle: PropTypes.func,

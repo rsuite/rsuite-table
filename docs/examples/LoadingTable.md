@@ -35,41 +35,42 @@ const App = () => {
 
   return (
     <div>
-      <Checkbox
-        checked={loading}
-        onChange={() => {
-          setLoading(!loading);
-        }}
-      >
-        loading
-      </Checkbox>
-
-      <Checkbox
-        checked={customLoader}
-        onChange={() => {
-          setCustomLoader(!customLoader);
-        }}
-      >
-        Use a custom loader
-      </Checkbox>
-
-      <Checkbox
-        checked={usePlaceholder}
-        onChange={() => {
-          setUsePlaceholder(!usePlaceholder);
-        }}
-      >
-        Use a placeholder
-      </Checkbox>
-
-      <Checkbox
-        checked={loadAnimation}
-        onChange={() => {
-          setLoadAnimation(!loadAnimation);
-        }}
-      >
-        loadAnimation
-      </Checkbox>
+      <HStack spacing={10} divider={<Divider vertical />}>
+        <Checkbox
+          checked={loading}
+          onChange={() => {
+            setLoading(!loading);
+          }}
+        >
+          Loading
+        </Checkbox>
+        å
+        <Checkbox
+          checked={customLoader}
+          onChange={() => {
+            setCustomLoader(!customLoader);
+          }}
+        >
+          Use a custom loader
+        </Checkbox>
+        <Checkbox
+          checked={usePlaceholder}
+          onChange={() => {
+            setUsePlaceholder(!usePlaceholder);
+          }}
+        >
+          Use a placeholder
+        </Checkbox>
+        <Checkbox
+          checked={loadAnimation}
+          onChange={() => {
+            setLoadAnimation(!loadAnimation);
+          }}
+        >
+          loadAnimation
+        </Checkbox>
+      </HStack>
+      <hr />
 
       <Table
         loading={loading}

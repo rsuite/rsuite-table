@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 import getWidth from 'dom-lib/getWidth';
 import getHeight from 'dom-lib/getHeight';
 import getOffset from 'dom-lib/getOffset';
@@ -16,6 +16,7 @@ interface TableDimensionProps<Row, Key> {
   rowHeight: number | ((rowData?: Row) => number);
   height: number;
   minHeight: number;
+  maxHeight?: number;
   tableRef?: React.RefObject<HTMLDivElement>;
   headerWrapperRef?: React.RefObject<HTMLDivElement>;
   width?: number;
@@ -54,8 +55,9 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
     affixHorizontalScrollbar,
     headerHeight,
     height: heightProp,
-    autoHeight,
+    autoHeight: autoHeightProp,
     minHeight,
+    maxHeight,
     fillHeight,
     children,
     expandedRowKeys,
@@ -78,6 +80,8 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
   const containerResizeObserver = useRef<ResizeObserver>();
   const headerOffset = useRef<ElementOffset | null>(null);
   const tableOffset = useRef<ElementOffset | null>(null);
+
+  const autoHeight = useMemo(() => autoHeightProp && !maxHeight, [autoHeightProp, maxHeight]);
 
   const getRowHeight = useCallback(
     (rowData?: Row) => {
@@ -113,7 +117,7 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
       contentHeight.current += SCROLLBAR_WIDTH;
     }
 
-    const height = fillHeight ? tableHeight.current : heightProp;
+    const height = fillHeight ? tableHeight.current : Math.max(heightProp, maxHeight || 0);
     const tableBodyHeight = showHeader ? height - headerHeight : height;
 
     if (!autoHeight) {
@@ -155,6 +159,7 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
     affixHeader,
     headerHeight,
     autoHeight,
+    maxHeight,
     fillHeight,
     heightProp,
     showHeader,
@@ -321,11 +326,22 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
       return tableHeight.current;
     }
 
+    // When the data is empty and autoHeight is set, use the default height to display the empty state.
     if (data?.length === 0 && autoHeight) {
       return heightProp;
     }
 
-    return autoHeight ? Math.max(headerHeight + contentHeight.current, minHeight) : heightProp;
+    const height = autoHeightProp ? headerHeight + contentHeight.current : heightProp;
+
+    if (maxHeight && height > maxHeight) {
+      return maxHeight;
+    }
+
+    if (minHeight && height < minHeight) {
+      return minHeight;
+    }
+
+    return height;
   };
 
   return {

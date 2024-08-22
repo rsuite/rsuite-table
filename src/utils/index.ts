@@ -13,6 +13,11 @@ export { default as resetLeftForCells } from './resetLeftForCells';
 export { default as isNumberOrTrue } from './isNumberOrTrue';
 export { default as mergeRefs } from './mergeRefs';
 export { cancelAnimationTimeout, requestAnimationTimeout } from './requestAnimationTimeout';
+export { default as isSupportTouchEvent } from './isSupportTouchEvent';
+export { default as convertToFlex } from './convertToFlex';
+export { default as defer } from './defer';
+
+// Hooks
 export { default as useUpdateEffect } from './useUpdateEffect';
 export { default as useUpdateLayoutEffect } from './useUpdateLayoutEffect';
 export { default as useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
@@ -26,6 +31,4 @@ export { default as useTableRows } from './useTableRows';
 export { default as useAffix } from './useAffix';
 export { default as useScrollListener } from './useScrollListener';
 export { default as usePosition } from './usePosition';
-export { default as isSupportTouchEvent } from './isSupportTouchEvent';
-export { default as convertToFlex } from './convertToFlex';
-export { default as defer } from './defer';
+export { default as useTableData } from './useTableData';
