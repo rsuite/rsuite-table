@@ -1,3 +1,12 @@
+## [5.19.1](https://github.com/rsuite/rsuite-table/compare/5.19.0...5.19.1) (2024-08-24)
+
+
+### Bug Fixes
+
+* add `has-row-span` class to the table when the `rowSpan` is set ([#500](https://github.com/rsuite/rsuite-table/issues/500)) ([b2b601d](https://github.com/rsuite/rsuite-table/commit/b2b601d272668a6ebcb43114c3c0431fe9d61093))
+
+
+
 # [5.19.0](https://github.com/rsuite/rsuite-table/compare/5.18.3...5.19.0) (2024-08-22)
 
 
