@@ -583,9 +583,10 @@ const Table = React.forwardRef(
       className,
       withClassPrefix({
         bordered,
-        hover: hover && !shouldRowSpanColumn,
         loading,
         treetable: isTree,
+        hover: hover && !shouldRowSpanColumn,
+        'has-rowspan': shouldRowSpanColumn,
         'word-wrap': wordWrap,
         'cell-bordered': cellBordered
       })
@@ -853,6 +854,7 @@ const Table = React.forwardRef(
         ...restRowProps,
         key: nextRowKey,
         'aria-rowindex': (props.key as number) + 2,
+
         rowRef: bindTableRowsRef(props.key as any, rowData),
         onClick: bindRowClick(rowData),
         onContextMenu: bindRowContextMenu(rowData)
@@ -892,6 +894,7 @@ const Table = React.forwardRef(
 
         cells.push(
           React.cloneElement(cell, {
+            'aria-rowspan': rowSpan ? rowSpan : undefined,
             hasChildren,
             rowData,
             rowIndex: props.rowIndex,
