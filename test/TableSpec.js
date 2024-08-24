@@ -812,7 +812,7 @@ describe('Table', () => {
         name: 'Emiliano'
       }
     ];
-    const instance = getDOMNode(
+    render(
       <Table height={500} data={data} rowHeight={40}>
         <Column
           width={100}
@@ -831,20 +831,31 @@ describe('Table', () => {
       </Table>
     );
 
-    const rowspanCells = instance.querySelectorAll('.rs-table-cell-rowspan');
-    const rows = instance.querySelectorAll('.rs-table-body-row-wrapper .rs-table-row');
-    assert.equal(rowspanCells[0].style.height, `${40 * 2}px`);
-    assert.equal(rowspanCells[1].style.height, `${40 * 3}px`);
+    const rowspanCells = screen
+      .getAllByRole('gridcell')
+      .filter(cell => cell.getAttribute('aria-rowspan'));
 
-    assert.equal(instance.querySelectorAll('.rs-table-cell-rowspan').length, 2);
-    assert.equal(instance.querySelectorAll('.rs-table-row-rowspan').length, 2);
+    const rows = screen
+      .getAllByRole('row')
+      .filter(row => !row.classList.contains('rs-table-row-header'));
+
+    const rowspan = screen
+      .getAllByRole('row')
+      .filter(row => row.classList.contains('rs-table-row-rowspan'));
+
+    expect(rowspanCells[0]).to.style('height', `${40 * 2}px`);
+    expect(rowspanCells[1]).to.style('height', `${40 * 3}px`);
+    expect(rowspanCells).to.have.length(2);
+    expect(rowspan).to.have.length(2);
 
     // Check if merged cells are removed.
-    assert.equal(rows[0].querySelectorAll('.rs-table-cell').length, 2);
-    assert.equal(rows[1].querySelectorAll('.rs-table-cell').length, 1);
-    assert.equal(rows[2].querySelectorAll('.rs-table-cell').length, 2);
-    assert.equal(rows[3].querySelectorAll('.rs-table-cell').length, 1);
-    assert.equal(rows[4].querySelectorAll('.rs-table-cell').length, 1);
+    expect(rows[0].querySelectorAll('.rs-table-cell')).to.have.length(2);
+    expect(rows[1].querySelectorAll('.rs-table-cell')).to.have.length(1);
+    expect(rows[2].querySelectorAll('.rs-table-cell')).to.have.length(2);
+    expect(rows[3].querySelectorAll('.rs-table-cell')).to.have.length(1);
+    expect(rows[4].querySelectorAll('.rs-table-cell')).to.have.length(1);
+
+    expect(screen.getByRole('grid')).to.have.class('rs-table-has-rowspan');
   });
 
   // fix https://github.com/rsuite/rsuite/issues/2051
