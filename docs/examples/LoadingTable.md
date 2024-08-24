@@ -44,7 +44,6 @@ const App = () => {
         >
           Loading
         </Checkbox>
-        å
         <Checkbox
           checked={customLoader}
           onChange={() => {

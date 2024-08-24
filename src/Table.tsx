@@ -583,9 +583,10 @@ const Table = React.forwardRef(
       className,
       withClassPrefix({
         bordered,
-        hover: hover && !shouldRowSpanColumn,
         loading,
         treetable: isTree,
+        hover: hover && !shouldRowSpanColumn,
+        'has-row-span': shouldRowSpanColumn,
         'word-wrap': wordWrap,
         'cell-bordered': cellBordered
       })
