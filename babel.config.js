@@ -15,9 +15,9 @@ module.exports = (api, options) => {
     ],
     plugins: [
       'lodash',
-      ['@babel/plugin-proposal-class-properties', { loose: true }],
-      '@babel/plugin-proposal-optional-chaining',
-      '@babel/plugin-proposal-export-namespace-from',
+      ['@babel/plugin-transform-class-properties', { loose: true }],
+      '@babel/plugin-transform-optional-chaining',
+      '@babel/plugin-transform-export-namespace-from',
       '@babel/plugin-proposal-export-default-from',
       ['@babel/plugin-transform-runtime', { useESModules: !modules }]
     ]
