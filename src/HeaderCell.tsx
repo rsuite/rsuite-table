@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import classNames from 'classnames';
-import isNil from 'lodash/isNil';
 import Sort from '@rsuite/icons/Sort';
 import SortUp from '@rsuite/icons/SortUp';
 import SortDown from '@rsuite/icons/SortDown';
 import ColumnResizeHandler, { FixedType } from './ColumnResizeHandler';
-import { useUpdateEffect, useClassNames } from './utils';
 import Cell, { InnerCellProps } from './Cell';
+import { useUpdateEffect, useClassNames } from './utils';
+import { isNil } from 'lodash-es';
 import { RowDataType, RowKeyType } from './@types/common';
 
 export interface HeaderCellProps<Row extends RowDataType, Key extends RowKeyType>

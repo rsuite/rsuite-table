@@ -1,11 +1,11 @@
 import React from 'react';
-import { Nav } from 'rsuite';
 import CodeView from 'react-code-view';
-import Frame from './components/Frame';
 import TableIcon from '@rsuite/icons/Table';
 import GithubIcon from '@rsuite/icons/legacy/Github';
 import BookIcon from '@rsuite/icons/legacy/Book';
-import kebabCase from 'lodash/kebabCase';
+import Frame from './components/Frame';
+import { Nav } from 'rsuite';
+import { kebabCase } from 'lodash-es';
 
 interface ExampleType {
   title: string;

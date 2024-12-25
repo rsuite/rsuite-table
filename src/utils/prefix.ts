@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import curry from 'lodash/curry';
+import { curry } from 'lodash-es';
 
 export function prefix(pre: string, className: string | string[]): string {
   if (!pre || !className) {
@@ -18,4 +18,6 @@ export function prefix(pre: string, className: string | string[]): string {
   return `${pre}-${className}`;
 }
 
-export default curry(prefix);
+const curryPrefix: (pre: string, className: string | string[]) => string = curry(prefix);
+
+export default curryPrefix;

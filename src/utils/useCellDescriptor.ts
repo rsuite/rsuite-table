@@ -2,18 +2,17 @@ import React, { useState, useCallback, useRef } from 'react';
 import addStyle from 'dom-lib/addStyle';
 import addClass from 'dom-lib/addClass';
 import removeClass from 'dom-lib/removeClass';
-import omit from 'lodash/omit';
-import merge from 'lodash/merge';
-import { SCROLLBAR_WIDTH, SORT_TYPE } from '../constants';
-import { SortType, RowDataType } from '../@types/common';
 import useControlled from './useControlled';
 import getTableColumns from './getTableColumns';
 import getTotalByColumns from './getTotalByColumns';
 import getColumnProps from './getColumnProps';
 import useUpdateEffect from './useUpdateEffect';
-import { ColumnProps } from '../Column';
 import flushSync from './flushSync';
 import useMount from './useMount';
+import { ColumnProps } from '../Column';
+import { omit, merge } from 'lodash-es';
+import { SCROLLBAR_WIDTH, SORT_TYPE } from '../constants';
+import { SortType, RowDataType } from '../@types/common';
 
 interface CellDescriptorProps<Row> {
   children: React.ReactNode[];

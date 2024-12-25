@@ -1,5 +1,12 @@
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
+import GearIcon from '@rsuite/icons/Gear';
+import ArrowDownIcon from '@rsuite/icons/ArrowDown';
+import ArrowUpIcon from '@rsuite/icons/ArrowUp';
+import SortIcon from '@rsuite/icons/Sort';
+import fakeDataForColSpan from './data/usersForColSpan';
+import fakeDataForRowSpan from './data/usersForRowSpan';
+import App from './App';
 import {
   Popover,
   Whisper,
@@ -16,19 +23,9 @@ import {
   VStack,
   HStack
 } from 'rsuite';
-import clone from 'lodash/clone';
-import isFunction from 'lodash/isFunction';
-import get from 'lodash/get';
-import without from 'lodash/without';
-import App from './App';
+import { clone, isFunction, get, without } from 'lodash-es';
 import { Table, Column, Cell, HeaderCell, ColumnGroup } from '../src';
-import fakeDataForColSpan from './data/usersForColSpan';
-import fakeDataForRowSpan from './data/usersForRowSpan';
 import { createUser, mockUsers, mockTreeData } from './data/mock';
-import GearIcon from '@rsuite/icons/Gear';
-import ArrowDownIcon from '@rsuite/icons/ArrowDown';
-import ArrowUpIcon from '@rsuite/icons/ArrowUp';
-import SortIcon from '@rsuite/icons/Sort';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { faker } from '@faker-js/faker';

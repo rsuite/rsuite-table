@@ -1,6 +1,6 @@
 import React from 'react';
-import flatten from 'lodash/flatten';
 import ColumnGroup from '../ColumnGroup';
+import { flatten } from 'lodash-es';
 import { isFragment } from './react-is';
 
 /**

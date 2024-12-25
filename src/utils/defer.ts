@@ -1,4 +1,4 @@
-import defer from 'lodash/defer';
+import { defer } from 'lodash-es';
 
 /**
  * Defer callbacks to wait for DOM rendering to complete.

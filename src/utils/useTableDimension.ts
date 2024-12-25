@@ -2,14 +2,14 @@ import React, { useRef, useCallback, useMemo } from 'react';
 import getWidth from 'dom-lib/getWidth';
 import getHeight from 'dom-lib/getHeight';
 import getOffset from 'dom-lib/getOffset';
-import { SCROLLBAR_WIDTH } from '../constants';
-import { ResizeObserver } from '@juggle/resize-observer';
 import useMount from './useMount';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import useIntersectionObserver from './useIntersectionObserver';
 import isNumberOrTrue from './isNumberOrTrue';
+import { ResizeObserver } from '@juggle/resize-observer';
+import { debounce } from 'lodash-es';
+import { SCROLLBAR_WIDTH } from '../constants';
 import { RowDataType, ElementOffset } from '../@types/common';
-import debounce from 'lodash/debounce';
 
 interface TableDimensionProps<Row, Key> {
   data?: readonly Row[];

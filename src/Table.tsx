@@ -1,8 +1,4 @@
 import React, { useRef, useCallback, useImperativeHandle, useReducer, useMemo } from 'react';
-import { isElement } from './utils/react-is';
-import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
-import isFunction from 'lodash/isFunction';
-import debounce from 'lodash/debounce';
 import Row, { RowProps } from './Row';
 import CellGroup from './CellGroup';
 import Scrollbar, { ScrollbarInstance } from './Scrollbar';
@@ -14,6 +10,9 @@ import Cell, { InnerCellProps } from './Cell';
 import HeaderCell, { HeaderCellProps } from './HeaderCell';
 import Column, { ColumnProps } from './Column';
 import ColumnGroup from './ColumnGroup';
+import { debounce, isFunction } from 'lodash-es';
+import { isElement } from './utils/react-is';
+import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 import {
   SCROLLBAR_WIDTH,
   CELL_PADDING_HEIGHT,

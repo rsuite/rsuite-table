@@ -1,12 +1,10 @@
 import React, { useCallback } from 'react';
-import omit from 'lodash/omit';
-import isNil from 'lodash/isNil';
-import get from 'lodash/get';
-import { LAYER_WIDTH, ROW_HEADER_HEIGHT, ROW_HEIGHT } from './constants';
-import { useClassNames, convertToFlex } from './utils';
 import TableContext from './TableContext';
 import ArrowRight from '@rsuite/icons/ArrowRight';
 import ArrowDown from '@rsuite/icons/ArrowDown';
+import { omit, isNil, get } from 'lodash-es';
+import { LAYER_WIDTH, ROW_HEADER_HEIGHT, ROW_HEIGHT } from './constants';
+import { useClassNames, convertToFlex } from './utils';
 import { StandardProps, RowDataType, RowKeyType } from './@types/common';
 import { columnHandledProps } from './Column';
 

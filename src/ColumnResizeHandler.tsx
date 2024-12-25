@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import clamp from 'lodash/clamp';
 import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
-import { useClassNames } from './utils';
 import TableContext from './TableContext';
+import { clamp } from 'lodash-es';
+import { useClassNames } from './utils';
 import { RESIZE_MIN_WIDTH } from './constants';
 import type { StandardProps } from './@types/common';
 

@@ -1,9 +1,9 @@
 import { useState, useCallback, useRef } from 'react';
+import { isEmpty } from 'lodash-es';
+import { RowDataType } from '../@types/common';
 import getHeight from 'dom-lib/getHeight';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import useMount from './useMount';
-import isEmpty from 'lodash/isEmpty';
-import { RowDataType } from '../@types/common';
 import defer from './defer';
 
 interface TableRowsProps<Row, Key> {

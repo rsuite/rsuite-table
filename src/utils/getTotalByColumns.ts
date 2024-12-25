@@ -1,6 +1,6 @@
 import React from 'react';
-import isPlainObject from 'lodash/isPlainObject';
 import getColumnProps from './getColumnProps';
+import { isPlainObject } from 'lodash-es';
 import { RowDataType } from '../@types/common';
 import { ColumnProps } from '../Column';
 
