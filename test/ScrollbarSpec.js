@@ -1,49 +1,48 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/react';
-
-import { getDOMNode, getInstance } from './utils';
 import Scrollbar from '../src/Scrollbar';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 describe('Scrollbar', () => {
   it('Should output a scrollbar', () => {
-    const instance = getDOMNode(<Scrollbar />);
-    assert.include(instance.className, 'rs-scrollbar');
+    render(<Scrollbar />);
+
+    expect(screen.getByRole('scrollbar')).to.have.class('rs-scrollbar');
   });
 
   it('Should be vertical', () => {
-    const instance = getDOMNode(<Scrollbar vertical />);
+    render(<Scrollbar vertical />);
 
-    assert.ok(instance.className.match(/\bvertical\b/));
+    expect(screen.getByRole('scrollbar')).to.have.class('rs-scrollbar-vertical');
   });
 
   it('Should render a scroll handle', () => {
-    const scrollLength = 1000;
-    const length = 100;
-    const instance = getInstance(<Scrollbar scrollLength={scrollLength} length={length} />);
+    render(<Scrollbar scrollLength={1000} length={100} />);
 
-    assert.equal(instance.handle.style.width, `${scrollLength / length}%`);
+    expect(screen.getByRole('button').style.width).to.equal('10%');
   });
 
   it('Should call onMouseDown callback', () => {
-    const onMouseDownSpy = sinon.spy();
-    const instance = getInstance(<Scrollbar onMouseDown={onMouseDownSpy} />);
+    const onMouseDown = sinon.spy();
 
-    fireEvent.mouseDown(instance.handle);
+    render(<Scrollbar onMouseDown={onMouseDown} />);
 
-    expect(onMouseDownSpy).to.have.been.calledOnce;
+    fireEvent.mouseDown(screen.getByRole('button'));
+
+    expect(onMouseDown).to.have.been.calledOnce;
   });
 
   it('Should have a custom style', () => {
-    const fontSize = '12px';
-    const instance = getDOMNode(<Scrollbar style={{ fontSize }} />);
-    assert.equal(instance.style.fontSize, fontSize);
+    render(<Scrollbar style={{ fontSize: 12 }} />);
+
+    expect(screen.getByRole('scrollbar')).to.have.style('font-size', '12px');
   });
 
   it('Should not call `onScroll` callback', () => {
-    const instance = getInstance(<Scrollbar length={100} scrollLength={1000} onScroll={scroll} />);
-    instance.onWheelScroll(100);
-    expect(
-      instance.root.innerHTML.match(/translate3d\(\d+px,\s*(\d+)px,\s*(\d+)px\)/i)[0]
-    ).be.equal('translate3d(10px, 0px, 0px)');
+    const ref = React.createRef();
+    render(<Scrollbar length={100} scrollLength={1000} onScroll={scroll} ref={ref} />);
+
+    ref.current.onWheelScroll(100);
+
+    expect(screen.getByRole('button').style.transform).to.equal('translate3d(10px, 0px, 0px)');
   });
 });

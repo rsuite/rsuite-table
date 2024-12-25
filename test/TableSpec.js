@@ -1,23 +1,23 @@
-import React from 'react';
-import { render, waitFor, act, fireEvent, screen } from '@testing-library/react';
+import React, { act, useImperativeHandle, useState, useRef, forwardRef } from 'react';
+import { render, waitFor, fireEvent, screen } from '@testing-library/react';
+import { getDOMNode } from './utils';
 import getHeight from 'dom-lib/getHeight';
 import getWidth from 'dom-lib/getWidth';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import ColumnGroup from '../src/ColumnGroup';
 import Cell from '../src/Cell';
-import { getDOMNode, getInstance } from './utils';
 import HeaderCell from '../src/HeaderCell';
 import '../src/less/index.less';
 
 describe('Table', () => {
   it('Should output a table', () => {
-    const instance = getDOMNode(<Table>test</Table>);
-    expect(instance).to.have.class('rs-table');
+    render(<Table>test</Table>);
+    expect(screen.getByRole('grid')).to.have.class('rs-table');
   });
 
-  it('Should output 2 cell', () => {
-    const instance = getDOMNode(
+  it('Should render 2 columns', () => {
+    render(
       <Table>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -29,7 +29,8 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    expect(instance.querySelectorAll('.rs-table-cell')).to.be.length(2);
+
+    expect(screen.queryAllByRole('columnheader')).to.have.length(2);
   });
 
   it('Should accept render prop', () => {
@@ -361,15 +362,11 @@ describe('Table', () => {
   });
 
   it('Should get the body DOM', () => {
-    const data = [
-      {
-        id: 1,
-        name: 'a'
-      }
-    ];
+    const data = [{ id: 1, name: 'a' }];
+    const ref = React.createRef();
 
-    const instance = getInstance(
-      <Table data={data}>
+    render(
+      <Table data={data} ref={ref}>
         <Column>
           <HeaderCell>11</HeaderCell>
           <Cell dataKey="id" />
@@ -377,11 +374,11 @@ describe('Table', () => {
       </Table>
     );
 
-    expect(instance.body.style.height).to.be.equal(`${data.length * 46}px`);
+    expect(ref.current.body.style.height).to.be.equal('46px');
   });
 
   it('Should not be displayed header', () => {
-    const instance = getDOMNode(
+    render(
       <Table showHeader={false}>
         <Column>
           <HeaderCell>11</HeaderCell>
@@ -393,7 +390,8 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    assert.equal(instance.querySelectorAll('.rs-table-header-row-wrapper').length, 0);
+
+    expect(screen.queryAllByRole('columnheader')).to.have.length(0);
   });
 
   it('Should hava row className', () => {
@@ -469,31 +467,30 @@ describe('Table', () => {
 
   it('Should be fixed column', () => {
     const ref = React.createRef();
-    act(() => {
-      render(
-        <div style={{ width: 300 }}>
-          <Table
-            ref={ref}
-            showHeader={false}
-            data={[
-              {
-                id: 1,
-                name: 'a'
-              }
-            ]}
-          >
-            <Column width={200} fixed>
-              <HeaderCell>11</HeaderCell>
-              <Cell>12</Cell>
-            </Column>
-            <Column width={200}>
-              <HeaderCell>11</HeaderCell>
-              <Cell>12</Cell>
-            </Column>
-          </Table>
-        </div>
-      );
-    });
+
+    render(
+      <div style={{ width: 300 }}>
+        <Table
+          ref={ref}
+          showHeader={false}
+          data={[
+            {
+              id: 1,
+              name: 'a'
+            }
+          ]}
+        >
+          <Column width={200} fixed>
+            <HeaderCell>11</HeaderCell>
+            <Cell>12</Cell>
+          </Column>
+          <Column width={200}>
+            <HeaderCell>11</HeaderCell>
+            <Cell>12</Cell>
+          </Column>
+        </Table>
+      </div>
+    );
 
     const table = ref.current.root;
 
@@ -516,24 +513,22 @@ describe('Table', () => {
 
     const ref = React.createRef();
 
-    act(() => {
-      render(
-        <div style={{ width: 300 }}>
-          <Table
-            showHeader={false}
-            ref={ref}
-            data={[
-              {
-                id: 1,
-                name: 'a'
-              }
-            ]}
-          >
-            {columns}
-          </Table>
-        </div>
-      );
-    });
+    render(
+      <div style={{ width: 300 }}>
+        <Table
+          showHeader={false}
+          ref={ref}
+          data={[
+            {
+              id: 1,
+              name: 'a'
+            }
+          ]}
+        >
+          {columns}
+        </Table>
+      </div>
+    );
 
     const table = ref.current.root;
 
@@ -577,35 +572,33 @@ describe('Table', () => {
   });
 
   it('Should call `onScroll` callback', async () => {
-    const onScrollSpy = sinon.spy();
+    const onScroll = sinon.spy();
     const instance = getDOMNode(
-      <Table onScroll={onScrollSpy} data={[{ id: 1, name: 'a' }]} height={10} width={100}>
+      <Table onScroll={onScroll} data={[{ id: 1, name: 'a' }]} height={10} width={100}>
         <Column width={200}>
           <HeaderCell>Id</HeaderCell>
           <Cell dataKey="id" />
         </Column>
       </Table>
     );
+
     const body = instance.querySelector('.rs-table-body-row-wrapper');
-    body.dispatchEvent(new WheelEvent('wheel', { deltaY: 10, deltaX: 2 }));
+
+    act(() => {
+      body.dispatchEvent(new WheelEvent('wheel', { deltaY: 10, deltaX: 2 }));
+    });
 
     await waitFor(() => {
-      expect(onScrollSpy).to.have.been.calledOnce;
-      expect(onScrollSpy).to.have.been.calledWith(2, 10);
+      expect(onScroll).to.have.been.calledOnce;
+      expect(onScroll).to.have.been.calledWith(2, 10);
     });
   });
 
   it('Should get scroll position via `ref`', async () => {
-    const onScrollSpy = sinon.spy();
+    const onScroll = sinon.spy();
     const table = React.createRef();
     const instance = getDOMNode(
-      <Table
-        onScroll={onScrollSpy}
-        ref={table}
-        data={[{ id: 1, name: 'a' }]}
-        height={10}
-        width={100}
-      >
+      <Table onScroll={onScroll} ref={table} data={[{ id: 1, name: 'a' }]} height={10} width={100}>
         <Column width={200}>
           <HeaderCell>Id</HeaderCell>
           <Cell dataKey="id" />
@@ -622,13 +615,10 @@ describe('Table', () => {
   });
 
   it('Should call `onScroll` callback by scrollTop', done => {
-    const App = React.forwardRef((props, ref) => {
-      const data = [
-        {
-          id: 1,
-          name: 'a'
-        }
-      ];
+    const ref = React.createRef();
+
+    const App = () => {
+      const data = [{ id: 1, name: 'a' }];
 
       const handleScroll = (x, y) => {
         if (y === 10) {
@@ -644,20 +634,17 @@ describe('Table', () => {
           </Column>
         </Table>
       );
-    });
+    };
 
-    const instance = getInstance(<App />);
-    instance.scrollTop(10);
+    render(<App />);
+
+    ref.current.scrollTop(10);
   });
 
   it('Should call `onScroll` callback by scrollLeft', done => {
-    const App = React.forwardRef((props, ref) => {
-      const data = [
-        {
-          id: 1,
-          name: 'a'
-        }
-      ];
+    const ref = React.createRef();
+    const App = () => {
+      const data = [{ id: 1, name: 'a' }];
 
       const handleScroll = x => {
         if (x === 10) {
@@ -677,32 +664,29 @@ describe('Table', () => {
           </Column>
         </Table>
       );
-    });
+    };
 
-    const instance = getInstance(<App />);
-    instance.scrollLeft(10);
+    render(<App />);
+
+    ref.current.scrollLeft(10);
   });
 
   it('Should call `onScroll` callback by change column', () => {
     let xOffset = null;
 
-    const defaultData = [
-      {
-        id: 1,
-        name: 'a',
-        address: 'shanghai'
-      }
-    ];
-    const App = React.forwardRef((props, ref) => {
-      const tableRef = React.useRef();
-      const [showAddress, setShowAddress] = React.useState(false);
-      const [, forceUpdate] = React.useState();
+    const defaultData = [{ id: 1, name: 'a', address: 'shanghai' }];
+    const ref = React.createRef();
+
+    const App = () => {
+      const tableRef = useRef();
+      const [showAddress, setShowAddress] = useState(false);
+      const [, forceUpdate] = useState();
 
       const handleScroll = x => {
         xOffset = x;
       };
 
-      React.useImperativeHandle(
+      useImperativeHandle(
         ref,
         () => ({
           update() {
@@ -736,28 +720,28 @@ describe('Table', () => {
           )}
         </Table>
       );
-    });
+    };
 
-    const instance = getInstance(<App />);
+    render(<App />);
 
     act(() => {
-      instance.scrollLeft(20);
+      ref.current.scrollLeft(20);
     });
 
     expect(xOffset).to.equal(20);
     act(() => {
-      instance.update();
+      ref.current.update();
     });
     expect(xOffset).to.equal(20);
     act(() => {
-      instance.updateTable();
+      ref.current.updateTable();
     });
     expect(xOffset).to.equal(0);
   });
 
   it('Should get the latest `data` in onScroll', done => {
-    const App = React.forwardRef((props, ref) => {
-      const [data, setData] = React.useState([]);
+    const App = forwardRef((props, ref) => {
+      const [data, setData] = useState([]);
 
       const handleScroll = () => {
         if (data.length === 1) {
@@ -863,10 +847,10 @@ describe('Table', () => {
     const appRef = React.createRef();
     const data = [{ id: 1, name: 'a' }];
 
-    const App = React.forwardRef((props, ref) => {
-      const [loading, setLoading] = React.useState(true);
+    const App = forwardRef((props, ref) => {
+      const [loading, setLoading] = useState(true);
 
-      React.useImperativeHandle(ref, () => ({
+      useImperativeHandle(ref, () => ({
         setLoading: v => {
           setLoading(v);
         }
@@ -912,24 +896,19 @@ describe('Table', () => {
   });
 
   it('Should update the scroll after the size changes', () => {
-    const onScrollSpy = sinon.spy();
-    const App = React.forwardRef((props, ref) => {
-      const data = [
-        {
-          id: 1,
-          name: 'a'
-        }
-      ];
+    const onScroll = sinon.spy();
+    const App = forwardRef((props, ref) => {
+      const data = [{ id: 1, name: 'a' }];
 
-      const [width, setWidth] = React.useState(100);
-      React.useImperativeHandle(ref, () => ({
+      const [width, setWidth] = useState(100);
+      useImperativeHandle(ref, () => ({
         updateWidth: () => {
           setWidth(50);
         }
       }));
 
       return (
-        <Table shouldUpdateScroll={onScrollSpy} data={data} height={10} style={{ width }}>
+        <Table shouldUpdateScroll={onScroll} data={data} height={10} style={{ width }}>
           <Column>
             <HeaderCell>id</HeaderCell>
             <Cell dataKey="id" />
@@ -942,17 +921,19 @@ describe('Table', () => {
       );
     });
 
-    const instance = getInstance(<App />);
+    const ref = React.createRef();
 
-    expect(onScrollSpy.callCount).to.equal(1);
-    expect(onScrollSpy.firstCall.firstArg).to.equal('bodyHeightChanged');
+    render(<App ref={ref} />);
+
+    expect(onScroll.callCount).to.equal(1);
+    expect(onScroll.firstCall.firstArg).to.equal('bodyHeightChanged');
 
     act(() => {
-      instance.updateWidth();
+      ref.current.updateWidth();
     });
 
-    expect(onScrollSpy.callCount).to.equal(2);
-    expect(onScrollSpy.secondCall.firstArg).to.equal('widthChanged');
+    expect(onScroll.callCount).to.equal(2);
+    expect(onScroll.secondCall.firstArg).to.equal('widthChanged');
   });
 
   it('Should update the scrollbar when resize', async () => {
@@ -960,26 +941,24 @@ describe('Table', () => {
     const ref = React.createRef();
     const shouldUpdateScrolSpy = sinon.spy();
 
-    act(() => {
-      render(
-        <div ref={ref} style={{ width: 200 }}>
-          <Table data={data} height={10} shouldUpdateScroll={shouldUpdateScrolSpy}>
-            <Column width={100}>
-              <HeaderCell>id</HeaderCell>
-              <Cell dataKey="id" />
-            </Column>
-            <Column width={100}>
-              <HeaderCell>id</HeaderCell>
-              <Cell dataKey="id" />
-            </Column>
-            <Column width={100}>
-              <HeaderCell>id</HeaderCell>
-              <Cell dataKey="id" />
-            </Column>
-          </Table>
-        </div>
-      );
-    });
+    render(
+      <div ref={ref} style={{ width: 200 }}>
+        <Table data={data} height={10} shouldUpdateScroll={shouldUpdateScrolSpy}>
+          <Column width={100}>
+            <HeaderCell>id</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+          <Column width={100}>
+            <HeaderCell>id</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+          <Column width={100}>
+            <HeaderCell>id</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+        </Table>
+      </div>
+    );
 
     const scrollbar = ref.current.querySelector('.rs-table-scrollbar-horizontal');
 
@@ -998,7 +977,7 @@ describe('Table', () => {
     const data = [
       { id: 1, firstName: 'firstName', lastName: 'lastName', companyName: 'companyName' }
     ];
-    const instance = getDOMNode(
+    render(
       <Table classPrefix="rs-table" height={400} data={data}>
         <Column width={70} align="center" verticalAlign="middle" sortable>
           <HeaderCell>Id</HeaderCell>
@@ -1068,9 +1047,9 @@ describe('Table', () => {
       </Table>
     );
 
-    const body = instance.querySelector('.rs-table-body-row-wrapper');
-
-    assert.equal(body.querySelectorAll('.rs-table-cell-content').length, 9);
+    expect(
+      screen.getByRole('grid').querySelectorAll('.rs-table-body-row-wrapper .rs-table-cell-content')
+    ).to.length(9);
   });
 
   it('Should render a custom row', () => {
@@ -1105,17 +1084,14 @@ describe('Table', () => {
   });
 
   it('Should call shouldUpdateScroll after the height of the table container is changed', async () => {
-    const onScrollSpy = sinon.spy();
-    const data = [
-      {
-        id: 1,
-        name: 'a'
-      }
-    ];
-    const App = React.forwardRef((props, ref) => {
-      const [height, setHeight] = React.useState(300);
-      const tableRef = React.useRef();
-      React.useImperativeHandle(ref, () => ({
+    const onScroll = sinon.spy();
+    const data = [{ id: 1, name: 'a' }];
+
+    const App = forwardRef((_, ref) => {
+      const [height, setHeight] = useState(300);
+      const tableRef = useRef();
+
+      useImperativeHandle(ref, () => ({
         get table() {
           return tableRef.current?.root;
         },
@@ -1126,13 +1102,7 @@ describe('Table', () => {
 
       return (
         <div style={{ height }}>
-          <Table
-            ref={tableRef}
-            fillHeight
-            height={200}
-            data={data}
-            shouldUpdateScroll={onScrollSpy}
-          >
+          <Table ref={tableRef} fillHeight height={200} data={data} shouldUpdateScroll={onScroll}>
             <Column>
               <HeaderCell>11</HeaderCell>
               <Cell>12</Cell>
@@ -1146,23 +1116,25 @@ describe('Table', () => {
       );
     });
 
-    const instance = getInstance(<App />);
+    const ref = React.createRef();
 
-    expect(instance.table.style.height).to.equal('300px');
+    render(<App ref={ref} />);
+
+    expect(ref.current.table).to.have.style('height', '300px');
 
     act(() => {
-      instance.updateTableHeight();
+      ref.current.updateTableHeight();
     });
 
     await waitFor(() => {
-      expect(onScrollSpy).to.be.callCount(3);
-      expect(onScrollSpy).to.be.calledWith('heightChanged');
-      expect(instance.table.style.height).to.equal('400px');
+      expect(onScroll).to.be.callCount(3);
+      expect(onScroll).to.be.calledWith('heightChanged');
+      expect(ref.current.table).to.have.style('height', '400px');
     });
   });
 
   it('Should not render scrollbars', () => {
-    const instance = getDOMNode(
+    render(
       <Table data={[{ name: 'name' }]} rowKey="name" height={100}>
         <Column>
           <HeaderCell>name</HeaderCell>
@@ -1170,16 +1142,12 @@ describe('Table', () => {
         </Column>
       </Table>
     );
-    expect(instance.querySelector('.rs-table-scrollbar-vertical')).to.not.exist;
+    expect(screen.getByRole('grid').querySelector('.rs-table-scrollbar-vertical')).to.not.exist;
   });
 
   it('Should throw error for rowData check', () => {
     expect(() => {
-      /**
-       * TODO:
-       * Should throw an error when rowData is not passed to Cell.
-       * But chai cannot catch errors inside React.
-       */
+      // eslint-disable-next-line react/prop-types
       const TreeCell = ({ rowData, ...rest }) => {
         return <Cell rowData={rowData} {...rest} />;
       };
@@ -1196,7 +1164,7 @@ describe('Table', () => {
   });
 
   it('Should render custom column', () => {
-    const CustomColumn = React.forwardRef((props, ref) => {
+    const CustomColumn = forwardRef((props, ref) => {
       return <Column ref={ref} sortable align="center" flexGrow={1} fullText {...props} />;
     });
 
@@ -1284,14 +1252,7 @@ describe('Table', () => {
 
   it('Should render ColumnResizer & fill rest space', () => {
     const instance = getDOMNode(
-      <Table
-        data={[
-          {
-            id: 1,
-            name: 'a'
-          }
-        ]}
-      >
+      <Table data={[{ id: 1, name: 'a' }]}>
         <Column width={100} flexGrow={1} resizable>
           <HeaderCell>Name</HeaderCell>
           <Cell dataKey="name" />
@@ -1309,9 +1270,9 @@ describe('Table', () => {
   });
 
   it('Should call `onScroll` callback when trigger keyboard event', () => {
-    const onScrollSpy = sinon.spy();
+    const onScroll = sinon.spy();
     render(
-      <Table onScroll={onScrollSpy} data={[{ id: 1, name: 'a' }]} height={10} width={100}>
+      <Table onScroll={onScroll} data={[{ id: 1, name: 'a' }]} height={10} width={100}>
         <Column width={100}>
           <HeaderCell>11</HeaderCell>
           <Cell dataKey="id" />
@@ -1325,19 +1286,19 @@ describe('Table', () => {
 
     fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowDown' });
 
-    expect(onScrollSpy).to.have.been.calledOnce;
-    expect(onScrollSpy).to.be.calledWith(0, 40);
+    expect(onScroll).to.have.been.calledOnce;
+    expect(onScroll).to.be.calledWith(0, 40);
 
     fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowUp' });
-    expect(onScrollSpy).to.have.been.calledTwice;
-    expect(onScrollSpy).to.be.calledWith(0, 0);
+    expect(onScroll).to.have.been.calledTwice;
+    expect(onScroll).to.be.calledWith(0, 0);
 
     fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowRight' });
-    expect(onScrollSpy).to.have.been.calledThrice;
-    expect(onScrollSpy).to.be.calledWith(40, 0);
+    expect(onScroll).to.have.been.calledThrice;
+    expect(onScroll).to.be.calledWith(40, 0);
 
     fireEvent.keyDown(screen.getByRole('grid'), { key: 'ArrowLeft' });
-    expect(onScrollSpy).to.have.callCount(4);
-    expect(onScrollSpy).to.be.calledWith(0, 0);
+    expect(onScroll).to.have.callCount(4);
+    expect(onScroll).to.be.calledWith(0, 0);
   });
 });

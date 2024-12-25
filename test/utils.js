@@ -1,17 +1,10 @@
-/* eslint-disable react/no-find-dom-node */
-
 import React from 'react';
-import * as ReactDOM from 'react-dom';
-import { findDOMNode, unmountComponentAtNode } from 'react-dom';
-import * as ReactTestUtils from 'react-dom/test-utils';
-import { render as testRender, act } from '@testing-library/react';
+import { render as testRender } from '@testing-library/react';
 import getStyle from 'dom-lib/getStyle';
 
 export { getStyle };
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
-
-const majorVersion = parseInt(React.version);
 
 console.log('React version:', React.version);
 
@@ -36,38 +29,30 @@ function guid() {
 const mountedContainers = new Set();
 const mountedRoots = new Set();
 
-export function render(children) {
+export async function render(children) {
   const container = createTestContainer();
+  const root = createRoot(container);
 
-  if (majorVersion >= 18) {
-    /**
-     * Fix react 18 warnings
-     * Error: Warning: You are importing createRoot from "react-dom" which is not supported. You should instead import it from "react-dom/client".
-     */
-    ReactDOM['__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED'].usingClientEntryPoint = true;
+  // Render the React component
+  root.render(children);
 
-    const { createRoot } = ReactDOM;
-
-    const root = createRoot(container);
-    root.render(children);
-
-    mountedRoots.add(root);
-
-    return container;
-  }
-
-  ReactDOM.render(children, container);
+  // Track the root for cleanup
+  mountedRoots.add(root);
 
   return container;
 }
 
-export function cleanup() {
-  mountedContainers.forEach(cleanupAtContainer);
+/**
+ * Cleans up all tracked containers and roots.
+ * This function is automatically called after each test.
+ */
+function cleanup() {
+  mountedContainers.forEach(cleanupContainer);
   mountedRoots.forEach(root => {
-    act(() => {
-      root.unmount();
-    });
+    root.unmount();
   });
+  mountedContainers.clear();
+  mountedRoots.clear();
 }
 
 afterEach(() => {
@@ -76,29 +61,17 @@ afterEach(() => {
 
 // maybe one day we'll expose this (perhaps even as a utility returned by render).
 // but let's wait until someone asks for it.
-function cleanupAtContainer(container) {
-  act(() => {
-    if (majorVersion < 18) {
-      unmountComponentAtNode(container);
-    }
-  });
+function cleanupContainer(container) {
   if (container.parentNode === document.body) {
     document.body.removeChild(container);
   }
   mountedContainers.delete(container);
 }
 
-export function getInstance(children, waitForDidMount = true) {
+export function getInstance(children) {
   const instanceRef = React.createRef();
 
-  if (waitForDidMount) {
-    // Use act() to make sure componentDidMount/useEffect is done
-    act(() => {
-      render(React.cloneElement(children, { ref: instanceRef }));
-    });
-  } else {
-    render(React.cloneElement(children, { ref: instanceRef }));
-  }
+  render(React.cloneElement(children, { ref: instanceRef }));
 
   return instanceRef.current;
 }
@@ -113,10 +86,6 @@ export function getDOMNode(children) {
 
   if (isDOMElement(children.child)) {
     return children.child;
-  }
-
-  if (ReactTestUtils.isCompositeComponent(children)) {
-    return findDOMNode(children);
   }
 
   return getTestDOMNode(children);
