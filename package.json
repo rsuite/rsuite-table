@@ -8,6 +8,7 @@
   "scripts": {
     "format": "prettier --write \"{src,test}/**/*.{tsx,ts,js}\"",
     "format:check": "prettier --list-different \"{src,test}/**/*.{tsx,ts,js}\"",
+    "dist:pro": "webpack --mode production --progress --config webpack.build.config.js",
     "build": "npm run build:gulp && npm run build:types",
     "build:gulp": "gulp build",
     "build:types": "npx tsc --emitDeclarationOnly --outDir lib && npx tsc --emitDeclarationOnly --outDir es",
@@ -15,6 +16,7 @@
     "postbuild": "mocha test/build.test.js",
     "dev": "webpack serve --mode development --port 3100 --host 0.0.0.0 --progress",
     "publish:docs": "node docs/gh-pages.js",
+    "size": "npm run dist:pro && size-limit",
     "tdd": "cross-env NODE_ENV=test karma start",
     "lint:ts": "eslint src/**/*.{ts,tsx}",
     "lint": "npm run lint:ts",
@@ -64,6 +66,7 @@
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@faker-js/faker": "^7.6.0",
+    "@size-limit/file": "^11.1.6",
     "@testing-library/react": "^13.4.0",
     "@types/lodash": "^4.14.165",
     "@types/react": "^18.2.0",
@@ -124,6 +127,7 @@
     "rsuite": "^5.69.0",
     "sinon": "^19.0.2",
     "sinon-chai": "^3.7.0",
+    "size-limit": "^11.1.6",
     "style-loader": "^0.13.1",
     "ts-expect": "^1.3.0",
     "typescript": "^5.2.2",
@@ -141,5 +145,12 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
-  }
+  },
+  "size-limit": [
+    {
+      "path": "dist/rsuite-table.min.js",
+      "limit": "50 kB",
+      "gzip": true
+    }
+  ]
 }
