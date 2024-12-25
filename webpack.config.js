@@ -15,8 +15,12 @@ module.exports = () => {
     },
     devServer: {
       hot: true,
-      contentBase: path.resolve(__dirname, ''),
-      publicPath: '/'
+      devMiddleware: {
+        publicPath: '/'
+      },
+      static: {
+        directory: path.resolve(__dirname, ''),
+      },
     },
     output: {
       path: path.resolve(__dirname, 'assets'),
