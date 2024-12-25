@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useClassNames, convertToFlex } from './utils';
 import { StandardProps } from './@types/common';
 
@@ -77,11 +76,5 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
 });
 
 ColumnGroup.displayName = 'Table.ColumnGroup';
-ColumnGroup.propTypes = {
-  header: PropTypes.node,
-  classPrefix: PropTypes.string,
-  groupHeaderHeight: PropTypes.number,
-  verticalAlign: PropTypes.oneOf(['top', 'middle', 'bottom'])
-};
 
 export default ColumnGroup;

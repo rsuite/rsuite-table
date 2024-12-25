@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import isNil from 'lodash/isNil';
 import Sort from '@rsuite/icons/Sort';
@@ -167,23 +166,6 @@ const HeaderCell = React.forwardRef(
 );
 
 HeaderCell.displayName = 'HeaderCell';
-HeaderCell.propTypes = {
-  index: PropTypes.number,
-  sortColumn: PropTypes.string,
-  sortType: PropTypes.oneOf(['desc', 'asc']),
-  sortable: PropTypes.bool,
-  resizable: PropTypes.bool,
-  minWidth: PropTypes.number,
-  onColumnResizeStart: PropTypes.func,
-  onColumnResizeEnd: PropTypes.func,
-  onResize: PropTypes.func,
-  onColumnResizeMove: PropTypes.func,
-  onSortColumn: PropTypes.func,
-  flexGrow: PropTypes.number,
-  fixed: PropTypes.any,
-  children: PropTypes.node,
-  renderSortIcon: PropTypes.func
-};
 
 export default HeaderCell as <Row extends RowDataType, Key extends RowKeyType>(
   props: HeaderCellProps<Row, Key> & React.RefAttributes<HTMLDivElement>

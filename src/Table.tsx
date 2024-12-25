@@ -1,7 +1,6 @@
 import React, { useRef, useCallback, useImperativeHandle, useReducer, useMemo } from 'react';
-import * as ReactIs from 'react-is';
+import { isElement } from './utils/react-is';
 import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
-import PropTypes from 'prop-types';
 import isFunction from 'lodash/isFunction';
 import debounce from 'lodash/debounce';
 import Row, { RowProps } from './Row';
@@ -375,14 +374,10 @@ const Table = React.forwardRef(
     );
 
     // Check for the existence of fixed columns in all column properties.
-    const shouldFixedColumn = children.some(
-      child => ReactIs.isElement(child) && child?.props?.fixed
-    );
+    const shouldFixedColumn = children.some(child => isElement(child) && child?.props?.fixed);
 
     // Check all column properties for the existence of rowSpan.
-    const shouldRowSpanColumn = children.some(
-      child => ReactIs.isElement(child) && child?.props?.rowSpan
-    );
+    const shouldRowSpanColumn = children.some(child => isElement(child) && child?.props?.rowSpan);
 
     const visibleRows = useRef<React.ReactNode[]>([]);
     const mouseAreaRef = useRef<HTMLDivElement>(null);
@@ -1171,59 +1166,6 @@ const Table = React.forwardRef(
 );
 
 Table.displayName = 'Table';
-Table.propTypes = {
-  autoHeight: PropTypes.bool,
-  fillHeight: PropTypes.bool,
-  affixHeader: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-  affixHorizontalScrollbar: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-  bordered: PropTypes.bool,
-  className: PropTypes.string,
-  classPrefix: PropTypes.string,
-  children: PropTypes.any,
-  cellBordered: PropTypes.bool,
-  data: PropTypes.array,
-  defaultExpandAllRows: PropTypes.bool,
-  defaultExpandedRowKeys: PropTypes.array,
-  defaultSortType: PropTypes.any,
-  disabledScroll: PropTypes.bool,
-  expandedRowKeys: PropTypes.array,
-  hover: PropTypes.bool,
-  height: PropTypes.number,
-  headerHeight: PropTypes.number,
-  locale: PropTypes.object,
-  loading: PropTypes.bool,
-  loadAnimation: PropTypes.bool,
-  minHeight: PropTypes.number,
-  maxHeight: PropTypes.number,
-  rowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  rowHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-  renderTreeToggle: PropTypes.func,
-  renderRowExpanded: PropTypes.func,
-  renderRow: PropTypes.func,
-  rowExpandedHeight: PropTypes.oneOfType([PropTypes.func, PropTypes.number]),
-  renderEmpty: PropTypes.func,
-  renderLoading: PropTypes.func,
-  rowClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  rtl: PropTypes.bool,
-  style: PropTypes.object,
-  sortColumn: PropTypes.string,
-  sortType: PropTypes.any,
-  showHeader: PropTypes.bool,
-  shouldUpdateScroll: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-  translate3d: PropTypes.bool,
-  wordWrap: PropTypes.any,
-  width: PropTypes.number,
-  virtualized: PropTypes.bool,
-  isTree: PropTypes.bool,
-  onRowClick: PropTypes.func,
-  onRowContextMenu: PropTypes.func,
-  onScroll: PropTypes.func,
-  onSortColumn: PropTypes.func,
-  onExpandChange: PropTypes.func,
-  onTouchStart: PropTypes.func,
-  onTouchMove: PropTypes.func,
-  onTouchEnd: PropTypes.func
-};
 
 export interface TableInstance<Row extends RowDataType, Key extends RowKeyType>
   extends React.FunctionComponent<TableProps<Row, Key>> {
