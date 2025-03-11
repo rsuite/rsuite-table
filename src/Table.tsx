@@ -349,7 +349,7 @@ const Table = React.forwardRef(
       if (!rowKey) {
         throw new Error('The `rowKey` is required when set isTree');
       } else if (data.length > 0) {
-        if (!data[0].hasOwnProperty(rowKey)) {
+        if (!Object.prototype.hasOwnProperty.call(data[0], rowKey)) {
           throw new Error('The `rowKey` is not found in data');
         }
       }

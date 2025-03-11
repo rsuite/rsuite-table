@@ -25,7 +25,7 @@ function getTotalByColumns<Row extends RowDataType>(
   if (Array.isArray(columns)) {
     count(columns);
   } else if (isPlainObject(columns)) {
-    const { flexGrow, width = 0 } = columns?.props;
+    const { flexGrow, width = 0 } = (columns && columns.props) || {};
 
     totalFlexGrow = flexGrow || 0;
     totalWidth = flexGrow ? 0 : width;
