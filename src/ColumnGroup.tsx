@@ -1,6 +1,7 @@
 import React from 'react';
-import { useClassNames, convertToFlex } from './utils';
-import { StandardProps } from './@types/common';
+import { convertToFlex } from './utils';
+import { useClassNames} from './hooks';
+import type { StandardProps } from './@types/common';
 
 export interface ColumnGroupProps extends StandardProps {
   /** Alignment */

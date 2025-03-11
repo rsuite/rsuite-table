@@ -2,9 +2,9 @@ import React, { useCallback } from 'react';
 import omit from 'lodash/omit';
 import isNil from 'lodash/isNil';
 import get from 'lodash/get';
-import TableContext from './TableContext';
 import { LAYER_WIDTH, ROW_HEADER_HEIGHT, ROW_HEIGHT } from './constants';
-import { useClassNames, convertToFlex } from './utils';
+import { convertToFlex } from './utils';
+import { useClassNames, useTable } from './hooks';
 import { ArrowRight } from './icons/ArrowRight';
 import { columnHandledProps } from './Column';
 import type { StandardProps, RowDataType, RowKeyType } from './@types/common';
@@ -101,7 +101,7 @@ const Cell = React.forwardRef(
       ...rest
     } = props;
 
-    const { rtl, hasCustomTreeCol, isTree } = React.useContext(TableContext);
+    const { rtl, hasCustomTreeCol, isTree } = useTable();
 
     const isTreeCol = treeCol || (!hasCustomTreeCol && firstColumn && isTree);
     const cellHeight =

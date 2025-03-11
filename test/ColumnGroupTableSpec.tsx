@@ -1,10 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import Cell from '../src/Cell';
 import ColumnGroup from '../src/ColumnGroup';
 import HeaderCell from '../src/HeaderCell';
+import { render, screen } from '@testing-library/react';
 
 describe('ColumnGroupTable', () => {
   it('Should be aligned in ColumnGroup', () => {

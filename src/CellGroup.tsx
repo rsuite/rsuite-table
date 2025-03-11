@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
-import { useClassNames } from './utils';
-import TableContext from './TableContext';
+import React from 'react';
+import { useClassNames, useTable } from './hooks';
 
 export interface CellGroupProps {
   fixed?: 'left' | 'right';
@@ -26,7 +25,7 @@ const CellGroup = React.forwardRef((props: CellGroupProps, ref: React.Ref<HTMLDi
     ...rest
   } = props;
 
-  const { translateDOMPositionXY } = useContext(TableContext);
+  const { setCssPosition } = useTable();
   const { withClassPrefix, merge } = useClassNames(classPrefix);
   const classes = merge(className, withClassPrefix({ [`fixed-${fixed}`]: fixed, scroll: !fixed }));
 
@@ -36,7 +35,7 @@ const CellGroup = React.forwardRef((props: CellGroupProps, ref: React.Ref<HTMLDi
     ...style
   };
 
-  translateDOMPositionXY?.(styles as CSSStyleDeclaration, left, 0);
+  setCssPosition?.(styles as CSSStyleDeclaration, left, 0);
 
   return (
     <div {...rest} ref={ref} className={classes} style={styles}>

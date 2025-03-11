@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const del = require('del');
 const babel = require('gulp-babel');
 const less = require('gulp-less');

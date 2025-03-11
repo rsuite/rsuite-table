@@ -45,7 +45,7 @@ describe('Table - Height ', () => {
       </div>
     );
 
-    expect(screen.getByRole('grid')).to.style('height', '300px');
+    expect(screen.getByRole('grid')).to.have.style('height', '300px');
   });
 
   it('Should be automatic height when there is a horizontal scroll bar', () => {
@@ -66,7 +66,7 @@ describe('Table - Height ', () => {
         {columns}
       </Table>
     );
-    expect(screen.getByRole('grid')).to.style('height', '200px');
+    expect(screen.getByRole('grid')).to.have.style('height', '200px');
   });
 
   it('Should have a minimum height, when the number of data rows is less than the minimum height', () => {
@@ -75,7 +75,7 @@ describe('Table - Height ', () => {
         {columns}
       </Table>
     );
-    expect(screen.getByRole('grid')).to.style('height', '500px');
+    expect(screen.getByRole('grid')).to.have.style('height', '500px');
   });
 
   it('Should have a default height when the data is empty', () => {
@@ -84,7 +84,7 @@ describe('Table - Height ', () => {
         {columns}
       </Table>
     );
-    expect(screen.getByRole('grid')).to.style('height', '200px');
+    expect(screen.getByRole('grid')).to.have.style('height', '200px');
   });
 
   it('Should not exceed the maximum height', () => {
@@ -94,7 +94,7 @@ describe('Table - Height ', () => {
       </Table>
     );
 
-    expect(screen.getByRole('grid')).to.style('height', '300px');
+    expect(screen.getByRole('grid')).to.have.style('height', '300px');
   });
 
   it('Should not exceed the maximum height even if autoHeight is set', () => {
@@ -104,6 +104,6 @@ describe('Table - Height ', () => {
       </Table>
     );
 
-    expect(screen.getByRole('grid')).to.style('height', '300px');
+    expect(screen.getByRole('grid')).to.have.style('height', '300px');
   });
 });

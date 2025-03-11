@@ -1,5 +1,5 @@
 import React from 'react';
-import { RowDataType } from './@types/common';
+import type { RowDataType } from './@types/common';
 
 export interface ColumnProps<Row extends RowDataType> {
   /** Alignment */

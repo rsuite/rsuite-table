@@ -1,9 +1,9 @@
 import React from 'react';
-import { expectType } from 'ts-expect';
 import Table, { TableInstance } from '../src/Table';
 import Cell from '../src/Cell';
 import Column from '../src/Column';
 import HeaderCell from '../src/HeaderCell';
+import { expectType } from 'ts-expect';
 
 interface ItemDataType<T = number | string> extends Record<string, any> {
   label?: React.ReactNode;

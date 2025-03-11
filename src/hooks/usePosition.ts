@@ -1,11 +1,11 @@
 import React, { useCallback, useRef } from 'react';
 import addStyle, { CSSProperty } from 'dom-lib/addStyle';
-import { SCROLLBAR_WIDTH } from '../constants';
-import toggleClass from './toggleClass';
+import toggleClass from '../utils/toggleClass';
 import useUpdateEffect from './useUpdateEffect';
+import isSupportTouchEvent from '../utils/isSupportTouchEvent';
+import defer from '../utils/defer';
+import { SCROLLBAR_WIDTH } from '../constants';
 import type { RowDataType } from '../@types/common';
-import isSupportTouchEvent from './isSupportTouchEvent';
-import defer from './defer';
 
 interface PositionProps {
   data: readonly RowDataType[];
@@ -13,7 +13,7 @@ interface PositionProps {
   tableWidth: React.MutableRefObject<number>;
   tableRef: React.RefObject<HTMLDivElement>;
   prefix: (str: string) => string;
-  translateDOMPositionXY: React.MutableRefObject<any>;
+  setCssPosition: React.MutableRefObject<any>;
   wheelWrapperRef: React.RefObject<HTMLDivElement>;
   headerWrapperRef: React.RefObject<HTMLDivElement>;
   affixHeaderWrapperRef: React.RefObject<HTMLDivElement>;
@@ -36,7 +36,7 @@ const usePosition = (props: PositionProps) => {
     tableWidth,
     tableRef,
     prefix,
-    translateDOMPositionXY,
+    setCssPosition,
     wheelWrapperRef,
     headerWrapperRef,
     affixHeaderWrapperRef,
@@ -72,7 +72,7 @@ const usePosition = (props: PositionProps) => {
               'transition-timing-function': bezier.current
             }
           : {};
-        translateDOMPositionXY.current(
+          setCssPosition.current(
           wheelStyle,
           fixedCell ? 0 : scrollX.current,
           scrollY.current
@@ -80,7 +80,7 @@ const usePosition = (props: PositionProps) => {
         addStyle(wheelWrapperRef.current, wheelStyle);
       }
     },
-    [scrollX, scrollY, translateDOMPositionXY, wheelWrapperRef]
+    [scrollX, scrollY, setCssPosition, wheelWrapperRef]
   );
 
   const updatePositionByFixedCell = useCallback(() => {
@@ -89,7 +89,7 @@ const usePosition = (props: PositionProps) => {
     const fixedLeftGroups = getFixedLeftCellGroups();
     const fixedRightGroups = getFixedRightCellGroups();
 
-    translateDOMPositionXY.current(wheelGroupStyle as CSSStyleDeclaration, scrollX.current, 0);
+    setCssPosition.current(wheelGroupStyle as CSSStyleDeclaration, scrollX.current, 0);
 
     const scrollArrayGroups = Array.from(scrollGroups);
 
@@ -125,7 +125,7 @@ const usePosition = (props: PositionProps) => {
     prefix,
     scrollX,
     tableWidth,
-    translateDOMPositionXY
+    setCssPosition
   ]);
 
   /**
@@ -149,7 +149,7 @@ const usePosition = (props: PositionProps) => {
       } else {
         const headerStyle = {};
 
-        translateDOMPositionXY.current(headerStyle as CSSStyleDeclaration, scrollX.current, 0);
+        setCssPosition.current(headerStyle as CSSStyleDeclaration, scrollX.current, 0);
 
         const headerElement = headerWrapperRef?.current;
         const affixHeaderElement = affixHeaderWrapperRef?.current;
@@ -175,7 +175,7 @@ const usePosition = (props: PositionProps) => {
       scrollY,
       shouldFixedColumn,
       tableHeaderRef,
-      translateDOMPositionXY,
+      setCssPosition,
       updatePositionByFixedCell
     ]
   );

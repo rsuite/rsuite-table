@@ -1,10 +1,9 @@
-import React, { useState, useRef, useCallback, useImperativeHandle } from 'react';
+import React, { useState, useRef, useCallback, useImperativeHandle, useLayoutEffect } from 'react';
 import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
 import addStyle, { CSSProperty } from 'dom-lib/addStyle';
 import getOffset from 'dom-lib/getOffset';
 import { SCROLLBAR_MIN_WIDTH, TRANSITION_DURATION, BEZIER } from './constants';
-import { useMount, useClassNames, useUpdateEffect, defer } from './utils';
-import TableContext from './TableContext';
+import { useClassNames, useUpdateEffect, useTable } from './hooks';
 import type { StandardProps } from './@types/common';
 
 type Offset = {
@@ -16,8 +15,8 @@ type Offset = {
 
 export interface ScrollbarProps extends Omit<StandardProps, 'onScroll'> {
   vertical?: boolean;
-  length: number;
-  scrollLength: number;
+  length?: number;
+  scrollLength?: number;
   tableId?: string;
   onScroll?: (delta: number, event: React.MouseEvent) => void;
   onMouseDown?: (event: React.MouseEvent) => void;
@@ -43,10 +42,9 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
     ...rest
   } = props;
 
-  const { translateDOMPositionXY } = React.useContext(TableContext);
-
+  const { setCssPosition } = useTable();
   const [handlePressed, setHandlePressed] = useState(false);
-  const [barOffset, setBarOffset] = useState<Offset | null>({ top: 0, left: 0 });
+  const [barOffset, setBarOffset] = useState<Offset | null>(null);
   const scrollOffset = useRef(0);
   const scrollRange = useRef(scrollLength);
   const barRef = useRef<HTMLDivElement>(null);
@@ -68,17 +66,15 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
   };
   const valuenow = (scrollOffset.current / length) * 100 + width;
 
-  useMount(() => {
-    defer(() => {
-      if (barRef.current) {
-        setBarOffset(getOffset(barRef.current));
-      }
-    });
-
+  useLayoutEffect(() => {
+    // Only update if we haven't set the offset yet
+    if (!barOffset && barRef.current) {
+      setBarOffset(getOffset(barRef.current));
+    }
     return () => {
       releaseMouseMoves();
     };
-  });
+  }, []); // Only run once on mount
 
   useUpdateEffect(() => {
     if (scrollOffset.current) {
@@ -133,15 +129,15 @@ const Scrollbar = React.forwardRef((props: ScrollbarProps, ref) => {
       }
 
       if (vertical) {
-        translateDOMPositionXY?.(styles as CSSStyleDeclaration, 0, scrollOffset.current);
+        setCssPosition?.(styles as CSSStyleDeclaration, 0, scrollOffset.current);
       } else {
-        translateDOMPositionXY?.(styles as CSSStyleDeclaration, scrollOffset.current, 0);
+        setCssPosition?.(styles as CSSStyleDeclaration, scrollOffset.current, 0);
       }
       if (handleRef.current) {
         addStyle(handleRef.current, styles as CSSProperty);
       }
     },
-    [length, scrollLength, translateDOMPositionXY, vertical]
+    [length, scrollLength, setCssPosition, vertical]
   );
 
   const handleScroll = useCallback(

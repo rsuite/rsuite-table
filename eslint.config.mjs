@@ -37,7 +37,7 @@ export default [
   },
   {
     // Test files
-    files: ['**/test/*.{js,mjs,cjs,ts,jsx,tsx}'],
+    files: ['**/test/**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     languageOptions: {
       globals: {
         ...globals.mocha,

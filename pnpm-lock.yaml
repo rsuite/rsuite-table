@@ -81,6 +81,12 @@ importers:
       '@testing-library/react':
         specifier: ^16.2.0
         version: 16.2.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/chai':
+        specifier: ^4.3.3
+        version: 4.3.20
+      '@types/chai-dom':
+        specifier: ^1.11.0
+        version: 1.11.3
       '@types/karma':
         specifier: ^6.3.9
         version: 6.3.9
@@ -96,12 +102,21 @@ importers:
       '@types/lodash':
         specifier: ^4.17.16
         version: 4.17.16
+      '@types/mocha':
+        specifier: ^10.0.10
+        version: 10.0.10
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.18
       '@types/react-dom':
         specifier: ^18.2.0
         version: 18.3.5(@types/react@18.3.18)
+      '@types/sinon':
+        specifier: ^10.0.2
+        version: 10.0.20
+      '@types/sinon-chai':
+        specifier: ^2.7.38
+        version: 2.7.42
       autoprefixer:
         specifier: ^8.3.0
         version: 8.6.5
@@ -1136,8 +1151,11 @@ packages:
   '@types/aria-query@5.0.4':
     resolution: {integrity: sha512-rfT93uj5s0PRL7EzccGMs3brplhcrghnDoV26NqKhCAS1hVo+WdNsPvE/yb6ilfr5hi2MEk6d5EWJTKdxg8jVw==}
 
-  '@types/chai@5.2.0':
-    resolution: {integrity: sha512-FWnQYdrG9FAC8KgPVhDFfrPL1FBsL3NtIt2WsxKvwu/61K6HiuDF3xAb7c7w/k9ML2QOUHcwTgU7dKLFPK6sBg==}
+  '@types/chai-dom@1.11.3':
+    resolution: {integrity: sha512-EUEZI7uID4ewzxnU7DJXtyvykhQuwe+etJ1wwOiJyQRTH/ifMWKX+ghiXkxCUvNJ6IQDodf0JXhuP6zZcy2qXQ==}
+
+  '@types/chai@4.3.20':
+    resolution: {integrity: sha512-/pC9HAB5I/xMlc5FP77qjCnI16ChlJfW0tGa0IUcFn38VJrTV6DeZ60NU5KZBtaOZqjdpwTWohz5HU1RrhiYxQ==}
 
   '@types/codemirror@5.60.5':
     resolution: {integrity: sha512-TiECZmm8St5YxjFUp64LK0c8WU5bxMDt9YaAek1UqUb9swrSCoJhh92fWu1p3mTEqlHjhB5sY7OFBhWroJXZVg==}
@@ -1150,9 +1168,6 @@ packages:
 
   '@types/cors@2.8.17':
     resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
-
-  '@types/deep-eql@4.0.2':
-    resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
 
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
@@ -1196,6 +1211,9 @@ packages:
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
 
+  '@types/mocha@10.0.10':
+    resolution: {integrity: sha512-xPyYSz1cMPnJQhl0CLMH68j3gprKZaTjG3s5Vi+fDgx+uhG9NOXwbVt52eFS8ECyXhyKcjDLCBEqBExKuiZb7Q==}
+
   '@types/node@22.13.10':
     resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
 
@@ -1225,8 +1243,8 @@ packages:
   '@types/sinon-chai@2.7.42':
     resolution: {integrity: sha512-6M+l7agAuaS4iFwC9KtmcGznH4WYTcF3/Jq/m4jZ5/Gm1Rlufc7o7rl1Sb9++U81NliT+mV2Ri6UQziaJi6opw==}
 
-  '@types/sinon@17.0.4':
-    resolution: {integrity: sha512-RHnIrhfPO3+tJT0s7cFaXGZvsL4bbR3/k7z3P312qMS4JaS2Tk+KiwiLx1S0rQ56ERj00u1/BtdyVd0FY+Pdew==}
+  '@types/sinon@10.0.20':
+    resolution: {integrity: sha512-2APKKruFNCAZgx3daAyACGzWuJ028VVCUDk6o2rw/Z4PXT0ogwdV4KUegW0MwVs0Zu59auPXbbuBJHF12Sx1Eg==}
 
   '@types/sinonjs__fake-timers@8.1.5':
     resolution: {integrity: sha512-mQkU2jY8jJEF7YHjHvsQO8+3ughTL1mcnn96igfhONmR+fUPSKIkefQYpSe8bsly2Ep7oQbn/6VG5/9/0qcArQ==}
@@ -8140,9 +8158,11 @@ snapshots:
 
   '@types/aria-query@5.0.4': {}
 
-  '@types/chai@5.2.0':
+  '@types/chai-dom@1.11.3':
     dependencies:
-      '@types/deep-eql': 4.0.2
+      '@types/chai': 4.3.20
+
+  '@types/chai@4.3.20': {}
 
   '@types/codemirror@5.60.5':
     dependencies:
@@ -8160,8 +8180,6 @@ snapshots:
   '@types/cors@2.8.17':
     dependencies:
       '@types/node': 22.13.10
-
-  '@types/deep-eql@4.0.2': {}
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -8192,9 +8210,9 @@ snapshots:
 
   '@types/karma-sinon-chai@2.0.6':
     dependencies:
-      '@types/chai': 5.2.0
+      '@types/chai': 4.3.20
       '@types/karma': 6.3.9
-      '@types/sinon': 17.0.4
+      '@types/sinon': 10.0.20
       '@types/sinon-chai': 2.7.42
     transitivePeerDependencies:
       - supports-color
@@ -8224,6 +8242,8 @@ snapshots:
 
   '@types/minimist@1.2.5': {}
 
+  '@types/mocha@10.0.10': {}
+
   '@types/node@22.13.10':
     dependencies:
       undici-types: 6.20.0
@@ -8251,10 +8271,10 @@ snapshots:
 
   '@types/sinon-chai@2.7.42':
     dependencies:
-      '@types/chai': 5.2.0
-      '@types/sinon': 17.0.4
+      '@types/chai': 4.3.20
+      '@types/sinon': 10.0.20
 
-  '@types/sinon@17.0.4':
+  '@types/sinon@10.0.20':
     dependencies:
       '@types/sinonjs__fake-timers': 8.1.5
 

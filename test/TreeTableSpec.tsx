@@ -1,15 +1,16 @@
 import React from 'react';
-import { render, waitFor, act, fireEvent, screen } from '@testing-library/react';
+import sinon from 'sinon';
 import getHeight from 'dom-lib/getHeight';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import Cell from '../src/Cell';
 import HeaderCell from '../src/HeaderCell';
+import { render, waitFor, act, fireEvent, screen } from '@testing-library/react';
 
 describe('TreeTable', () => {
   it('Should be wordWrap when isTree', async () => {
     const data = [{ id: 1, country: 'South Georgia and the South Sandwich Islands' }];
-    const ref = React.createRef();
+    const ref = React.createRef<any>();
 
     render(
       <Table ref={ref} wordWrap isTree data={data} rowKey="id">
@@ -31,7 +32,7 @@ describe('TreeTable', () => {
   });
 
   it('Should render custom tree toggle', () => {
-    const ref = React.createRef();
+    const ref = React.createRef<any>();
     act(() => {
       render(
         <Table
@@ -39,7 +40,7 @@ describe('TreeTable', () => {
           ref={ref}
           expandedRowKeys={[1]}
           rowKey="id"
-          renderTreeToggle={(expandButton, rowData, expanded) => {
+          renderTreeToggle={(expandButton, rowData: any, expanded) => {
             if (expanded) {
               return <div className="toggle-open">{rowData.name}</div>;
             }
@@ -119,9 +120,8 @@ describe('TreeTable', () => {
     expect(screen.getAllByRole('gridcell')).to.be.length(3);
 
     screen.getAllByRole('gridcell').forEach((cell, index) => {
-      expect(cell.querySelector('.rs-table-cell-content').style.paddingLeft).to.equal(
-        `${index * 30 + 10}px`
-      );
+      const content = cell.querySelector('.rs-table-cell-content') as HTMLElement;
+      expect(content.style.paddingLeft).to.equal(`${index * 30 + 10}px`);
     });
   });
 
@@ -133,7 +133,7 @@ describe('TreeTable', () => {
         children: [{ id: 2, country: 'South Georgia and the South Sandwich Islands' }]
       }
     ];
-    const ref = React.createRef();
+    const ref = React.createRef<any>();
 
     render(
       <Table ref={ref} wordWrap isTree data={data} rowKey="id">
@@ -190,11 +190,11 @@ describe('TreeTable', () => {
       </Table>
     );
 
-    expect(
-      screen
-        .getByRole('treegrid')
-        .querySelector('.rs-table-body-row-wrapper .rs-table-cell-expand-wrapper').parentNode
-    ).to.be.text('b');
+    const expandWrapper = screen
+      .getByRole('treegrid')
+      .querySelector('.rs-table-cell-expand-wrapper') as HTMLElement;
+
+    expect(expandWrapper.parentNode).to.be.text('b');
   });
 
   it('Should call `onExpandChange` callback', () => {
@@ -230,7 +230,7 @@ describe('TreeTable', () => {
     expect(onExpandChangeSpy).to.have.been.calledOnce;
   });
 
-  //  https://github.com/rsuite/rsuite/issues/1257
+  // https://github.com/rsuite/rsuite/issues/1257
   it('Should change data, after the isTree property is changed', () => {
     const data = [
       {
@@ -251,7 +251,7 @@ describe('TreeTable', () => {
     ];
     const App = React.forwardRef((props, ref) => {
       const [tree, setTree] = React.useState(true);
-      const tableRef = React.useRef();
+      const tableRef = React.useRef<any>();
       React.useImperativeHandle(ref, () => ({
         get table() {
           return tableRef.current.root;
@@ -281,7 +281,7 @@ describe('TreeTable', () => {
       );
     });
     App.displayName = 'App';
-    const ref = React.createRef();
+    const ref = React.createRef<any>();
     act(() => {
       render(<App ref={ref} />);
     });
@@ -334,7 +334,7 @@ describe('TreeTable', () => {
       }
     ];
 
-    const ref = React.createRef();
+    const ref = React.createRef<any>();
 
     render(
       <Table ref={ref} isTree data={data} showHeader={false} rowKey="name" height={100}>
@@ -346,7 +346,7 @@ describe('TreeTable', () => {
     );
 
     const table = screen.getByRole('treegrid');
-    const expand = table.querySelector('.rs-table-cell-expand-icon');
+    const expand = table.querySelector('.rs-table-cell-expand-icon') as HTMLElement;
 
     // Before the Tree expands, it displays 1 row without vertical scroll bar.
     expect(table.querySelectorAll('.rs-table-row')).to.be.length(1);
