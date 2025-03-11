@@ -3,7 +3,6 @@ import React from 'react';
 import { getDOMNode } from './utils';
 import ColumnGroup from '../src/ColumnGroup';
 
-// eslint-disable-next-line react/prop-types
 const Item = ({ className, style, children, headerHeight }) => (
   <div className={className} style={{ height: headerHeight, ...style }}>
     {children}

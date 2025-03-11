@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useClassNames, convertToFlex } from './utils';
 import { StandardProps } from './@types/common';
 
@@ -12,14 +11,16 @@ export interface ColumnGroupProps extends StandardProps {
   fixed?: boolean | 'left' | 'right';
 
   /**
-   * The height of the header of the merged cell group.
-   * The default value is the square value of the table `headerHeight` value.
+   * Height of the merged cell group header.
+   * The default value is half of the table's `headerHeight`.
    **/
   groupHeaderHeight?: number;
 
   /** Group header */
   header?: React.ReactNode;
+  /** Width */
   width?: number;
+  /** Header height */
   headerHeight?: number;
 }
 
@@ -77,11 +78,5 @@ const ColumnGroup = React.forwardRef((props: ColumnGroupProps, ref: React.Ref<HT
 });
 
 ColumnGroup.displayName = 'Table.ColumnGroup';
-ColumnGroup.propTypes = {
-  header: PropTypes.node,
-  classPrefix: PropTypes.string,
-  groupHeaderHeight: PropTypes.number,
-  verticalAlign: PropTypes.oneOf(['top', 'middle', 'bottom'])
-};
 
 export default ColumnGroup;

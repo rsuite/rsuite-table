@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { RowDataType } from './@types/common';
 
 export interface ColumnProps<Row extends RowDataType> {
@@ -51,31 +50,27 @@ function Column<Row extends RowDataType>(_props: ColumnProps<Row>) {
   return <></>;
 }
 
-const propTypes = {
-  align: PropTypes.string,
-  verticalAlign: PropTypes.string,
-  width: PropTypes.number,
-  fixed: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['left', 'right'])]),
-  resizable: PropTypes.bool,
-  sortable: PropTypes.bool,
-  flexGrow: PropTypes.number,
-  minWidth: PropTypes.number,
-  colSpan: PropTypes.number,
-  rowSpan: PropTypes.func,
-  treeCol: PropTypes.bool,
-  onResize: PropTypes.func,
-  children: PropTypes.node,
-  fullText: PropTypes.bool
-};
-
 Column.displayName = 'Table.Column';
 
 Column.defaultProps = {
   width: 100
 };
 
-Column.propTypes = propTypes;
-
-export const columnHandledProps = Object.keys(propTypes);
+export const columnHandledProps = [
+  'align',
+  'verticalAlign',
+  'width',
+  'fixed',
+  'resizable',
+  'sortable',
+  'flexGrow',
+  'minWidth',
+  'colSpan',
+  'rowSpan',
+  'treeCol',
+  'onResize',
+  'children',
+  'fullText'
+];
 
 export default Column;
