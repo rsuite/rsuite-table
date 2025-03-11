@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableLocaleType } from './@types/common';
+import type { TableLocaleType } from './types';
 
 interface EmptyMessageProps extends React.HTMLAttributes<HTMLDivElement> {
   locale?: TableLocaleType;

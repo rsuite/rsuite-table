@@ -1,5 +1,5 @@
 import React from 'react';
-import type { TableLocaleType } from './@types/common';
+import type { TableLocaleType } from './types';
 
 interface LoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   locale?: TableLocaleType;

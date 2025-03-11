@@ -12,7 +12,7 @@ import defer from '../utils/defer';
 import { requestAnimationTimeout, cancelAnimationTimeout } from '../utils/requestAnimationTimeout';
 import { SCROLLBAR_WIDTH, TRANSITION_DURATION, BEZIER } from '../constants';
 import type { ScrollbarInstance } from '../Scrollbar';
-import type { ListenerCallback, RowDataType } from '../@types/common';
+import type { ListenerCallback, RowDataType } from '../types';
 
 // Inertial sliding start time threshold
 const momentumTimeThreshold = 300;

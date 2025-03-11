@@ -1,4 +1,4 @@
-import { RowDataType, RowKeyType } from '../@types/common';
+import type { RowDataType, RowKeyType } from '../types';
 
 export default function findRowKeys<Row extends RowDataType, Key>(
   rows: readonly Row[],

@@ -6,7 +6,7 @@ import on from 'dom-lib/on';
 import toggleClass from '../utils/toggleClass';
 import isNumberOrTrue from '../utils/isNumberOrTrue';
 import useUpdateEffect from './useUpdateEffect';
-import type { ListenerCallback, ElementOffset } from '../@types/common';
+import type { ListenerCallback, ElementOffset } from '../types';
 import type { ScrollbarInstance } from '../Scrollbar';
 
 interface AffixProps {

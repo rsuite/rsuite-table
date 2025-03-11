@@ -1,8 +1,8 @@
 import React from 'react';
 import isPlainObject from 'lodash/isPlainObject';
 import getColumnProps from './getColumnProps';
-import { RowDataType } from '../@types/common';
-import { ColumnProps } from '../Column';
+import type { RowDataType } from '../types';
+import type { ColumnProps } from '../Column';
 
 function getTotalByColumns<Row extends RowDataType>(
   columns: React.ReactElement<ColumnProps<Row>> | React.ReactElement<ColumnProps<Row>>[]

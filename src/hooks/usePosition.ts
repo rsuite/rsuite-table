@@ -5,7 +5,7 @@ import useUpdateEffect from './useUpdateEffect';
 import isSupportTouchEvent from '../utils/isSupportTouchEvent';
 import defer from '../utils/defer';
 import { SCROLLBAR_WIDTH } from '../constants';
-import type { RowDataType } from '../@types/common';
+import type { RowDataType } from '../types';
 
 interface PositionProps {
   data: readonly RowDataType[];

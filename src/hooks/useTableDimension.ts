@@ -9,7 +9,7 @@ import useIntersectionObserver from './useIntersectionObserver';
 import isNumberOrTrue from '../utils/isNumberOrTrue';
 import { ResizeObserver } from '@juggle/resize-observer';
 import { SCROLLBAR_WIDTH } from '../constants';
-import type { RowDataType, ElementOffset } from '../@types/common';
+import type { RowDataType, ElementOffset } from '../types';
 
 interface TableDimensionProps<Row, Key> {
   data?: readonly Row[];
