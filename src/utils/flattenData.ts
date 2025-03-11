@@ -1,5 +1,5 @@
 import { PARENT_KEY } from '../constants';
-import type { RowDataType } from '../@types/common';
+import type { RowDataType } from '../types';
 
 /**
  * Flatten the tree data with parent association recorded on each node

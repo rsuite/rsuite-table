@@ -3,7 +3,7 @@ import clamp from 'lodash/clamp';
 import DOMMouseMoveTracker from 'dom-lib/DOMMouseMoveTracker';
 import { useClassNames, useTable } from './hooks';
 import { RESIZE_MIN_WIDTH } from './constants';
-import type { StandardProps } from './@types/common';
+import type { StandardProps } from './types';
 
 export type FixedType = boolean | 'left' | 'right';
 export interface Client {

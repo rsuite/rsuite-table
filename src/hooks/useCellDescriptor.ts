@@ -13,7 +13,7 @@ import flushSync from '../utils/flushSync';
 import useMount from './useMount';
 import { ColumnProps } from '../Column';
 import { SCROLLBAR_WIDTH, SORT_TYPE } from '../constants';
-import type { SortType, RowDataType } from '../@types/common';
+import type { SortType, RowDataType } from '../types';
 
 interface CellDescriptorProps<Row> {
   children: React.ReactNode[];

@@ -1,6 +1,6 @@
 import React from 'react';
-import { RowDataType } from '../@types/common';
-import { ColumnProps } from '../Column';
+import type { RowDataType } from '../types';
+import type { ColumnProps } from '../Column';
 
 /**
  * Get the union of the props of the column itself and the props of the custom column

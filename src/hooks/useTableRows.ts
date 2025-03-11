@@ -4,7 +4,7 @@ import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import useMount from './useMount';
 import isEmpty from 'lodash/isEmpty';
 import defer from '../utils/defer';
-import type { RowDataType } from '../@types/common';
+import type { RowDataType } from '../types';
 
 interface TableRowsProps<Row, Key> {
   prefix: (str: string) => string;

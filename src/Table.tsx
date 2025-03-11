@@ -43,7 +43,7 @@ import type {
   TableLocaleType,
   TableSizeChangeEventName,
   RowDataType
-} from './@types/common';
+} from './types';
 
 export interface TableProps<Row extends RowDataType, Key extends RowKeyType>
   extends Omit<StandardProps, 'onScroll' | 'children'> {
@@ -224,18 +224,20 @@ export interface TableProps<Row extends RowDataType, Key extends RowKeyType>
    **/
   bodyRef?: (ref: HTMLElement) => void;
 
+  /**
+   * Defines the content of the table. Can be:
+   * - React elements (typically Column or ColumnGroup)
+   * - A function that returns React elements
+   * The function receives an object with Cell, Column, ColumnGroup, and HeaderCell components.
+   */
   children?:
     | React.ReactNode
     | React.ReactNode[]
     | ((props: {
-        Cell: (
-          props: InnerCellProps<Row, Key> & React.RefAttributes<HTMLDivElement>
-        ) => React.ReactElement;
-        Column: (props: ColumnProps<Row>) => React.ReactElement;
+        Cell: React.ComponentType<InnerCellProps<Row, Key>>;
+        Column: React.ComponentType<ColumnProps<Row>>;
         ColumnGroup: typeof ColumnGroup;
-        HeaderCell: (
-          props: HeaderCellProps<Row, Key> & React.RefAttributes<HTMLDivElement>
-        ) => React.ReactElement;
+        HeaderCell: React.ComponentType<HeaderCellProps<Row, Key>>;
       }) => React.ReactNode | React.ReactNode[]);
 }
 

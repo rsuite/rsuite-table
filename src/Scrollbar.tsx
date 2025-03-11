@@ -4,7 +4,7 @@ import addStyle, { CSSProperty } from 'dom-lib/addStyle';
 import getOffset from 'dom-lib/getOffset';
 import { SCROLLBAR_MIN_WIDTH, TRANSITION_DURATION, BEZIER } from './constants';
 import { useClassNames, useUpdateEffect, useTable } from './hooks';
-import type { StandardProps } from './@types/common';
+import type { StandardProps } from './types';
 
 type Offset = {
   top?: number;

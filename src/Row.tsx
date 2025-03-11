@@ -2,7 +2,7 @@ import React from 'react';
 import { mergeRefs } from './utils';
 import { useClassNames, useTable } from './hooks';
 import { ROW_HEADER_HEIGHT, ROW_HEIGHT } from './constants';
-import type { StandardProps } from './@types/common';
+import type { StandardProps } from './types';
 
 export interface RowProps extends StandardProps {
   width?: number;

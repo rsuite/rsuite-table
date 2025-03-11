@@ -7,7 +7,7 @@ import { convertToFlex } from './utils';
 import { useClassNames, useTable } from './hooks';
 import { ArrowRight } from './icons/ArrowRight';
 import { columnHandledProps } from './Column';
-import type { StandardProps, RowDataType, RowKeyType } from './@types/common';
+import type { StandardProps, RowDataType, RowKeyType } from './types';
 
 export interface CellProps<Row extends RowDataType> extends StandardProps {
   /** Data binding key, but also a sort of key */
@@ -44,7 +44,6 @@ export interface InnerCellProps<Row extends RowDataType, Key extends RowKeyType>
   expanded?: boolean;
   predefinedStyle?: React.CSSProperties;
   onTreeToggle?: (rowKey?: Key, rowIndex?: number, rowData?: Row, event?: React.MouseEvent) => void;
-
   renderTreeToggle?: (
     expandButton: React.ReactNode,
     rowData?: Row,

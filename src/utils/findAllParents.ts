@@ -1,5 +1,5 @@
 import { PARENT_KEY } from '../constants';
-import type { RowDataType, RowKeyType } from '../@types/common';
+import type { RowDataType, RowKeyType } from '../types';
 
 /**
  * Get all parent nodes of the given node in the flattened data

@@ -6,7 +6,7 @@ import Cell, { InnerCellProps } from './Cell';
 import { Sort } from './icons/Sort';
 import { SortDown } from './icons/SortDown';
 import { useUpdateEffect, useClassNames } from './hooks';
-import type { RowDataType, RowKeyType } from './@types/common';
+import type { RowDataType, RowKeyType } from './types';
 
 export interface HeaderCellProps<Row extends RowDataType, Key extends RowKeyType>
   extends Omit<InnerCellProps<Row, Key>, 'onResize'> {

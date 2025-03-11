@@ -1,15 +1,11 @@
 import React from 'react';
 import { useClassNames, useTable } from './hooks';
-
-export interface CellGroupProps {
+import type { StandardProps } from './types';
+export interface CellGroupProps extends StandardProps {
   fixed?: 'left' | 'right';
   width?: number;
   height?: number;
   left?: number;
-  style?: React.CSSProperties;
-  className?: string;
-  classPrefix?: string;
-  children?: React.ReactNode;
 }
 
 const CellGroup = React.forwardRef((props: CellGroupProps, ref: React.Ref<HTMLDivElement>) => {
