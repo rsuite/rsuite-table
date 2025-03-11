@@ -38,6 +38,14 @@ export default [
   {
     // Test files
     files: ['**/test/*.{js,mjs,cjs,ts,jsx,tsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.mocha,
+        ...globals.chai,
+        expect: true,
+        sinon: true
+      }
+    },
     rules: {
       'react/display-name': 'off'
     }
