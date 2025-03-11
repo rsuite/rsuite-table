@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 const path = require('path');
-const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { NODE_ENV } = process.env;
