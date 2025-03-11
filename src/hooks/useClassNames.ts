@@ -1,7 +1,7 @@
-import { useCallback, useContext } from 'react';
 import classNames from 'classnames';
-import { prefix as addPrefix } from './prefix';
-import TableContext from '../TableContext';
+import useTable from './useTable';
+import { useCallback } from 'react';
+import { prefix as addPrefix } from '../utils/prefix';
 
 export type ClassValue =
   | string
@@ -39,7 +39,7 @@ export interface ClassDictionary {
  *  - rootPrefix
  */
 function useClassNames(str: string, controlled?: boolean): ClassNameUtils {
-  const { classPrefix: contextClassPrefix = 'rs' } = useContext(TableContext) || {};
+  const { classPrefix: contextClassPrefix = 'rs' } = useTable() || {};
   const componentName = controlled ? str : addPrefix(contextClassPrefix, str);
 
   /**

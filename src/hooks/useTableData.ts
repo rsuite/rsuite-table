@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import useUpdateEffect from './useUpdateEffect';
-import flattenData from './flattenData';
-import findAllParents from './findAllParents';
-import shouldShowRowByExpanded from './shouldShowRowByExpanded';
+import flattenData from '../utils/flattenData';
+import findAllParents from '../utils/findAllParents';
+import shouldShowRowByExpanded from '../utils/shouldShowRowByExpanded';
 import { EXPANDED_KEY, TREE_DEPTH } from '../constants';
 import type { RowKeyType, RowDataType } from '../@types/common';
 /**

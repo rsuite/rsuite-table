@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import Cell from '../src/Cell';
 import HeaderCell from '../src/HeaderCell';
+import { render, screen } from '@testing-library/react';
 
 describe('VirtualizedTable', () => {
   it('Should be virtualized, and check `maximum update depth exceeded`', () => {

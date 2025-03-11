@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { mergeRefs, useClassNames } from './utils';
-import TableContext from './TableContext';
-import { StandardProps } from './@types/common';
+import React from 'react';
+import { mergeRefs } from './utils';
+import { useClassNames, useTable } from './hooks';
 import { ROW_HEADER_HEIGHT, ROW_HEIGHT } from './constants';
+import type { StandardProps } from './@types/common';
 
 export interface RowProps extends StandardProps {
   width?: number;
@@ -30,7 +30,7 @@ const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) =
     ...rest
   } = props;
 
-  const { translateDOMPositionXY } = useContext(TableContext);
+  const { setCssPosition } = useTable();
   const { withClassPrefix, merge } = useClassNames(classPrefix);
   const classes = merge(className, withClassPrefix({ header: isHeaderRow, rowspan: rowSpan }));
 
@@ -40,7 +40,7 @@ const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) =
     ...style
   };
 
-  translateDOMPositionXY?.(styles as CSSStyleDeclaration, 0, top);
+  setCssPosition?.(styles as CSSStyleDeclaration, 0, top);
 
   return (
     <div role="row" {...rest} ref={mergeRefs(rowRef, ref)} className={classes} style={styles}>

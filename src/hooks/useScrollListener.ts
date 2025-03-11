@@ -4,15 +4,15 @@ import scrollLeft from 'dom-lib/scrollLeft';
 import scrollTop from 'dom-lib/scrollTop';
 import on from 'dom-lib/on';
 import removeStyle from 'dom-lib/removeStyle';
-import { requestAnimationTimeout, cancelAnimationTimeout } from './requestAnimationTimeout';
 import useUpdateEffect from './useUpdateEffect';
 import useMount from './useMount';
+import isSupportTouchEvent from '../utils/isSupportTouchEvent';
+import flushSync from '../utils/flushSync';
+import defer from '../utils/defer';
+import { requestAnimationTimeout, cancelAnimationTimeout } from '../utils/requestAnimationTimeout';
 import { SCROLLBAR_WIDTH, TRANSITION_DURATION, BEZIER } from '../constants';
 import type { ScrollbarInstance } from '../Scrollbar';
 import type { ListenerCallback, RowDataType } from '../@types/common';
-import isSupportTouchEvent from './isSupportTouchEvent';
-import flushSync from './flushSync';
-import defer from './defer';
 
 // Inertial sliding start time threshold
 const momentumTimeThreshold = 300;

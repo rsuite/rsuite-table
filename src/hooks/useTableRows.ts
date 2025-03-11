@@ -3,8 +3,8 @@ import getHeight from 'dom-lib/getHeight';
 import useUpdateLayoutEffect from './useUpdateLayoutEffect';
 import useMount from './useMount';
 import isEmpty from 'lodash/isEmpty';
-import { RowDataType } from '../@types/common';
-import defer from './defer';
+import defer from '../utils/defer';
+import type { RowDataType } from '../@types/common';
 
 interface TableRowsProps<Row, Key> {
   prefix: (str: string) => string;

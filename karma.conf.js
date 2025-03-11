@@ -3,10 +3,13 @@
 module.exports = config => {
   const { env } = process;
   const { M, F } = env;
-  let testFile = 'test/index.js';
+
+  // Weird pattern syntax but works
+  // @see https://github.com/karma-runner/karma/issues/1532#issuecomment-127128326
+  let testFile = 'test/*Spec.+(js|ts|tsx)';
 
   if (M) {
-    testFile = `test/${M}Spec.js`;
+    testFile = `test/${M}Spec.+(js|ts|tsx)`;
   } else if (F) {
     testFile = F;
   }
@@ -20,7 +23,7 @@ module.exports = config => {
 
     logLevel: config.LOG_INFO,
     preprocessors: {
-      'test/*.js': ['webpack']
+      'test/**/*Spec.+(js|ts|tsx)': ['webpack']
     },
     webpack: require('./webpack.karma.js'),
     webpackMiddleware: {

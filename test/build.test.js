@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const glob = require('glob');
 const fs = require('fs');
 const { assert } = require('chai');

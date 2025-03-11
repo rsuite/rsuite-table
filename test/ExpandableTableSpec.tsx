@@ -1,14 +1,14 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import Cell from '../src/Cell';
 import HeaderCell from '../src/HeaderCell';
+import { render, screen } from '@testing-library/react';
 
 describe('ExpandableTable', () => {
   it('Should be to avoid nested classPrefix', () => {
     const data = [{ id: 1, name: 'foobar' }];
-    const innerTable = React.createRef();
+    const innerTable = React.createRef<any>();
 
     render(
       <Table
@@ -79,7 +79,7 @@ describe('ExpandableTable', () => {
         rowKey="id"
         showHeader={false}
         expandedRowKeys={[1, 2, 3]}
-        rowExpandedHeight={rowData => {
+        rowExpandedHeight={(rowData: any) => {
           return rowData.id * 100;
         }}
         renderRowExpanded={() => {
@@ -92,10 +92,10 @@ describe('ExpandableTable', () => {
         </Column>
       </Table>
     );
-    const rowExpandedHeights = [];
+    const rowExpandedHeights: number[] = [];
     container
       .querySelectorAll('.rs-table-row-expanded')
-      .forEach(el => rowExpandedHeights.push(el.offsetHeight));
+      .forEach((el: Element) => rowExpandedHeights.push((el as HTMLElement).offsetHeight));
 
     expect(rowExpandedHeights).to.deep.equal([100, 200, 300]);
   });

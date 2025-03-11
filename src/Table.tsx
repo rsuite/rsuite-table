@@ -7,12 +7,13 @@ import Scrollbar, { ScrollbarInstance } from './Scrollbar';
 import MouseArea from './MouseArea';
 import Loader from './Loader';
 import EmptyMessage from './EmptyMessage';
-import TableContext from './TableContext';
+import TableProvider from './TableProvider';
 import Cell, { InnerCellProps } from './Cell';
 import HeaderCell, { HeaderCellProps } from './HeaderCell';
 import Column, { ColumnProps } from './Column';
 import ColumnGroup from './ColumnGroup';
 import { isElement } from './utils/react-is';
+import { flattenChildren } from './utils/children';
 import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 import {
   SCROLLBAR_WIDTH,
@@ -22,11 +23,8 @@ import {
   ROW_HEADER_HEIGHT,
   ROW_HEIGHT
 } from './constants';
+import { mergeCells, isRTL, findRowKeys, resetLeftForCells, isSupportTouchEvent } from './utils';
 import {
-  mergeCells,
-  isRTL,
-  findRowKeys,
-  resetLeftForCells,
   useClassNames,
   useControlled,
   useUpdateEffect,
@@ -36,10 +34,8 @@ import {
   useAffix,
   useScrollListener,
   usePosition,
-  useTableData,
-  isSupportTouchEvent
-} from './utils';
-
+  useTableData
+} from './hooks';
 import type {
   StandardProps,
   SortType,
@@ -48,7 +44,6 @@ import type {
   TableSizeChangeEventName,
   RowDataType
 } from './@types/common';
-import { flattenChildren } from './utils/children';
 
 export interface TableProps<Row extends RowDataType, Key extends RowKeyType>
   extends Omit<StandardProps, 'onScroll' | 'children'> {
@@ -369,7 +364,7 @@ const Table = React.forwardRef(
       return typeof rowHeight === 'function' ? rowHeight() : rowHeight;
     };
 
-    const translateDOMPositionXY = useRef(
+    const setCssPosition = useRef(
       getTranslateDOMPositionXY({ forceUseTransform: true, enable3DTransform: translate3d })
     );
 
@@ -464,7 +459,7 @@ const Table = React.forwardRef(
       tableWidth,
       tableRef,
       prefix,
-      translateDOMPositionXY,
+      setCssPosition,
       wheelWrapperRef,
       headerWrapperRef,
       affixHeaderWrapperRef,
@@ -1122,19 +1117,14 @@ const Table = React.forwardRef(
       );
     };
 
-    const contextValue = React.useMemo(
-      () => ({
-        classPrefix,
-        translateDOMPositionXY: translateDOMPositionXY.current,
-        rtl,
-        isTree,
-        hasCustomTreeCol
-      }),
-      [classPrefix, hasCustomTreeCol, isTree, rtl]
-    );
-
     return (
-      <TableContext.Provider value={contextValue}>
+      <TableProvider
+        classPrefix={classPrefix}
+        setCssPosition={setCssPosition.current}
+        rtl={rtl}
+        isTree={isTree}
+        hasCustomTreeCol={hasCustomTreeCol}
+      >
         <div
           role={isTree ? 'treegrid' : 'grid'}
           // The aria-rowcount is specified on the element with the table.
@@ -1160,7 +1150,7 @@ const Table = React.forwardRef(
             />
           )}
         </div>
-      </TableContext.Provider>
+      </TableProvider>
     );
   }
 );

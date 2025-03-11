@@ -1,22 +1,21 @@
 import React from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
-import { render, screen } from '@testing-library/react';
-import { getDOMNode } from './utils';
 import HeaderCell from '../src/HeaderCell';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 describe('HeaderCell', () => {
   it('Should output a header', () => {
-    const instance = getDOMNode(<HeaderCell>test</HeaderCell>);
-    assert.equal(instance.className, 'rs-cell-header');
+    render(<HeaderCell>test</HeaderCell>);
+    expect(screen.getByRole('columnheader').parentNode).to.have.class('rs-cell-header');
   });
 
   it('Should output default sort icon', () => {
-    const instance = getDOMNode(
+    render(
       <HeaderCell sortable dataKey="name">
         test
       </HeaderCell>
     );
-    assert.isNotNull(instance.querySelector('.rs-cell-header-icon-sort'));
+    expect(screen.getByRole('columnheader').querySelector('.rs-cell-header-icon-sort')).to.be.not
+      .null;
   });
 
   it('Should output default sort desc icon', () => {
@@ -38,13 +37,13 @@ describe('HeaderCell', () => {
       }
     };
 
-    const instance = getDOMNode(
+    render(
       <HeaderCell width={100} onSortColumn={doneOp} sortable dataKey="name">
         test
       </HeaderCell>
     );
 
-    ReactTestUtils.Simulate.click(instance.querySelector('.rs-cell'));
+    fireEvent.click(screen.getByRole('columnheader'));
   });
 
   it('Should call `onColumnResizeStart` callback', done => {
@@ -52,13 +51,13 @@ describe('HeaderCell', () => {
       done();
     };
 
-    const instance = getDOMNode(
+    const { container } = render(
       <HeaderCell onColumnResizeStart={doneOp} resizable>
         test
       </HeaderCell>
     );
 
-    ReactTestUtils.Simulate.mouseDown(instance.querySelector('.rs-column-resize-spanner'));
+    fireEvent.mouseDown(container.querySelector('.rs-column-resize-spanner') as Element);
   });
 
   it('Should render custom sort icons', () => {
@@ -71,22 +70,22 @@ describe('HeaderCell', () => {
       return 3;
     };
 
-    const instance1 = getDOMNode(
+    const { container, rerender } = render(
       <HeaderCell sortable dataKey="name" renderSortIcon={renderSortIcon}>
         test
       </HeaderCell>
     );
 
-    assert.equal(instance1.querySelector('.rs-cell-header-sort-wrapper').textContent, 3);
+    expect(container.querySelector('.rs-cell-header-sort-wrapper')).to.have.text('3');
 
-    const instance2 = getDOMNode(
+    rerender(
       <HeaderCell sortable dataKey="name" renderSortIcon={renderSortIcon} sortType="asc">
         test
       </HeaderCell>
     );
-    assert.equal(instance2.querySelector('.rs-cell-header-sort-wrapper').textContent, 3);
+    expect(container.querySelector('.rs-cell-header-sort-wrapper')).to.have.text('3');
 
-    const instance3 = getDOMNode(
+    rerender(
       <HeaderCell
         sortable
         dataKey="name"
@@ -97,9 +96,9 @@ describe('HeaderCell', () => {
         test
       </HeaderCell>
     );
-    assert.equal(instance3.querySelector('.rs-cell-header-sort-wrapper').textContent, 1);
+    expect(container.querySelector('.rs-cell-header-sort-wrapper')).to.have.text('1');
 
-    const instance4 = getDOMNode(
+    rerender(
       <HeaderCell
         sortable
         dataKey="name"
@@ -110,6 +109,7 @@ describe('HeaderCell', () => {
         test
       </HeaderCell>
     );
-    assert.equal(instance4.querySelector('.rs-cell-header-sort-wrapper').textContent, 2);
+
+    expect(container.querySelector('.rs-cell-header-sort-wrapper')).to.have.text('2');
   });
 });
