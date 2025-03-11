@@ -113,6 +113,12 @@
       &-sort-wrapper {
         display: inline-block;
       }
+      &-icon-sort {
+        display: flex;
+        &:where([data-sort='asc']) {
+          transform: rotate(180deg);
+        }
+      }
     }
   }
 

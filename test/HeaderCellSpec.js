@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
+import { render, screen } from '@testing-library/react';
 import { getDOMNode } from './utils';
 import HeaderCell from '../src/HeaderCell';
 
@@ -19,12 +20,15 @@ describe('HeaderCell', () => {
   });
 
   it('Should output default sort desc icon', () => {
-    const instance = getDOMNode(
+    render(
       <HeaderCell sortable sortColumn="name" sortType="desc" dataKey="name">
         test
       </HeaderCell>
     );
-    assert.isNotNull(instance.querySelector('.rs-cell-header-icon-sort-desc'));
+
+    expect(
+      screen.getByRole('columnheader').querySelector('.rs-cell-header-icon-sort')
+    ).to.have.attribute('data-sort', 'desc');
   });
 
   it('Should call `onSortColumn` callback', done => {

@@ -2,13 +2,12 @@ import React, { useCallback } from 'react';
 import omit from 'lodash/omit';
 import isNil from 'lodash/isNil';
 import get from 'lodash/get';
+import TableContext from './TableContext';
 import { LAYER_WIDTH, ROW_HEADER_HEIGHT, ROW_HEIGHT } from './constants';
 import { useClassNames, convertToFlex } from './utils';
-import TableContext from './TableContext';
-import ArrowRight from '@rsuite/icons/ArrowRight';
-import ArrowDown from '@rsuite/icons/ArrowDown';
-import { StandardProps, RowDataType, RowKeyType } from './@types/common';
+import { ArrowRight } from './icons/ArrowRight';
 import { columnHandledProps } from './Column';
+import type { StandardProps, RowDataType, RowKeyType } from './@types/common';
 
 export interface CellProps<Row extends RowDataType> extends StandardProps {
   /** Data binding key, but also a sort of key */
@@ -171,8 +170,9 @@ const Cell = React.forwardRef(
     }
 
     const renderTreeNodeExpandIcon = () => {
-      const ExpandIconComponent = expanded ? ArrowDown : ArrowRight;
-      const expandButton = <ExpandIconComponent className={prefix('expand-icon')} />;
+      const expandButton = (
+        <ArrowRight className={prefix('expand-icon')} data-expanded={expanded} />
+      );
 
       if (isTreeCol && hasChildren) {
         return (

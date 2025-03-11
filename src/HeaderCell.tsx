@@ -1,13 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import classNames from 'classnames';
 import isNil from 'lodash/isNil';
-import Sort from '@rsuite/icons/Sort';
-import SortUp from '@rsuite/icons/SortUp';
-import SortDown from '@rsuite/icons/SortDown';
 import ColumnResizeHandler, { FixedType } from './ColumnResizeHandler';
-import { useUpdateEffect, useClassNames } from './utils';
 import Cell, { InnerCellProps } from './Cell';
-import { RowDataType, RowKeyType } from './@types/common';
+import { Sort } from './icons/Sort';
+import { SortDown } from './icons/SortDown';
+import { useUpdateEffect, useClassNames } from './utils';
+import type { RowDataType, RowKeyType } from './@types/common';
 
 export interface HeaderCellProps<Row extends RowDataType, Key extends RowKeyType>
   extends Omit<InnerCellProps<Row, Key>, 'onResize'> {
@@ -33,11 +32,6 @@ export interface HeaderCellProps<Row extends RowDataType, Key extends RowKeyType
   ) => void;
   renderSortIcon?: (sortType?: 'desc' | 'asc') => React.ReactNode;
 }
-
-const SORTED_ICON = {
-  desc: SortDown,
-  asc: SortUp
-};
 
 const HeaderCell = React.forwardRef(
   <Row extends RowDataType, Key extends RowKeyType>(
@@ -113,15 +107,13 @@ const HeaderCell = React.forwardRef(
 
     const renderSortColumn = () => {
       if (sortable && !groupHeader) {
-        const SortIcon = sortColumn === dataKey && sortType ? SORTED_ICON[sortType] : Sort;
-        const iconClasses = classNames(prefix('icon-sort'), {
-          [prefix(`icon-sort-${sortType}`)]: sortColumn === dataKey
-        });
+        const SortIcon = sortColumn === dataKey && sortType ? SortDown : Sort;
+        const iconClasses = classNames(prefix('icon-sort'));
 
         const sortIcon = renderSortIcon ? (
           renderSortIcon(sortColumn === dataKey ? sortType : undefined)
         ) : (
-          <SortIcon className={iconClasses} />
+          <SortIcon className={iconClasses} data-sort={sortType} />
         );
 
         return <span className={prefix('sort-wrapper')}>{sortIcon}</span>;
