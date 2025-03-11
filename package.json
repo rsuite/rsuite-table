@@ -45,8 +45,7 @@
     "@juggle/resize-observer": "^3.3.1",
     "classnames": "^2.3.1",
     "dom-lib": "^3.3.1",
-    "lodash": "^4.17.21",
-    "react-is": "^17.0.2"
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
@@ -79,7 +78,6 @@
     "@types/lodash": "^4.14.165",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "@types/react-is": "^18.2.4",
     "autoprefixer": "^8.3.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-date-fns": "^0.2.1",
