@@ -140,6 +140,9 @@
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -334,6 +337,7 @@
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -373,6 +377,7 @@
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -529,6 +534,9 @@
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -715,6 +723,7 @@
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -752,6 +761,7 @@
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -903,6 +913,9 @@
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -1095,6 +1108,7 @@
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -1136,6 +1150,7 @@
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -1296,7 +1311,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -1411,10 +1426,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-heading {
   font-family: inherit;
@@ -1856,6 +1867,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -2050,6 +2064,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -2089,6 +2104,7 @@ dd {
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -2245,6 +2261,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -2431,6 +2450,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -2468,6 +2488,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -2619,6 +2640,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -2811,6 +2835,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -2852,6 +2877,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -3012,7 +3038,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -3127,10 +3153,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-toggle {
   position: relative;
@@ -3645,6 +3667,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -3839,6 +3864,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -3878,6 +3904,7 @@ dd {
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -4034,6 +4061,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -4220,6 +4250,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -4257,6 +4288,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -4408,6 +4440,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -4600,6 +4635,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -4641,6 +4677,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -4801,7 +4838,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -4916,10 +4953,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-grid-container {
   margin-right: auto;
@@ -6921,6 +6954,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -7115,6 +7151,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -7154,6 +7191,7 @@ dd {
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -7310,6 +7348,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -7496,6 +7537,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -7533,6 +7575,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -7684,6 +7727,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -7876,6 +7922,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -7917,6 +7964,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -8077,7 +8125,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -8192,10 +8240,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-btn {
   display: inline-flex;
@@ -9174,6 +9218,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -9368,6 +9415,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -9407,6 +9455,7 @@ dd {
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -9563,6 +9612,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -9749,6 +9801,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -9786,6 +9839,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -9937,6 +9991,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -10129,6 +10186,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -10170,6 +10228,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -10330,7 +10389,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -10445,10 +10504,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-btn-group {
   position: relative;
@@ -10645,6 +10700,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -10839,6 +10897,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -10878,6 +10937,7 @@ dd {
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -11034,6 +11094,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -11220,6 +11283,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -11257,6 +11321,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -11408,6 +11473,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -11600,6 +11668,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -11641,6 +11710,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -11801,7 +11871,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -11916,10 +11986,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-checkbox {
   position: relative;
@@ -12294,6 +12360,9 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -12488,6 +12557,7 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -12527,6 +12597,7 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -12683,6 +12754,9 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -12869,6 +12943,7 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -12906,6 +12981,7 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -13057,6 +13133,9 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -13249,6 +13328,7 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -13290,6 +13370,7 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -13450,7 +13531,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -13565,10 +13646,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-btn {
   display: inline-flex;
@@ -14576,7 +14653,6 @@ dd {
 .rs-dropdown-item-disabled {
   color: var(--rs-text-disabled);
   cursor: not-allowed;
-  pointer-events: none;
 }
 .rs-dropdown-item-disabled .rs-text {
   color: var(--rs-text-disabled);
@@ -15118,6 +15194,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -15312,6 +15391,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -15351,6 +15431,7 @@ dd {
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -15507,6 +15588,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -15693,6 +15777,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -15730,6 +15815,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -15881,6 +15967,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -16073,6 +16162,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -16114,6 +16204,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -16274,7 +16365,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -16389,10 +16480,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-input {
   display: block;
@@ -16629,6 +16716,9 @@ textarea.rs-input-sm {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -16823,6 +16913,7 @@ textarea.rs-input-sm {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -16862,6 +16953,7 @@ textarea.rs-input-sm {
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -17018,6 +17110,9 @@ textarea.rs-input-sm {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -17204,6 +17299,7 @@ textarea.rs-input-sm {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -17241,6 +17337,7 @@ textarea.rs-input-sm {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -17392,6 +17489,9 @@ textarea.rs-input-sm {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -17584,6 +17684,7 @@ textarea.rs-input-sm {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -17625,6 +17726,7 @@ textarea.rs-input-sm {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -17785,7 +17887,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -17900,10 +18002,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-stack {
   display: flex;
@@ -18051,6 +18149,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -18245,6 +18346,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -18284,6 +18386,7 @@ dd {
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -18440,6 +18543,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -18626,6 +18732,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -18663,6 +18770,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -18814,6 +18922,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -19006,6 +19117,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -19047,6 +19159,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -19207,7 +19320,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -19322,10 +19435,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-divider {
   background-color: var(--rs-divider-border);
@@ -19503,6 +19612,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -19697,6 +19809,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -19736,6 +19849,7 @@ dd {
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -19892,6 +20006,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -20078,6 +20195,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -20115,6 +20233,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -20266,6 +20385,9 @@ dd {
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -20458,6 +20580,7 @@ dd {
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -20499,6 +20622,7 @@ dd {
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -20659,7 +20783,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -20774,10 +20898,6 @@ dt {
 dd {
   margin-left: 0;
   margin-bottom: 10px;
-}
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
 }
 .rs-btn {
   display: inline-flex;
@@ -21785,7 +21905,6 @@ dd {
 .rs-dropdown-item-disabled {
   color: var(--rs-text-disabled);
   cursor: not-allowed;
-  pointer-events: none;
 }
 .rs-dropdown-item-disabled .rs-text {
   color: var(--rs-text-disabled);
@@ -23116,6 +23235,9 @@ hue-6-2: #e6c07b
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-500);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-50);
   --rs-btn-default-text: var(--rs-gray-800);
   --rs-btn-default-hover-bg: var(--rs-gray-200);
@@ -23310,6 +23432,7 @@ hue-6-2: #e6c07b
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-50);
+  --rs-card-bg: var(--rs-gray-0);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -23349,6 +23472,7 @@ hue-6-2: #e6c07b
   --rs-popover-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
   --rs-tree-indent-line-color: rgba(0, 0, 0, 0.1);
   --rs-scroll-view-shadow-color: rgba(9, 9, 9, 0.2);
+  --rs-stat-body-bg: var(--rs-gray-0);
 }
 @supports not (color: rgb(from white r g b)) {
   :root,
@@ -23505,6 +23629,9 @@ hue-6-2: #e6c07b
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-gray-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: var(--rs-gray-600);
   --rs-btn-default-text: var(--rs-gray-50);
   --rs-btn-default-hover-bg: var(--rs-gray-500);
@@ -23691,6 +23818,7 @@ hue-6-2: #e6c07b
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -23728,6 +23856,7 @@ hue-6-2: #e6c07b
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-dark {
@@ -23879,6 +24008,9 @@ hue-6-2: #e6c07b
   --rs-state-focus-outline: 3px solid rgb(from var(--rs-primary-500) r g b / 25%);
   --rs-state-error-outline: 3px solid rgb(from var(--rs-color-red) r g b / 25%);
   --rs-shadow-overlay: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 10px rgba(0, 0, 0, 0.06);
+  --rs-scrollbar-bg: transparent;
+  --rs-scrollbar-thumb-bg: var(--rs-gray-300);
+  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-400);
   --rs-btn-default-bg: transparent;
   --rs-btn-default-text: var(--rs-primary-500);
   --rs-btn-default-border: 1px solid var(--rs-primary-500);
@@ -24071,6 +24203,7 @@ hue-6-2: #e6c07b
   --rs-badge-text: var(--rs-gray-0);
   --rs-close-button-hover-color: var(--rs-color-red);
   --rs-tag-bg: var(--rs-gray-600);
+  --rs-card-bg: var(--rs-gray-900);
   --rs-carousel-bg: var(--rs-gray-600);
   --rs-carousel-indicator: rgb(from var(--rs-gray-0) r g b / 40%);
   --rs-carousel-indicator-hover: var(--rs-gray-0);
@@ -24112,6 +24245,7 @@ hue-6-2: #e6c07b
   --rs-popover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   --rs-tree-indent-line-color: rgba(255, 255, 255, 0.1);
   --rs-scroll-view-shadow-color: rgba(0, 0, 0, 0.99);
+  --rs-stat-body-bg: var(--rs-gray-900);
 }
 @supports not (color: rgb(from white r g b)) {
   .rs-theme-high-contrast {
@@ -24272,7 +24406,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
@@ -24388,9 +24522,9 @@ dd {
   margin-left: 0;
   margin-bottom: 10px;
 }
-@font-face {
-  font-family: Apple-System;
-  src: local(-apple-system), local(BlinkMacSystemFont), local(system-ui);
+:root {
+  --rs-anim-fade-duration: 0.15s;
+  --rs-anim-collapse-duration: 0.35s;
 }
 @keyframes slideInLeft {
   from {
@@ -24554,11 +24688,11 @@ tbody.rs-anim-collapse.rs-anim-in {
   position: relative;
   height: 0;
   overflow: hidden;
-  transition: height 0.35s ease, width 0.35s ease, visibility 0.35s ease;
+  transition: height var(--rs-anim-collapse-duration) ease, width var(--rs-anim-collapse-duration) ease, visibility var(--rs-anim-collapse-duration) ease;
 }
 .rs-anim-fade {
   opacity: 0;
-  transition: opacity 0.15s linear;
+  transition: opacity var(--rs-anim-fade-duration) linear;
   pointer-events: none;
 }
 .rs-anim-fade.rs-anim-in {
@@ -24831,8 +24965,17 @@ tbody.rs-anim-collapse.rs-anim-in {
   font-size: 12px;
   color: var(--rs-text-secondary);
 }
+.rs-breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 .rs-breadcrumb-item {
   transition: color 0.3s linear;
+  display: flex;
+  align-items: center;
 }
 .rs-breadcrumb-item:focus {
   outline: 0;
@@ -25752,7 +25895,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   display: none;
 }
 .rs-calendar {
-  padding-top: 12px;
+  padding-top: 10px;
   position: relative;
   min-height: 266px;
   overflow: hidden;
@@ -25827,22 +25970,14 @@ tbody.rs-anim-collapse.rs-anim-in {
   box-shadow: inset 0 0 0 1px var(--rs-input-focus-border);
 }
 .rs-calendar-panel .rs-calendar-table-cell-day {
-  margin-top: 3px;
   display: block;
   text-align: center;
 }
 .rs-calendar-panel .rs-calendar-month-dropdown {
-  margin-top: -2px;
-  margin-left: 12px;
-  margin-right: 12px;
-  top: 54px;
-  width: calc(100% - 24px);
-}
-.rs-calendar-panel:not(.rs-calendar-compact) .rs-calendar-month-dropdown-scroll {
-  height: 644px;
-}
-.rs-calendar-panel.rs-calendar-compact .rs-calendar-month-dropdown-scroll {
-  height: 344px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 6px;
+  width: calc(100% - 20px);
 }
 .rs-calendar-panel:not(.rs-calendar-compact) .rs-calendar-table-row:not(.rs-calendar-table-header-row) .rs-calendar-table-cell-content {
   width: 100%;
@@ -25867,7 +26002,11 @@ tbody.rs-anim-collapse.rs-anim-in {
   border-bottom-right-radius: 6px;
 }
 .rs-calendar-panel.rs-calendar-compact .rs-calendar-table-row:not(.rs-calendar-table-header-row) .rs-calendar-table-cell-content {
-  height: 50px;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .rs-calendar-btn-close {
   position: absolute;
@@ -25882,9 +26021,16 @@ tbody.rs-anim-collapse.rs-anim-in {
   background: var(--rs-bg-overlay);
   z-index: 1;
 }
+.rs-calendar-btn-close:hover {
+  background-color: var(--rs-btn-subtle-hover-bg);
+}
 .rs-calendar-panel .rs-calendar-btn-close {
-  bottom: 11px;
-  margin: 0 20px;
+  bottom: 4px;
+  margin: 0 11px;
+  border-radius: 0 0 6px 6px;
+}
+.rs-calendar-panel.rs-calendar-bordered .rs-calendar-btn-close {
+  bottom: 5px;
 }
 .rs-calendar-month-view .rs-calendar-header-month-toolbar {
   padding-left: 24px;
@@ -25946,8 +26092,8 @@ tbody.rs-anim-collapse.rs-anim-in {
 }
 .rs-calendar-header {
   width: 280px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .rs-calendar-header::before,
 .rs-calendar-header::after {
@@ -25970,7 +26116,7 @@ tbody.rs-anim-collapse.rs-anim-in {
 .rs-calendar-header-title {
   margin: 0 4px;
 }
-.rs-calendar-header-meridian {
+.rs-calendar-header-meridiem {
   font-size: 12px;
   margin-left: 4px;
 }
@@ -26019,8 +26165,8 @@ tbody.rs-anim-collapse.rs-anim-in {
 }
 .rs-calendar-header-has-month:not(.rs-calendar-header-has-time) {
   margin: 0 auto;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .rs-calendar-header-has-month:not(.rs-calendar-header-has-time) .rs-calendar-header-month-toolbar {
   display: block;
@@ -26060,7 +26206,7 @@ tbody.rs-anim-collapse.rs-anim-in {
 }
 /* rtl:end:ignore */
 .rs-calendar-body {
-  padding: 4px 12px 12px;
+  padding: 4px 10px 10px;
 }
 .rs-calendar-table {
   display: table;
@@ -26221,6 +26367,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   background-color: var(--rs-bg-overlay);
   overflow: hidden;
   z-index: 1;
+  height: calc(100% - 48px);
 }
 .rs-calendar-month-view .rs-calendar-month-dropdown {
   display: block;
@@ -26229,12 +26376,12 @@ tbody.rs-anim-collapse.rs-anim-in {
   animation: 0.3s linear slideDown;
 }
 .rs-calendar-month-dropdown-scroll {
-  height: 230px;
+  height: 100%;
 }
 .rs-calendar-month-dropdown-row {
   position: relative;
-  padding-left: 50px;
-  padding-right: 12px;
+  padding-left: 48px;
+  padding-right: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
 }
@@ -26244,27 +26391,16 @@ tbody.rs-anim-collapse.rs-anim-in {
 .rs-calendar-month-dropdown-year {
   position: absolute;
   top: calc(50% - 0.5em);
-  left: 12px;
+  left: 10px;
 }
 .rs-calendar-month-dropdown-year-active {
   color: var(--rs-text-active);
 }
 .rs-calendar-month-dropdown-list {
-  display: block;
-  min-width: 200px;
-}
-.rs-calendar-month-dropdown-list::before,
-.rs-calendar-month-dropdown-list::after {
-  content: ' ';
-  display: table;
-}
-.rs-calendar-month-dropdown-list::after {
-  clear: both;
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
 }
 .rs-calendar-month-dropdown-cell {
-  display: inline-block;
-  float: left;
-  width: calc((100% - 1px * 12 ) / 6);
   margin: 1px;
   text-align: center;
   vertical-align: middle;
@@ -26286,8 +26422,6 @@ tbody.rs-anim-collapse.rs-anim-in {
   padding: 5px;
   cursor: pointer;
   border-radius: 6px;
-  width: 30px;
-  height: 30px;
 }
 .rs-calendar-month-dropdown-cell-content:hover {
   background-color: var(--rs-state-hover-bg);
@@ -26314,8 +26448,8 @@ tbody.rs-anim-collapse.rs-anim-in {
   display: none;
   position: absolute;
   top: 44px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 10px;
+  padding-right: 10px;
   width: 100%;
   background-color: var(--rs-bg-overlay);
   color: var(--rs-text-primary);
@@ -26336,6 +26470,11 @@ tbody.rs-anim-collapse.rs-anim-in {
   display: table-cell;
   width: 1%;
 }
+.rs-calendar-time-dropdown-column ::after {
+  content: '';
+  display: block;
+  height: calc(100% - 30px);
+}
 .rs-calendar-time-dropdown-column > ul,
 .rs-calendar-time-dropdown-column > ul > li {
   list-style: none;
@@ -26345,7 +26484,7 @@ tbody.rs-anim-collapse.rs-anim-in {
 .rs-calendar-time-dropdown-column > ul {
   height: 230px;
   overflow-y: auto;
-  padding-bottom: 200px;
+  scroll-behavior: smooth;
 }
 .rs-calendar-time-dropdown-column-title {
   width: 100%;
@@ -26356,6 +26495,10 @@ tbody.rs-anim-collapse.rs-anim-in {
   line-height: 1.66666667;
   padding-top: 2px;
   padding-bottom: 2px;
+  margin-bottom: 2px;
+}
+.rs-calendar-only-time .rs-calendar-time-dropdown-column-title {
+  border-top: none;
 }
 .rs-calendar-time-dropdown-cell {
   font-size: 14px;
@@ -26365,6 +26508,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   display: block;
   text-align: center;
   cursor: pointer;
+  margin: 1px;
 }
 .rs-calendar-time-dropdown-cell,
 .rs-calendar-time-dropdown-cell:hover,
@@ -26413,6 +26557,20 @@ tbody.rs-anim-collapse.rs-anim-in {
   opacity: 0.3;
   cursor: not-allowed;
 }
+.rs-calendar-only-time {
+  padding-top: 10px;
+  display: block;
+}
+.rs-calendar-only-time .rs-calendar-time-dropdown {
+  position: relative;
+  top: 2px;
+}
+.rs-calendar-only-time .rs-calendar-time-dropdown-row {
+  display: flex;
+}
+.rs-calendar-only-time .rs-calendar-time-dropdown-column {
+  min-width: 60px;
+}
 @keyframes slideDown {
   from {
     transform: translateY(-100%);
@@ -26420,6 +26578,58 @@ tbody.rs-anim-collapse.rs-anim-in {
   to {
     transform: translateY(0);
   }
+}
+.rs-card {
+  --rs-card-width: 100%;
+  --rs-card-padding: 16px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+  width: var(--rs-card-width);
+}
+.rs-card-bordered {
+  border: 1px solid var(--rs-border-primary);
+  background-color: var(--rs-card-bg);
+}
+.rs-card-shaded {
+  box-shadow: var(--rs-panel-shadow);
+}
+.rs-card-shaded-hover:hover {
+  box-shadow: var(--rs-panel-shadow);
+  cursor: pointer;
+}
+.rs-card-sm {
+  --rs-card-padding: 8px;
+}
+.rs-card-md {
+  --rs-card-padding: 16px;
+}
+.rs-card-lg {
+  --rs-card-padding: 24px;
+}
+.rs-card-row {
+  flex-direction: row;
+}
+.rs-card-header {
+  padding: var(--rs-card-padding) var(--rs-card-padding) 0 var(--rs-card-padding);
+}
+.rs-card-body {
+  padding: var(--rs-card-padding);
+}
+.rs-card-footer {
+  display: flex;
+  gap: 8px;
+  padding: 0 var(--rs-card-padding) var(--rs-card-padding) var(--rs-card-padding);
+}
+.rs-card-group {
+  --rs-columns: 4;
+  --rs-spacing: 20px;
+  display: grid;
+  grid-template-columns: repeat(var(--rs-columns), 1fr);
+  grid-gap: var(--rs-spacing);
 }
 .rs-carousel {
   position: relative;
@@ -26726,6 +26936,7 @@ tbody.rs-anim-collapse.rs-anim-in {
   right: 12px;
   height: 20px;
   font-size: 12px;
+  font-size: 14px;
 }
 .rs-checkbox {
   position: relative;
@@ -26993,7 +27204,6 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   position: absolute;
   top: 8px;
   right: 12px;
-  padding: 3px;
   color: var(--rs-text-secondary);
 }
 .rs-picker-check-menu-items .rs-picker-menu-group.folded .rs-picker-menu-group-caret {
@@ -27120,7 +27330,6 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   border-radius: 6px;
 }
 .rs-check-tree-node .rs-check-item.rs-checkbox-disabled .rs-checkbox-label {
-  cursor: not-allowed;
   color: var(--rs-text-disabled);
   background: none;
 }
@@ -27177,7 +27386,7 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   color: var(--rs-text-secondary);
 }
 .rs-picker-toolbar {
-  padding: 12px;
+  padding: 10px;
   border-top: 1px solid var(--rs-border-primary);
 }
 .rs-picker-date-inline {
@@ -27302,12 +27511,14 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
 .rs-theme-high-contrast .rs-picker-popup .rs-calendar .rs-calendar-table-cell-selected:hover .rs-calendar-table-cell-content {
   color: var(--rs-calendar-date-selected-text);
 }
-.rs-picker-popup .rs-calendar .rs-calendar-month-dropdown-scroll {
-  height: 227px;
-}
 .rs-picker-popup .rs-calendar .rs-calendar-time-dropdown-column > ul {
   height: 198px;
-  padding-bottom: 184px;
+}
+.rs-picker-popup .rs-calendar.rs-calendar-only-time {
+  min-width: auto;
+}
+.rs-picker-popup .rs-calendar.rs-calendar-only-time .rs-calendar-time-dropdown-column > ul {
+  height: 240px;
 }
 .rs-picker-daterange .rs-input-group-addon {
   color: var(--rs-text-secondary);
@@ -27329,9 +27540,8 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
   border-right: 1px solid var(--rs-border-primary);
 }
 .rs-picker-popup .rs-calendar {
-  display: inline-block;
   height: 274px;
-  padding-bottom: 12px;
+  padding-bottom: 10px;
 }
 .rs-picker-popup .rs-calendar-header {
   width: 100%;
@@ -27343,11 +27553,11 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
 .rs-picker-popup .rs-calendar-month-dropdown {
   z-index: 1;
 }
-.rs-picker-popup .rs-calendar-month-dropdown-list {
-  width: 185px;
-}
 .rs-picker-popup .rs-picker-daterange-panel-show-one-calendar .rs-picker-toolbar-ranges {
   width: 190px;
+}
+.rs-picker-popup .rs-picker-daterange-panel-only-time .rs-picker-daterange-calendar-group {
+  min-width: auto;
 }
 .rs-picker-popup .rs-picker-daterange-calendar-single .rs-calendar {
   border: 0;
@@ -27845,7 +28055,6 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
 .rs-dropdown-item-disabled {
   color: var(--rs-text-disabled);
   cursor: not-allowed;
-  pointer-events: none;
 }
 .rs-dropdown-item-disabled .rs-text {
   color: var(--rs-text-disabled);
@@ -30490,6 +30699,33 @@ label:hover .rs-checkbox-control .rs-checkbox-inner::before {
 .rs-btn-icon-circle {
   border-radius: 50% !important;
 }
+.rs-image {
+  --rs-object-fit: cover;
+  --rs-object-position: initial;
+  object-fit: var(--rs-object-fit);
+  object-position: var(--rs-object-position);
+  max-width: 100%;
+}
+.rs-image-rounded {
+  border-radius: 6px;
+}
+.rs-image-circle {
+  border-radius: 50%;
+}
+.rs-image-bordered {
+  border: 1px solid var(--rs-border-primary);
+}
+.rs-image-zoomed {
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+}
+.rs-image-zoomed:hover {
+  transform: matrix(1.25, 0, 0, 1.25, 0, 0);
+}
+.rs-image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
 .rs-input {
   display: block;
   width: 100%;
@@ -31139,6 +31375,7 @@ textarea.rs-input-group-inside.rs-input-group-xs > .rs-input-group-btn {
 .rs-input-number-touchspin-up > .rs-icon,
 .rs-input-number-touchspin-down > .rs-icon {
   height: 17px;
+  color: var(--rs-text-secondary);
 }
 .rs-input-group-lg .rs-input-number-touchspin-up,
 .rs-input-group-lg .rs-input-number-touchspin-down {
@@ -31147,6 +31384,7 @@ textarea.rs-input-group-inside.rs-input-group-xs > .rs-input-group-btn {
 .rs-input-group-lg .rs-input-number-touchspin-up > .rs-icon,
 .rs-input-group-lg .rs-input-number-touchspin-down > .rs-icon {
   height: 20px;
+  color: var(--rs-text-secondary);
 }
 .rs-input-group-sm .rs-input-number-touchspin-up,
 .rs-input-group-sm .rs-input-number-touchspin-down {
@@ -31155,6 +31393,7 @@ textarea.rs-input-group-inside.rs-input-group-xs > .rs-input-group-btn {
 .rs-input-group-sm .rs-input-number-touchspin-up > .rs-icon,
 .rs-input-group-sm .rs-input-number-touchspin-down > .rs-icon {
   height: 14px;
+  color: var(--rs-text-secondary);
 }
 .rs-input-group-xs .rs-input-number-touchspin-up,
 .rs-input-group-xs .rs-input-number-touchspin-down {
@@ -31163,6 +31402,7 @@ textarea.rs-input-group-inside.rs-input-group-xs > .rs-input-group-btn {
 .rs-input-group-xs .rs-input-number-touchspin-up > .rs-icon,
 .rs-input-group-xs .rs-input-number-touchspin-down > .rs-icon {
   height: 11px;
+  color: var(--rs-text-secondary);
 }
 .rs-input-number-touchspin-up > .rs-icon,
 .rs-input-number-touchspin-down > .rs-icon {
@@ -31389,13 +31629,12 @@ textarea.rs-inline-edit-sm .rs-plaintext {
 }
 .rs-list {
   position: relative;
-  box-shadow: 0 1px 0 var(--rs-list-border), 0 -1px 0 var(--rs-list-border);
   overflow-x: hidden;
   overflow-y: auto;
 }
 .rs-list-bordered {
   border-radius: 6px;
-  box-shadow: 0 0 0 1px var(--rs-list-border);
+  border: 1px solid var(--rs-list-border);
 }
 .rs-list-hover .rs-list-item:hover {
   background-color: var(--rs-list-hover-bg);
@@ -31427,11 +31666,14 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   padding-top: 8px;
   padding-bottom: 8px;
 }
+.rs-list-item-xs {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
 /* rtl:begin:ignore */
 /* stylelint-disable-next-line */
 .rs-list-item {
   background-color: var(--rs-list-bg);
-  box-shadow: 0 -1px 0 var(--rs-list-border), 0 1px 0 var(--rs-list-border);
 }
 .rs-list-item-helper {
   position: absolute;
@@ -31464,6 +31706,9 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   width: calc(100% - 2 * 1px);
   height: calc(100% - 2 * 1px);
   border: 1px var(--rs-list-placeholder-border) dashed;
+}
+.rs-list-divider .rs-list-item + .rs-list-item {
+  border-top: 1px solid var(--rs-list-border);
 }
 /* rtl:end:ignore */
 .rs-loader {
@@ -33179,10 +33424,7 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   visibility: visible;
 }
 .rs-scroll-view.rs-scroll-view-custom-scrollbar {
-  --rs-scrollbar-bg: transparent;
-  --rs-scrollbar-thumb-bg: rgba(87, 87, 87, 0.6);
-  --rs-scrollbar-thumb-hover-bg: var(--rs-gray-800);
-  scrollbar-width: auto;
+  scrollbar-width: thin;
   scrollbar-color: var(--rs-scrollbar-thumb-bg) var(--rs-scrollbar-bg);
 }
 .rs-scroll-view.rs-scroll-view-custom-scrollbar::-webkit-scrollbar {
@@ -34249,7 +34491,6 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   position: absolute;
   top: 8px;
   right: 12px;
-  padding: 3px;
   color: var(--rs-text-secondary);
 }
 .rs-picker-select-menu-items .rs-picker-menu-group.folded .rs-picker-menu-group-caret {
@@ -35105,6 +35346,98 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   bottom: unset;
   top: -8px;
 }
+.rs-stat {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.rs-stat-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+.rs-stat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+}
+.rs-stat-bordered {
+  border: 1px solid var(--rs-border-primary);
+  background-color: var(--rs-stat-body-bg);
+  border-radius: 6px;
+  padding: 16px;
+}
+.rs-stat-label {
+  font-weight: 100;
+  display: inline-flex;
+  align-items: center;
+  color: var(--rs-text-secondary);
+  gap: 6px;
+}
+.rs-stat-label-uppercase {
+  text-transform: uppercase;
+}
+.rs-stat-value {
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+}
+.rs-stat-value-unit {
+  font-size: 12px;
+  font-weight: 400;
+}
+.rs-stat-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1;
+}
+.rs-stat-trend-up {
+  color: var(--rs-green-900);
+}
+.rs-stat-trend-down {
+  color: var(--rs-red-900);
+}
+.rs-stat-trend-default {
+  padding: 2px 6px;
+}
+.rs-stat-trend-default.rs-stat-trend-up {
+  background-color: var(--rs-green-100);
+}
+.rs-stat-trend-default.rs-stat-trend-down {
+  background-color: var(--rs-red-100);
+}
+.rs-stat-trend-subtle.rs-stat-trend-up {
+  color: var(--rs-green-600);
+}
+.rs-stat-trend-subtle.rs-stat-trend-down {
+  color: var(--rs-red-600);
+}
+.rs-stat-help-text {
+  color: var(--rs-text-secondary);
+}
+.rs-stat .rs-progress-line {
+  padding: 0;
+}
+.rs-stat-group {
+  --rs-columns: 4;
+  --rs-spacing: 6px;
+  display: grid;
+  grid-template-columns: repeat(var(--rs-columns), 1fr);
+  grid-gap: var(--rs-spacing);
+}
 .rs-steps {
   min-height: 30px;
 }
@@ -35596,7 +35929,7 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   position: absolute;
   border-right: 1px solid var(--rs-table-border-color);
 }
-.rs-table-row:not(.rs-table-row-rowspan) {
+.rs-table:not(.rs-table-has-rowspan) .rs-table-row {
   border-bottom: 1px solid var(--rs-table-border-color);
 }
 .rs-table-cell-expand-wrapper {
@@ -35770,9 +36103,6 @@ textarea.rs-inline-edit-sm .rs-plaintext {
 .rs-picker-tag .rs-picker-toggle {
   left: 0;
   cursor: text;
-}
-.rs-picker-tag.rs-picker-disabled {
-  cursor: not-allowed;
 }
 .rs-picker-tag.rs-picker-disabled .rs-picker-toggle {
   position: absolute;
@@ -36790,9 +37120,6 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   display: block;
   bottom: -4px;
 }
-.rs-tree-node-drag-disabled.rs-tree-node-label {
-  cursor: not-allowed;
-}
 .rs-tree-node-disabled .rs-tree-node-label {
   background: none;
   color: var(--rs-listbox-option-disabled-text);
@@ -37545,24 +37872,6 @@ textarea.rs-inline-edit-sm .rs-plaintext {
 .rs-toast-container .rs-toast:not(.rs-notification) {
   box-shadow: var(--rs-shadow-overlay);
 }
-.rs-toast-container .rs-toast-fade-entered,
-.rs-toast-container .rs-toast-fade-exiting {
-  animation-fill-mode: forwards;
-}
-.rs-toast-container .rs-toast-fade-entered {
-  animation-duration: 0.4s;
-  animation-timing-function: cubic-bezier(0.99, 0.44, 0.44, 1.35);
-}
-.rs-toast-container .rs-toast-fade-exited,
-.rs-toast-container .rs-toast-fade-entering {
-  opacity: 0;
-}
-.rs-toast-container .rs-toast-fade-exited {
-  transform-origin: 0 0;
-  transform: scaleY(0.8);
-  max-height: 0;
-  overflow: hidden;
-}
 .rs-toast-container-top-center,
 .rs-toast-container-bottom-center {
   align-items: center;
@@ -37601,7 +37910,25 @@ textarea.rs-inline-edit-sm .rs-plaintext {
 .rs-toast-container-bottom-end {
   bottom: 24px;
 }
-.rs-toast-container .rs-toast-fade-exiting {
+.rs-toast-fade-entered,
+.rs-toast-fade-exiting {
+  animation-fill-mode: forwards;
+}
+.rs-toast-fade-entered {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.99, 0.44, 0.44, 1.35);
+}
+.rs-toast-fade-exited,
+.rs-toast-fade-entering {
+  opacity: 0;
+}
+.rs-toast-fade-exited {
+  transform-origin: 0 0;
+  transform: scaleY(0.8);
+  max-height: 0;
+  overflow: hidden;
+}
+.rs-toast-fade-exiting {
   animation-duration: 0.3s;
   animation-timing-function: cubic-bezier(0.64, 0.65, 0.57, 1.13);
   animation-name: notificationMoveOut;
@@ -37621,7 +37948,7 @@ textarea.rs-inline-edit-sm .rs-plaintext {
   white-space: nowrap;
 }
 .rs-text {
-  font-family: Apple-System, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', STXihei, sans-serif;
   line-height: 1.42857143;
   color: var(--rs-text-primary);
   margin: 0;
@@ -38070,6 +38397,10 @@ kbd.rs-text {
 .rs-picker-default .rs-picker-toggle.rs-btn .rs-picker-toggle-indicator .rs-picker-clean {
   top: 7px;
 }
+.rs-picker-toggle.rs-btn .rs-picker-toggle-indicator .rs-picker-loader {
+  top: 8px;
+  right: 12px;
+}
 .rs-picker-date .rs-picker-toggle.rs-btn,
 .rs-picker-daterange .rs-picker-toggle.rs-btn {
   padding-right: 36px;
@@ -38110,6 +38441,10 @@ kbd.rs-text {
 .rs-picker-default .rs-picker-toggle.rs-btn-lg .rs-picker-toggle-indicator .rs-picker-caret-icon,
 .rs-picker-default .rs-picker-toggle.rs-btn-lg .rs-picker-toggle-indicator .rs-picker-clean {
   top: 9px;
+}
+.rs-picker-toggle.rs-btn-lg .rs-picker-toggle-indicator .rs-picker-loader {
+  top: 10px;
+  right: 16px;
 }
 .rs-picker-default .rs-picker-toggle.rs-btn-lg {
   padding-left: 15px;
@@ -38184,6 +38519,10 @@ kbd.rs-text {
 .rs-picker-default .rs-picker-toggle.rs-btn-md .rs-picker-toggle-indicator .rs-picker-caret-icon,
 .rs-picker-default .rs-picker-toggle.rs-btn-md .rs-picker-toggle-indicator .rs-picker-clean {
   top: 7px;
+}
+.rs-picker-toggle.rs-btn-md .rs-picker-toggle-indicator .rs-picker-loader {
+  top: 8px;
+  right: 12px;
 }
 .rs-picker-default .rs-picker-toggle.rs-btn-md {
   padding-left: 11px;
@@ -38261,6 +38600,10 @@ kbd.rs-text {
 .rs-picker-default .rs-picker-toggle.rs-btn-sm .rs-picker-toggle-indicator .rs-picker-clean {
   top: 4px;
 }
+.rs-picker-toggle.rs-btn-sm .rs-picker-toggle-indicator .rs-picker-loader {
+  top: 5px;
+  right: 10px;
+}
 .rs-picker-default .rs-picker-toggle.rs-btn-sm {
   padding-left: 9px;
 }
@@ -38336,6 +38679,10 @@ kbd.rs-text {
 .rs-picker-default .rs-picker-toggle.rs-btn-xs .rs-picker-toggle-indicator .rs-picker-caret-icon,
 .rs-picker-default .rs-picker-toggle.rs-btn-xs .rs-picker-toggle-indicator .rs-picker-clean {
   top: 1px;
+}
+.rs-picker-toggle.rs-btn-xs .rs-picker-toggle-indicator .rs-picker-loader {
+  top: 2px;
+  right: 8px;
 }
 .rs-picker-default .rs-picker-toggle.rs-btn-xs {
   padding-left: 7px;
@@ -38453,6 +38800,7 @@ kbd.rs-text {
   right: 12px;
   height: 20px;
   font-size: 12px;
+  font-size: 16px;
   color: var(--rs-text-secondary);
 }
 .rs-picker-toggle-indicator .rs-picker-loader {
@@ -38579,6 +38927,17 @@ kbd.rs-text {
   position: sticky;
   top: -1px;
   z-index: 1;
+}
+.rs-virt-list .rs-picker-select-menu-item,
+.rs-virt-list .rs-check-item label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rs-tree-virt-list .rs-tree-node-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .rs-search-box {
   position: relative;
