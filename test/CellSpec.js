@@ -89,14 +89,18 @@ describe('Cell', () => {
   });
 
   it('Should have a expanded icon', () => {
-    const instance = getDOMNode(
+    render(
       <div>
         <TableContext.Provider value={{ isTree: true }}>
           <Cell hasChildren firstColumn expanded rowData={{}} />
         </TableContext.Provider>
       </div>
     );
-    assert.ok(instance.querySelector('[aria-label="arrow down"]'));
+
+    expect(screen.getByRole('gridcell').querySelector('.rs-cell-expand-icon')).to.have.attribute(
+      'data-expanded',
+      'true'
+    );
   });
 
   it('Should be 60 the left', () => {
