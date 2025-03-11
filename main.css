@@ -39223,6 +39223,12 @@ kbd.rs-text {
 .rs-table-cell-header-sort-wrapper {
   display: inline-block;
 }
+.rs-table-cell-header-icon-sort {
+  display: flex;
+}
+.rs-table-cell-header-icon-sort:where([data-sort='asc']) {
+  transform: rotate(180deg);
+}
 .rs-table-cell-full-text:hover {
   overflow: visible;
   z-index: 2 !important;
@@ -39341,6 +39347,10 @@ kbd.rs-text {
 .rs-table-cell-expand-icon {
   cursor: pointer;
   outline: none;
+  transition: transform 0.3s ease;
+}
+.rs-table-cell-expand-icon:where([data-expanded='true']) {
+  transform: rotate(90deg);
 }
 .rs-table-cell-expand-wrapper {
   margin-right: 10px;
