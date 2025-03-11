@@ -3,6 +3,11 @@
 &-table-cell-expand-icon {
   cursor: pointer;
   outline: none;
+  transition: transform 0.3s ease;
+
+  &:where([data-expanded='true']) {
+    transform: rotate(90deg);
+  }
 }
 
 &-table-cell-expand-wrapper {
