@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
 import isNil from 'lodash/isNil';
 import get from 'lodash/get';
@@ -225,36 +224,6 @@ const Cell = React.forwardRef(
 );
 
 Cell.displayName = 'Table.Cell';
-
-Cell.propTypes = {
-  align: PropTypes.string,
-  verticalAlign: PropTypes.string,
-  className: PropTypes.string,
-  classPrefix: PropTypes.string,
-  dataKey: PropTypes.string,
-  isHeaderCell: PropTypes.bool,
-  width: PropTypes.number,
-  height: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-  left: PropTypes.number,
-  headerHeight: PropTypes.number,
-  style: PropTypes.object,
-  firstColumn: PropTypes.bool,
-  lastColumn: PropTypes.bool,
-  hasChildren: PropTypes.bool,
-  children: PropTypes.any,
-  rowKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  rowIndex: PropTypes.number,
-  rowData: PropTypes.object,
-  depth: PropTypes.number,
-  onTreeToggle: PropTypes.func,
-  renderTreeToggle: PropTypes.func,
-  renderCell: PropTypes.func,
-  wordWrap: PropTypes.any,
-  removed: PropTypes.bool,
-  treeCol: PropTypes.bool,
-  expanded: PropTypes.bool,
-  fullText: PropTypes.bool
-};
 
 export default Cell as <Row extends RowDataType, Key extends RowKeyType>(
   props: InnerCellProps<Row, Key> & React.RefAttributes<HTMLDivElement>
