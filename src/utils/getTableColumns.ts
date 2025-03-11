@@ -1,7 +1,7 @@
 import React from 'react';
-import * as ReactIs from 'react-is';
 import flatten from 'lodash/flatten';
 import ColumnGroup from '../ColumnGroup';
+import { isFragment } from './react-is';
 
 /**
  * Get the columns ReactElement array.
@@ -55,7 +55,7 @@ function getTableColumns(children) {
 
         return React.cloneElement(childColumn, groupCellProps);
       });
-    } else if (ReactIs.isFragment(column)) {
+    } else if (isFragment(column)) {
       // If the column is a fragment, we need to get the columns from the children.
       return getTableColumns(column.props && column.props.children);
     } else if (Array.isArray(column)) {

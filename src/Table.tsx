@@ -1,6 +1,4 @@
 import React, { useRef, useCallback, useImperativeHandle, useReducer, useMemo } from 'react';
-import * as ReactIs from 'react-is';
-import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 import isFunction from 'lodash/isFunction';
 import debounce from 'lodash/debounce';
 import Row, { RowProps } from './Row';
@@ -14,6 +12,8 @@ import Cell, { InnerCellProps } from './Cell';
 import HeaderCell, { HeaderCellProps } from './HeaderCell';
 import Column, { ColumnProps } from './Column';
 import ColumnGroup from './ColumnGroup';
+import { isElement } from './utils/react-is';
+import { getTranslateDOMPositionXY } from 'dom-lib/translateDOMPositionXY';
 import {
   SCROLLBAR_WIDTH,
   CELL_PADDING_HEIGHT,
@@ -374,14 +374,10 @@ const Table = React.forwardRef(
     );
 
     // Check for the existence of fixed columns in all column properties.
-    const shouldFixedColumn = children.some(
-      child => ReactIs.isElement(child) && child?.props?.fixed
-    );
+    const shouldFixedColumn = children.some(child => isElement(child) && child?.props?.fixed);
 
     // Check all column properties for the existence of rowSpan.
-    const shouldRowSpanColumn = children.some(
-      child => ReactIs.isElement(child) && child?.props?.rowSpan
-    );
+    const shouldRowSpanColumn = children.some(child => isElement(child) && child?.props?.rowSpan);
 
     const visibleRows = useRef<React.ReactNode[]>([]);
     const mouseAreaRef = useRef<HTMLDivElement>(null);
