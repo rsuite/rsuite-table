@@ -14,7 +14,6 @@ module.exports = (api, options) => {
       '@babel/preset-typescript'
     ],
     plugins: [
-      'lodash',
       '@babel/plugin-proposal-export-default-from',
       ['@babel/plugin-transform-class-properties', { loose: true }],
       '@babel/plugin-transform-optional-chaining',
