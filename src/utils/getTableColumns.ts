@@ -13,7 +13,7 @@ function getTableColumns(children) {
 
   const flattenColumns = flatten(childrenArray).map((column: React.ReactElement) => {
     // If the column is a group, we need to get the columns from the children.
-    if (column?.type === ColumnGroup) {
+    if (column && column.type === ColumnGroup) {
       const {
         header,
         children: groupChildren,
@@ -21,20 +21,21 @@ function getTableColumns(children) {
         fixed,
         verticalAlign,
         groupHeaderHeight
-      } = column?.props;
+      } = column.props || {};
 
       const childColumns = getTableColumns(groupChildren);
 
       return childColumns.map((childColumn, index) => {
         // Overwrite the props set by ColumnGroup to Column.
         const groupCellProps: any = {
-          ...childColumn?.props,
+          ...(childColumn && childColumn.props),
           groupHeaderHeight,
           fixed,
 
           // Column extends the properties of Group （align，verticalAlign）
-          align: childColumn?.props.align || align,
-          verticalAlign: childColumn?.props.verticalAlign || verticalAlign
+          align: (childColumn && childColumn.props && childColumn.props.align) || align,
+          verticalAlign:
+            (childColumn && childColumn.props && childColumn.props.verticalAlign) || verticalAlign
         };
 
         /**
@@ -56,7 +57,7 @@ function getTableColumns(children) {
       });
     } else if (ReactIs.isFragment(column)) {
       // If the column is a fragment, we need to get the columns from the children.
-      return getTableColumns(column.props?.children);
+      return getTableColumns(column.props && column.props.children);
     } else if (Array.isArray(column)) {
       // If the column is an array, need check item in the array.
       return getTableColumns(column);
