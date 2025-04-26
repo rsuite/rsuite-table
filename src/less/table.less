@@ -18,6 +18,14 @@
     transition: none;
   }
 
+  &-enabled-row-highlight {
+    cursor: pointer;
+  }
+
+  &-row-highlighted &-cell {
+    background-color: @row-higlight-color !important;
+  }
+
   &-hover &-body-row-wrapper &-row:hover {
     background: @row-hover-color;
   }

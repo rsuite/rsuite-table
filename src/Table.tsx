@@ -85,6 +85,9 @@ export interface TableProps<Row extends RowDataType, Key extends RowKeyType>
 
   /** Table data */
   data?: readonly Row[];
+  
+  /** Enable row highlight */
+  enabledRowHighlight?: boolean;
 
   /** Specify the default expanded row by  rowkey (Controlled) */
   expandedRowKeys?: readonly Key[];
@@ -266,6 +269,7 @@ const Table = React.forwardRef(
       data: dataProp = DATA_PLACEHOLDER,
       defaultSortType = SORT_TYPE.DESC as SortType,
       width: widthProp,
+      enabledRowHighlight,
       expandedRowKeys: expandedRowKeysProp,
       defaultExpandAllRows,
       defaultExpandedRowKeys,
@@ -386,6 +390,7 @@ const Table = React.forwardRef(
     const wheelWrapperRef = useRef<HTMLDivElement>(null);
     const scrollbarXRef = useRef<ScrollbarInstance>(null);
     const scrollbarYRef = useRef<ScrollbarInstance>(null);
+    const highlightedRowKeyRef = useRef<string | number | undefined>();
 
     const handleTableResizeChange = (_prevSize, event: TableSizeChangeEventName) => {
       forceUpdate();
@@ -626,6 +631,16 @@ const Table = React.forwardRef(
         restRowProps.className = rowClassName;
       }
 
+      if (enabledRowHighlight && props.key != null) {
+        restRowProps.className = prefix(
+          restRowProps.className, 
+          { 
+            'row-highlighted': highlightedRowKeyRef.current === props.key, 
+            'enabled-row-highlight': true,
+          }
+        );
+      }
+
       const rowStyles: React.CSSProperties = {
         ...props?.style
       };
@@ -783,12 +798,22 @@ const Table = React.forwardRef(
     );
 
     const bindRowClick = useCallback(
-      (rowData: Row) => {
+      (rowData: Row, nextRowKey: string | number | undefined) => {
         return (event: React.MouseEvent) => {
           onRowClick?.(rowData, event);
+
+          if (!enabledRowHighlight) return;
+    
+          if (highlightedRowKeyRef.current === nextRowKey) {
+            highlightedRowKeyRef.current = undefined;
+          } else {
+            highlightedRowKeyRef.current = nextRowKey;
+          }
+    
+          forceUpdate(); // dispara só uma atualização leve
         };
       },
-      [onRowClick]
+      [onRowClick, enabledRowHighlight]
     );
 
     const bindRowContextMenu = useCallback(
@@ -848,7 +873,7 @@ const Table = React.forwardRef(
         'aria-rowindex': (props.key as number) + 2,
 
         rowRef: bindTableRowsRef(props.key as any, rowData),
-        onClick: bindRowClick(rowData),
+        onClick: bindRowClick(rowData, nextRowKey),
         onContextMenu: bindRowContextMenu(rowData)
       };
 
