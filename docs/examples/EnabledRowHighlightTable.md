@@ -1,5 +1,4 @@
-### Enabled Row EnabledRowHighlight
-
+### Enabled Row Highlight
 <!--start-code-->
 
 ```js
