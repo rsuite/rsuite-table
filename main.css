@@ -22378,16 +22378,16 @@ dd {
 .CodeMirror pre {
   padding: 0 20px;
 }
-.copy-code-button {
+button[data-type="copy"] {
   position: absolute;
   color: #858b94;
 }
-.rcv-editor .copy-code-button {
+.rcv-editor button[data-type="copy"] {
   right: 8px;
   top: 16px;
   z-index: 1;
 }
-.rcv-highlight .copy-code-button {
+.rcv-highlight button[data-type="copy"] {
   right: 8px;
   top: 8px;
 }
