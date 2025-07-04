@@ -256,6 +256,11 @@ const getChildrenProps = {
   ColumnGroup
 };
 
+const defaultLocale = {
+  emptyMessage: 'No data found',
+  loading: 'Loading...'
+};
+
 const Table = React.forwardRef(
   <Row extends RowDataType, Key extends RowKeyType>(props: TableProps<Row, Key>, ref) => {
     const {
@@ -277,10 +282,7 @@ const Table = React.forwardRef(
       cellBordered,
       wordWrap,
       loading,
-      locale = {
-        emptyMessage: 'No data found',
-        loading: 'Loading...'
-      },
+      locale = defaultLocale,
       showHeader = true,
       sortColumn,
       rowHeight = ROW_HEIGHT,
