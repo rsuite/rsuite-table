@@ -256,7 +256,7 @@ const getChildrenProps = {
   ColumnGroup
 };
 
-const defaultLocale = {
+const defaultLocale: TableLocaleType = {
   emptyMessage: 'No data found',
   loading: 'Loading...'
 };
