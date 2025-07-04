@@ -256,10 +256,14 @@ const getChildrenProps = {
   ColumnGroup
 };
 
-const defaultLocale: TableLocaleType = {
+/**
+ * Default locale configuration for the Table component
+ * Provides default text for empty states and loading indicators
+ */
+const defaultLocale: TableLocaleType = Object.freeze({
   emptyMessage: 'No data found',
   loading: 'Loading...'
-};
+});
 
 const Table = React.forwardRef(
   <Row extends RowDataType, Key extends RowKeyType>(props: TableProps<Row, Key>, ref) => {
