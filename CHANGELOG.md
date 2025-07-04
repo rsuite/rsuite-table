@@ -1,3 +1,12 @@
+## [5.19.2](https://github.com/rsuite/rsuite-table/compare/5.19.1...5.19.2) (2025-07-04)
+
+
+### Performance Improvements
+
+* **Table:** move default locale outside component to prevent recreation ([#538](https://github.com/rsuite/rsuite-table/issues/538)) ([cfa7cc5](https://github.com/rsuite/rsuite-table/commit/cfa7cc5890feedf997f12a25f3d779ef15f130b5))
+
+
+
 ## [5.19.1](https://github.com/rsuite/rsuite-table/compare/5.19.0...5.19.1) (2024-08-24)
 
 
