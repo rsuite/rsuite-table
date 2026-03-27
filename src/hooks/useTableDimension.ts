@@ -331,7 +331,7 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
       return heightProp;
     }
 
-    const height = autoHeightProp ? headerHeight + contentHeight.current : heightProp;
+    let height = autoHeightProp ? headerHeight + contentHeight.current : heightProp;
 
     if (maxHeight && height > maxHeight) {
       return maxHeight;
@@ -339,6 +339,11 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
 
     if (minHeight && height < minHeight) {
       return minHeight;
+    }
+
+    // fix: https://github.com/rsuite/rsuite/issues/557
+    if(maxHeight && height < maxHeight && contentWidth.current > tableWidth.current) {
+      height += 8
     }
 
     return height;
