@@ -98,10 +98,10 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
 
     const nextContentHeight = rows.length
       ? (
-          Array.from(rows).map(
-            (row: Element, index: number) => getHeight(row) || getRowHeight(data?.[index])
-          ) as number[]
-        ).reduce((x: number, y: number) => x + y)
+        Array.from(rows).map(
+          (row: Element, index: number) => getHeight(row) || getRowHeight(data?.[index])
+        ) as number[]
+      ).reduce((x: number, y: number) => x + y)
       : 0;
 
     // After setting the affixHeader property, the height of the two headers should be subtracted.
@@ -331,7 +331,7 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
       return heightProp;
     }
 
-    const height = autoHeightProp ? headerHeight + contentHeight.current : heightProp;
+    let height = autoHeightProp ? headerHeight + contentHeight.current : heightProp;
 
     if (maxHeight && height > maxHeight) {
       return maxHeight;
@@ -339,6 +339,11 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
 
     if (minHeight && height < minHeight) {
       return minHeight;
+    }
+
+    // fix: https://github.com/rsuite/rsuite/issues/557
+    if (maxHeight && height < maxHeight && contentWidth.current > tableWidth.current) {
+      height += SCROLLBAR_WIDTH!
     }
 
     return height;
