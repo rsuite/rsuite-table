@@ -343,7 +343,7 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
 
     // fix: https://github.com/rsuite/rsuite/issues/557
     if (maxHeight && height < maxHeight && contentWidth.current > tableWidth.current) {
-      height += SCROLLBAR_WIDTH!
+      height += SCROLLBAR_WIDTH;
     }
 
     return height;
