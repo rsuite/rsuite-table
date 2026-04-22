@@ -113,7 +113,8 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
     const hasHorizontalScrollbar = contentWidth.current > tableWidth.current;
 
     // The height of the table content area should be added to the height occupied by the horizontal scroll bar when autoHeight is set.
-    if (autoHeight && hasHorizontalScrollbar) {
+    // This applies when autoHeightProp is true, even if maxHeight is also set (e.g. content height < maxHeight).
+    if (autoHeightProp && hasHorizontalScrollbar) {
       contentHeight.current += SCROLLBAR_WIDTH;
     }
 

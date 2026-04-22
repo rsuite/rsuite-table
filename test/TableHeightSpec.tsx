@@ -106,4 +106,16 @@ describe('Table - Height ', () => {
 
     expect(screen.getByRole('grid')).to.have.style('height', '300px');
   });
+
+  it('Should include horizontal scrollbar height when autoHeight and maxHeight are set and content is below maxHeight', () => {
+    render(
+      <Table autoHeight width={100} data={mockData(2)} maxHeight={500}>
+        {columns}
+      </Table>
+    );
+    // 2 rows + header row + scrollbar
+    const height = 46 * 2 + 40 + 10;
+
+    expect(screen.getByRole('grid')).to.have.style('height', `${height}px`);
+  });
 });
