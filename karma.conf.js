@@ -19,7 +19,7 @@ module.exports = config => {
     files: [testFile],
     frameworks: ['mocha', 'chai-dom', 'sinon-chai', 'webpack'],
     colors: true,
-    reporters: ['mocha', 'coverage'],
+    reporters: ['mocha', 'coverage', 'source-coverage'],
 
     logLevel: config.LOG_INFO,
     preprocessors: {
@@ -50,12 +50,15 @@ module.exports = config => {
       'karma-chai-dom',
       'karma-coverage',
       'karma-chrome-launcher',
-      'karma-firefox-launcher'
+      'karma-firefox-launcher',
+      require('./test/sourceCoverageReporter')
     ],
     coverageReporter: {
       dir: 'coverage',
       reporters: [
         { type: 'html' },
+        { type: 'json' },
+        { type: 'text-summary' },
         { type: 'lcov', subdir: 'lcov' } // lcov
       ]
     }

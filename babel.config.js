@@ -18,7 +18,8 @@ module.exports = (api, options) => {
       ['@babel/plugin-transform-class-properties', { loose: true }],
       '@babel/plugin-transform-optional-chaining',
       '@babel/plugin-transform-export-namespace-from',
-      ['@babel/plugin-transform-runtime', { useESModules: !modules }]
+      ['@babel/plugin-transform-runtime', { useESModules: !modules }],
+      ...(NODE_ENV === 'test' ? [['istanbul', { include: ['src/**/*.ts', 'src/**/*.tsx'] }]] : [])
     ]
   };
 };
