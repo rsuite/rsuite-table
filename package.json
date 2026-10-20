@@ -133,6 +133,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "rsuite": "5.78.0",
+    "rsuite-table-docs": "npm:rsuite-table@5.19.2",
     "sinon": "^19.0.2",
     "sinon-chai": "^3.7.0",
     "size-limit": "^11.1.6",
