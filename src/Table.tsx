@@ -842,23 +842,25 @@ const Table = React.forwardRef(
       props: TableRowProps & { cellHeight?: number },
       shouldRenderExpandedRow?: boolean
     ) => {
-      const hasChildren = isTree && rowData.children && Array.isArray(rowData.children);
+      const hasChildren = !!(isTree && Array.isArray(rowData.children) && rowData.children.length);
       const nextRowKey =
         rowKey && typeof rowData[rowKey] !== 'undefined' ? rowData[rowKey] : props.key;
 
       const { cellHeight, ...restRowProps } = props;
+      const expanded = expandedRowKeys.some(key => rowKey && key === rowData[rowKey]);
 
       const rowProps: TableRowProps = {
         ...restRowProps,
         key: nextRowKey,
         'aria-rowindex': (props.key as number) + 2,
+        'aria-level': isTree ? (props.depth ?? 0) + 1 : undefined,
+        'aria-expanded': hasChildren ? expanded : undefined,
 
         rowRef: bindTableRowsRef(props.key as any, rowData),
         onClick: bindRowClick(rowData),
         onContextMenu: bindRowContextMenu(rowData)
       };
 
-      const expanded = expandedRowKeys.some(key => rowKey && key === rowData[rowKey]);
       const cells: React.ReactNode[] = [];
 
       for (let i = 0; i < bodyCells.length; i++) {
