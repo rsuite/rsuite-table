@@ -4,6 +4,7 @@ import Column from '../src/Column';
 import Cell from '../src/Cell';
 import HeaderCell from '../src/HeaderCell';
 import { render, screen } from '@testing-library/react';
+import '../src/less/index.less';
 
 describe('ExpandableTable', () => {
   it('Should be to avoid nested classPrefix', () => {
@@ -93,9 +94,12 @@ describe('ExpandableTable', () => {
       </Table>
     );
     const rowExpandedHeights: number[] = [];
-    container
-      .querySelectorAll('.rs-table-row-expanded')
-      .forEach((el: Element) => rowExpandedHeights.push((el as HTMLElement).offsetHeight));
+    container.querySelectorAll('.rs-table-row-expanded').forEach((el: Element) => {
+      const styles = getComputedStyle(el);
+      expect(styles.position).to.equal('absolute');
+      expect(styles.boxSizing).to.equal('border-box');
+      rowExpandedHeights.push((el as HTMLElement).offsetHeight);
+    });
 
     expect(rowExpandedHeights).to.deep.equal([100, 200, 300]);
   });
