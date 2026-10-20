@@ -3,6 +3,7 @@
  */
 module.exports = {
   mode: 'development',
+  experiments: { css: true },
   output: {
     pathinfo: true
   },
@@ -18,11 +19,9 @@ module.exports = {
       },
       {
         test: /\.(less|css)$/,
+        type: 'css/global',
+        parser: { exportType: 'style' },
         use: [
-          'style-loader',
-          {
-            loader: 'css-loader'
-          },
           {
             loader: 'less-loader',
             options: {
