@@ -41,7 +41,7 @@ jobs:
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm install --frozen-lockfile
       - name: Run headless tests
         run: xvfb-run --auto-servernum npm test
         env:
