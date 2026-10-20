@@ -10,6 +10,7 @@ import HeaderCell from '../src/HeaderCell';
 import { render, waitFor, fireEvent, screen, act } from '@testing-library/react';
 import type { TableInstance } from '../src/Table';
 import '../src/less/index.less';
+import observeWheel from './utils/observeWheel';
 
 describe('Table', () => {
   it('Should output a table', () => {
@@ -578,49 +579,73 @@ describe('Table', () => {
 
   it('Should call `onScroll` callback', async () => {
     const onScroll = sinon.spy();
-    render(
-      <Table onScroll={onScroll} data={[{ id: 1, name: 'a' }]} height={60} width={100}>
-        <Column width={200}>
-          <HeaderCell>Id</HeaderCell>
-          <Cell dataKey="id" />
-        </Column>
-      </Table>
-    );
+    const diagnostic = observeWheel();
+    let body: HTMLElement | null = null;
+    try {
+      render(
+        <Table onScroll={onScroll} data={[{ id: 1, name: 'a' }]} height={60} width={100}>
+          <Column width={200}>
+            <HeaderCell>Id</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+        </Table>
+      );
 
-    const body = screen.getByRole('grid').querySelector<HTMLElement>('.rs-table-body-row-wrapper')!;
-    expect(body.clientHeight).to.equal(20);
-    expect(body.scrollHeight).to.be.greaterThan(body.clientHeight);
+      body = screen.getByRole('grid').querySelector<HTMLElement>('.rs-table-body-row-wrapper')!;
+      expect(body.clientHeight).to.equal(20);
+      expect(body.scrollHeight).to.be.greaterThan(body.clientHeight);
 
-    act(() => {
-      body?.dispatchEvent(new WheelEvent('wheel', { deltaY: 10, deltaX: 2 }));
-    });
+      act(() => {
+        body?.dispatchEvent(new WheelEvent('wheel', { deltaY: 10, deltaX: 2 }));
+      });
 
-    await waitFor(() => {
-      expect(onScroll).to.have.been.calledOnce;
-      expect(onScroll).to.have.been.calledWith(2, 10);
-    });
+      await waitFor(() => {
+        expect(onScroll).to.have.been.calledOnce;
+        expect(onScroll).to.have.been.calledWith(2, 10);
+      });
+    } catch (error) {
+      diagnostic.log(body, onScroll.callCount);
+      throw error;
+    } finally {
+      diagnostic.restore();
+    }
   });
 
   it('Should get scroll position via `ref`', async () => {
     const onScroll = sinon.spy();
-    const table = React.createRef<any>();
-    render(
-      <Table onScroll={onScroll} ref={table} data={[{ id: 1, name: 'a' }]} height={60} width={100}>
-        <Column width={200}>
-          <HeaderCell>Id</HeaderCell>
-          <Cell dataKey="id" />
-        </Column>
-      </Table>
-    );
-    const body = screen.getByRole('grid').querySelector<HTMLElement>('.rs-table-body-row-wrapper')!;
-    expect(body.clientHeight).to.equal(20);
-    expect(body.scrollHeight).to.be.greaterThan(body.clientHeight);
-    body?.dispatchEvent(new WheelEvent('wheel', { deltaY: 10, deltaX: 2 }));
+    const diagnostic = observeWheel();
+    let body: HTMLElement | null = null;
+    try {
+      const table = React.createRef<any>();
+      render(
+        <Table
+          onScroll={onScroll}
+          ref={table}
+          data={[{ id: 1, name: 'a' }]}
+          height={60}
+          width={100}
+        >
+          <Column width={200}>
+            <HeaderCell>Id</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+        </Table>
+      );
+      body = screen.getByRole('grid').querySelector<HTMLElement>('.rs-table-body-row-wrapper')!;
+      expect(body.clientHeight).to.equal(20);
+      expect(body.scrollHeight).to.be.greaterThan(body.clientHeight);
+      body?.dispatchEvent(new WheelEvent('wheel', { deltaY: 10, deltaX: 2 }));
 
-    await waitFor(() => {
-      expect(table.current?.scrollPosition.top).to.equal(10);
-      expect(table.current?.scrollPosition.left).to.equal(2);
-    });
+      await waitFor(() => {
+        expect(table.current?.scrollPosition.top).to.equal(10);
+        expect(table.current?.scrollPosition.left).to.equal(2);
+      });
+    } catch (error) {
+      diagnostic.log(body, onScroll.callCount);
+      throw error;
+    } finally {
+      diagnostic.restore();
+    }
   });
 
   it('Should call `onScroll` callback by scrollTop', done => {
