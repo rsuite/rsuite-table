@@ -1,6 +1,7 @@
 {
   "name": "rsuite-table",
   "version": "5.19.2",
+  "packageManager": "pnpm@8.15.9",
   "description": "A React table component",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
