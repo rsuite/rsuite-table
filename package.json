@@ -24,7 +24,7 @@
     "test": "npm run lint && cross-env NODE_ENV=test karma start --single-run && npm run build && npm run test:types",
     "test:types": "tsc -p tsconfig.test.json --noEmit",
     "clean": "rm -rf node_modules/gh-pages/.cache",
-    "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls",
+    "coveralls": "coveralls report coverage/lcov/lcov.info",
     "prepublishOnly": "npm run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
@@ -90,7 +90,6 @@
     "babel-plugin-istanbul": "^8.0.0",
     "chai": "^4.3.5",
     "conventional-changelog-cli": "^2.1.1",
-    "coveralls": "^3.1.0",
     "cross-env": "^5.2.1",
     "cssnano": "^4.1.10",
     "cz-conventional-changelog": "^3.3.0",

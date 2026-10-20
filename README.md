@@ -302,6 +302,19 @@ const ImageCell = <TKey extends string, TRow extends Record<TKey, string>>({
 );
 ```
 
+## Development coverage
+
+`npm test` generates `coverage/lcov/lcov.info`. To upload it, install the
+[official Coveralls Universal Coverage Reporter](https://github.com/coverallsapp/coverage-reporter#install)
+separately and make its `coveralls` executable available on your `PATH`.
+The uploader was validated with [v0.6.22](https://github.com/coverallsapp/coverage-reporter/releases/tag/v0.6.22).
+
+Run `npm run coveralls` to upload the report, or
+`npm run coveralls -- --dry-run` to check it without sending coverage.
+The reporter supports `.coveralls.yml` and the existing `COVERALLS_*`
+[environment variables](https://github.com/coverallsapp/coverage-reporter/blob/v0.6.22/doc/configuration.md).
+Set `COVERALLS_REPO_TOKEN` for the repository receiving the report.
+
 [npm-badge]: https://img.shields.io/npm/v/rsuite-table.svg?style=flat-square
 [npm]: https://www.npmjs.com/package/rsuite-table
 [coverage-badge]: https://img.shields.io/coveralls/rsuite/rsuite-table.svg?style=flat-square
