@@ -264,6 +264,9 @@ importers:
       rsuite:
         specifier: 5.78.0
         version: 5.78.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rsuite-table-docs:
+        specifier: npm:rsuite-table@5.19.2
+        version: rsuite-table@5.19.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       sinon:
         specifier: ^19.0.2
         version: 19.0.2
@@ -5903,6 +5906,12 @@ packages:
     resolution: {integrity: sha512-PsG+z3GfwywDvPVEjZYVZcel0M6zOBAx2HKTgYLfct/yAzXJWPgW/eVuv9+8KmkcKzAh03UVYQdB88Gp7+RlGg==}
     peerDependencies:
       prop-types: ^15.7.2
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  rsuite-table@5.19.2:
+    resolution: {integrity: sha512-0mnAuvTlDjNGo3FTWqIMdlCP2+gx8NJiMYJnGvOoYMt/kcxRsWzayQRrywc2cvnHTEOjMIQFi2uHYfie0irAHg==}
+    peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
 
@@ -13828,6 +13837,16 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-is: 17.0.2
+
+  rsuite-table@5.19.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      '@babel/runtime': 7.26.9
+      '@juggle/resize-observer': 3.4.0
+      classnames: 2.5.1
+      dom-lib: 3.3.2
+      lodash: 4.17.21
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   rsuite@5.78.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

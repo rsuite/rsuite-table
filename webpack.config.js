@@ -4,15 +4,24 @@ const path = require('path');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { NODE_ENV } = process.env;
+module.exports = (_, argv = {}) => {
+  const isDevelopment = (argv.mode || NODE_ENV) === 'development';
+  const usePublishedTable = !isDevelopment && process.env.RSUITE_TABLE_DOCS_SOURCE !== 'true';
+  const docsPath = isDevelopment ? './assets' : './';
 
-const docsPath = NODE_ENV === 'development' ? './assets' : './';
-
-module.exports = () => {
   return {
+    mode: isDevelopment ? 'development' : 'production',
     entry: './docs/index.tsx',
     devtool: 'source-map',
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.json']
+      extensions: ['.ts', '.tsx', '.js', '.json'],
+      // Production examples and styles use the same published package.
+      alias: {
+        'rsuite-table-docs-theme$': usePublishedTable
+          ? require.resolve('rsuite-table-docs/lib/less/index.less')
+          : path.resolve(__dirname, 'src/less/index.less'),
+        ...(usePublishedTable ? { '../src$': require.resolve('rsuite-table-docs') } : {})
+      }
     },
     devServer: {
       hot: true,

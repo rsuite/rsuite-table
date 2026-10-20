@@ -54,6 +54,12 @@ jobs:
       - name: Build documentation
         run: npm run build:docs
 
+      - name: Build source documentation preview
+        if: github.event_name == 'pull_request'
+        run: npm run build:docs
+        env:
+          RSUITE_TABLE_DOCS_SOURCE: 'true'
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/main'
