@@ -87,7 +87,7 @@
     "autoprefixer": "^8.3.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-date-fns": "^0.2.1",
-    "babel-plugin-istanbul": "^4.1.4",
+    "babel-plugin-istanbul": "^8.0.0",
     "chai": "^4.3.5",
     "conventional-changelog-cli": "^2.1.1",
     "coveralls": "^3.1.0",
