@@ -157,6 +157,10 @@ const examples = [
     content: require('./examples/EditTable.md')
   },
   {
+    title: 'Enabled Row Highlight',
+    content: require('./examples/EnabledRowHighlightTable.md')
+  },
+  {
     title: 'Loading',
     content: require('./examples/LoadingTable.md')
   },
