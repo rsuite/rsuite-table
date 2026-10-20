@@ -579,7 +579,7 @@ describe('Table', () => {
   it('Should call `onScroll` callback', async () => {
     const onScroll = sinon.spy();
     render(
-      <Table onScroll={onScroll} data={[{ id: 1, name: 'a' }]} height={10} width={100}>
+      <Table onScroll={onScroll} data={[{ id: 1, name: 'a' }]} height={60} width={100}>
         <Column width={200}>
           <HeaderCell>Id</HeaderCell>
           <Cell dataKey="id" />
@@ -587,7 +587,9 @@ describe('Table', () => {
       </Table>
     );
 
-    const body = screen.getByRole('grid').querySelector('.rs-table-body-row-wrapper');
+    const body = screen.getByRole('grid').querySelector<HTMLElement>('.rs-table-body-row-wrapper')!;
+    expect(body.clientHeight).to.equal(20);
+    expect(body.scrollHeight).to.be.greaterThan(body.clientHeight);
 
     act(() => {
       body?.dispatchEvent(new WheelEvent('wheel', { deltaY: 10, deltaX: 2 }));
@@ -603,14 +605,16 @@ describe('Table', () => {
     const onScroll = sinon.spy();
     const table = React.createRef<any>();
     render(
-      <Table onScroll={onScroll} ref={table} data={[{ id: 1, name: 'a' }]} height={10} width={100}>
+      <Table onScroll={onScroll} ref={table} data={[{ id: 1, name: 'a' }]} height={60} width={100}>
         <Column width={200}>
           <HeaderCell>Id</HeaderCell>
           <Cell dataKey="id" />
         </Column>
       </Table>
     );
-    const body = screen.getByRole('grid').querySelector('.rs-table-body-row-wrapper');
+    const body = screen.getByRole('grid').querySelector<HTMLElement>('.rs-table-body-row-wrapper')!;
+    expect(body.clientHeight).to.equal(20);
+    expect(body.scrollHeight).to.be.greaterThan(body.clientHeight);
     body?.dispatchEvent(new WheelEvent('wheel', { deltaY: 10, deltaX: 2 }));
 
     await waitFor(() => {
