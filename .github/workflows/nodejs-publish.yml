@@ -16,16 +16,13 @@ jobs:
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         id: pnpm-install
-        with:
-          version: 8
-
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm install --frozen-lockfile
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
