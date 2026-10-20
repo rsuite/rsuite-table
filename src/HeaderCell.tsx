@@ -63,6 +63,8 @@ const HeaderCell = React.forwardRef(
       onColumnResizeMove,
       onSortColumn,
       renderSortIcon,
+      onKeyDown,
+      tabIndex,
       ...rest
     } = props;
 
@@ -75,9 +77,10 @@ const HeaderCell = React.forwardRef(
     const { withClassPrefix, merge, prefix } = useClassNames(classPrefix);
     const classes = merge(className, withClassPrefix({ sortable }));
 
-    let ariaSort;
+    const isSortable = sortable && !groupHeader;
+    let ariaSort: React.AriaAttributes['aria-sort'] = isSortable ? 'none' : undefined;
 
-    if (sortColumn === dataKey) {
+    if (isSortable && sortColumn != null && sortColumn === dataKey) {
       ariaSort = 'other';
       if (sortType === 'asc') {
         ariaSort = 'ascending';
@@ -91,6 +94,27 @@ const HeaderCell = React.forwardRef(
         onSortColumn?.(dataKey);
       }
     }, [dataKey, onSortColumn, sortable]);
+
+    const handleKeyDown = useCallback(
+      (event: React.KeyboardEvent<HTMLDivElement>) => {
+        onKeyDown?.(event);
+        if (
+          event.defaultPrevented ||
+          event.target !== event.currentTarget ||
+          !isSortable ||
+          event.altKey ||
+          event.ctrlKey ||
+          event.metaKey
+        ) {
+          return;
+        }
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          handleClick();
+        }
+      },
+      [handleClick, isSortable, onKeyDown]
+    );
 
     const handleColumnResizeStart = useCallback(() => {
       onColumnResizeStart?.(columnWidth, left, !!fixed);
@@ -134,6 +158,8 @@ const HeaderCell = React.forwardRef(
           align={!groupHeader ? align : undefined}
           verticalAlign={!groupHeader ? verticalAlign : undefined}
           onClick={!groupHeader ? handleClick : undefined}
+          onKeyDown={handleKeyDown}
+          tabIndex={tabIndex === undefined ? (isSortable ? 0 : undefined) : tabIndex}
         >
           {children}
           {renderSortColumn()}
