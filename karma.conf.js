@@ -16,13 +16,14 @@ module.exports = config => {
 
   config.set({
     basePath: '',
-    files: [testFile],
+    files: ['test/browserReady.ts', testFile],
     frameworks: ['mocha', 'chai-dom', 'sinon-chai', 'webpack'],
     colors: true,
     reporters: ['mocha', 'coverage', 'source-coverage'],
 
     logLevel: config.LOG_INFO,
     preprocessors: {
+      'test/browserReady.ts': ['webpack'],
       'test/**/*Spec.+(js|ts|tsx)': ['webpack']
     },
     webpack: require('./webpack.karma.js'),
