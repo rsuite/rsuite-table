@@ -10,7 +10,7 @@
     "format": "prettier --write \"{src,test}/**/*.{tsx,ts,js}\"",
     "format:check": "prettier --list-different \"{src,test}/**/*.{tsx,ts,js}\"",
     "dist:pro": "webpack --mode production --progress --config webpack.build.config.js",
-    "build": "npm run build:gulp && npm run build:types",
+    "build": "npm run build:gulp && npm run build:types && npm run dist:pro",
     "build:gulp": "gulp build",
     "build:types": "npx tsc --emitDeclarationOnly --outDir lib && npx tsc --emitDeclarationOnly --outDir es",
     "build:docs": "rm -rf assets &&  NODE_ENV=production webpack",
