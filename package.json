@@ -23,6 +23,7 @@
     "lint": "npm run lint:ts",
     "test": "npm run lint && cross-env NODE_ENV=test karma start --single-run && npm run build && npm run test:types",
     "test:types": "tsc -p tsconfig.test.json --noEmit",
+    "test:chrome-trace": "node --test test/chromeTraceSession.test.js && node test/chromeTraceControls.js",
     "clean": "rm -rf node_modules/gh-pages/.cache",
     "coveralls": "coveralls report coverage/lcov/lcov.info",
     "prepublishOnly": "npm run build",

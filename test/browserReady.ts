@@ -1,6 +1,15 @@
 let pendingFrame: number | null = null;
 let requestedAt = 0;
 
+function traceMarker(label: string) {
+  if (
+    (window as Window & { __karma__?: { config: { chromeTrace?: boolean } } }).__karma__?.config
+      .chromeTrace
+  ) {
+    console.timeStamp(`rsuite-table:startup-frame-${label}`);
+  }
+}
+
 function frameEnvironment() {
   const frame = window.frameElement;
   const host = frame?.ownerDocument.defaultView;
@@ -8,6 +17,8 @@ function frameEnvironment() {
 
   return {
     elapsedMs: performance.now() - requestedAt,
+    timeOrigin: performance.timeOrigin,
+    requestedAt,
     visibility: document.visibilityState,
     readyState: document.readyState,
     focusedDocument: document.hasFocus(),
@@ -31,7 +42,9 @@ function frameEnvironment() {
 before('the native browser produces a visible frame', () => {
   return new Promise<void>((resolve, reject) => {
     requestedAt = performance.now();
+    traceMarker('request');
     pendingFrame = requestAnimationFrame(() => {
+      traceMarker('received');
       pendingFrame = null;
       if (document.visibilityState !== 'visible') {
         reject(
@@ -46,6 +59,7 @@ before('the native browser produces a visible frame', () => {
 
 after(() => {
   if (pendingFrame !== null) {
+    traceMarker('pending-at-cleanup');
     console.error('Browser startup frame unavailable', JSON.stringify(frameEnvironment()));
     cancelAnimationFrame(pendingFrame);
     pendingFrame = null;
