@@ -1,28 +1,66 @@
-# see https://help.github.com/cn/actions/language-and-framework-guides/publishing-nodejs-packages
-
 name: Node.js Package
 
 on:
   push:
     tags: ['*']
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Previously reviewed release tag
+        required: true
+        type: choice
+        options: ['5.19.3']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ inputs.release_tag || github.ref }}
+  cancel-in-progress: false
 
 jobs:
   publish:
-    name: 'Publish'
+    name: Publish
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
-
+        with:
+          ref: ${{ inputs.release_tag || github.ref }}
+          persist-credentials: false
+      - name: Verify release identity
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+          MANUAL_RELEASE: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          node <<'NODE'
+          const assert = require('node:assert/strict');
+          const { execFileSync } = require('node:child_process');
+          const pkg = require('./package.json');
+          const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+          assert.equal(pkg.name, 'rsuite-table');
+          assert.equal(process.env.RELEASE_TAG, '' + pkg.version);
+          if (process.env.MANUAL_RELEASE === 'true') {
+            assert.equal(process.env.RELEASE_TAG, '5.19.3');
+            assert.equal(head, '05600222229a71a7ca3903f3500e967364d70903');
+          }
+          console.log({ tag: process.env.RELEASE_TAG, head, version: pkg.version });
+          NODE
       - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        id: pnpm-install
-      # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
+      - name: Set up npm for trusted publishing
+        run: npm install --global npm@11.21.0
+      - name: Record publication runtime
+        run: |
+          node --version
+          npm --version
+          pnpm --version
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish with OIDC
+        run: npm publish --access public
