@@ -9,7 +9,6 @@ const traceConfig = {
   enableSampling: true,
   includedCategories: [
     'toplevel',
-    'blink',
     'cc',
     'viz',
     'gpu',
@@ -26,7 +25,6 @@ const traceConfig = {
 class Protocol {
   constructor(url) {
     this.pending = new Map();
-    this.events = new Map();
     this.id = 0;
     this.socket = new WebSocket(url);
     this.opened = new Promise((resolve, reject) => {
@@ -71,8 +69,10 @@ class Protocol {
           error.code = message.error.code;
           request.reject(error);
         } else request.resolve(message.result);
-      } else {
-        this.events.get(message.method)?.(message.params);
+      } else if (message.method === 'Tracing.bufferUsage') {
+        this.onBufferUsage?.(message.params);
+      } else if (message.method === 'Tracing.tracingComplete') {
+        this.onTracingComplete?.(message.params);
       }
     });
     this.socket.addEventListener('close', () => {
@@ -170,11 +170,11 @@ class ChromeTraceSession {
         }
         this.protocol = new Protocol(`ws://127.0.0.1:${port}${endpoint}`);
         this.metadata.browser = await this.protocol.send('Browser.getVersion');
-        this.protocol.events.set('Tracing.bufferUsage', event => {
+        this.protocol.onBufferUsage = event => {
           this.metadata.lastBufferUsage = event;
-        });
+        };
         this.completed = new Promise(resolve => {
-          this.protocol.events.set('Tracing.tracingComplete', resolve);
+          this.protocol.onTracingComplete = resolve;
         });
         try {
           await this.protocol.send('Tracing.start', {
