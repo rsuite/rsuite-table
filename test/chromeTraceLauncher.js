@@ -4,7 +4,7 @@ const Chrome = require('karma-chrome-launcher')['launcher:Chrome'][1];
 const { ChromeTraceSession } = require('./chromeTraceSession');
 
 function createTracedChrome(TraceSession = ChromeTraceSession) {
-  function TracedChrome(baseBrowserDecorator, args, logger, basePath, emitter) {
+  function TracedChrome(baseBrowserDecorator, args, logger, basePath, emitter, captureTimeout) {
     if (
       args.chromeDataDir ||
       (args.flags || []).some(flag => flag.startsWith('--remote-debugging-'))
@@ -31,7 +31,8 @@ function createTracedChrome(TraceSession = ChromeTraceSession) {
       session = new TraceSession(
         path.resolve(basePath, 'coverage/chrome-trace', `${this.id}-${++attempt}`),
         this._tempDir,
-        log
+        log,
+        captureTimeout
       );
       sessions.push(session);
       try {
@@ -61,7 +62,14 @@ function createTracedChrome(TraceSession = ChromeTraceSession) {
 
   TracedChrome.prototype = Object.create(Chrome.prototype);
   TracedChrome.prototype.name = 'TracedChrome';
-  TracedChrome.$inject = ['baseBrowserDecorator', 'args', 'logger', 'config.basePath', 'emitter'];
+  TracedChrome.$inject = [
+    'baseBrowserDecorator',
+    'args',
+    'logger',
+    'config.basePath',
+    'emitter',
+    'config.captureTimeout'
+  ];
   return TracedChrome;
 }
 
