@@ -18,6 +18,138 @@ describe('Table', () => {
     expect(screen.getByRole('grid')).to.have.class('rs-table');
   });
 
+  describe('Row highlight', () => {
+    const data = [
+      { id: 0, name: 'First row' },
+      { id: 'second', name: 'Second row' }
+    ];
+
+    const columns = (
+      <Column>
+        <HeaderCell>Name</HeaderCell>
+        <Cell dataKey="name" />
+      </Column>
+    );
+
+    it('leaves existing row appearance and selection semantics untouched by default', () => {
+      render(
+        <Table data={data} rowKey="id" rowClassName="custom-row">
+          {columns}
+        </Table>
+      );
+      const row = screen.getByRole('row', { name: 'First row' });
+      fireEvent.click(row);
+      expect(row).to.have.class('custom-row');
+      expect(row).not.to.have.class('rs-table-row-highlighted');
+      expect(row).not.to.have.attr('aria-selected');
+    });
+
+    it('toggles a highlighted row without replacing its custom class', () => {
+      const onRowClick = sinon.spy();
+      const onHighlightedRowChange = sinon.spy();
+      render(
+        <Table
+          data={data}
+          rowKey="id"
+          rowClassName={row => (row ? `custom-${row.id}` : '')}
+          enabledRowHighlight
+          onRowClick={onRowClick}
+          onHighlightedRowChange={onHighlightedRowChange}
+        >
+          {columns}
+        </Table>
+      );
+
+      const first = screen.getByRole('row', { name: 'First row' });
+      const second = screen.getByRole('row', { name: 'Second row' });
+      fireEvent.click(first);
+      expect(first).to.have.class('custom-0');
+      expect(first.classList.contains('rs-table-row-highlighted')).to.equal(true);
+      expect(first).to.have.attr('aria-selected', 'true');
+      expect(second).to.have.attr('aria-selected', 'false');
+      expect(onHighlightedRowChange.firstCall.args.slice(0, 2)).to.deep.equal([0, data[0]]);
+      expect(onRowClick.firstCall.args[0]).to.equal(data[0]);
+
+      fireEvent.click(second);
+      expect(first).to.have.attr('aria-selected', 'false');
+      expect(second).to.have.attr('aria-selected', 'true');
+      fireEvent.click(second);
+      expect(second).to.have.attr('aria-selected', 'false');
+      expect(onHighlightedRowChange.lastCall.args.slice(0, 2)).to.deep.equal([null, data[1]]);
+      expect(onRowClick.callCount).to.equal(3);
+    });
+
+    it('keeps controlled highlighting attached to the row key after reorder', () => {
+      const onHighlightedRowChange = sinon.spy();
+      const table = (rows, key) => (
+        <Table
+          data={rows}
+          rowKey="id"
+          enabledRowHighlight
+          highlightedRowKey={key}
+          virtualized
+          height={145}
+          onHighlightedRowChange={onHighlightedRowChange}
+        >
+          {columns}
+        </Table>
+      );
+      const { rerender } = render(table(data, 0));
+      fireEvent.click(screen.getByRole('row', { name: 'Second row' }));
+      expect(onHighlightedRowChange.callCount).to.equal(1);
+      expect(onHighlightedRowChange.firstCall.args[0]).to.equal('second');
+      expect(screen.getByRole('row', { name: 'First row' })).to.have.attr('aria-selected', 'true');
+
+      rerender(table([data[1], data[0]], 0));
+      expect(screen.getByRole('row', { name: 'First row' })).to.have.attr('aria-selected', 'true');
+      expect(screen.getByRole('row', { name: 'Second row' })).to.have.attr(
+        'aria-selected',
+        'false'
+      );
+
+      rerender(table([data[1], data[0]], null));
+      expect(screen.getByRole('row', { name: 'First row' })).to.have.attr('aria-selected', 'false');
+    });
+
+    it('highlights with Shift+Space from a cell while leaving nested controls operable', () => {
+      const onHighlightedRowChange = sinon.spy();
+      const onAction = sinon.spy();
+      render(
+        <Table
+          data={data.slice(0, 1)}
+          rowKey="id"
+          enabledRowHighlight
+          onHighlightedRowChange={onHighlightedRowChange}
+        >
+          <Column>
+            <HeaderCell>Name</HeaderCell>
+            <Cell>
+              {row => (
+                <>
+                  <span tabIndex={0}>{row.name}</span>
+                  <button type="button" onClick={onAction}>
+                    Edit
+                  </button>
+                </>
+              )}
+            </Cell>
+          </Column>
+        </Table>
+      );
+
+      const row = screen.getAllByRole('row')[1];
+      fireEvent.click(screen.getByRole('button', { name: 'Edit' }));
+      expect(onAction.callCount).to.equal(1);
+      expect(onHighlightedRowChange.callCount).to.equal(0);
+      const focusTarget = screen.getByText('First row');
+      focusTarget.focus();
+      fireEvent.keyDown(focusTarget, { key: ' ', shiftKey: true });
+      expect(row.getAttribute('aria-selected')).to.equal('true');
+      expect(focusTarget).to.have.focus;
+      expect(onHighlightedRowChange.firstCall.args[0]).to.equal(0);
+    });
+  });
+
   it('Should render 2 columns', () => {
     render(
       <Table>

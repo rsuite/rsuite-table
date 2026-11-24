@@ -30,6 +30,19 @@
     background: @row-hover-color;
   }
 
+  & &-body-row-wrapper &-row&-row-highlighted,
+  & &-body-row-wrapper &-row&-row-highlighted &-cell-group,
+  & &-body-row-wrapper &-row&-row-highlighted &-cell {
+    background: @row-highlight-color;
+  }
+
+  @media (forced-colors: active) {
+    &-body-row-wrapper &-row-highlighted {
+      outline: 2px solid Highlight;
+      outline-offset: -2px;
+    }
+  }
+
   &-row-header {
     background: @head-background;
   }
