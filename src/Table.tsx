@@ -36,6 +36,7 @@ import {
   usePosition,
   useTableData
 } from './hooks';
+import useVirtualizedFocus from './hooks/useVirtualizedFocus';
 import type {
   StandardProps,
   SortType,
@@ -358,7 +359,7 @@ const Table = React.forwardRef(
       }
     }
 
-    const { tableRowsMaxHeight, bindTableRowsRef } = useTableRows({
+    const { tableRowsMaxHeight, bindTableRowsRef, tableRows } = useTableRows({
       data: dataProp,
       expandedRowKeys,
       wordWrap,
@@ -392,6 +393,19 @@ const Table = React.forwardRef(
     const wheelWrapperRef = useRef<HTMLDivElement>(null);
     const scrollbarXRef = useRef<ScrollbarInstance>(null);
     const scrollbarYRef = useRef<ScrollbarInstance>(null);
+    const {
+      focusedRow,
+      retainedRow,
+      onBlurCapture: handleFocusBlur
+    } = useVirtualizedFocus({
+      enabled: virtualized,
+      tableRef,
+      tableRows,
+      data,
+      rowKey,
+      update: forceUpdate,
+      onBlurCapture: rest.onBlurCapture
+    });
 
     const handleTableResizeChange = (_prevSize, event: TableSizeChangeEventName) => {
       forceUpdate();
@@ -842,23 +856,25 @@ const Table = React.forwardRef(
       props: TableRowProps & { cellHeight?: number },
       shouldRenderExpandedRow?: boolean
     ) => {
-      const hasChildren = isTree && rowData.children && Array.isArray(rowData.children);
+      const hasChildren = !!(isTree && Array.isArray(rowData.children) && rowData.children.length);
       const nextRowKey =
         rowKey && typeof rowData[rowKey] !== 'undefined' ? rowData[rowKey] : props.key;
 
       const { cellHeight, ...restRowProps } = props;
+      const expanded = expandedRowKeys.some(key => rowKey && key === rowData[rowKey]);
 
       const rowProps: TableRowProps = {
         ...restRowProps,
         key: nextRowKey,
         'aria-rowindex': (props.key as number) + 2,
+        'aria-level': isTree ? (props.depth ?? 0) + 1 : undefined,
+        'aria-expanded': hasChildren ? expanded : undefined,
 
         rowRef: bindTableRowsRef(props.key as any, rowData),
         onClick: bindRowClick(rowData),
         onContextMenu: bindRowContextMenu(rowData)
       };
 
-      const expanded = expandedRowKeys.some(key => rowKey && key === rowData[rowKey]);
       const cells: React.ReactNode[] = [];
 
       for (let i = 0; i < bodyCells.length; i++) {
@@ -965,6 +981,21 @@ const Table = React.forwardRef(
       let bottomHideHeight = 0;
 
       visibleRows.current = [];
+      const renderRetainedRow = (
+        rowData: Row,
+        rowProps: TableRowProps & { cellHeight?: number },
+        expanded: boolean
+      ) => {
+        retainedRow.current = focusedRow?.element ?? null;
+        // A retained row must not change merged-cell bookkeeping for the visible range.
+        const spanState = rowSpanState.current;
+        rowSpanState.current = {};
+        try {
+          return renderRowData(bodyCells, rowData, rowProps, expanded);
+        } finally {
+          rowSpanState.current = spanState;
+        }
+      };
 
       if (data) {
         let top = 0; // Row position
@@ -1032,17 +1063,28 @@ const Table = React.forwardRef(
 
             top += nextRowHeight;
 
+            let retain = false;
             if (virtualized && !wordWrap) {
               if (top + nextRowHeight < minTop) {
-                topHideHeight += nextRowHeight;
-                continue;
+                if (index !== focusedRow?.index) {
+                  topHideHeight += nextRowHeight;
+                  continue;
+                }
+                retain = true;
               } else if (top > maxTop) {
-                bottomHideHeight += nextRowHeight;
-                continue;
+                if (index !== focusedRow?.index) {
+                  bottomHideHeight += nextRowHeight;
+                  continue;
+                }
+                retain = true;
               }
             }
 
-            visibleRows.current.push(renderRowData(bodyCells, rowData, rowProps, expandedRow));
+            visibleRows.current.push(
+              retain
+                ? renderRetainedRow(rowData, rowProps, expandedRow)
+                : renderRowData(bodyCells, rowData, rowProps, expandedRow)
+            );
           }
         } else {
           /** virtualized */
@@ -1068,7 +1110,21 @@ const Table = React.forwardRef(
           topHideHeight = startIndex * nextRowHeight;
           bottomHideHeight = (data.length - endIndex) * nextRowHeight;
 
-          for (let index = startIndex; index < endIndex; index++) {
+          const indices = Array.from(
+            { length: Math.max(endIndex - startIndex, 0) },
+            (_, index) => startIndex + index
+          );
+          if (focusedRow && (focusedRow.index < startIndex || focusedRow.index >= endIndex)) {
+            // Retained rows already contribute their height to dimension measurements.
+            if (focusedRow.index < startIndex) {
+              indices.unshift(focusedRow.index);
+              topHideHeight -= nextRowHeight;
+            } else {
+              indices.push(focusedRow.index);
+              bottomHideHeight -= nextRowHeight;
+            }
+          }
+          for (const index of indices) {
             const rowData = data[index];
             const rowProps = {
               key: index,
@@ -1079,7 +1135,11 @@ const Table = React.forwardRef(
               height: nextRowHeight,
               cellHeight: nextRowHeight
             };
-            visibleRows.current.push(renderRowData(bodyCells, rowData, rowProps, false));
+            visibleRows.current.push(
+              index < startIndex || index >= endIndex
+                ? renderRetainedRow(rowData, rowProps, false)
+                : renderRowData(bodyCells, rowData, rowProps, false)
+            );
           }
         }
       }
@@ -1146,6 +1206,7 @@ const Table = React.forwardRef(
           ref={tableRef}
           tabIndex={-1}
           onKeyDown={onScrollByKeydown}
+          onBlurCapture={handleFocusBlur}
         >
           {showHeader && renderTableHeader(headerCells, rowWidth)}
           {children && renderTableBody(bodyCells, rowWidth)}

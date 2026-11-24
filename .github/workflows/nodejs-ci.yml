@@ -28,9 +28,6 @@ jobs:
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         id: pnpm-install
-        with:
-          version: 8
-
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
@@ -44,9 +41,21 @@ jobs:
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm install --frozen-lockfile
+      - name: Verify Chrome trace collection and failure cleanup
+        if: matrix.browser == 'ChromeCi'
+        run: xvfb-run --auto-servernum npm run test:chrome-trace
       - name: Run headless tests
         run: xvfb-run --auto-servernum npm test
         env:
           CI: true
           BROWSER: ${{ matrix.browser }}
+          CHROME_TRACE: ${{ matrix.browser == 'ChromeCi' && '1' || '0' }}
+      - name: Preserve Chrome native frame diagnostics
+        if: always() && matrix.browser == 'ChromeCi'
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome-native-frame-trace
+          path: coverage/chrome-trace/
+          if-no-files-found: warn
+          retention-days: 7

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import omit from 'lodash/omit';
 import isNil from 'lodash/isNil';
 import get from 'lodash/get';
@@ -96,11 +96,13 @@ const Cell = React.forwardRef(
       renderCell,
       renderTreeToggle,
       onClick,
+      onKeyDown,
       onTreeToggle,
       ...rest
     } = props;
 
     const { rtl, hasCustomTreeCol, isTree } = useTable();
+    const treeToggleRef = useRef<HTMLSpanElement>(null);
 
     const isTreeCol = treeCol || (!hasCustomTreeCol && firstColumn && isTree);
     const cellHeight =
@@ -115,6 +117,25 @@ const Cell = React.forwardRef(
         onTreeToggle?.(rowKey, rowIndex, rowData, event);
       },
       [onTreeToggle, rowData, rowIndex, rowKey]
+    );
+    const handleKeyDown = useCallback(
+      (event: React.KeyboardEvent<HTMLDivElement>) => {
+        onKeyDown?.(event);
+        if (
+          event.defaultPrevented ||
+          event.target !== treeToggleRef.current ||
+          event.altKey ||
+          event.ctrlKey ||
+          event.metaKey
+        )
+          return;
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          // The existing callback's mouse event remains optional for keyboard activation.
+          onTreeToggle?.(rowKey, rowIndex, rowData);
+        }
+      },
+      [onKeyDown, onTreeToggle, rowKey, rowIndex, rowData]
     );
 
     const { withClassPrefix, merge, prefix } = useClassNames(classPrefix);
@@ -168,6 +189,17 @@ const Cell = React.forwardRef(
       cellContent = children;
     }
 
+    const labelValue =
+      typeof cellContent === 'string' || typeof cellContent === 'number'
+        ? cellContent
+        : dataKey && rowData
+        ? get(rowData, dataKey)
+        : undefined;
+    const treeLabel =
+      typeof labelValue === 'string' || typeof labelValue === 'number'
+        ? String(labelValue)
+        : undefined;
+
     const renderTreeNodeExpandIcon = () => {
       const expandButton = (
         <ArrowRight className={prefix('expand-icon')} data-expanded={expanded} />
@@ -176,8 +208,11 @@ const Cell = React.forwardRef(
       if (isTreeCol && hasChildren) {
         return (
           <span
+            ref={treeToggleRef}
             role="button"
-            tabIndex={-1}
+            tabIndex={0}
+            aria-label={treeLabel}
+            aria-expanded={!!expanded}
             className={prefix('expand-wrapper')}
             onClick={handleTreeToggle}
           >
@@ -211,6 +246,7 @@ const Cell = React.forwardRef(
         role={isHeaderCell ? 'columnheader' : 'gridcell'}
         {...omit(rest, [...groupKeys, ...columnHandledProps])}
         onClick={onClick}
+        onKeyDown={handleKeyDown}
         className={classes}
         style={styles}
       >

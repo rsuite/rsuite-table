@@ -1,3 +1,19 @@
+## [5.19.3](https://github.com/rsuite/rsuite-table/compare/5.19.2...5.19.3) (2026-10-24)
+
+### Bug Fixes
+
+- Support Enter and Space to sort table headers, with visible keyboard focus and accessible sort state ([#563](https://github.com/rsuite/rsuite-table/pull/563)).
+- Support keyboard tree disclosure and expose row hierarchy, expansion state, and disclosure labels ([#566](https://github.com/rsuite/rsuite-table/pull/566)).
+- Keep focused virtualized rows mounted while scrolling and release retained rows after focus leaves or their data is removed ([#568](https://github.com/rsuite/rsuite-table/pull/568)).
+- Require patched runtime dependencies, including lodash `^4.18.1` and `@babel/runtime` `^7.26.10` ([#569](https://github.com/rsuite/rsuite-table/pull/569)).
+- Include the browser bundle, source map, and license file in clean package builds ([#575](https://github.com/rsuite/rsuite-table/pull/575)).
+
+### Maintenance
+
+- Pin pnpm and enforce frozen installs; patch development dependencies and modernize CSS builds ([#564](https://github.com/rsuite/rsuite-table/pull/564), [#570](https://github.com/rsuite/rsuite-table/pull/570), [#572](https://github.com/rsuite/rsuite-table/pull/572), [#574](https://github.com/rsuite/rsuite-table/pull/574)).
+- Validate source coverage in native browsers and use the official Coveralls reporter ([#567](https://github.com/rsuite/rsuite-table/pull/567), [#571](https://github.com/rsuite/rsuite-table/pull/571), [#573](https://github.com/rsuite/rsuite-table/pull/573)).
+- Build production documentation against the published table package ([#565](https://github.com/rsuite/rsuite-table/pull/565)).
+
 ## [5.19.2](https://github.com/rsuite/rsuite-table/compare/5.19.1...5.19.2) (2025-07-04)
 
 
