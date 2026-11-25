@@ -240,14 +240,26 @@ const useScrollListener = (props: ScrollListenerProps) => {
     ]
   );
 
+  const getControlledScrollLeftValue = useCallback(
+    (value: number) => {
+      const left = Math.min(value, Math.max(0, contentWidth.current - tableWidth.current));
+      return [-left, contentWidth.current ? (left / contentWidth.current) * tableWidth.current : 0];
+    },
+    [contentWidth, tableWidth]
+  );
+
   const onWheel = useCallback(
     (deltaX: number, deltaY: number, momentumOptions?: { duration: number; bezier: string }) => {
       handleWheel(deltaX, deltaY, momentumOptions);
 
-      scrollbarXRef.current?.onWheelScroll?.(deltaX);
+      if (deltaX !== 0) {
+        // Virtualized scrolling can flush a resize that has already positioned the thumb.
+        const [, offset] = getControlledScrollLeftValue(Math.abs(scrollX.current));
+        scrollbarXRef.current?.resetScrollBarPosition?.(offset);
+      }
       scrollbarYRef.current?.onWheelScroll?.(deltaY, momentumOptions?.duration ? true : false);
     },
-    [handleWheel, scrollbarXRef, scrollbarYRef]
+    [getControlledScrollLeftValue, handleWheel, scrollbarXRef, scrollbarYRef, scrollX]
   );
 
   const wheelHandler = useRef<WheelHandler | null>();
@@ -408,13 +420,6 @@ const useScrollListener = (props: ScrollListenerProps) => {
       forceUpdatePosition();
     }
   }, [forceUpdatePosition, virtualJumpRevision]);
-
-  const getControlledScrollLeftValue = value => {
-    // The maximum range of scrolling value is judged.
-    value = Math.min(value, Math.max(0, contentWidth.current - tableWidth.current));
-
-    return [-value, contentWidth.current ? (value / contentWidth.current) * tableWidth.current : 0];
-  };
 
   const onScrollTop = (top = 0) => {
     const [nextScrollY, handleScrollY] = getControlledScrollTopValue(top);
