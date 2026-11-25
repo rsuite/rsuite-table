@@ -31,7 +31,14 @@
   },
   "overrides": {
     "gatsby": {
-      "cookie": "0.7.2"
+      "cookie": "0.7.2",
+      "path-to-regexp": "0.1.13"
+    },
+    "@ardatan/relay-compiler": {
+      "immutable": "3.8.4"
+    },
+    "@graphql-codegen/plugin-helpers": {
+      "lodash": "4.18.1"
     }
   }
 }
