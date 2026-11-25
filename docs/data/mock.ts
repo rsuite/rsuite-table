@@ -1,19 +1,19 @@
 import { faker } from '@faker-js/faker/locale/en';
 
 export const createUser = rowIndex => {
-  const firstName = faker.name.firstName();
-  const lastName = faker.name.lastName();
-  const gender = faker.name.sex();
-  const name = faker.name.fullName({ firstName, lastName });
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+  const gender = faker.person.sex();
+  const name = faker.person.fullName({ firstName, lastName });
   const avatar = 'https://i.pravatar.cc/150?u=' + name;
 
-  const city = faker.address.city();
-  const street = faker.address.street();
+  const city = faker.location.city();
+  const street = faker.location.street();
   const email = faker.internet.email();
-  const postcode = faker.address.zipCode();
+  const postcode = faker.location.zipCode();
   const phone = faker.phone.number();
-  const amount = faker.finance.amount(1000, 90000);
-  const company = faker.company.bs();
+  const amount = faker.finance.amount({ min: 1000, max: 90000 });
+  const company = faker.company.buzzPhrase();
 
   const age = Math.floor(Math.random() * 30) + 18;
   const stars = Math.floor(Math.random() * 10000);
