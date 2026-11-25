@@ -67,6 +67,36 @@ describe('ExpandableTable', () => {
     );
   });
 
+  it('keeps expanded row controls above its spanning fixed cells', () => {
+    const data = [{ id: 1, span: 3 }, { id: 2 }, { id: 3 }];
+
+    render(
+      <Table
+        width={330}
+        height={260}
+        rowHeight={50}
+        rowExpandedHeight={52}
+        data={data}
+        rowKey="id"
+        expandedRowKeys={[1]}
+        renderRowExpanded={() => <button type="button">Row details</button>}
+      >
+        <Column width={140} fixed rowSpan={row => row.span}>
+          <HeaderCell>Fixed</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+        <Column width={400}>
+          <HeaderCell>Row</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      </Table>
+    );
+
+    const detail = screen.getByRole('button', { name: 'Row details' });
+    const { left, top, width, height } = detail.getBoundingClientRect();
+    expect(document.elementFromPoint(left + width / 2, top + height / 2)).to.equal(detail);
+  });
+
   it('Should the exapanable areas has different heights ', () => {
     const data = [
       { id: 1, name: 'foobar' },

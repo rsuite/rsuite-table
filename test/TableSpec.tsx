@@ -1100,6 +1100,98 @@ describe('Table', () => {
     expect(screen.getByRole('grid')).to.have.class('rs-table-has-rowspan');
   });
 
+  for (const fixed of [undefined, 'left', 'right'] as const) {
+    it(`keeps the lower part of a spanning ${fixed ?? 'scrollable'} cell clickable`, async () => {
+      const data = [{ id: 1, span: 3 }, { id: 2 }, { id: 3 }];
+      const onRowClick = sinon.spy();
+      const editor = (
+        <Column width={140} fixed={fixed} verticalAlign="middle" rowSpan={row => row.span}>
+          <HeaderCell>Editor</HeaderCell>
+          <Cell>{row => <input aria-label={`Edit row ${row.id}`} />}</Cell>
+        </Column>
+      );
+      const other = (
+        <Column width={400}>
+          <HeaderCell>Row</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      );
+
+      render(
+        <Table
+          width={330}
+          height={205}
+          rowHeight={50}
+          data={data}
+          rowKey="id"
+          onRowClick={onRowClick}
+        >
+          {fixed === 'right' ? other : editor}
+          {fixed === 'right' ? editor : other}
+        </Table>
+      );
+
+      const input = screen.getByRole('textbox', { name: 'Edit row 1' });
+      const secondRow = screen.getAllByRole('row')[2];
+      const secondRowCell = secondRow.querySelector('[role="gridcell"]')!;
+      const pointAtCenter = (element: Element) => {
+        const { left, top, width, height } = element.getBoundingClientRect();
+        return document.elementFromPoint(left + width / 2, top + height / 2);
+      };
+
+      const inputBounds = input.getBoundingClientRect();
+      expect(inputBounds.top + inputBounds.height / 2).to.be.greaterThan(
+        secondRow.getBoundingClientRect().top
+      );
+      await waitFor(() => expect(pointAtCenter(input)).to.equal(input));
+
+      const target = pointAtCenter(input);
+      expect(target).to.equal(input);
+      fireEvent.click(target!);
+      expect(onRowClick.firstCall.args[0]).to.equal(data[0]);
+      const neighbor = secondRowCell.getBoundingClientRect();
+      expect(
+        document
+          .elementFromPoint(neighbor.left + 25, neighbor.top + neighbor.height / 2)
+          ?.closest('[role="gridcell"]')
+      ).to.equal(secondRowCell);
+    });
+  }
+
+  it('keeps the fixed cell above a scrolling span on the covered row', async () => {
+    const data = [{ id: 1, span: 3 }, { id: 2 }, { id: 3 }];
+    const table = React.createRef<TableInstance<(typeof data)[number], number>>();
+
+    render(
+      <Table ref={table} width={330} height={205} rowHeight={50} data={data} rowKey="id">
+        <Column width={80} fixed>
+          <HeaderCell>Fixed</HeaderCell>
+          <Cell>{row => <button type="button">Row {row.id}</button>}</Cell>
+        </Column>
+        <Column width={150} rowSpan={row => row.span}>
+          <HeaderCell>Spanning</HeaderCell>
+          <Cell>{row => <span>Spanning row {row.id}</span>}</Cell>
+        </Column>
+        <Column width={320}>
+          <HeaderCell>Other</HeaderCell>
+          <Cell dataKey="id" />
+        </Column>
+      </Table>
+    );
+
+    act(() => table.current?.scrollLeft(100));
+    await waitFor(() => expect(table.current?.scrollPosition.left).to.equal(100));
+
+    const pinned = screen.getByRole('button', { name: 'Row 2' });
+    const spanning = screen.getByText('Spanning row 1').closest('[role="gridcell"]');
+    const { left, right, top, height } = pinned.getBoundingClientRect();
+    const y = top + height / 2;
+    expect(document.elementFromPoint((left + right) / 2, y)).to.equal(pinned);
+    expect(document.elementFromPoint(right + 30, y)?.closest('[role="gridcell"]')).to.equal(
+      spanning
+    );
+  });
+
   // fix https://github.com/rsuite/rsuite/issues/2051
   it('Should disable scroll events when loading', done => {
     const appRef = React.createRef<any>();
