@@ -27,10 +27,8 @@ module.exports = (_, argv = {}) => {
     },
     devServer: {
       hot: true,
-      // This web app also needs the client when webpack targets browserslist.
-      injectClient: true,
-      contentBase: path.resolve(__dirname, ''),
-      publicPath: '/'
+      // Serve the compiled documentation without making the checkout a static directory.
+      static: false
     },
     output: {
       path: path.resolve(__dirname, 'assets'),
@@ -38,7 +36,7 @@ module.exports = (_, argv = {}) => {
       cssFilename: '[name].css',
       cssChunkFilename: '[id].css',
       assetModuleFilename: 'resources/[contenthash][ext]',
-      publicPath: './'
+      publicPath: isDevelopment ? '/' : './'
     },
     plugins: [
       new HtmlwebpackPlugin({
