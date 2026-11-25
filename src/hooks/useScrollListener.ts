@@ -6,9 +6,9 @@ import on from 'dom-lib/on';
 import removeStyle from 'dom-lib/removeStyle';
 import useUpdateEffect from './useUpdateEffect';
 import useMount from './useMount';
+import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect';
 import isSupportTouchEvent from '../utils/isSupportTouchEvent';
 import flushSync from '../utils/flushSync';
-import defer from '../utils/defer';
 import { requestAnimationTimeout, cancelAnimationTimeout } from '../utils/requestAnimationTimeout';
 import { SCROLLBAR_WIDTH, TRANSITION_DURATION, BEZIER } from '../constants';
 import type { ScrollbarInstance } from '../Scrollbar';
@@ -117,6 +117,8 @@ const useScrollListener = (props: ScrollListenerProps) => {
   const touchEndListener = useRef<ListenerCallback>();
 
   const [isScrolling, setScrolling] = useState(false);
+  const [virtualJumpRevision, setVirtualJumpRevision] = useState(0);
+  const positionedVirtualJump = useRef(0);
   const touchX = useRef(0);
   const touchY = useRef(0);
   const disableEventsTimeoutId = useRef<KeyframeAnimationOptions | null>(null);
@@ -400,14 +402,12 @@ const useScrollListener = (props: ScrollListenerProps) => {
     [autoHeight, contentHeight, getTableHeight, headerHeight]
   );
 
-  const rerender = () => {
-    setScrolling(true);
-    defer(() => {
-      if (tableBodyRef.current) {
-        setScrolling(false);
-      }
-    });
-  };
+  useIsomorphicLayoutEffect(() => {
+    if (positionedVirtualJump.current !== virtualJumpRevision) {
+      positionedVirtualJump.current = virtualJumpRevision;
+      forceUpdatePosition();
+    }
+  }, [forceUpdatePosition, virtualJumpRevision]);
 
   const getControlledScrollLeftValue = value => {
     // The maximum range of scrolling value is judged.
@@ -426,16 +426,12 @@ const useScrollListener = (props: ScrollListenerProps) => {
 
     setScrollY(nextScrollY);
     scrollbarYRef?.current?.resetScrollBarPosition?.(handleScrollY);
-    deferUpdatePosition();
 
-    /**
-     * After calling `scrollTop`, a white screen will appear when `virtualized` is true.
-     * The reason is that the coordinates of the DOM are directly manipulated,
-     * but the component is not re-rendered. Need to call `rerender`.
-     * Fix: rsuite#1044
-     */
     if (virtualized && contentHeight.current > height) {
-      rerender();
+      // Render the target rows before applying their scroll position.
+      setVirtualJumpRevision(revision => revision + 1);
+    } else {
+      deferUpdatePosition();
     }
   };
 

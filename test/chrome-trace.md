@@ -8,7 +8,8 @@ existing launchers. The collector adds no package dependencies.
 Each Chrome launcher attempt uses its own fresh profile and loopback debugging
 port. Chrome reads a startup trace configuration as it launches. The collector
 later adopts that recording through the browser's debugging endpoint. Navigation
-and tests do not wait for the debugger. Startup frame request and delivery
+and tests do not wait for the debugger. Endpoint discovery uses Karma's browser
+capture timeout, bounded by the recording limit. Startup frame request and delivery
 timestamps appear in the trace; the controls also attach the debugger after the
 native tests have finished to verify that these earlier events survive.
 Missing markers mean the trace cannot establish that interval, even if the test
@@ -29,7 +30,9 @@ startup cannot fill the buffer before a failing frame hook runs. Metadata report
 buffer usage when reported, actual browser and Node versions, and collector errors. Traces are
 saved as `trace.json.gz`. A partial
 file or a data-loss flag must not be presented as a complete recording. Export
-is limited to 128 MiB of compressed data and cleanup closes the connection after 10 seconds.
+is limited to 128 MiB of compressed data. After sending the stop command,
+the collector allows up to 15 seconds for Chrome's export notification and
+closes the connection after a total of 20 seconds of cleanup.
 Earlier events may have left the ring buffer; inspect timestamps and required
 markers before attributing a specific interval.
 

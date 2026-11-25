@@ -367,6 +367,7 @@ const Table = React.forwardRef(
     });
 
     const headerHeight = showHeader ? headerHeightProp : 0;
+    const headerRowCount = showHeader ? 1 : 0;
     const rtl = rtlProp || isRTL();
 
     const getRowHeight = () => {
@@ -742,7 +743,12 @@ const Table = React.forwardRef(
       }
 
       return (
-        <Row {...restRowProps} data-depth={depth} style={rowStyles}>
+        <Row
+          {...restRowProps}
+          data-depth={depth}
+          data-virtual-row-index={virtualized && rowIndex >= 0 ? rowIndex : undefined}
+          style={rowStyles}
+        >
           {renderRowProp ? renderRowProp(rowNode, rowData) : rowNode}
         </Row>
       );
@@ -866,7 +872,7 @@ const Table = React.forwardRef(
       const rowProps: TableRowProps = {
         ...restRowProps,
         key: nextRowKey,
-        'aria-rowindex': (props.key as number) + 2,
+        'aria-rowindex': props.rowIndex + headerRowCount + 1,
         'aria-level': isTree ? (props.depth ?? 0) + 1 : undefined,
         'aria-expanded': hasChildren ? expanded : undefined,
 
@@ -1162,9 +1168,13 @@ const Table = React.forwardRef(
           onScroll={onScrollBody}
         >
           <div style={wheelStyles} className={prefix('body-wheel-area')} ref={wheelWrapperRef}>
-            {topHideHeight ? <Row style={topRowStyles} className="virtualized" /> : null}
+            {topHideHeight ? (
+              <Row aria-hidden="true" style={topRowStyles} className="virtualized" />
+            ) : null}
             {visibleRows.current}
-            {bottomHideHeight ? <Row style={bottomRowStyles} className="virtualized" /> : null}
+            {bottomHideHeight ? (
+              <Row aria-hidden="true" style={bottomRowStyles} className="virtualized" />
+            ) : null}
           </div>
 
           <EmptyMessage
@@ -1195,9 +1205,7 @@ const Table = React.forwardRef(
       >
         <div
           role={isTree ? 'treegrid' : 'grid'}
-          // The aria-rowcount is specified on the element with the table.
-          // Its value is an integer equal to the total number of rows available, including header rows.
-          aria-rowcount={data.length + 1}
+          aria-rowcount={data.length + headerRowCount}
           aria-colcount={colCounts.current}
           aria-busy={loading}
           {...rest}
