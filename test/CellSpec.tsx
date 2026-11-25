@@ -3,6 +3,7 @@ import Cell from '../src/Cell';
 import TableProvider from '../src/TableProvider';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { testStandardProps } from './utils';
+import expectFlexAlignment from './utils/expectFlexAlignment';
 
 describe('Cell', () => {
   testStandardProps(<Cell />, {
@@ -19,9 +20,10 @@ describe('Cell', () => {
   it('Should The text be `right` aligned', () => {
     render(<Cell align="right" />);
 
-    expect(screen.getByRole('gridcell').querySelector('.rs-cell-content')).to.have.style(
+    expectFlexAlignment(
+      screen.getByRole('gridcell').querySelector('.rs-cell-content'),
       'justify-content',
-      'flex-end'
+      'end'
     );
   });
 
@@ -184,10 +186,10 @@ describe('Cell', () => {
     expect(screen.getByTestId('middle').childNodes[0]).to.have.style('align-items', 'center');
     expect(screen.getByTestId('middle').childNodes[0]).to.have.style('display', 'flex');
 
-    expect(screen.getByTestId('top').childNodes[0]).to.have.style('align-items', 'flex-start');
+    expectFlexAlignment(screen.getByTestId('top').firstElementChild, 'align-items', 'start');
     expect(screen.getByTestId('top').childNodes[0]).to.have.style('display', 'flex');
 
-    expect(screen.getByTestId('bottom').childNodes[0]).to.have.style('align-items', 'flex-end');
+    expectFlexAlignment(screen.getByTestId('bottom').firstElementChild, 'align-items', 'end');
     expect(screen.getByTestId('bottom').childNodes[0]).to.have.style('display', 'flex');
   });
 });

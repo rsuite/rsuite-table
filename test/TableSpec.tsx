@@ -12,6 +12,7 @@ import type { TableInstance } from '../src/Table';
 import '../src/less/index.less';
 import observeWheel from './utils/observeWheel';
 import { jsx } from 'react/jsx-runtime';
+import expectFlexAlignment from './utils/expectFlexAlignment';
 
 describe('Table', () => {
   it('Should output a table', () => {
@@ -1541,7 +1542,7 @@ describe('Table', () => {
     expect(screen.getByTestId('test-2').firstChild).to.have.style('justify-content', 'center');
 
     expect(screen.getByTestId('test-3').firstChild).to.have.style('display', 'flex');
-    expect(screen.getByTestId('test-3').firstChild).to.have.style('justify-content', 'flex-start');
+    expectFlexAlignment(screen.getByTestId('test-3').firstElementChild, 'justify-content', 'start');
 
     expect(screen.getByTestId('test-4').firstChild).to.have.style('display', 'flex');
     expect(screen.getByTestId('test-4').firstChild).to.have.style('justify-content', 'start');
@@ -1550,7 +1551,7 @@ describe('Table', () => {
     expect(screen.getByTestId('test-5').firstChild).to.have.style('align-items', 'center');
 
     expect(screen.getByTestId('test-6').firstChild).to.have.style('display', 'flex');
-    expect(screen.getByTestId('test-6').firstChild).to.have.style('align-items', 'flex-end');
+    expectFlexAlignment(screen.getByTestId('test-6').firstElementChild, 'align-items', 'end');
 
     expect(screen.getByTestId('test-7').firstChild).to.have.style('display', 'flex');
     expect(screen.getByTestId('test-7').firstChild).to.have.style('align-items', 'end');
