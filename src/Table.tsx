@@ -629,14 +629,14 @@ const Table = React.forwardRef(
     };
 
     const renderRowExpanded = useCallback(
-      (rowData?: Row) => {
+      (rowData?: Row, zIndex?: number) => {
         let height = 0;
         if (typeof rowExpandedHeight === 'function') {
           height = rowExpandedHeight(rowData);
         } else {
           height = rowExpandedHeight;
         }
-        const styles = { height };
+        const styles = { height, zIndex };
 
         if (typeof renderRowExpandedProp === 'function') {
           return (
@@ -667,6 +667,15 @@ const Table = React.forwardRef(
       const rowStyles: React.CSSProperties = {
         ...props?.style
       };
+      // Earlier cell groups paint over the rows covered by a spanning cell.
+      // A separate layer for fixed columns keeps scrolling spans behind them.
+      const rowCount = data.length;
+      const rowLayer = shouldRowSpanColumn && !props.isHeaderRow ? rowCount - rowIndex : 0;
+      const scrollGroupStyle: React.CSSProperties | undefined = rowLayer
+        ? { position: 'relative', zIndex: rowLayer }
+        : undefined;
+      const fixedGroupLayer = rowLayer ? rowCount + rowLayer : undefined;
+      const expandedLayer = rowLayer ? 2 * rowCount + 1 : undefined;
       let rowRight = 0;
 
       if (rtl && contentWidth.current > tableWidth.current) {
@@ -718,26 +727,25 @@ const Table = React.forwardRef(
                 fixed="left"
                 height={props.isHeaderRow ? props.headerHeight : props.height}
                 width={fixedLeftCellGroupWidth}
-                style={
-                  rtl
-                    ? { right: tableWidth.current - fixedLeftCellGroupWidth - rowRight }
-                    : undefined
-                }
+                style={{
+                  right: rtl ? tableWidth.current - fixedLeftCellGroupWidth - rowRight : undefined,
+                  zIndex: fixedGroupLayer
+                }}
               >
                 {mergeCells(resetLeftForCells(fixedLeftCells))}
               </CellGroup>
             ) : null}
 
-            <CellGroup>{mergeCells(scrollCells)}</CellGroup>
+            <CellGroup style={scrollGroupStyle}>{mergeCells(scrollCells)}</CellGroup>
 
             {fixedRightCellGroupWidth ? (
               <CellGroup
                 fixed="right"
-                style={
-                  rtl
-                    ? { right: 0 - rowRight }
-                    : { left: tableWidth.current - fixedRightCellGroupWidth }
-                }
+                style={{
+                  right: rtl ? -rowRight : undefined,
+                  left: rtl ? undefined : tableWidth.current - fixedRightCellGroupWidth,
+                  zIndex: fixedGroupLayer
+                }}
                 height={props.isHeaderRow ? props.headerHeight : props.height}
                 width={fixedRightCellGroupWidth}
               >
@@ -747,14 +755,14 @@ const Table = React.forwardRef(
               </CellGroup>
             ) : null}
 
-            {shouldRenderExpandedRow && renderRowExpanded(rowData)}
+            {shouldRenderExpandedRow && renderRowExpanded(rowData, expandedLayer)}
           </>
         );
       } else {
         rowNode = (
           <>
-            <CellGroup>{mergeCells(cells)}</CellGroup>
-            {shouldRenderExpandedRow && renderRowExpanded(rowData)}
+            <CellGroup style={scrollGroupStyle}>{mergeCells(cells)}</CellGroup>
+            {shouldRenderExpandedRow && renderRowExpanded(rowData, expandedLayer)}
           </>
         );
       }
@@ -762,6 +770,7 @@ const Table = React.forwardRef(
       return (
         <Row
           {...restRowProps}
+          positionWithTop={!!rowLayer}
           data-depth={depth}
           data-virtual-row-index={virtualized && rowIndex >= 0 ? rowIndex : undefined}
           style={rowStyles}

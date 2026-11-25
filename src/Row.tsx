@@ -12,6 +12,7 @@ export interface RowProps extends StandardProps {
   isHeaderRow?: boolean;
   rowRef?: any;
   rowSpan?: number;
+  positionWithTop?: boolean;
 }
 
 const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) => {
@@ -27,6 +28,7 @@ const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) =
     rowRef,
     children,
     rowSpan,
+    positionWithTop,
     ...rest
   } = props;
 
@@ -37,10 +39,13 @@ const Row = React.forwardRef((props: RowProps, ref: React.Ref<HTMLDivElement>) =
   const styles = {
     minWidth: width,
     height: isHeaderRow ? headerHeight : height,
+    top: positionWithTop ? top : undefined,
     ...style
   };
 
-  setCssPosition?.(styles as CSSStyleDeclaration, 0, top);
+  if (!positionWithTop) {
+    setCssPosition?.(styles as CSSStyleDeclaration, 0, top);
+  }
 
   return (
     <div role="row" {...rest} ref={mergeRefs(rowRef, ref)} className={classes} style={styles}>
