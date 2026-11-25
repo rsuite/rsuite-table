@@ -385,7 +385,7 @@ const Table = React.forwardRef(
 
     const headerHeight = showHeader ? headerHeightProp : 0;
     const headerRowCount = showHeader ? 1 : 0;
-    const rtl = rtlProp || isRTL();
+    const rtl = rtlProp ?? (rest.dir === 'rtl' || (rest.dir !== 'ltr' && isRTL()));
 
     const getRowHeight = () => {
       return typeof rowHeight === 'function' ? rowHeight() : rowHeight;
@@ -711,10 +711,12 @@ const Table = React.forwardRef(
           fixedRightCellGroupWidth += SCROLLBAR_WIDTH;
         }
 
+        // Keep the scrolling group's identity when measurement adds or removes fixed groups.
         rowNode = (
           <>
             {fixedLeftCellGroupWidth ? (
               <CellGroup
+                key="fixed-left"
                 fixed="left"
                 height={props.isHeaderRow ? props.headerHeight : props.height}
                 width={fixedLeftCellGroupWidth}
@@ -728,10 +730,11 @@ const Table = React.forwardRef(
               </CellGroup>
             ) : null}
 
-            <CellGroup>{mergeCells(scrollCells)}</CellGroup>
+            <CellGroup key="scroll">{mergeCells(scrollCells)}</CellGroup>
 
             {fixedRightCellGroupWidth ? (
               <CellGroup
+                key="fixed-right"
                 fixed="right"
                 style={
                   rtl
@@ -753,7 +756,7 @@ const Table = React.forwardRef(
       } else {
         rowNode = (
           <>
-            <CellGroup>{mergeCells(cells)}</CellGroup>
+            <CellGroup key="scroll">{mergeCells(cells)}</CellGroup>
             {shouldRenderExpandedRow && renderRowExpanded(rowData)}
           </>
         );
@@ -1268,6 +1271,7 @@ const Table = React.forwardRef(
           aria-colcount={colCounts.current}
           aria-busy={loading}
           {...rest}
+          dir={rtl ? 'rtl' : rtlProp === false ? 'ltr' : rest.dir}
           className={classes}
           style={styles}
           ref={tableRef}
