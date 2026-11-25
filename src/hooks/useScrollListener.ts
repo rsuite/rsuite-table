@@ -10,7 +10,7 @@ import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect';
 import isSupportTouchEvent from '../utils/isSupportTouchEvent';
 import flushSync from '../utils/flushSync';
 import { requestAnimationTimeout, cancelAnimationTimeout } from '../utils/requestAnimationTimeout';
-import { SCROLLBAR_WIDTH, TRANSITION_DURATION, BEZIER } from '../constants';
+import { TRANSITION_DURATION, BEZIER } from '../constants';
 import type { ScrollbarInstance } from '../Scrollbar';
 import type { ListenerCallback, RowDataType } from '../types';
 
@@ -530,10 +530,12 @@ const useScrollListener = (props: ScrollListenerProps) => {
   );
 
   useMount(() => {
-    if (rtl) {
-      // Initialize scroll position
-      setScrollX(tableWidth.current - contentWidth.current - SCROLLBAR_WIDTH);
-      scrollbarXRef?.current?.resetScrollBarPosition?.(-scrollX.current);
+    if (rtl && contentWidth.current > tableWidth.current) {
+      const [initialScrollX, scrollbarX] = getControlledScrollLeftValue(
+        contentWidth.current - tableWidth.current
+      );
+      setScrollX(initialScrollX);
+      scrollbarXRef?.current?.resetScrollBarPosition?.(scrollbarX);
       forceUpdatePosition();
     }
   });
