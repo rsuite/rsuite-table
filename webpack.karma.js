@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 /**
  * @type {import('webpack').Configuration}
  */
 module.exports = {
   mode: 'development',
+  experiments: { css: true },
   output: {
     pathinfo: true
   },
@@ -21,11 +19,9 @@ module.exports = {
       },
       {
         test: /\.(less|css)$/,
+        type: 'css/global',
+        parser: { exportType: 'style' },
         use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader'
-          },
           {
             loader: 'less-loader',
             options: {
@@ -39,11 +35,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css'
-    })
-  ],
   devtool: 'eval'
 };

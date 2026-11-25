@@ -2,26 +2,42 @@
 
 const path = require('path');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { NODE_ENV } = process.env;
+module.exports = (_, argv = {}) => {
+  const isDevelopment = (argv.mode || NODE_ENV) === 'development';
+  const usePublishedTable = !isDevelopment && process.env.RSUITE_TABLE_DOCS_SOURCE !== 'true';
+  const docsPath = isDevelopment ? './assets' : './';
 
-const docsPath = NODE_ENV === 'development' ? './assets' : './';
-
-module.exports = () => {
   return {
+    mode: isDevelopment ? 'development' : 'production',
+    experiments: { css: true },
+    // Keep authored numeric precision for long examples and row geometry.
+    ...(!isDevelopment && { optimization: { minimize: { css: { shortenNumbers: false } } } }),
     entry: './docs/index.tsx',
     devtool: 'source-map',
     resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.json']
+      extensions: ['.ts', '.tsx', '.js', '.json'],
+      // Production examples and styles use the same published package.
+      alias: {
+        'rsuite-table-docs-theme$': usePublishedTable
+          ? require.resolve('rsuite-table-docs/lib/less/index.less')
+          : path.resolve(__dirname, 'src/less/index.less'),
+        ...(usePublishedTable ? { '../src$': require.resolve('rsuite-table-docs') } : {})
+      }
     },
     devServer: {
       hot: true,
+      // This web app also needs the client when webpack targets browserslist.
+      injectClient: true,
       contentBase: path.resolve(__dirname, ''),
       publicPath: '/'
     },
     output: {
       path: path.resolve(__dirname, 'assets'),
       filename: 'bundle.js',
+      cssFilename: '[name].css',
+      cssChunkFilename: '[id].css',
+      assetModuleFilename: 'resources/[contenthash][ext]',
       publicPath: './'
     },
     plugins: [
@@ -31,10 +47,6 @@ module.exports = () => {
         inject: true,
         hash: true,
         path: docsPath
-      }),
-      new MiniCssExtractPlugin({
-        filename: '[name].css',
-        chunkFilename: '[id].css'
       })
     ],
     module: {
@@ -46,11 +58,9 @@ module.exports = () => {
         },
         {
           test: /\.(less|css)$/,
+          type: 'css/global',
+          parser: { exportType: isDevelopment ? 'style' : 'link' },
           use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: 'css-loader'
-            },
             {
               loader: 'less-loader',
               options: {
@@ -68,12 +78,7 @@ module.exports = () => {
         },
         {
           test: /\.(woff|woff2|eot|ttf|svg)($|\?)/,
-          use: [
-            {
-              loader:
-                'url-loader?limit=1&hash=sha512&digest=hex&size=16&name=resources/[hash].[ext]'
-            }
-          ]
+          type: 'asset/resource'
         }
       ]
     }

@@ -3,5 +3,5 @@
   "compilerOptions": {
     "noUnusedParameters": false
   },
-  "include": ["./test/*.test.tsx"]
+  "include": ["./test/*.test.tsx", "./test/browserReady.ts"]
 }
