@@ -132,6 +132,9 @@ const App = () => (
 | renderRowExpanded        | (rowData?: RowData) => ReactNode                                                  | Custom content to display in an expanded row.                                                                                          |
 | renderTreeToggle         | (icon: ReactNode, rowData: RowData, expanded: boolean) => ReactNode               | Custom toggle icon for expanding/collapsing tree nodes.                                                                                |
 | rowClassName             | string, (rowData: RowData, rowIndex: number) => string                            | Add an optional custom class name to rows.                                                                                             |
+| enabledRowHighlight      | boolean                                                                          | Highlight one row by clicking it or by pressing Shift+Space from a focusable cell.                                                      |
+| highlightedRowKey        | string, number, null                                                             | Control which row is highlighted. Pass null to clear it.                                                                                |
+| onHighlightedRowChange   | (rowKey: Key \| null, rowData: RowData, event: SyntheticEvent) => void              | Receive the next highlighted key and the row involved in the interaction.                                                              |
 | rowExpandedHeight        | number (100), (rowData?: RowData) => number                                       | Set the height of expanded rows.                                                                                                       |
 | rowHeight                | number (46), (rowData: RowData) => number                                         | Row height.                                                                                                                            |
 | rowKey                   | string ('key')                                                                    | Unique key for each row, derived from data.                                                                                            |
@@ -143,6 +146,47 @@ const App = () => (
 | virtualized              | boolean                                                                           | Efficiently render large datasets.                                                                                                     |
 | width                    | number                                                                            | Table width.                                                                                                                           |
 | wordWrap                 | boolean \| 'break-all' \| 'break-word' \| 'keep-all'                              | Control text wrapping behavior within cells.                                                                                           |
+
+### Row highlight
+
+Enable `enabledRowHighlight` to highlight one row at a time. Use a stable `rowKey` to keep the
+highlight attached to the same record when rows are sorted or replaced. Clicking the highlighted
+row again clears it. Nested buttons and form controls keep their own actions.
+
+When another component shows details for the highlighted row, keep the key in shared state and
+pass it as `highlightedRowKey`. A button inside a cell can update the same state through keyboard
+or pointer activation.
+
+```tsx
+function Results({ rows }: { rows: { id: number; name: string }[] }) {
+  const [highlightedRowKey, setHighlightedRowKey] = React.useState<number | null>(null);
+
+  return (
+    <Table
+      data={rows}
+      rowKey="id"
+      enabledRowHighlight
+      highlightedRowKey={highlightedRowKey}
+      onHighlightedRowChange={setHighlightedRowKey}
+    >
+      <Column width={250}>
+        <HeaderCell>Name</HeaderCell>
+        <Cell<{ id: number; name: string }, number>>
+          {row => (
+            <button
+              type="button"
+              aria-pressed={highlightedRowKey === row.id}
+              onClick={() => setHighlightedRowKey(key => (key === row.id ? null : row.id))}
+            >
+              {row.name}
+            </button>
+          )}
+        </Cell>
+      </Column>
+    </Table>
+  );
+}
+```
 
 ### `<Column>`
 
