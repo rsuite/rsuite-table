@@ -20,7 +20,7 @@ export interface ColumnProps<Row extends RowDataType> {
   /** Vertical alignment */
   verticalAlign?: React.CSSProperties['alignItems'] | 'top' | 'middle' | 'bottom';
 
-  /** Column width */
+  /** Column width (defaults to 100). */
   width?: number;
 
   /** Customizable Resize Column width */
@@ -51,10 +51,6 @@ function Column<Row extends RowDataType>(_props: ColumnProps<Row>) {
 }
 
 Column.displayName = 'Table.Column';
-
-Column.defaultProps = {
-  width: 100
-};
 
 export const columnHandledProps = [
   'align',
