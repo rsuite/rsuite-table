@@ -5,6 +5,7 @@ import Cell from '../src/Cell';
 import ColumnGroup from '../src/ColumnGroup';
 import HeaderCell from '../src/HeaderCell';
 import { render, screen } from '@testing-library/react';
+import expectFlexAlignment from './utils/expectFlexAlignment';
 
 describe('ColumnGroupTable', () => {
   it('Should be aligned in ColumnGroup', () => {
@@ -43,18 +44,18 @@ describe('ColumnGroupTable', () => {
       '.rs-table-column-group .rs-table-column-group-cell .rs-table-cell-content'
     );
 
-    expect(groupHeader).to.have.style('justify-content', 'flex-end');
-    expect(groupHeader).to.have.style('align-items', 'flex-start');
+    expectFlexAlignment(groupHeader, 'justify-content', 'end');
+    expectFlexAlignment(groupHeader, 'align-items', 'start');
 
     expect(groupChildren).to.have.length(3);
     expect(groupChildren[0]).to.have.text('firstName');
     expect(groupChildren[1]).to.have.text('lastName');
     expect(groupChildren[2]).to.have.text('Email');
 
-    expect(groupChildren[0]).to.have.style('justify-content', 'flex-start');
-    expect(groupChildren[0]).to.have.style('align-items', 'flex-end');
-    expect(groupChildren[1]).to.have.style('justify-content', 'flex-end');
-    expect(groupChildren[1]).to.have.style('align-items', 'flex-start');
+    expectFlexAlignment(groupChildren[0], 'justify-content', 'start');
+    expectFlexAlignment(groupChildren[0], 'align-items', 'end');
+    expectFlexAlignment(groupChildren[1], 'justify-content', 'end');
+    expectFlexAlignment(groupChildren[1], 'align-items', 'start');
 
     expect(groupChildren[2]).to.have.style('justify-content', 'center');
     expect(groupChildren[2]).to.have.style('align-items', 'center');
@@ -65,10 +66,10 @@ describe('ColumnGroupTable', () => {
 
     expect(groupBodyChildren).to.have.length(3);
 
-    expect(groupBodyChildren[0]).to.have.style('justify-content', 'flex-start');
-    expect(groupBodyChildren[0]).to.have.style('align-items', 'flex-end');
-    expect(groupBodyChildren[1]).to.have.style('justify-content', 'flex-end');
-    expect(groupBodyChildren[1]).to.have.style('align-items', 'flex-start');
+    expectFlexAlignment(groupBodyChildren[0], 'justify-content', 'start');
+    expectFlexAlignment(groupBodyChildren[0], 'align-items', 'end');
+    expectFlexAlignment(groupBodyChildren[1], 'justify-content', 'end');
+    expectFlexAlignment(groupBodyChildren[1], 'align-items', 'start');
 
     expect(groupBodyChildren[2]).to.have.style('justify-content', 'center');
     expect(groupBodyChildren[2]).to.have.style('align-items', 'center');
