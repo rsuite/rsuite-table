@@ -830,7 +830,7 @@ const Table = React.forwardRef(
         const target = event.target as Element;
         if (
           event.defaultPrevented ||
-          !event.currentTarget.contains(target) ||
+          target.closest?.('[role="row"]') !== event.currentTarget ||
           target.closest?.(
             'button, a[href], input, select, textarea, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="checkbox"], [role="switch"], [role="combobox"], [role="textbox"]'
           )

@@ -11,6 +11,9 @@
   }
 
   &-row {
+    // Each row owns its highlight, including rows in nested tables.
+    --rs-table-row-highlight-color: initial;
+
     overflow: hidden;
     position: absolute;
     width: 100%;
@@ -22,17 +25,13 @@
     background: @row-hover-color;
   }
 
-  &-hover &-body-row-wrapper &-row:hover &-cell-group {
-    background: @row-hover-color;
-  }
-
+  &-hover &-body-row-wrapper &-row:hover &-cell-group,
   &-hover &-body-row-wrapper &-row:hover &-cell {
-    background: @row-hover-color;
+    background: var(--rs-table-row-highlight-color, @row-hover-color);
   }
 
-  & &-body-row-wrapper &-row&-row-highlighted,
-  & &-body-row-wrapper &-row&-row-highlighted &-cell-group,
-  & &-body-row-wrapper &-row&-row-highlighted &-cell {
+  & &-body-row-wrapper &-row&-row-highlighted {
+    --rs-table-row-highlight-color: @row-highlight-color;
     background: @row-highlight-color;
   }
 
@@ -95,7 +94,7 @@
     overflow: hidden;
     position: absolute;
     white-space: normal;
-    background: @body-background;
+    background: var(--rs-table-row-highlight-color, @body-background);
     transition: none;
     box-sizing: border-box;
 
@@ -163,12 +162,12 @@
     &-fixed-left {
       position: absolute;
       z-index: 4;
-      background: @body-background;
+      background: var(--rs-table-row-highlight-color, @body-background);
     }
     &-fixed-right {
       position: absolute;
       z-index: 4;
-      background: @body-background;
+      background: var(--rs-table-row-highlight-color, @body-background);
     }
     &-left-shadow {
       .box-shadow(3px, 0px, 5px, rgba(9, 9, 9, 0.08));

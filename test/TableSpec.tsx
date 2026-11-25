@@ -81,12 +81,13 @@ describe('Table', () => {
 
     it('keeps controlled highlighting attached to the row key after reorder', () => {
       const onHighlightedRowChange = sinon.spy();
-      const table = (rows, key) => (
+      const table = (rows, key, showHeader = true) => (
         <Table
           data={rows}
           rowKey="id"
           enabledRowHighlight
           highlightedRowKey={key}
+          showHeader={showHeader}
           virtualized
           height={145}
           onHighlightedRowChange={onHighlightedRowChange}
@@ -107,8 +108,74 @@ describe('Table', () => {
         'false'
       );
 
-      rerender(table([data[1], data[0]], null));
+      rerender(table([data[1], data[0]], 0, false));
+      const selected = screen.getByRole('row', { name: 'First row' });
+      expect(screen.getByRole('grid')).to.have.attr('aria-rowcount', '2');
+      expect(screen.getByRole('row', { name: 'Second row' })).to.have.attr('aria-rowindex', '1');
+      expect(selected).to.have.attr('aria-rowindex', '2');
+      expect(selected).to.have.attr('aria-selected', 'true');
+
+      rerender(table([data[1], data[0]], null, false));
       expect(screen.getByRole('row', { name: 'First row' })).to.have.attr('aria-selected', 'false');
+    });
+
+    it('keeps the selected row and color scoped to its own table', () => {
+      const onOuterHighlight = sinon.spy();
+      const onInnerHighlight = sinon.spy();
+      render(
+        <Table
+          aria-label="Outer results"
+          data={[data[0]]}
+          rowKey="id"
+          showHeader={false}
+          enabledRowHighlight
+          onHighlightedRowChange={onOuterHighlight}
+          width={300}
+          height={150}
+          rowHeight={120}
+        >
+          <Column width={280}>
+            <HeaderCell>Nested</HeaderCell>
+            <Cell>
+              {() => (
+                <Table
+                  aria-label="Inner results"
+                  data={[data[1]]}
+                  rowKey="id"
+                  showHeader={false}
+                  enabledRowHighlight
+                  onHighlightedRowChange={onInnerHighlight}
+                  width={240}
+                  height={80}
+                >
+                  {columns}
+                </Table>
+              )}
+            </Cell>
+          </Column>
+        </Table>
+      );
+
+      const outer = screen.getByRole('grid', { name: 'Outer results' });
+      const inner = screen.getByRole('grid', { name: 'Inner results' });
+      const outerRow = outer.querySelector<HTMLElement>('[role="row"]')!;
+      const innerRow = inner.querySelector<HTMLElement>('[role="row"]')!;
+      const outerCell = outerRow.querySelector<HTMLElement>('[role="gridcell"]')!;
+      const innerCell = innerRow.querySelector<HTMLElement>('[role="gridcell"]')!;
+      const originalInnerColor = getComputedStyle(innerCell).backgroundColor;
+
+      fireEvent.click(innerCell);
+      expect(innerRow).to.have.attr('aria-selected', 'true');
+      expect(outerRow).to.have.attr('aria-selected', 'false');
+      expect(onInnerHighlight).to.have.been.calledOnce;
+      expect(onOuterHighlight).not.to.have.been.called;
+
+      fireEvent.click(innerCell);
+      fireEvent.click(outerCell);
+      expect(outerRow).to.have.attr('aria-selected', 'true');
+      expect(innerRow).to.have.attr('aria-selected', 'false');
+      expect(getComputedStyle(outerCell).backgroundColor).not.to.equal(originalInnerColor);
+      expect(getComputedStyle(innerCell).backgroundColor).to.equal(originalInnerColor);
     });
 
     it('highlights with Shift+Space from a cell while leaving nested controls operable', () => {
