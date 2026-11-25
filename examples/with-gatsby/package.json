@@ -14,10 +14,10 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
-    "gatsby": "^2.24.67",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "rsuite-table": "^3.14.5"
+    "gatsby": "5.16.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "rsuite-table": "5.19.3"
   },
   "devDependencies": {
     "prettier": "2.1.2"
@@ -28,5 +28,25 @@
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
+  },
+  "overrides": {
+    "gatsby": {
+      "cookie": "0.7.2",
+      "path-to-regexp": "0.1.13",
+      "webpack": "5.105.0",
+      "webpack-dev-middleware": "7.4.5"
+    },
+    "@ardatan/relay-compiler": {
+      "immutable": "3.8.4"
+    },
+    "@graphql-codegen/plugin-helpers": {
+      "lodash": "4.18.1"
+    },
+    "css-minimizer-webpack-plugin": {
+      "serialize-javascript": "7.1.3"
+    },
+    "external-editor": {
+      "tmp": "0.2.7"
+    }
   }
 }
