@@ -413,7 +413,7 @@ const useScrollListener = (props: ScrollListenerProps) => {
     // The maximum range of scrolling value is judged.
     value = Math.min(value, Math.max(0, contentWidth.current - tableWidth.current));
 
-    return [-value, (value / contentWidth.current) * tableWidth.current];
+    return [-value, contentWidth.current ? (value / contentWidth.current) * tableWidth.current : 0];
   };
 
   const onScrollTop = (top = 0) => {
@@ -453,6 +453,12 @@ const useScrollListener = (props: ScrollListenerProps) => {
       onScrollTop(y);
     }
   };
+
+  useUpdateEffect(() => {
+    // The scrollbar now has the new track and content sizes.
+    const [, offset] = getControlledScrollLeftValue(Math.abs(scrollX.current));
+    scrollbarXRef.current?.resetScrollBarPosition?.(offset);
+  }, [tableWidth.current, contentWidth.current, disabledScroll]);
 
   useUpdateEffect(() => {
     if (scrollY.current !== 0) {

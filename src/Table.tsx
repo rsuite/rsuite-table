@@ -438,7 +438,7 @@ const Table = React.forwardRef(
         vertical ? onScrollTop(0) : onScrollLeft(0);
       }
 
-      if (event === 'bodyWidthChanged') {
+      if (event === 'bodyWidthChanged' || event === 'widthChanged') {
         deferUpdatePosition();
       }
     };
