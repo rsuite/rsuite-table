@@ -8,6 +8,31 @@ import Table from '../src/Table';
 import { data, frames, renderFocusTable } from './utils/virtualizedFocus';
 
 describe('Virtualized focus lifecycle', () => {
+  it('Exposes only logical rows and retains the focused input when toggling the header', async () => {
+    const fixture = renderFocusTable({ showHeader: false });
+    const input = await fixture.focus(1);
+    const row = input.closest('[role="row"]')!;
+    expect(fixture.root().getAttribute('aria-rowcount')).to.equal(String(data.length));
+    expect(row.getAttribute('aria-rowindex')).to.equal('2');
+
+    await fixture.scroll(1600, 42);
+    const getExposedRows = () => within(fixture.root()).getAllByRole('row');
+    expect(getExposedRows().every(element => element.hasAttribute('aria-rowindex'))).to.equal(true);
+    expect(getExposedRows()).to.include(row);
+    expect(fixture.root().ownerDocument.activeElement).to.equal(input);
+
+    for (const showHeader of [true, false]) {
+      fixture.update({ showHeader });
+      await frames();
+      expect(fixture.root().getAttribute('aria-rowcount')).to.equal(
+        String(data.length + Number(showHeader))
+      );
+      expect(row.getAttribute('aria-rowindex')).to.equal(String(2 + Number(showHeader)));
+      expect(fixture.checkbox(1)).to.equal(input);
+      expect(fixture.root().ownerDocument.activeElement).to.equal(input);
+    }
+  });
+
   it('Matches the owned outer row when the focused control is inside a nested table', async () => {
     const fixture = renderFocusTable({
       children: (

@@ -29,7 +29,9 @@ function findFocusedRow<Row extends RowDataType>({
 
   // Match the owned row ref, including when a cell contains another table.
   for (let node: Element | null = active; node && node !== table; node = node.parentElement) {
-    const index = Number(node.getAttribute('aria-rowindex')) - 2;
+    const rowIndex = node.getAttribute('data-virtual-row-index');
+    if (rowIndex === null) continue;
+    const index = Number(rowIndex);
     if (index < 0 || !Number.isInteger(index)) continue;
     const cached = tableRows.current[index];
     if (!cached || cached[0] !== node) continue;
