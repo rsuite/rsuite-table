@@ -132,6 +132,12 @@ export interface TableProps<Row extends RowDataType, Key extends RowKeyType>
   /** Add an optional extra class name to row */
   rowClassName?: string | ((rowData: Row, rowIndex: number) => string);
 
+  /** Enable single-row highlighting by click or Shift+Space within a row. */
+  enabledRowHighlight?: boolean;
+
+  /** Control the highlighted row by key. Use null to clear it. */
+  highlightedRowKey?: Key | null;
+
   /** Whether to display the header of the table */
   showHeader?: boolean;
 
@@ -191,6 +197,9 @@ export interface TableProps<Row extends RowDataType, Key extends RowKeyType>
 
   /** Click the callback function after the row and return to rowDate */
   onRowClick?: (rowData: Row, event: React.MouseEvent) => void;
+
+  /** Called when the user changes the highlighted row. */
+  onHighlightedRowChange?: (rowKey: Key | null, rowData: Row, event: React.SyntheticEvent) => void;
 
   /** Callback after right-click row */
   onRowContextMenu?: (rowData: Row, event: React.MouseEvent) => void;
@@ -303,6 +312,8 @@ const Table = React.forwardRef(
       rowKey,
       virtualized,
       rowClassName,
+      enabledRowHighlight,
+      highlightedRowKey: highlightedRowKeyProp,
       rowExpandedHeight = 100,
       disabledScroll,
       affixHorizontalScrollbar,
@@ -316,6 +327,7 @@ const Table = React.forwardRef(
       onScroll,
       renderTreeToggle,
       onRowClick,
+      onHighlightedRowChange,
       onRowContextMenu,
       onExpandChange,
       onTouchStart,
@@ -347,6 +359,11 @@ const Table = React.forwardRef(
         : defaultExpandedRowKeys || []
     );
 
+    const [highlightedRowKey, setHighlightedRowKey] = useControlled<Key | null>(
+      highlightedRowKeyProp,
+      null
+    );
+    const rowSelectionSemantics = !rest.role || rest.role === 'grid' || rest.role === 'treegrid';
     const data = useTableData({ data: dataProp, isTree, expandedRowKeys, rowKey });
 
     if (isTree) {
@@ -641,11 +658,11 @@ const Table = React.forwardRef(
     ) => {
       const { depth, rowIndex, ...restRowProps } = props;
 
-      if (typeof rowClassName === 'function') {
-        restRowProps.className = rowClassName(rowData, rowIndex);
-      } else {
-        restRowProps.className = rowClassName;
-      }
+      const customClassName =
+        typeof rowClassName === 'function' ? rowClassName(rowData, rowIndex) : rowClassName;
+      restRowProps.className = props.className
+        ? mergeCls(customClassName, props.className)
+        : customClassName;
 
       const rowStyles: React.CSSProperties = {
         ...props?.style
@@ -808,13 +825,37 @@ const Table = React.forwardRef(
       [expandedRowKeys, isTree, renderRowExpandedProp, rowKey]
     );
 
+    const toggleRowHighlight = useCallback(
+      (key: Key, rowData: Row, event: React.SyntheticEvent) => {
+        const target = event.target as Element;
+        if (
+          event.defaultPrevented ||
+          target.closest?.('[role="row"]') !== event.currentTarget ||
+          target.closest?.(
+            'button, a[href], input, select, textarea, [contenteditable]:not([contenteditable="false"]), [role="button"], [role="checkbox"], [role="switch"], [role="combobox"], [role="textbox"]'
+          )
+        ) {
+          return;
+        }
+
+        // Prevent the same keyboard event from also scrolling the grid.
+        if (event.type === 'keydown') event.preventDefault();
+
+        const nextKey = highlightedRowKey === key ? null : key;
+        setHighlightedRowKey(nextKey);
+        onHighlightedRowChange?.(nextKey, rowData, event);
+      },
+      [highlightedRowKey, onHighlightedRowChange, setHighlightedRowKey]
+    );
+
     const bindRowClick = useCallback(
-      (rowData: Row) => {
+      (rowData: Row, key: Key) => {
         return (event: React.MouseEvent) => {
           onRowClick?.(rowData, event);
+          if (enabledRowHighlight) toggleRowHighlight(key, rowData, event);
         };
       },
-      [onRowClick]
+      [enabledRowHighlight, onRowClick, toggleRowHighlight]
     );
 
     const bindRowContextMenu = useCallback(
@@ -869,16 +910,34 @@ const Table = React.forwardRef(
       const { cellHeight, ...restRowProps } = props;
       const expanded = expandedRowKeys.some(key => rowKey && key === rowData[rowKey]);
 
+      const isHighlighted = enabledRowHighlight && highlightedRowKey === nextRowKey;
       const rowProps: TableRowProps = {
         ...restRowProps,
         key: nextRowKey,
+        className: isHighlighted ? prefix('row-highlighted') : undefined,
+        'aria-selected': enabledRowHighlight && rowSelectionSemantics ? !!isHighlighted : undefined,
         'aria-rowindex': props.rowIndex + headerRowCount + 1,
         'aria-level': isTree ? (props.depth ?? 0) + 1 : undefined,
         'aria-expanded': hasChildren ? expanded : undefined,
 
         rowRef: bindTableRowsRef(props.key as any, rowData),
-        onClick: bindRowClick(rowData),
-        onContextMenu: bindRowContextMenu(rowData)
+        onClick: bindRowClick(rowData, nextRowKey),
+        onContextMenu: bindRowContextMenu(rowData),
+        onKeyDown: enabledRowHighlight
+          ? event => {
+              if (
+                event.key === ' ' &&
+                event.shiftKey &&
+                !event.altKey &&
+                !event.ctrlKey &&
+                !event.metaKey &&
+                !event.repeat &&
+                !event.nativeEvent.isComposing
+              ) {
+                toggleRowHighlight(nextRowKey, rowData, event);
+              }
+            }
+          : undefined
       };
 
       const cells: React.ReactNode[] = [];
