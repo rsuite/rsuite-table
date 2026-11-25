@@ -11,6 +11,7 @@ import { render, waitFor, fireEvent, screen, act } from '@testing-library/react'
 import type { TableInstance } from '../src/Table';
 import '../src/less/index.less';
 import observeWheel from './utils/observeWheel';
+import { jsx } from 'react/jsx-runtime';
 import expectFlexAlignment from './utils/expectFlexAlignment';
 
 describe('Table', () => {
@@ -263,6 +264,53 @@ describe('Table', () => {
       </Table>
     );
     expect(screen.queryAllByRole('columnheader')).to.be.length(5);
+  });
+
+  it('uses the default width for omitted and undefined widths with automatic JSX', () => {
+    const CustomColumn = forwardRef((props: React.ComponentProps<typeof Column>) => (
+      <Column width={140} {...props} />
+    ));
+    const DefaultColumn = forwardRef((props: React.ComponentProps<typeof Column>) => (
+      <Column {...props} />
+    ));
+
+    render(
+      <Table data={[{ id: 1 }]}>
+        {jsx(Column, {
+          children: [<HeaderCell key="header">Omitted</HeaderCell>, <Cell key="cell">One</Cell>]
+        })}
+        <ColumnGroup header="Grouped">
+          {jsx(Column, {
+            width: undefined,
+            children: [<HeaderCell key="header">Undefined</HeaderCell>, <Cell key="cell">Two</Cell>]
+          })}
+          <Column width={0}>
+            <HeaderCell>Zero</HeaderCell>
+            <Cell>Three</Cell>
+          </Column>
+        </ColumnGroup>
+        <CustomColumn>
+          <HeaderCell>Wrapper</HeaderCell>
+          <Cell>Four</Cell>
+        </CustomColumn>
+        <DefaultColumn width={undefined}>
+          <HeaderCell>Wrapped default</HeaderCell>
+          <Cell>Five</Cell>
+        </DefaultColumn>
+        <Column width={160}>
+          <HeaderCell>Explicit</HeaderCell>
+          <Cell>Six</Cell>
+        </Column>
+      </Table>
+    );
+
+    const widths = screen.getAllByRole('gridcell').map(cell => cell.getBoundingClientRect().width);
+
+    expect(widths).to.deep.equal([100, 100, 0, 140, 100, 160]);
+    expect(
+      screen.getByRole('columnheader', { name: 'Omitted' }).getBoundingClientRect().width
+    ).to.equal(100);
+    expect(screen.getByText('Grouped').getBoundingClientRect().width).to.equal(100);
   });
 
   it('Should be disabled scroll', () => {

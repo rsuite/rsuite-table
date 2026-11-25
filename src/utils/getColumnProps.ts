@@ -18,8 +18,10 @@ import type { ColumnProps } from '../Column';
  */
 export default function getColumnProps<Row extends RowDataType>(
   column: React.ReactElement
-): ColumnProps<Row> {
+): ColumnProps<Row> & { width: number } {
   const columnDefaultProps = column['type']?.['render']?.()?.props || {};
 
-  return { ...columnDefaultProps, ...column?.props };
+  const { width = 100, ...props } = { ...columnDefaultProps, ...column?.props };
+
+  return { ...props, width };
 }
