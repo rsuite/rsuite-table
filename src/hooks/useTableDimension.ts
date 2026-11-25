@@ -331,7 +331,12 @@ const useTableDimension = <Row extends RowDataType, Key>(props: TableDimensionPr
       return heightProp;
     }
 
-    const height = autoHeightProp ? headerHeight + contentHeight.current : heightProp;
+    let height = autoHeightProp ? headerHeight + contentHeight.current : heightProp;
+
+    // Uncapped auto height already includes the horizontal scrollbar in contentHeight.
+    if (autoHeightProp && maxHeight && contentWidth.current > tableWidth.current) {
+      height += SCROLLBAR_WIDTH;
+    }
 
     if (maxHeight && height > maxHeight) {
       return maxHeight;
