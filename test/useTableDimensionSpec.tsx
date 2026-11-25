@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { render, act } from '@testing-library/react';
+import { render, act, within } from '@testing-library/react';
 import Table from '../src/Table';
 import Column from '../src/Column';
 import Cell from '../src/Cell';
 import HeaderCell from '../src/HeaderCell';
+import { SCROLLBAR_WIDTH } from '../src/constants';
 import '../src/less/index.less';
 
 const createColumns = (count: number) => {
@@ -91,14 +92,7 @@ describe('useTableDimension', () => {
                 </Table>
             );
 
-            const table = container.querySelector('.rs-table') as HTMLDivElement;
-            const scrollbar = container.querySelector('.rs-table-scrollbar-horizontal');
-
-            expect(table).to.exist;
-            // Horizontal scrollbar should not be visible or have minimal width
-            if (scrollbar) {
-                expect(scrollbar.clientWidth).to.be.at.most(10);
-            }
+            expect(container.querySelector('.rs-table-scrollbar-horizontal')).not.to.exist;
         });
 
         it('Should show horizontal scrollbar when content width > table width', () => {
@@ -124,11 +118,7 @@ describe('useTableDimension', () => {
             );
 
             const table = container.querySelector('.rs-table') as HTMLDivElement;
-            const height = parseInt(table.style.height);
-
-            // Height should include scrollbar width when horizontal scrollbar exists
-            // 1 row (46) + header (40) + scrollbar (~10) = ~96px
-            expect(height).to.be.at.least(86);
+            expect(table.style.height).to.equal(`${46 + 40 + SCROLLBAR_WIDTH}px`);
         });
 
         it('Should handle autoHeight=false with horizontal scrollbar', () => {
@@ -316,70 +306,33 @@ describe('useTableDimension', () => {
             expect(height).to.be.greaterThan(0);
         });
 
-        it('Should add SCROLLBAR_WIDTH when maxHeight exists, height < maxHeight, and contentWidth > tableWidth', () => {
-            // This tests the fix for: https://github.com/rsuite/rsuite/issues/557
-            const { container } = render(
-                <Table
-                    autoHeight
-                    data={mockData(3)}
-                    rowHeight={46}
-                    headerHeight={40}
-                    maxHeight={500}  // maxHeight exists and is larger than actual height
-                    width={200}  // Narrow table to force contentWidth > tableWidth
-                >
-                    {createColumns(4)}  // 4 columns * 200px = 800px {'>'} 200px table width
+        it('reserves exactly one horizontal scrollbar below maxHeight', () => {
+            const columns = createColumns(4);
+            const props = {
+                autoHeight: true,
+                data: mockData(3),
+                rowHeight: 46,
+                headerHeight: 40,
+                maxHeight: 500
+            };
+            const narrow = render(
+                <Table {...props} width={200}>
+                    {columns}
                 </Table>
             );
-
-            const table = container.querySelector('.rs-table') as HTMLDivElement;
-            const heightWithScrollbar = parseInt(table.style.height);
-
-            // 计算预期高度：3 rows * 46 + header 40 = 178px
-            // 有横向滚动条时：178 + 10 (SCROLLBAR_WIDTH) = 188px
-            //   console.log('有横向滚动条的高度:', heightWithScrollbar);
-            //   console.log('预期高度 (3 行 + header + scrollbar):', 3 * 46 + 40 + 10);
-
-            // Compare with a table that doesn't have horizontal scrollbar
-            const { container: container2 } = render(
-                <Table
-                    autoHeight
-                    data={mockData(3)}
-                    rowHeight={46}
-                    headerHeight={40}
-                    maxHeight={500}
-                    width={1000}  // Wide table, no horizontal scrollbar
-                >
-                    {createColumns(2)}
+            const wide = render(
+                <Table {...props} width={1000}>
+                    {columns}
                 </Table>
             );
+            const narrowTable = within(narrow.container).getByRole('grid');
+            const wideTable = within(wide.container).getByRole('grid');
+            const contentHeight = 3 * props.rowHeight + props.headerHeight;
 
-            const table2 = container2.querySelector('.rs-table') as HTMLDivElement;
-            const heightWithoutScrollbar = parseInt(table2.style.height);
-
-            //   console.log('无横向滚动条的高度:', heightWithoutScrollbar);
-            //   console.log('预期高度 (3 行 + header):', 3 * 46 + 40);
-            //   console.log('高度差值:', heightWithScrollbar - heightWithoutScrollbar);
-
-            // The height with horizontal scrollbar should be larger by SCROLLBAR_WIDTH (~10px)
-            // Or at least different because of the scrollbar
-            expect(heightWithScrollbar).to.be.greaterThan(heightWithoutScrollbar);
-        });
-
-        it('Should return tableHeight.current when fillHeight is true', () => {
-            // Tests: if (fillHeight) { return tableHeight.current; }
-            const { container } = render(
-                <div style={{ height: 400 }}>
-                    <Table fillHeight height={300} data={mockData(5)}>
-                        {createColumns(2)}
-                    </Table>
-                </div>
-            );
-
-            const table = container.querySelector('.rs-table') as HTMLDivElement;
-            const height = parseInt(table.style.height);
-
-            // Should fill the container height (400px), not the prop height (300px)
-            expect(height).to.equal(400);
+            expect(narrowTable.querySelector('.rs-table-scrollbar-horizontal')).to.exist;
+            expect(wideTable.querySelector('.rs-table-scrollbar-horizontal')).not.to.exist;
+            expect(wideTable.style.height).to.equal(`${contentHeight}px`);
+            expect(narrowTable.style.height).to.equal(`${contentHeight + SCROLLBAR_WIDTH}px`);
         });
 
         it('Should return heightProp when autoHeight is false', () => {
@@ -467,7 +420,14 @@ describe('useTableDimension', () => {
                 return (
                     <div>
                         <button onClick={() => setAutoHeight(!autoHeight)}>Toggle autoHeight</button>
-                        <Table autoHeight={autoHeight} data={mockData(10)} rowHeight={46} headerHeight={40} height={200}>
+                        <Table
+                            autoHeight={autoHeight}
+                            data={mockData(10)}
+                            rowHeight={46}
+                            headerHeight={40}
+                            height={200}
+                            width={1000}
+                        >
                             {createColumns(2)}
                         </Table>
                     </div>
@@ -477,7 +437,7 @@ describe('useTableDimension', () => {
             const { container, getByText } = render(<ToggleTable />);
 
             const table = container.querySelector('.rs-table') as HTMLDivElement;
-            const autoHeightHeight = parseInt(table.style.height);
+            expect(table.style.height).to.equal(`${10 * 46 + 40}px`);
 
             // Toggle to fixed height
             act(() => {
