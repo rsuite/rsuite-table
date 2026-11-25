@@ -530,6 +530,27 @@ describe('Table', () => {
     expect(screen.queryAllByRole('columnheader')).to.have.length(0);
   });
 
+  for (const showHeader of [false, true]) {
+    it(`Counts and indexes the data rows with the header ${
+      showHeader ? 'shown' : 'hidden'
+    }`, () => {
+      render(
+        <Table data={[{ id: 1 }, { id: 2 }]} showHeader={showHeader}>
+          <Column>
+            <HeaderCell>ID</HeaderCell>
+            <Cell dataKey="id" />
+          </Column>
+        </Table>
+      );
+
+      const grid = screen.getByRole('grid');
+      expect(grid.getAttribute('aria-rowcount')).to.equal(showHeader ? '3' : '2');
+      expect(
+        screen.getAllByRole('row').map(row => row.getAttribute('aria-rowindex'))
+      ).to.deep.equal(showHeader ? ['1', '2', '3'] : ['1', '2']);
+    });
+  }
+
   it('Should hava row className', () => {
     render(
       <Table

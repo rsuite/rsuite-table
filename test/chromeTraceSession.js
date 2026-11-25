@@ -3,6 +3,10 @@ const fs = require('node:fs/promises');
 const syncFs = require('node:fs');
 const path = require('node:path');
 
+const traceDurationMs = 120000;
+const traceFlushTimeoutMs = 15000;
+const traceCleanupTimeoutMs = traceFlushTimeoutMs + 5000;
+
 const traceConfig = {
   recordMode: 'recordContinuously',
   traceBufferSizeInKb: 32768,
@@ -103,7 +107,7 @@ class Protocol {
 }
 
 class ChromeTraceSession {
-  constructor(directory, profile, log) {
+  constructor(directory, profile, log, captureTimeout) {
     this.directory = directory;
     this.profile = profile;
     this.log = log;
@@ -113,6 +117,7 @@ class ChromeTraceSession {
       startedAt: new Date().toISOString(),
       traceConfig,
       instrumentationOnly: true,
+      endpointDiscoveryTimeoutMs: Math.min(captureTimeout || traceDurationMs, traceDurationMs),
       errors: []
     };
     this.cancelled = false;
@@ -123,7 +128,7 @@ class ChromeTraceSession {
     // Chrome reads this before it creates the test page. CDP later adopts this
     // recording; asynchronous debugger discovery must not miss a fast frame hook.
     const startupConfig = {
-      startup_duration: 120,
+      startup_duration: traceDurationMs / 1000,
       trace_config: {
         record_mode: 'record-continuously',
         trace_buffer_size_in_kb: traceConfig.traceBufferSizeInKb,
@@ -155,7 +160,10 @@ class ChromeTraceSession {
   async connect() {
     await fs.mkdir(this.directory, { recursive: true });
     if (typeof WebSocket !== 'function') throw new Error('Chrome tracing requires Node.js 22+');
-    const deadline = Date.now() + 10000;
+    const deadline = Math.min(
+      Date.now() + this.metadata.endpointDiscoveryTimeoutMs,
+      Date.parse(this.metadata.startedAt) + traceDurationMs
+    );
     while (!this.cancelled && Date.now() < deadline) {
       let activePort;
       try {
@@ -199,7 +207,7 @@ class ChromeTraceSession {
         this.metadata.traceReadyAt = new Date().toISOString();
         this.tracing = true;
         // This bounds diagnostics only; it never changes a test or browser deadline.
-        const remaining = 120000 - (Date.now() - Date.parse(this.metadata.startedAt));
+        const remaining = traceDurationMs - (Date.now() - Date.parse(this.metadata.startedAt));
         this.limit = setTimeout(
           () => this.stop('diagnostic duration limit'),
           Math.max(0, remaining)
@@ -223,19 +231,24 @@ class ChromeTraceSession {
     this.metadata.stopReason = reason;
     clearTimeout(this.limit);
     // Ensure a stuck diagnostic connection cannot hold Karma's launcher cleanup.
-    const deadline = setTimeout(() => this.protocol?.close(), 10000);
+    const deadline = setTimeout(() => this.protocol?.close(), traceCleanupTimeoutMs);
     try {
       await this.starting;
       clearTimeout(this.limit);
       if (this.tracing) {
+        const flushStartedAt = performance.now();
         await this.protocol.send('Tracing.end');
         const result = await Promise.race([
           this.completed,
           new Promise((_, reject) => {
-            this.completeTimer = setTimeout(() => reject(new Error('Trace flush timed out')), 8000);
+            this.completeTimer = setTimeout(
+              () => reject(new Error('Trace flush timed out')),
+              traceFlushTimeoutMs
+            );
           })
         ]);
         clearTimeout(this.completeTimer);
+        this.metadata.flushWaitMs = performance.now() - flushStartedAt;
         this.metadata.dataLossOccurred = result.dataLossOccurred;
         if (!result.stream) throw new Error('Chrome did not return a trace stream');
         const output = await fs.open(path.join(this.directory, 'trace.json.gz.partial'), 'wx');
