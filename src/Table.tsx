@@ -895,12 +895,11 @@ const Table = React.forwardRef(
      * Records the status of merged rows.
      * { cellKey: [count,index]}
      */
-    const rowSpanState = useRef<{ [cellKey: string]: [number, number] }>({});
-
     const renderRowData = (
       bodyCells: any[],
       rowData: any,
       props: TableRowProps & { cellHeight?: number },
+      rowSpans: number[],
       shouldRenderExpandedRow?: boolean
     ) => {
       const hasChildren = !!(isTree && Array.isArray(rowData.children) && rowData.children.length);
@@ -946,30 +945,16 @@ const Table = React.forwardRef(
         const cell = bodyCells[i];
         const rowSpan: number = cell.props?.rowSpan?.(rowData);
         const dataCellHeight = rowSpan ? rowSpan * (cellHeight || ROW_HEIGHT) : cellHeight;
-        const cellKey = cell.props.dataKey || i;
-
-        // Record the cell state of the merged row
-        if (rowSpanState.current[cellKey]?.[1] > 0) {
-          rowSpanState.current[cellKey][1] -= 1;
-
-          // Restart counting when merged to the last cell.
-          if (rowSpanState.current[cellKey][1] === 0) {
-            rowSpanState.current[cellKey][0] = 0;
-          }
-        }
+        const remainingSpan = rowSpans[i] ?? 0;
+        const removedCell = !rowSpan && remainingSpan > 0;
 
         if (rowSpan) {
-          // The state of the initial merged cell
-          rowSpanState.current[cellKey] = [rowSpan, rowSpan];
+          rowSpans[i] = rowSpan - 1;
           rowProps.rowSpan = rowSpan;
           rowProps.style = { overflow: 'inherit' };
+        } else if (removedCell) {
+          rowSpans[i] = remainingSpan - 1;
         }
-
-        // Cells marked as deleted when checking for merged cell.
-        const removedCell =
-          cell.props?.rowSpan && !rowSpan && rowSpanState.current[cellKey]?.[0] !== 0
-            ? true
-            : false;
 
         cells.push(
           React.cloneElement(cell, {
@@ -1046,6 +1031,7 @@ const Table = React.forwardRef(
       let bottomHideHeight = 0;
 
       visibleRows.current = [];
+      const rowSpans: number[] = [];
       const renderRetainedRow = (
         rowData: Row,
         rowProps: TableRowProps & { cellHeight?: number },
@@ -1053,13 +1039,7 @@ const Table = React.forwardRef(
       ) => {
         retainedRow.current = focusedRow?.element ?? null;
         // A retained row must not change merged-cell bookkeeping for the visible range.
-        const spanState = rowSpanState.current;
-        rowSpanState.current = {};
-        try {
-          return renderRowData(bodyCells, rowData, rowProps, expanded);
-        } finally {
-          rowSpanState.current = spanState;
-        }
+        return renderRowData(bodyCells, rowData, rowProps, [], expanded);
       };
 
       if (data) {
@@ -1148,7 +1128,7 @@ const Table = React.forwardRef(
             visibleRows.current.push(
               retain
                 ? renderRetainedRow(rowData, rowProps, expandedRow)
-                : renderRowData(bodyCells, rowData, rowProps, expandedRow)
+                : renderRowData(bodyCells, rowData, rowProps, rowSpans, expandedRow)
             );
           }
         } else {
@@ -1203,7 +1183,7 @@ const Table = React.forwardRef(
             visibleRows.current.push(
               index < startIndex || index >= endIndex
                 ? renderRetainedRow(rowData, rowProps, false)
-                : renderRowData(bodyCells, rowData, rowProps, false)
+                : renderRowData(bodyCells, rowData, rowProps, rowSpans, false)
             );
           }
         }
